@@ -1,0 +1,154 @@
+name: build-aceonline-ep43
+
+# CONFIRMADO nos .sln do repositorio:
+#   GameServer.sln  -> R_DreamACE|Win32 e R_DreamACE_Arena|Win32
+#   ProjectAtum.sln -> R_DreamACE|Win32  (ProjectAtum e o CLIENTE do jogo)
+# Ambas as solutions so expoem Win32. Nao existe x64.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+env:
+  PLATFORM: Win32
+  CONFIG_MAIN: R_DreamACE
+  CONFIG_ARENA: R_DreamACE_Arena
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Listar configuracoes disponiveis
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse -Filter *.sln | ForEach-Object {
+            Write-Host ""
+            Write-Host "=============================================="
+            Write-Host "SLN: $($_.FullName)"
+            Write-Host "=============================================="
+            $inBlock = $false
+            Get-Content $_.FullName | ForEach-Object {
+              if ($_ -match 'GlobalSection\(SolutionConfigurationPlatforms\)') { $inBlock = $true; return }
+              if ($inBlock -and $_ -match 'EndGlobalSection') { $inBlock = $false; return }
+              if ($inBlock) { Write-Host "  $($_.Trim())" }
+            }
+          }
+
+      - name: Instalar componentes ATL/MFC (v143)
+        shell: pwsh
+        continue-on-error: true
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $installer = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe"
+          $vsPath = & $vswhere -latest -property installationPath
+          Write-Host "Visual Studio: $vsPath"
+          $p = Start-Process -FilePath $installer -Wait -PassThru -ArgumentList @(
+            'modify', '--installPath', "`"$vsPath`"",
+            '--add', 'Microsoft.VisualStudio.Component.VC.ATLMFC',
+            '--add', 'Microsoft.VisualStudio.Component.VC.MFC.MBCS',
+            '--quiet', '--norestart', '--nocache'
+          )
+          Write-Host "Exit code: $($p.ExitCode)"
+          $afx = Get-ChildItem -Path "$vsPath\VC\Tools\MSVC" -Recurse -Filter afxres.h -ErrorAction SilentlyContinue
+          Write-Host "afxres.h encontrado: $($afx.Count)"
+
+      - name: Build GameServer (${{ env.CONFIG_MAIN }})
+        continue-on-error: true
+        run: >
+          msbuild "ProjectsServer\GameServer\GameServer.sln"
+          /m
+          /p:Configuration="${{ env.CONFIG_MAIN }}"
+          /p:Platform="${{ env.PLATFORM }}"
+          /verbosity:minimal
+          /flp:LogFile=build-gameserver.log;Verbosity=normal
+
+      - name: Build Arena (${{ env.CONFIG_ARENA }})
+        continue-on-error: true
+        run: >
+          msbuild "ProjectsServer\GameServer\GameServer.sln"
+          /m
+          /p:Configuration="${{ env.CONFIG_ARENA }}"
+          /p:Platform="${{ env.PLATFORM }}"
+          /verbosity:minimal
+          /flp:LogFile=build-arena.log;Verbosity=normal
+
+      - name: Build ProjectAtum / CLIENTE (${{ env.CONFIG_MAIN }})
+        continue-on-error: true
+        run: >
+          msbuild "ProjectAtum\ProjectAtum.sln"
+          /m
+          /p:Configuration="${{ env.CONFIG_MAIN }}"
+          /p:Platform="${{ env.PLATFORM }}"
+          /verbosity:minimal
+          /flp:LogFile=build-atum.log;Verbosity=normal
+
+      - name: Coletar binarios
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out\bin, out\tools, out\client | Out-Null
+          $exes = Get-ChildItem -Recurse -Include *.exe,*.dll -ErrorAction SilentlyContinue |
+                  Where-Object { $_.FullName -notmatch '\\(obj|ipch|\.git)\\' }
+          $serverExes = 'LogServer','IMServer','PreServer','FieldServer','NPCServer','Atum'
+          $toolExes   = 'AtumAdminTool','AtumMonitor','AtumLauncher','QuestLoader','SpaceCowboyDBEditorTool','CrashReporter'
+          Write-Host "Artefatos encontrados: $($exes.Count)"
+          foreach ($f in $exes) {
+            Write-Host "  $($f.FullName)"
+            $base = [IO.Path]::GetFileNameWithoutExtension($f.Name)
+            $dest =
+              if ($f.FullName -match '\\ProjectAtum\\') { 'out\client' }
+              elseif ($toolExes -contains $base)          { 'out\tools' }
+              else                                        { 'out\bin' }
+            Copy-Item $f.FullName -Destination $dest -Force -ErrorAction SilentlyContinue
+          }
+          if (Test-Path 'Config')   { Copy-Item 'Config' -Destination 'out\config' -Recurse -Force }
+          if (Test-Path 'Resource') { Copy-Item 'Resource' -Destination 'out\client\Resource' -Recurse -Force }
+          Write-Host ""
+          Write-Host "--- Resumo ---"
+          foreach ($d in 'out\bin','out\tools','out\client') {
+            Write-Host "$d :"
+            Get-ChildItem $d -Filter *.exe -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "    $($_.Name)" }
+          }
+
+      - name: Upload binarios do servidor
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-binaries
+          path: |
+            out/bin/**
+            out/config/**
+          if-no-files-found: warn
+
+      - name: Upload CLIENTE do jogo
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: game-client
+          path: out/client/**
+          if-no-files-found: warn
+
+      - name: Upload ferramentas de admin
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-tools
+          path: out/tools/**
+          if-no-files-found: warn
+
+      - name: Upload logs de build
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: build-*.log
+          if-no-files-found: warn
