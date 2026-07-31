@@ -6,8 +6,8 @@
 // 2015-05-17 Future, Service Type Definitions
 
 ///////////////////////////////////////////////////////////////////////////////
-//  SERVICE_TYPE_ENGLISH_SERVER_1		==>	Ä³³ª´Ù	Wikigames		- Eng	2000
-//  SERVICE_TYPE_VIETNAMESE_SERVER_1	==>	º£Æ®³²	VTC-Intecom		- Viet	4000
+//  SERVICE_TYPE_ENGLISH_SERVER_1		==>	ìºë‚˜ë‹¤	Wikigames		- Eng	2000
+//  SERVICE_TYPE_VIETNAMESE_SERVER_1	==>	ë² íŠ¸ë‚¨	VTC-Intecom		- Viet	4000
 //  SERVICE_TYPE_DREAMACE				==>	DreamAce
 //  SERVICE_TYPE_ETERNALSKIES			==> Eternal Skies
 
@@ -31,10 +31,10 @@
 // Capacities & Max Level
 
 #if defined(S_CAN_SERVER_SETTING_HSSON) || defined(S_DA_SERVER_SETTING_HSSON) || defined(S_ETRS_SERVER_SETTING_HSSON)
-#define SIZE_MAX_INITIAL_GUILD_CAPACITY				30		// ÃÊ±â ±æµå »ý¼º ½Ã °¡´É ±æµå¿ø ¼ö, // 2006-09-06 by cmkwon, ÇÑ±¹ ¼­¹ö¸¸ º¯°æ (40-->30)
-#define SIZE_MAX_GUILD_CAPACITY						300		// 2008-05-28 by dhjin, EP3 ¿©´Ü ¼öÁ¤ »çÇ× - ÃÖ´ë ±æµå¿ø ¼ö
-#define SIZE_MAX_ITEM_GENERAL						111		// Ä³¸¯ÅÍÀÇ ÀÎº¥Åä¸®¿¡ ¼ÒÀ¯ÇÒ ¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÇ ÃÖ´ë °³¼ö(1°³´Â SPI ¾ÆÀÌÅÛÀÇ Ä«¿îÆ®ÀÌ´Ù, Å¬¶óÀÌ¾ðÆ®´Â 60À» »ç¿ëÇÑ´Ù.), // 2006-09-06 by cmkwon, ÇÑ±¹ ¼­¹ö¸¸ º¯°æ(61-->41)
-#define SIZE_MAX_ITEM_GENERAL_IN_STORE				151		// Ã¢°í¿¡ ¼ÒÀ¯ÇÒ ¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÇ ÃÖ´ë °³¼ö, // 2006-09-06 by cmkwon, ÇÑ±¹ ¼­¹ö¸¸ º¯°æ(101-->51)
+#define SIZE_MAX_INITIAL_GUILD_CAPACITY				30		// ì´ˆê¸° ê¸¸ë“œ ìƒì„± ì‹œ ê°€ëŠ¥ ê¸¸ë“œì› ìˆ˜, // 2006-09-06 by cmkwon, í•œêµ­ ì„œë²„ë§Œ ë³€ê²½ (40-->30)
+#define SIZE_MAX_GUILD_CAPACITY						300		// 2008-05-28 by dhjin, EP3 ì—¬ë‹¨ ìˆ˜ì • ì‚¬í•­ - ìµœëŒ€ ê¸¸ë“œì› ìˆ˜
+#define SIZE_MAX_ITEM_GENERAL						111		// ìºë¦­í„°ì˜ ì¸ë²¤í† ë¦¬ì— ì†Œìœ í•  ìˆ˜ ìžˆëŠ” ì•„ì´í…œì˜ ìµœëŒ€ ê°œìˆ˜(1ê°œëŠ” SPI ì•„ì´í…œì˜ ì¹´ìš´íŠ¸ì´ë‹¤, í´ë¼ì´ì–¸íŠ¸ëŠ” 60ì„ ì‚¬ìš©í•œë‹¤.), // 2006-09-06 by cmkwon, í•œêµ­ ì„œë²„ë§Œ ë³€ê²½(61-->41)
+#define SIZE_MAX_ITEM_GENERAL_IN_STORE				151		// ì°½ê³ ì— ì†Œìœ í•  ìˆ˜ ìžˆëŠ” ì•„ì´í…œì˜ ìµœëŒ€ ê°œìˆ˜, // 2006-09-06 by cmkwon, í•œêµ­ ì„œë²„ë§Œ ë³€ê²½(101-->51)
 #define CHARACTER_MAX_LEVEL							120
 #define COUNT_IN_MEMBERSHIP_ADDED_INVENTORY			40
 #define COUNT_IN_MEMBERSHIP_ADDED_STORE				50
@@ -75,7 +75,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // 2006-09-15 by cmkwon, 
-// ±¹°¡ ¼Ò½ºÅëÇÕ ¶§ Ãß°¡ µÇ¾î¾ß ÇÒ ºÎºÐ ¼ø¼­ 05
+// êµ­ê°€ ì†ŒìŠ¤í†µí•© ë•Œ ì¶”ê°€ ë˜ì–´ì•¼ í•  ë¶€ë¶„ ìˆœì„œ 05
 
 #if defined (S_CAN_SERVER_SETTING_HSSON) || defined(S_DA_SERVER_SETTING_HSSON) || defined(S_ETRS_SERVER_SETTING_HSSON)
 #define MSBILLING_DB_SERVER_IP						"127.0.0.1"
@@ -86,16 +86,16 @@
 
 // Kor_Masang51		==> 1
 // Kor_ETRI			==> 1
-// Eng_Gala-Net		==> »ó°ü ¾øÀ½
-// Viet_VTC-Intecom	==> »ó°ü ¾øÀ½
+// Eng_Gala-Net		==> ìƒê´€ ì—†ìŒ
+// Viet_VTC-Intecom	==> ìƒê´€ ì—†ìŒ
 #define MSBILLING_GAMEUID							1
 
 // 2006-09-22 by dhjin
-// Kor_Masang51		==> 201			// 2006-10-23 by cmkwon, º¯°æ(101-->201)
-// Kor_ETRI			==> 201			// 2006-10-23 by cmkwon, º¯°æ(101-->201)
-// Eng_Gala-Net		==> 201			// 2006-10-23 by cmkwon, º¯°æ(101-->201)
-// Viet_VTC-Intecom	==> 201			// 2006-10-23 by cmkwon, º¯°æ(101-->201)
-#define COUNT_IN_MEMBERSHIP_GUILDSTORE				201		// 2006-09-22 by dhjin, ¸â¹ö½± ¼­ºñ½º½Ã ¿©´Ü Ã¢°í Ä«¿îÆ®
+// Kor_Masang51		==> 201			// 2006-10-23 by cmkwon, ë³€ê²½(101-->201)
+// Kor_ETRI			==> 201			// 2006-10-23 by cmkwon, ë³€ê²½(101-->201)
+// Eng_Gala-Net		==> 201			// 2006-10-23 by cmkwon, ë³€ê²½(101-->201)
+// Viet_VTC-Intecom	==> 201			// 2006-10-23 by cmkwon, ë³€ê²½(101-->201)
+#define COUNT_IN_MEMBERSHIP_GUILDSTORE				201		// 2006-09-22 by dhjin, ë©¤ë²„ì‰½ ì„œë¹„ìŠ¤ì‹œ ì—¬ë‹¨ ì°½ê³  ì¹´ìš´íŠ¸
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -113,25 +113,25 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2006-05-22 by cmkwon, ºñ¹ø MD5·Î ÀÎÄÚµù½Ã¿¡ ¿ø·¡ ºñ¹ø ¾Õ¿¡ Ãß°¡µÉ ½ºÆ®¸µ - 
+// 2006-05-22 by cmkwon, ë¹„ë²ˆ MD5ë¡œ ì¸ì½”ë”©ì‹œì— ì›ëž˜ ë¹„ë²ˆ ì•žì— ì¶”ê°€ë  ìŠ¤íŠ¸ë§ - 
 #define MD5_PASSWORD_ADDITIONAL_STRING			""
 #define EXT_AUTH_GAME_NAME						"SCO"		// 2006-05-22 by cmkwon
 
-// ±¹°¡ ¼Ò½ºÅëÇÕ ¶§ Ãß°¡ µÇ¾î¾ß ÇÒ ºÎºÐ ¼ø¼­ 07
+// êµ­ê°€ ì†ŒìŠ¤í†µí•© ë•Œ ì¶”ê°€ ë˜ì–´ì•¼ í•  ë¶€ë¶„ ìˆœì„œ 07
 
 #ifdef S_DA_SERVER_SETTING_HSSON	// Wikigames
-// 2008-06-05 by cmkwon, AdminTool, Monitor Á¢±Ù °¡´É IP¸¦ server config file ¿¡ ¼³Á¤ÇÏ±â - MS140¹ø ¼­¹ö¸¸ Å×½ºÆ®¸¦ À§ÇØ IP ¸¦ Æ²¸®°Ô(121.134.11.) ¼³Á¤ ÇÔ
-// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP1		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP2		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP3		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng °ÔÀÓ Á¤º¸ ¼öÁ¤ - º»¼· Private IP
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP4		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng °ÔÀÓ Á¤º¸ ¼öÁ¤ - º»¼· Public IP
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP5		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng °ÔÀÓ Á¤º¸ ¼öÁ¤ - Å×¼· Public IP
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP6		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP7		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP8		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP9		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP10		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
+// 2008-06-05 by cmkwon, AdminTool, Monitor ì ‘ê·¼ ê°€ëŠ¥ IPë¥¼ server config file ì— ì„¤ì •í•˜ê¸° - MS140ë²ˆ ì„œë²„ë§Œ í…ŒìŠ¤íŠ¸ë¥¼ ìœ„í•´ IP ë¥¼ í‹€ë¦¬ê²Œ(121.134.11.) ì„¤ì • í•¨
+// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP1		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP2		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP3		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng ê²Œìž„ ì •ë³´ ìˆ˜ì • - ë³¸ì„­ Private IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP4		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng ê²Œìž„ ì •ë³´ ìˆ˜ì • - ë³¸ì„­ Public IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP5		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng ê²Œìž„ ì •ë³´ ìˆ˜ì • - í…Œì„­ Public IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP6		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP7		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP8		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP9		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP10		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
 #define IS_SCADMINTOOL_CONNECTABLE_IP(ip)		( 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP1,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP1)) \
 												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP2,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP2)) \
 												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP3,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP3)) \
@@ -154,23 +154,23 @@
 #define BILLING_DBSERVER_DATABASE_NAME			"MS_Billing"
 #define BILLING_DBSERVER_USER_ID				"atum"
 // Kor_Masang51		==> callweb
-// Kor_Yedang		==> 2006-12-25 by cmkwon, ¼öÁ¤ÇÔ
+// Kor_Yedang		==> 2006-12-25 by cmkwon, ìˆ˜ì •í•¨
 #define BILLING_DBSERVER_USER_PWD				"callweb"
 #endif // S_DA_SERVER_SETTING_HSSON
 
 #ifdef S_ETRS_SERVER_SETTING_HSSON	// Wikigames
-// 2008-06-05 by cmkwon, AdminTool, Monitor Á¢±Ù °¡´É IP¸¦ server config file ¿¡ ¼³Á¤ÇÏ±â - MS140¹ø ¼­¹ö¸¸ Å×½ºÆ®¸¦ À§ÇØ IP ¸¦ Æ²¸®°Ô(121.134.11.) ¼³Á¤ ÇÔ
-// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP1		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP2		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP3		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng °ÔÀÓ Á¤º¸ ¼öÁ¤ - º»¼· Private IP
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP4		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng °ÔÀÓ Á¤º¸ ¼öÁ¤ - º»¼· Public IP
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP5		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng °ÔÀÓ Á¤º¸ ¼öÁ¤ - Å×¼· Public IP
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP6		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP7		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP8		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP9		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
-#define SCADMINTOOL_CONNECTABLE_PREFIX_IP10		"127.0.0.1"		// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
+// 2008-06-05 by cmkwon, AdminTool, Monitor ì ‘ê·¼ ê°€ëŠ¥ IPë¥¼ server config file ì— ì„¤ì •í•˜ê¸° - MS140ë²ˆ ì„œë²„ë§Œ í…ŒìŠ¤íŠ¸ë¥¼ ìœ„í•´ IP ë¥¼ í‹€ë¦¬ê²Œ(121.134.11.) ì„¤ì • í•¨
+// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP1		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP2		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP3		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng ê²Œìž„ ì •ë³´ ìˆ˜ì • - ë³¸ì„­ Private IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP4		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng ê²Œìž„ ì •ë³´ ìˆ˜ì • - ë³¸ì„­ Public IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP5		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng ê²Œìž„ ì •ë³´ ìˆ˜ì • - í…Œì„­ Public IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP6		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP7		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP8		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP9		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP10		"127.0.0.1"		// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
 #define IS_SCADMINTOOL_CONNECTABLE_IP(ip)		( 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP1,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP1)) \
 												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP2,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP2)) \
 												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP3,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP3)) \
@@ -193,31 +193,31 @@
 #define BILLING_DBSERVER_DATABASE_NAME			"MS_Billing"
 #define BILLING_DBSERVER_USER_ID				"atum"
 // Kor_Masang51		==> callweb
-// Kor_Yedang		==> 2006-12-25 by cmkwon, ¼öÁ¤ÇÔ
+// Kor_Yedang		==> 2006-12-25 by cmkwon, ìˆ˜ì •í•¨
 #define BILLING_DBSERVER_USER_PWD				"callweb"
 #endif // S_ETRS_SERVER_SETTING_HSSON
 
 ///////////////////////////////////////////////////////////////////////////////
 // 2007-02-13 by cmkwon
-// ±¹°¡ ¼Ò½ºÅëÇÕ ¶§ Ãß°¡ µÇ¾î¾ß ÇÒ ºÎºÐ ¼ø¼­ 08
+// êµ­ê°€ ì†ŒìŠ¤í†µí•© ë•Œ ì¶”ê°€ ë˜ì–´ì•¼ í•  ë¶€ë¶„ ìˆœì„œ 08
 
 #if defined(S_CAN_SERVER_SETTING_HSSON) || defined(S_DA_SERVER_SETTING_HSSON) || defined(S_ETRS_SERVER_SETTING_HSSON)
-#define	SG_BOX_FONT_FACENAME						"Tahoma"					// 2007-02-12 by cmkwon, ±Û¾¾Ã¼
-#define	SG_BOX_FONT_CHARSET							ANSI_CHARSET			// 2007-02-12 by cmkwon, Ä³¸¯ÅÍ¼Â
-#define	SG_BOX_FONT_WEIGHT							FW_BOLD					// 2007-02-12 by cmkwon, ±Û¾¾Ã¼ µÎ±ú
+#define	SG_BOX_FONT_FACENAME						"Tahoma"					// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´
+#define	SG_BOX_FONT_CHARSET							ANSI_CHARSET			// 2007-02-12 by cmkwon, ìºë¦­í„°ì…‹
+#define	SG_BOX_FONT_WEIGHT							FW_BOLD					// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´ ë‘ê¹¨
 #endif
 
 
 
-// ±¹°¡ ¼Ò½ºÅëÇÕ ¶§ Ãß°¡ µÇ¾î¾ß ÇÒ ºÎºÐ ¼ø¼­ 09
+// êµ­ê°€ ì†ŒìŠ¤í†µí•© ë•Œ ì¶”ê°€ ë˜ì–´ì•¼ í•  ë¶€ë¶„ ìˆœì„œ 09
 
 // Dream Ace
 #if defined(S_DA_SERVER_SETTING_HSSON) && defined(S_ACCESS_INTERNAL_SERVER_HSSON)
 #ifdef S_EP4_TEST_SERVER_HSKIM
-#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"121848507940481966557E4A1F"	 //	IP 61.39.170. 238 - // 2013-03-18 by hskim, EP4 Àü´Þ¿ë ¼­¹ö Ãß°¡
+#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1E1948537D41481D6848614D19"	 //	IP 61.39.170. 238 - // 2013-03-18 by hskim, EP4 ì „ë‹¬ìš© ì„œë²„ ì¶”ê°€
 #else
-#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A14544F7F455E066F4869"	// IP 66.207.198.252 - Ä³³ª´Ù ³»ºÎ Å×¼·
-//#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A1C534F7F4752066D537E4A1D01"	// IP 127.0.0.1142 - ¸¶»ó ³»ºÎ Ä³³ª´Ù Å×¼·
+#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1E1948537D41481D6848614D19"	// IP 66.207.198.252 - ìºë‚˜ë‹¤ ë‚´ë¶€ í…Œì„­
+//#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A1C534F7F4752066D537E4A1D01"	// IP 127.0.0.1142 - ë§ˆìƒ ë‚´ë¶€ ìºë‚˜ë‹¤ í…Œì„­
 #endif
 
 #define REGISTRY_BASE_PATH						"ACEonline"
@@ -234,7 +234,7 @@
 #define CLIENT_EXEUTE_FILE_NAME					"ACEonline.exe"
 #endif
 
-#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, ¼öÁ¤ÇÔ
+#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, ìˆ˜ì •í•¨
 
 #define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
 #endif // Dream Ace
@@ -242,11 +242,11 @@
 // Eternal Skies
 #if defined(S_ETRS_SERVER_SETTING_HSSON) && defined(S_ACCESS_INTERNAL_SERVER_HSSON)
 #ifdef S_EP4_TEST_SERVER_HSKIM
-#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"121848507940481966557E4A1F"	 //	IP 61.39.170. 238 - // 2013-03-18 by hskim, EP4 Àü´Þ¿ë ¼­¹ö Ãß°¡
+#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1E1948537D41481D6848614D19"	 //	IP 61.39.170. 238 - // 2013-03-18 by hskim, EP4 ì „ë‹¬ìš© ì„œë²„ ì¶”ê°€
 #else
-//#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A14544F7F455E066F4869"		// IP 66.207.198.252 - Ä³³ª´Ù ³»ºÎ Å×¼·
+//#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1E1948537D41481D6848614D19"		// IP 66.207.198.252 - ìºë‚˜ë‹¤ ë‚´ë¶€ í…Œì„­
 #define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR "1A14544F7F455E066E48614A1E"		//192.168.6.132
-//#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A1C534F7F4752066D537E4A1D01"	// IP 127.0.0.1142 - ¸¶»ó ³»ºÎ Ä³³ª´Ù Å×¼·
+//#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A1C534F7F4752066D537E4A1D01"	// IP 127.0.0.1142 - ë§ˆìƒ ë‚´ë¶€ ìºë‚˜ë‹¤ í…Œì„­
 //#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR "191848507F4348196E527E4A100A"  // IP 25.110.104.199 - St0rmy hamachi IP
 #endif
 
@@ -264,47 +264,47 @@
 #define CLIENT_EXEUTE_FILE_NAME					"ACEonline.exe"
 #endif
 
-#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, ¼öÁ¤ÇÔ
+#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, ìˆ˜ì •í•¨
 
 #define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
 #endif // Eternal Skies
 
 
-// ±¹°¡ ¼Ò½ºÅëÇÕ ¶§ Ãß°¡ µÇ¾î¾ß ÇÒ ºÎºÐ ¼ø¼­ 10
+// êµ­ê°€ ì†ŒìŠ¤í†µí•© ë•Œ ì¶”ê°€ ë˜ì–´ì•¼ í•  ë¶€ë¶„ ìˆœì„œ 10
 
 #ifdef S_DA_SERVER_SETTING_HSSON	// Dream Ace
 #define STRMSG_WINDOW_TEXT							"ACEonline"
 #define STRMSG_REG_STRING_CLIENT_VERSION			"ACEonlineVersion"
-#define STRMSG_REG_STRING_REGISTRYKEY_NAME			"killburne"				// 2008-07-31 by cmkwon, Yedang-Global_Eng ¸¦ Wikigames_Eng ·Î º¯°æ ÇÔ - 
+#define STRMSG_REG_STRING_REGISTRYKEY_NAME			"killburne"				// 2008-07-31 by cmkwon, Yedang-Global_Eng ë¥¼ Wikigames_Eng ë¡œ ë³€ê²½ í•¨ - 
 #endif
 
 #ifdef S_ETRS_SERVER_SETTING_HSSON	// Eternal Skies
 #define STRMSG_WINDOW_TEXT							"EternalSkies"
 #define STRMSG_REG_STRING_CLIENT_VERSION			"EternalSkiesVersion"
-#define STRMSG_REG_STRING_REGISTRYKEY_NAME			"EternalSkies"				// 2008-07-31 by cmkwon, Yedang-Global_Eng ¸¦ Wikigames_Eng ·Î º¯°æ ÇÔ - 
+#define STRMSG_REG_STRING_REGISTRYKEY_NAME			"EternalSkies"				// 2008-07-31 by cmkwon, Yedang-Global_Eng ë¥¼ Wikigames_Eng ë¡œ ë³€ê²½ í•¨ - 
 #endif
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2007-06-27 by cmkwon, Áß±¹ ¹æ½ÉÃë ½Ã½ºÅÛ ¼öÁ¤ - ¹Ì¼º³âÀÚ °ü·Ã
-// Kor		- ¸¸ 20¼¼
-// China	- ¸¸ 18¼¼
+// 2007-06-27 by cmkwon, ì¤‘êµ­ ë°©ì‹¬ì·¨ ì‹œìŠ¤í…œ ìˆ˜ì • - ë¯¸ì„±ë…„ìž ê´€ë ¨
+// Kor		- ë§Œ 20ì„¸
+// China	- ë§Œ 18ì„¸
 #define ADULT_YEARS									20			// 2007-06-29 by cmkwon,
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2007-07-06 by cmkwon, SCAdminTool¿¡¼­ OnlyServerAdmin°ü·Ã ¼öÁ¤ - °èÁ¤ Á¤º¸
+// 2007-07-06 by cmkwon, SCAdminToolì—ì„œ OnlyServerAdminê´€ë ¨ ìˆ˜ì • - ê³„ì • ì •ë³´
 #define SCADMINTOOL_ONLY_SERVER_ADMIN_ACCOUNT_NAME		"SC_moniter"
 #define SCADMINTOOL_ONLY_SERVER_ADMIN_PASSWORD			"cowboyWkd"
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2007-09-05 by cmkwon, EXE_1¿¡ ·Î±×ÀÎ ¼­¹ö ¼±ÅÃ ÀÎÅÍÆäÀÌ½º ¼öÁ¤ - »óÀ§ URL, ¿ìÃø ÇÏ´Ü URL
+// 2007-09-05 by cmkwon, EXE_1ì— ë¡œê·¸ì¸ ì„œë²„ ì„ íƒ ì¸í„°íŽ˜ì´ìŠ¤ ìˆ˜ì • - ìƒìœ„ URL, ìš°ì¸¡ í•˜ë‹¨ URL
 #define EXE1_URL_1										"http://notice.aceonline.com.cn/ace2.htm"
 #define EXE1_URL_2										"http://notice.aceonline.com.cn/ace1.htm"
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2008-12-19 by cmkwon, ÇÑ±¹ Yedang ÇÙ½¯µå ¸ð´ÏÅÍ¸µ ¼­¹ö ¼³Á¤ Ãß°¡ - IP°¡ ""·Î ¼³Á¤µÇ¸é ¸ð´ÏÅÍ¸µ ¼­¹ö¸¦ »ç¿ëÇÏÁö ¾Ê´Â °ÍÀÓ, ÇöÀç´Â Masang140°ú Yedang¸¸ »ç¿ë ÇÒ °ÍÀÓ
-// ±¹°¡ ¼Ò½ºÅëÇÕ ¶§ Ãß°¡ µÇ¾î¾ß ÇÒ ºÎºÐ ¼ø¼­ 11
+// 2008-12-19 by cmkwon, í•œêµ­ Yedang í•µì‰´ë“œ ëª¨ë‹ˆí„°ë§ ì„œë²„ ì„¤ì • ì¶”ê°€ - IPê°€ ""ë¡œ ì„¤ì •ë˜ë©´ ëª¨ë‹ˆí„°ë§ ì„œë²„ë¥¼ ì‚¬ìš©í•˜ì§€ ì•ŠëŠ” ê²ƒìž„, í˜„ìž¬ëŠ” Masang140ê³¼ Yedangë§Œ ì‚¬ìš© í•  ê²ƒìž„
+// êµ­ê°€ ì†ŒìŠ¤í†µí•© ë•Œ ì¶”ê°€ ë˜ì–´ì•¼ í•  ë¶€ë¶„ ìˆœì„œ 11
 
 #if defined(S_CAN_SERVER_SETTING_HSSON) || defined(S_DA_SERVER_SETTING_HSSON) || defined(S_ETRS_SERVER_SETTING_HSSON)
 #define GAME_GUARD_MONITORING_SERVER_IP					"127.0.0.1"
@@ -313,66 +313,66 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2009-02-12 by cmkwon, EP3-3 ¿ùµå·©Å·½Ã½ºÅÛ ±¸Çö - ¿ùµå·©Å· DB ¼­¹ö Á¤º¸
-// 2009-06-01 by cmkwon, ¿ùµå ·©Å· ½Ã½ºÅÛ Å×½ºÆ® ±â´É ±¸Çö(for Å×¼·) - 
-// ±¹°¡ ¼Ò½ºÅëÇÕ ¶§ Ãß°¡ µÇ¾î¾ß ÇÒ ºÎºÐ ¼ø¼­ 12
+// 2009-02-12 by cmkwon, EP3-3 ì›”ë“œëž­í‚¹ì‹œìŠ¤í…œ êµ¬í˜„ - ì›”ë“œëž­í‚¹ DB ì„œë²„ ì •ë³´
+// 2009-06-01 by cmkwon, ì›”ë“œ ëž­í‚¹ ì‹œìŠ¤í…œ í…ŒìŠ¤íŠ¸ ê¸°ëŠ¥ êµ¬í˜„(for í…Œì„­) - 
+// êµ­ê°€ ì†ŒìŠ¤í†µí•© ë•Œ ì¶”ê°€ ë˜ì–´ì•¼ í•  ë¶€ë¶„ ìˆœì„œ 12
 
 #ifdef S_DA_SERVER_SETTING_HSSON	// Dream Ace
-#define WRK_DBSERVER_IP							"127.0.0.1"				// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
+#define WRK_DBSERVER_IP							"127.0.0.1"				// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
 #define WRK_DBSERVER_PORT						9911
 #define WRK_DBSERVER_DATABASE_NAME				"atum2_db_1"
 #define WRK_DBSERVER_ID							"atum"
 #define WRK_DBSERVER_PWD						"efinos76/*"
-#define WRK_DBSERVER_IP_FOR_TEST_SERVER			"127.0.0.1"				// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)// 2009-06-01 by cmkwon, ¿ùµå ·©Å· ½Ã½ºÅÛ Å×½ºÆ® ±â´É ±¸Çö(for Å×¼·) - 
-#define WRK_DBSERVER_PORT_FOR_TEST_SERVER		1433					// 2009-06-01 by cmkwon, ¿ùµå ·©Å· ½Ã½ºÅÛ Å×½ºÆ® ±â´É ±¸Çö(for Å×¼·) - 
+#define WRK_DBSERVER_IP_FOR_TEST_SERVER			"127.0.0.1"				// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)// 2009-06-01 by cmkwon, ì›”ë“œ ëž­í‚¹ ì‹œìŠ¤í…œ í…ŒìŠ¤íŠ¸ ê¸°ëŠ¥ êµ¬í˜„(for í…Œì„­) - 
+#define WRK_DBSERVER_PORT_FOR_TEST_SERVER		1433					// 2009-06-01 by cmkwon, ì›”ë“œ ëž­í‚¹ ì‹œìŠ¤í…œ í…ŒìŠ¤íŠ¸ ê¸°ëŠ¥ êµ¬í˜„(for í…Œì„­) - 
 #endif
 
 #ifdef S_ETRS_SERVER_SETTING_HSSON	// Eternal Skies
-#define WRK_DBSERVER_IP							"127.0.0.1"				// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)
+#define WRK_DBSERVER_IP							"127.0.0.1"				// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)
 #define WRK_DBSERVER_PORT						9911
 #define WRK_DBSERVER_DATABASE_NAME				"atum2_db_1"
 #define WRK_DBSERVER_ID							"atum"
 #define WRK_DBSERVER_PWD						"callweb"
-#define WRK_DBSERVER_IP_FOR_TEST_SERVER			"127.0.0.1"				// 2009-12-28 by cmkwon, ¸¶»óÈ¸»ç IP º¯°æ - ±âÁ¸(127.0.0.1)// 2009-06-01 by cmkwon, ¿ùµå ·©Å· ½Ã½ºÅÛ Å×½ºÆ® ±â´É ±¸Çö(for Å×¼·) - 
-#define WRK_DBSERVER_PORT_FOR_TEST_SERVER		1433					// 2009-06-01 by cmkwon, ¿ùµå ·©Å· ½Ã½ºÅÛ Å×½ºÆ® ±â´É ±¸Çö(for Å×¼·) - 
+#define WRK_DBSERVER_IP_FOR_TEST_SERVER			"127.0.0.1"				// 2009-12-28 by cmkwon, ë§ˆìƒíšŒì‚¬ IP ë³€ê²½ - ê¸°ì¡´(127.0.0.1)// 2009-06-01 by cmkwon, ì›”ë“œ ëž­í‚¹ ì‹œìŠ¤í…œ í…ŒìŠ¤íŠ¸ ê¸°ëŠ¥ êµ¬í˜„(for í…Œì„­) - 
+#define WRK_DBSERVER_PORT_FOR_TEST_SERVER		1433					// 2009-06-01 by cmkwon, ì›”ë“œ ëž­í‚¹ ì‹œìŠ¤í…œ í…ŒìŠ¤íŠ¸ ê¸°ëŠ¥ êµ¬í˜„(for í…Œì„­) - 
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2009-03-31 by cmkwon, ¼¼·ÂÃÊ±âÈ­ ½Ã½ºÅÛ ±¸Çö - 
-#define MAX_INFLUENCE_PERCENT			53		// ÃÖ´ë 5% Â÷ÀÌ±îÁö¸¸ ¼¼·Â ¼±ÅÃÀÌ °¡´ÉÇÑ´Ù.
+// 2009-03-31 by cmkwon, ì„¸ë ¥ì´ˆê¸°í™” ì‹œìŠ¤í…œ êµ¬í˜„ - 
+#define MAX_INFLUENCE_PERCENT			53		// ìµœëŒ€ 5% ì°¨ì´ê¹Œì§€ë§Œ ì„¸ë ¥ ì„ íƒì´ ê°€ëŠ¥í•œë‹¤.
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2009-05-12 by cmkwon, (ÀÏº»¿äÃ») ÀÏº»¸¸ ÀüÁø ±âÁöÀü ÁÖ±â 7ÀÏ·Î ¼öÁ¤ - ÀüÁø±âÁöÀü ÁÖ±â ¼­ºñ½ºº°·Î ´Ù¸£°Ô ¼³Á¤
-// ±¹°¡ ¼Ò½ºÅëÇÕ ¶§ Ãß°¡ µÇ¾î¾ß ÇÒ ºÎºÐ ¼ø¼­ 13
+// 2009-05-12 by cmkwon, (ì¼ë³¸ìš”ì²­) ì¼ë³¸ë§Œ ì „ì§„ ê¸°ì§€ì „ ì£¼ê¸° 7ì¼ë¡œ ìˆ˜ì • - ì „ì§„ê¸°ì§€ì „ ì£¼ê¸° ì„œë¹„ìŠ¤ë³„ë¡œ ë‹¤ë¥´ê²Œ ì„¤ì •
+// êµ­ê°€ ì†ŒìŠ¤í†µí•© ë•Œ ì¶”ê°€ ë˜ì–´ì•¼ í•  ë¶€ë¶„ ìˆœì„œ 13
 #if defined(S_CAN_SERVER_SETTING_HSSON) || defined(S_DA_SERVER_SETTING_HSSON) || defined(S_ETRS_SERVER_SETTING_HSSON)
 #define	OUTPOST_NEXTWARGAP				7
 #endif
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2009-07-08 by cmkwon, ÀüÀï °ü·Ã Á¤ÀÇ À§Ä¡ ÀÌµ¿(LocalizationDefineCommon.h) - 
-// ±¹°¡ ¼Ò½ºÅëÇÕ ¶§ Ãß°¡ µÇ¾î¾ß ÇÒ ºÎºÐ ¼ø¼­ 14
+// 2009-07-08 by cmkwon, ì „ìŸ ê´€ë ¨ ì •ì˜ ìœ„ì¹˜ ì´ë™(LocalizationDefineCommon.h) - 
+// êµ­ê°€ ì†ŒìŠ¤í†µí•© ë•Œ ì¶”ê°€ ë˜ì–´ì•¼ í•  ë¶€ë¶„ ìˆœì„œ 14
 
 #ifdef S_DA_SERVER_SETTING_HSSON	// Dream Ace
-#define	OUTPOST_WARTIME					60			// ÀüÁø±âÁöÀü ÁøÇà ½Ã°£			==> ¸¶»ó 10ºÐ, ³ª¸ÓÁö´Â 120ºÐ
-#define OUTPOST_WARTIME_FOR_TESTSERVER	60			// Å×¼·Àº ÀüÁø±âÁöÀü ÁøÇà ½Ã°£	==> ¸¶»ó 10ºÐ, ³ª¸ÓÁö´Â 60ºÐ
-#define PAY_MINIMUN_COUNT				10			// ¸ð¼±Àü,ÀüÁø±âÁöÀü,°ÅÁ¡Àü °³ÀÎ º¸»óÀ» À§ÇÑ ÃÖ¼Ò ÀÎ¿ø¼ö ==> ¸¶»ó 1¸í, ³ª¸ÓÁö´Â 10¸í
+#define	OUTPOST_WARTIME					60			// ì „ì§„ê¸°ì§€ì „ ì§„í–‰ ì‹œê°„			==> ë§ˆìƒ 10ë¶„, ë‚˜ë¨¸ì§€ëŠ” 120ë¶„
+#define OUTPOST_WARTIME_FOR_TESTSERVER	60			// í…Œì„­ì€ ì „ì§„ê¸°ì§€ì „ ì§„í–‰ ì‹œê°„	==> ë§ˆìƒ 10ë¶„, ë‚˜ë¨¸ì§€ëŠ” 60ë¶„
+#define PAY_MINIMUN_COUNT				10			// ëª¨ì„ ì „,ì „ì§„ê¸°ì§€ì „,ê±°ì ì „ ê°œì¸ ë³´ìƒì„ ìœ„í•œ ìµœì†Œ ì¸ì›ìˆ˜ ==> ë§ˆìƒ 1ëª…, ë‚˜ë¨¸ì§€ëŠ” 10ëª…
 #endif
 
 #ifdef S_ETRS_SERVER_SETTING_HSSON	// Eternal Skies
-#define	OUTPOST_WARTIME					60			// ÀüÁø±âÁöÀü ÁøÇà ½Ã°£			==> ¸¶»ó 10ºÐ, ³ª¸ÓÁö´Â 120ºÐ
-#define OUTPOST_WARTIME_FOR_TESTSERVER	60			// Å×¼·Àº ÀüÁø±âÁöÀü ÁøÇà ½Ã°£	==> ¸¶»ó 10ºÐ, ³ª¸ÓÁö´Â 60ºÐ
-#define PAY_MINIMUN_COUNT				10			// ¸ð¼±Àü,ÀüÁø±âÁöÀü,°ÅÁ¡Àü °³ÀÎ º¸»óÀ» À§ÇÑ ÃÖ¼Ò ÀÎ¿ø¼ö ==> ¸¶»ó 1¸í, ³ª¸ÓÁö´Â 10¸í
+#define	OUTPOST_WARTIME					60			// ì „ì§„ê¸°ì§€ì „ ì§„í–‰ ì‹œê°„			==> ë§ˆìƒ 10ë¶„, ë‚˜ë¨¸ì§€ëŠ” 120ë¶„
+#define OUTPOST_WARTIME_FOR_TESTSERVER	60			// í…Œì„­ì€ ì „ì§„ê¸°ì§€ì „ ì§„í–‰ ì‹œê°„	==> ë§ˆìƒ 10ë¶„, ë‚˜ë¨¸ì§€ëŠ” 60ë¶„
+#define PAY_MINIMUN_COUNT				10			// ëª¨ì„ ì „,ì „ì§„ê¸°ì§€ì „,ê±°ì ì „ ê°œì¸ ë³´ìƒì„ ìœ„í•œ ìµœì†Œ ì¸ì›ìˆ˜ ==> ë§ˆìƒ 1ëª…, ë‚˜ë¨¸ì§€ëŠ” 10ëª…
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2009-11-02 by cmkwon, Ä³½¬(ÀÎº¥/Ã¢°í È®Àå) ¾ÆÀÌÅÛ Ãß°¡ ±¸Çö - 
-#define SIZE_MAX_ADDABLE_INVENTORY_COUNT		50		// ±âº»°ú ÇÁ¸®¹Ì¾öÀ» Á¦¿ÜÇÑ Ãß°¡·Î °¡´ÉÇÑ ÃÖ´ë ÀÎº¥ Ãß°¡ °³¼ö
-#define SIZE_MAX_ADDABLE_STORE_COUNT			50		// ±âº»°ú ÇÁ¸®¹Ì¾öÀ» Á¦¿ÜÇÑ Ãß°¡·Î °¡´ÉÇÑ ÃÖ´ë Ã¢°í Ãß°¡ °³¼ö
+// 2009-11-02 by cmkwon, ìºì‰¬(ì¸ë²¤/ì°½ê³  í™•ìž¥) ì•„ì´í…œ ì¶”ê°€ êµ¬í˜„ - 
+#define SIZE_MAX_ADDABLE_INVENTORY_COUNT		50		// ê¸°ë³¸ê³¼ í”„ë¦¬ë¯¸ì—„ì„ ì œì™¸í•œ ì¶”ê°€ë¡œ ê°€ëŠ¥í•œ ìµœëŒ€ ì¸ë²¤ ì¶”ê°€ ê°œìˆ˜
+#define SIZE_MAX_ADDABLE_STORE_COUNT			50		// ê¸°ë³¸ê³¼ í”„ë¦¬ë¯¸ì—„ì„ ì œì™¸í•œ ì¶”ê°€ë¡œ ê°€ëŠ¥í•œ ìµœëŒ€ ì°½ê³  ì¶”ê°€ ê°œìˆ˜
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// ÄÁÅÙÃ÷ ¹öÁ¯ °ü¸®¿ë µðÆÄÀÎ. by hsLee. 
-#define __CONTENTS_SHOW_INFINITY_DIFFICULTY_EDIT_WND__		// ÀÎÇÇ´ÏÆ¼ ³­ÀÌµµ Á¶Á¤ UI º¸ÀÌ±â.	2010. 07. 27. by hsLee.
+// ì»¨í…ì¸  ë²„ì ¼ ê´€ë¦¬ìš© ë””íŒŒì¸. by hsLee. 
+#define __CONTENTS_SHOW_INFINITY_DIFFICULTY_EDIT_WND__		// ì¸í”¼ë‹ˆí‹° ë‚œì´ë„ ì¡°ì • UI ë³´ì´ê¸°.	2010. 07. 27. by hsLee.
 ////////////////////////////////////////////////////////////////////////////////
