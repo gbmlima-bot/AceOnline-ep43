@@ -10,15 +10,15 @@
 //
 
 #ifdef _DEBUG
-	#define CUSTOM_OPTIMIZER_HSSON					// ini ÆÄÀÏ ÀÐ¾î¼­ °ÔÀÓ¿¡ Àû¿ë
-	#define MULTI_LOADER_HSSON						// Å¬¶óÀÌ¾ðÆ®¸¦ ¿©·¯°³ ¶ç¿ï ¼ö ÀÖµµ·Ï ¼öÁ¤
-	#define GAMEGUARD_NOT_EXECUTE_HSSON				// °ÔÀÓ °¡µå ½ÇÇà ¾ÈÇÔ
-	#define _ATUM_DEVELOP							// ¼­¹ö¿ë) ¼­¹ö¼Ò½º»ó µð¹ö±ëÀÏ ¶§ È°¼ºÈ­ ÇØÁà¾ß ÇÔ
+	#define CUSTOM_OPTIMIZER_HSSON					// ini íŒŒì¼ ì½ì–´ì„œ ê²Œìž„ì— ì ìš©
+	#define MULTI_LOADER_HSSON						// í´ë¼ì´ì–¸íŠ¸ë¥¼ ì—¬ëŸ¬ê°œ ë„ìš¸ ìˆ˜ ìžˆë„ë¡ ìˆ˜ì •
+	#define GAMEGUARD_NOT_EXECUTE_HSSON				// ê²Œìž„ ê°€ë“œ ì‹¤í–‰ ì•ˆí•¨
+	#define _ATUM_DEVELOP							// ì„œë²„ìš©) ì„œë²„ì†ŒìŠ¤ìƒ ë””ë²„ê¹…ì¼ ë•Œ í™œì„±í™” í•´ì¤˜ì•¼ í•¨
 	//#define _WARRIOR_ANTICHEAT
 	//#define _WARRIORSW_PROCESS_LIST_SENDER //2015-04-01 implement to send process list for dream
 #endif // _DEBUG
-
-#define S_ARARIO_HSSON							// ¾Æ¶ó¸®¿À Ã¤³Î¸µ
+#define GAMEGUARD_NOT_EXECUTE_HSSON
+#define S_ARARIO_HSSON							// ì•„ë¼ë¦¬ì˜¤ ì±„ë„ë§
 
 #if defined(_JPN)
 #define LANGUAGE_JAPAN								// ??? ??? ???? ???
@@ -66,21 +66,21 @@
 #endif
 
 //----------------------------------------------------------------------------------------------------------//
-// ±¹°¡º°·Î Â÷º°È­¸¦ µÎÁö¸¸ ÄÁÅÙÃ÷ ·¹º§(Áøµµ) ¶Ç´Â ¿ä±¸(Æ¯¼º)¿¡ µû¶ó¼­ º¯È­ µÉ ÀÛ¾÷                         //
+// êµ­ê°€ë³„ë¡œ ì°¨ë³„í™”ë¥¼ ë‘ì§€ë§Œ ì»¨í…ì¸  ë ˆë²¨(ì§„ë„) ë˜ëŠ” ìš”êµ¬(íŠ¹ì„±)ì— ë”°ë¼ì„œ ë³€í™” ë  ìž‘ì—…                         //
 //----------------------------------------------------------------------------------------------------------//
 
-//#define S_EP4_TEST_SERVER_HSKIM				// EP4 Àü´Þ¿ë Å×½ºÆ® ¼­¹ö
+//#define S_EP4_TEST_SERVER_HSKIM				// EP4 ì „ë‹¬ìš© í…ŒìŠ¤íŠ¸ ì„œë²„
 //#define SC_DARK_CRASH_HSSON
 //#define SC_DARK_CRASH_FILE_OUTPUT_HSSON
 //#define S_GLOG_HSSON
 //#define S_AUTO_UPDATE_VERSION_BY_PRESVR_HSSON
-//#define S_ARENA_NOT_INFO						// ¾Æ·¹³ª¿¡¼­´Â ÇÒ ¼ö ¾ø°Ô ÇÔ
-//#define S_MANAGER_ADMIN_HSSON					// °ÔÀÓ ¸¶½ºÅÍµµ °èÁ¤ ºí·°/¾ðºí·° ½ÃÅ³ ¼ö ÀÖµµ·Ï ¼öÁ¤
-// 2013-07-08 °ÔÀÓÆ÷Áö Ãß°¡
-//#define S_HACK_SHIELD_AUTO_UPDATE_HSKIM		// ÇÙ½¯µå ÀÚµ¿ ¾÷µ¥ÀÌÆ® »ç¿ë
-//#define S_ADMIN_CHARACTER_LOGIN_IP_CHECK		// 2012-06-07 by hskim, °ü¸®ÀÚ °èÁ¤ º¸¾È °­È­ - Æ¯¼ö°èÁ¤Àº µî·ÏµÈ ¾ÆÀÌÇÇ°¡ ¾Æ´Ï¸é Á¢¼Ó Â÷´Ü
-//#define C_OBJECT_RESOURCE_ORGANIZE_MSPARK		// 2012-04-18 by mspark, ¿ÀºêÁ§Æ® ¸®¼Ò½º Á¤¸®
-//#define C_INTERFACE_RESOURCE_ORGANIZE_ISSHIN	// 2012-04-23 by isshin, ÀÎÅÍÆäÀÌ½º ¸®¼Ò½º Á¤¸®				   
+//#define S_ARENA_NOT_INFO						// ì•„ë ˆë‚˜ì—ì„œëŠ” í•  ìˆ˜ ì—†ê²Œ í•¨
+//#define S_MANAGER_ADMIN_HSSON					// ê²Œìž„ ë§ˆìŠ¤í„°ë„ ê³„ì • ë¸”ëŸ­/ì–¸ë¸”ëŸ­ ì‹œí‚¬ ìˆ˜ ìžˆë„ë¡ ìˆ˜ì •
+// 2013-07-08 ê²Œìž„í¬ì§€ ì¶”ê°€
+//#define S_HACK_SHIELD_AUTO_UPDATE_HSKIM		// í•µì‰´ë“œ ìžë™ ì—…ë°ì´íŠ¸ ì‚¬ìš©
+//#define S_ADMIN_CHARACTER_LOGIN_IP_CHECK		// 2012-06-07 by hskim, ê´€ë¦¬ìž ê³„ì • ë³´ì•ˆ ê°•í™” - íŠ¹ìˆ˜ê³„ì •ì€ ë“±ë¡ëœ ì•„ì´í”¼ê°€ ì•„ë‹ˆë©´ ì ‘ì† ì°¨ë‹¨
+//#define C_OBJECT_RESOURCE_ORGANIZE_MSPARK		// 2012-04-18 by mspark, ì˜¤ë¸Œì íŠ¸ ë¦¬ì†ŒìŠ¤ ì •ë¦¬
+//#define C_INTERFACE_RESOURCE_ORGANIZE_ISSHIN	// 2012-04-23 by isshin, ì¸í„°íŽ˜ì´ìŠ¤ ë¦¬ì†ŒìŠ¤ ì •ë¦¬				   
 //#define C_USER_CTRL_KEY_LOCK
 //#define C_USER_COPYPAST_JHSHN					// not exist in client and in server
 //#define C_USER_EFFECT_CONTROL
@@ -90,60 +90,60 @@
 //#define S_FULL_LOG_JHSEOL
 //#define S_DISABLE_CHECKSUM_RESOURCE
 //#define S_OPTION_PARTNER__JHAHN
-// ep4-2Â÷
-//#define S_ARENA_EX_GAMEFORGE_VERSION_JHSEOL	// 2012-09-21 by jhseol, ¾Æ·¹³ª Ãß°¡°³¹ß GF¹öÀü - ¾Æ·¹³ª Àü¿ë Ä³¸¯ÅÍ¸¦ »ç¿ëÇÏµÇ ±âº».°í±Þ.¾Æ¸Ó¸¸ »èÁ¦ÇÏ°í ´ë½Å º»ÀÎ ÄÉ¸¯ÅÍÀÇ Àåºñ¸¦ °¡Á®¿Àµµ·Ï ¼ÂÆÃ.
+// ep4-2ì°¨
+//#define S_ARENA_EX_GAMEFORGE_VERSION_JHSEOL	// 2012-09-21 by jhseol, ì•„ë ˆë‚˜ ì¶”ê°€ê°œë°œ GFë²„ì „ - ì•„ë ˆë‚˜ ì „ìš© ìºë¦­í„°ë¥¼ ì‚¬ìš©í•˜ë˜ ê¸°ë³¸.ê³ ê¸‰.ì•„ë¨¸ë§Œ ì‚­ì œí•˜ê³  ëŒ€ì‹  ë³¸ì¸ ì¼€ë¦­í„°ì˜ ìž¥ë¹„ë¥¼ ê°€ì ¸ì˜¤ë„ë¡ ì…‹íŒ….
 //#define SC_SHUT_DOWNMIN_JHAHN
 //#define S_NPLAY_PCBANG_MODULE_JHSEOL
-//#define S_ITEM_VIEW_UNCONDITIONAL_ON			// 2012-10-17 by jhseol, ¾ÆÅÛ ¹Ì¸®º¸±â ¹«Á¶°Ç ON ½ÃÅ°±â
-//#define C_ITEM_VIEW_UNCONDITIONAL_ON			// 2012-10-17 by jhseol, ¾ÆÅÛ ¹Ì¸®º¸±â ¹«Á¶°Ç ON ½ÃÅ°±â
-//#define S_TEMP_PRESERVER_MAKE_HSKIM			// PreServer ÀÌÀü(¾ÆÀÌÇÇ º¯°æ) ½Ã¿¡ ÀÓ½Ã PreServer Á¦ÀÛ¿ë ¸ÞÅ©·Î
-//#define TEMP_PRESERVER_MAKE_IP				"182.162.137.2"		// º¯°æ ´ë»ó ¾ÆÀÌÇÇ
+//#define S_ITEM_VIEW_UNCONDITIONAL_ON			// 2012-10-17 by jhseol, ì•„í…œ ë¯¸ë¦¬ë³´ê¸° ë¬´ì¡°ê±´ ON ì‹œí‚¤ê¸°
+//#define C_ITEM_VIEW_UNCONDITIONAL_ON			// 2012-10-17 by jhseol, ì•„í…œ ë¯¸ë¦¬ë³´ê¸° ë¬´ì¡°ê±´ ON ì‹œí‚¤ê¸°
+//#define S_TEMP_PRESERVER_MAKE_HSKIM			// PreServer ì´ì „(ì•„ì´í”¼ ë³€ê²½) ì‹œì— ìž„ì‹œ PreServer ì œìž‘ìš© ë©”í¬ë¡œ
+//#define TEMP_PRESERVER_MAKE_IP				"182.162.137.2"		// ë³€ê²½ ëŒ€ìƒ ì•„ì´í”¼
 //#define S_GLOG_3ND_KHK
 //#define S_KOR_BUSAN_MONITORTOOL_MAKE
-//#define S_DELETE_BUY_CASH_GIVE				// 2012-11-12 by hskim, Ä³³ª´Ù ¼±¹°ÇÏ±â ±â´É »èÁ¦
-//#define C_CASHSHOP_IMAGE_REMOVE				// 2012-11-16 by mspark, Ä³³ª´Ù ¼±¹°, ÃæÀü ±â´É Á¦°Å
+//#define S_DELETE_BUY_CASH_GIVE				// 2012-11-12 by hskim, ìºë‚˜ë‹¤ ì„ ë¬¼í•˜ê¸° ê¸°ëŠ¥ ì‚­ì œ
+//#define C_CASHSHOP_IMAGE_REMOVE				// 2012-11-16 by mspark, ìºë‚˜ë‹¤ ì„ ë¬¼, ì¶©ì „ ê¸°ëŠ¥ ì œê±°
 //#define S_KOR_TEST_GLOG_CHARDATA
 //#define C_WEB_CASHSHOP
 //#define S_WEB_CASHSHOP_JHSEOL
-//#define S_MONTHL_CASH_BUY_GIFT_JHSEOL			// 2013-03-29 by jhseol, ¾ÆÀÌÅÛ ÀÌº¥Æ® - ¸Å¿ù Ã¹ °áÀç½Ã ¼±¹°Áö±Þ
-//#define S_ITEM_EVENT_SUB_TYPE_JHSEOL			// 2013-03-29 by jhseol, ¾ÆÀÌÅÛ ÀÌº¥Æ® - ¼­ºêÅ¸ÀÔ Ãß°¡±¸Á¶·Î º¯°æ
-//#define S_ITEM_EVENT_RETURN_USER_BCKIM		// 2013-02-28 by bckim, º¹±ÍÀ¯Á® ¹öÇÁÃß°¡
-//#define C_ITEM_EVENT_RETURN_USER_BHSOHN		// 2013-03-06 by bhsohn º¹±Í À¯Àú ½Ã½ºÅÛ
+//#define S_MONTHL_CASH_BUY_GIFT_JHSEOL			// 2013-03-29 by jhseol, ì•„ì´í…œ ì´ë²¤íŠ¸ - ë§¤ì›” ì²« ê²°ìž¬ì‹œ ì„ ë¬¼ì§€ê¸‰
+//#define S_ITEM_EVENT_SUB_TYPE_JHSEOL			// 2013-03-29 by jhseol, ì•„ì´í…œ ì´ë²¤íŠ¸ - ì„œë¸Œíƒ€ìž… ì¶”ê°€êµ¬ì¡°ë¡œ ë³€ê²½
+//#define S_ITEM_EVENT_RETURN_USER_BCKIM		// 2013-02-28 by bckim, ë³µê·€ìœ ì ¸ ë²„í”„ì¶”ê°€
+//#define C_ITEM_EVENT_RETURN_USER_BHSOHN		// 2013-03-06 by bhsohn ë³µê·€ ìœ ì € ì‹œìŠ¤í…œ
 //#define C_FALL_OF_BOOSTER_USE_STOP_MSPARK
-//#define SC_SECURITY_COMMAND_HSKIM				// ºñ¹ÐÅ° Àû¿ë (Å¬¶ó ¼­¹ö) [¼±ÇàÁ¶°Ç (ÀÎÁõ ¼­¹ö Àû¿ë)]
-//#define C_SECURITY_COMMAND_JHAHN				// ºñ¹ÐÅ° Å¬¶óÀÌ¾ðÆ® È®ÀÎ - Àý´ë ÁÖ¼® Ç®Áö ¸¶¼¼¿ä
+//#define SC_SECURITY_COMMAND_HSKIM				// ë¹„ë°€í‚¤ ì ìš© (í´ë¼ ì„œë²„) [ì„ í–‰ì¡°ê±´ (ì¸ì¦ ì„œë²„ ì ìš©)]
+//#define C_SECURITY_COMMAND_JHAHN				// ë¹„ë°€í‚¤ í´ë¼ì´ì–¸íŠ¸ í™•ì¸ - ì ˆëŒ€ ì£¼ì„ í’€ì§€ ë§ˆì„¸ìš”
 //#define _ADVANCED_CONFIG
 ///////////////////////////////////////////////////////////////////
-// Àü±¹°¡ ¹Ý¿µ ÄÁÅÙÃ÷
+// ì „êµ­ê°€ ë°˜ì˜ ì»¨í…ì¸ 
 #define MULTI_LOADER_HSSON						// allow multiple client instances
-#define GUILD_WAREHOUSE_ACCESS_HSSON			// ¸â¹ö½±ÀÌ ¾Æ´Ï´õ¶óµµ ¿©´ÜÃ¢°í ÀÌ¿ë°¡´É
-#define NEW_CASHSHOP_INTERFACE_HSSON			// ½Å±Ô Ä³½¬¼¥ ÀÛ¾÷
-#define KOR_CASHSHOP_REFILL_WEB_HSSON			// Ä³½¬¼¥ ÃæÀü À¥ÆäÀÌÁö Ãß°¡
-#define WAREHOUSE_SHARES_HSSON					// Ä³¸¯ÅÍ °£¿¡ Ã¢°í¸¦ °øÀ¯ ÇÒ ¼ö ÀÖÀ½
-#define SC_GROWING_PARTNER_HSKIM_JHAHN			// Ä³¸¯ÅÍ Á¤º¸ Ã¢¿¡¼­ ÆÄÆ®³ÊUI È°¼ºÈ­
-#define S_INFINITY3_HSKIM						// ÀÎÇÇ´ÏÆ¼ 3Â÷ Àû¿ë (¼­¹ö)
-#define INFI_QUEST_JSKIM					    // ÀÎÇÇ´ÏÆ¼ Äù½ºÆ®
-#define MULTI_TARGET_JSKIM						// ¸ÖÆ¼Å¸ÄÏ
-#define S_AUTHENTICATION_SERVER_HSKIM			// ÀÎÁõ ¼­¹ö Àû¿ë (¼­¹ö)
-#define S_LOGIN_ITEM_EVENT_SHCHO			    // ·Î±×ÀÎ½Ã ¾ÆÀÌÅÛ ÁõÁ¤
-#define S_EP4_HSKIM								// EP4 1Â÷ (¼­¹ö)
-#define C_EPSODE4_UI_CHANGE_JSKIM				// 2011. 11. 17 by jskim EP4 UI º¯°æ
-#define C_EPSODE4_SETTING_JHAHN					// 2011. 11. 17 by jhahn EP4 Æ®¸®°Å ½Ã½ºÅÛ 
-#define S_AUTHENTICATION_SERVER_2ND_HSKIM		// ÀÎÁõ ¼­¹ö 2Â÷ Àû¿ë (¼­¹ö) - ¼­¹ö Á¢¼Ó ºÒ°¡½Ã ¼­¹ö ½ÇÇà ºÒ°¡
-#define S_STATISTICS_HSKIM						// È­Æó Åë°è
-#define S_DELETE_DROP_ITEM_HSKIM				// µå¶øµÈ ¾ÆÀÌÅÛ 5ºÐµÚ¿¡ »èÁ¦
-#define S_ARENA_EX_1ST_JHSEOL					// 2012-05-29 by jhseol, ¾Æ·¹³ª Ãß°¡°³¹ß - ¸ÊÃß°¡, ÀÚµ¿ÆÄÆ¼, Æí´ë±â´É °­È­, ÆÇÁ¤±â´É °­È­, º¸»óÈ½¼ö Á¦ÇÑ, ti_arenainfo ÇÊµåÃß°¡
-#define C_ARENA_EX_1ST_MSPARK					// 2012-05-29 by mspark, ¾Æ·¹³ª Ãß°¡°³¹ß - ¸Ê ÀÌ¹ÌÁö Ãß°¡, ÀÌ¹ÌÁö ÁÂÇ¥ º¯°æ, ÅøÆÁ Ãß°¡
-#define C_UI_REPAIR_ISSHIN						// 2012-06-21 by isshin UI¹ö±× ¼öÁ¤ - Ep4¸¸ Àû¿ë
-#define S_ENEMY_INFO_JHSEOL						// 2012-07-19 by jhseol, ¾ÆÅÛ¹Ì¸®º¸±â
-#define C_ENEMY_INFO_ISSHIN						// 2012-06-14 by isshin ¾ÆÅÛ¹Ì¸®º¸±â
-#define S_TIMEITEM_LOG_HIDE_JHSEOL				// 2012-08-28 by jhseol, ½Ã°£Á¦ ¾ÆÀÌÅÛ °ü·Ã ·Î±× »èÁ¦ ¿äÃ»
-#define S_WAR_SYSTEM_RENEWAL_STRATEGYPOINT_JHSEOL	// 2012-11-13 by jhseol, ÀüÀï ½Ã½ºÅÛ ¸®´º¾ó - °ÅÁ¡Àü
-#define S_WAR_SYSTEM_RENEWAL_STRATEGYPOINT_SUB_OPTION_JHSEOL		// 2013-02-26 by jhseol, ÀüÀï ½Ã½ºÅÛ ¸®´º¾ó ºÎ°¡¿É¼Ç - ¸ð¼±ÀüÀÌ ÀÖ´Â ³¯¿¡µµ °ÅÁ¡ »ý¼ºÀÌ °¡´É
-//#define S_WAR_SYSTEM_RENEWAL_STRATEGYPOINT_SUMMON_TIME_VARIANCE_JHSEOL		// 2013-03-18 by jhseol, °ÅÁ¡ »ý¼º½Ã°£ ¼öÁ¤ - °ÅÁ¡ »ý¼º½Ã°£ÀÌ °ÅÁ¡Àü ½ÃÀÛ½Ã°£¿¡ ¸ô¸®´Â Çö»óÀ» ¼öÁ¤ÇÏ¿© ±ÕµîÇÏ°Ô ºÐ»êµÇµµ·Ï ÇÔ.
-#define S_SEARCHEYE_SHUTTLE_POSITION_JHSEOL		// 2012-11-29 by mspark, ¼­Ä¡¾ÆÀÌ À§Ä¡°¡ ÀÌµ¿ÇÏ´Â Ä³¸¯ÅÍÀÇ À§Ä¡¿Í µ¿ÀÏÇÏµµ·Ï ¼öÁ¤
-#define C_SEARCHEYE_SHUTTLE_POSITION_MSPARK		// 2012-11-29 by mspark, ¼­Ä¡¾ÆÀÌ À§Ä¡°¡ ÀÌµ¿ÇÏ´Â Ä³¸¯ÅÍÀÇ À§Ä¡¿Í µ¿ÀÏÇÏµµ·Ï ¼öÁ¤
-#define S_KOR_TEST_MSWAR_BACK_TO_CITY_HSKIM		// 2012-12-05 by hskim, ¸ð¼±Àü ½ÃÀÛ½Ã¿¡ »ó´ë ¼¼·Â µµ½Ã¸ÊÀ¸·Î ¿öÇÁ - ÇÑ±¹ ¸ÕÀú Å×½ºÆ® ÈÄ Àü±¹°¡ ¹Ý¿µÀ» À§ÇØ
+#define GUILD_WAREHOUSE_ACCESS_HSSON			// ë©¤ë²„ì‰½ì´ ì•„ë‹ˆë”ë¼ë„ ì—¬ë‹¨ì°½ê³  ì´ìš©ê°€ëŠ¥
+#define NEW_CASHSHOP_INTERFACE_HSSON			// ì‹ ê·œ ìºì‰¬ìƒµ ìž‘ì—…
+#define KOR_CASHSHOP_REFILL_WEB_HSSON			// ìºì‰¬ìƒµ ì¶©ì „ ì›¹íŽ˜ì´ì§€ ì¶”ê°€
+#define WAREHOUSE_SHARES_HSSON					// ìºë¦­í„° ê°„ì— ì°½ê³ ë¥¼ ê³µìœ  í•  ìˆ˜ ìžˆìŒ
+#define SC_GROWING_PARTNER_HSKIM_JHAHN			// ìºë¦­í„° ì •ë³´ ì°½ì—ì„œ íŒŒíŠ¸ë„ˆUI í™œì„±í™”
+#define S_INFINITY3_HSKIM						// ì¸í”¼ë‹ˆí‹° 3ì°¨ ì ìš© (ì„œë²„)
+#define INFI_QUEST_JSKIM					    // ì¸í”¼ë‹ˆí‹° í€˜ìŠ¤íŠ¸
+#define MULTI_TARGET_JSKIM						// ë©€í‹°íƒ€ì¼“
+#define S_AUTHENTICATION_SERVER_HSKIM			// ì¸ì¦ ì„œë²„ ì ìš© (ì„œë²„)
+#define S_LOGIN_ITEM_EVENT_SHCHO			    // ë¡œê·¸ì¸ì‹œ ì•„ì´í…œ ì¦ì •
+#define S_EP4_HSKIM								// EP4 1ì°¨ (ì„œë²„)
+#define C_EPSODE4_UI_CHANGE_JSKIM				// 2011. 11. 17 by jskim EP4 UI ë³€ê²½
+#define C_EPSODE4_SETTING_JHAHN					// 2011. 11. 17 by jhahn EP4 íŠ¸ë¦¬ê±° ì‹œìŠ¤í…œ 
+#define S_AUTHENTICATION_SERVER_2ND_HSKIM		// ì¸ì¦ ì„œë²„ 2ì°¨ ì ìš© (ì„œë²„) - ì„œë²„ ì ‘ì† ë¶ˆê°€ì‹œ ì„œë²„ ì‹¤í–‰ ë¶ˆê°€
+#define S_STATISTICS_HSKIM						// í™”í í†µê³„
+#define S_DELETE_DROP_ITEM_HSKIM				// ë“œëžëœ ì•„ì´í…œ 5ë¶„ë’¤ì— ì‚­ì œ
+#define S_ARENA_EX_1ST_JHSEOL					// 2012-05-29 by jhseol, ì•„ë ˆë‚˜ ì¶”ê°€ê°œë°œ - ë§µì¶”ê°€, ìžë™íŒŒí‹°, íŽ¸ëŒ€ê¸°ëŠ¥ ê°•í™”, íŒì •ê¸°ëŠ¥ ê°•í™”, ë³´ìƒíšŸìˆ˜ ì œí•œ, ti_arenainfo í•„ë“œì¶”ê°€
+#define C_ARENA_EX_1ST_MSPARK					// 2012-05-29 by mspark, ì•„ë ˆë‚˜ ì¶”ê°€ê°œë°œ - ë§µ ì´ë¯¸ì§€ ì¶”ê°€, ì´ë¯¸ì§€ ì¢Œí‘œ ë³€ê²½, íˆ´íŒ ì¶”ê°€
+#define C_UI_REPAIR_ISSHIN						// 2012-06-21 by isshin UIë²„ê·¸ ìˆ˜ì • - Ep4ë§Œ ì ìš©
+#define S_ENEMY_INFO_JHSEOL						// 2012-07-19 by jhseol, ì•„í…œë¯¸ë¦¬ë³´ê¸°
+#define C_ENEMY_INFO_ISSHIN						// 2012-06-14 by isshin ì•„í…œë¯¸ë¦¬ë³´ê¸°
+#define S_TIMEITEM_LOG_HIDE_JHSEOL				// 2012-08-28 by jhseol, ì‹œê°„ì œ ì•„ì´í…œ ê´€ë ¨ ë¡œê·¸ ì‚­ì œ ìš”ì²­
+#define S_WAR_SYSTEM_RENEWAL_STRATEGYPOINT_JHSEOL	// 2012-11-13 by jhseol, ì „ìŸ ì‹œìŠ¤í…œ ë¦¬ë‰´ì–¼ - ê±°ì ì „
+#define S_WAR_SYSTEM_RENEWAL_STRATEGYPOINT_SUB_OPTION_JHSEOL		// 2013-02-26 by jhseol, ì „ìŸ ì‹œìŠ¤í…œ ë¦¬ë‰´ì–¼ ë¶€ê°€ì˜µì…˜ - ëª¨ì„ ì „ì´ ìžˆëŠ” ë‚ ì—ë„ ê±°ì  ìƒì„±ì´ ê°€ëŠ¥
+//#define S_WAR_SYSTEM_RENEWAL_STRATEGYPOINT_SUMMON_TIME_VARIANCE_JHSEOL		// 2013-03-18 by jhseol, ê±°ì  ìƒì„±ì‹œê°„ ìˆ˜ì • - ê±°ì  ìƒì„±ì‹œê°„ì´ ê±°ì ì „ ì‹œìž‘ì‹œê°„ì— ëª°ë¦¬ëŠ” í˜„ìƒì„ ìˆ˜ì •í•˜ì—¬ ê· ë“±í•˜ê²Œ ë¶„ì‚°ë˜ë„ë¡ í•¨.
+#define S_SEARCHEYE_SHUTTLE_POSITION_JHSEOL		// 2012-11-29 by mspark, ì„œì¹˜ì•„ì´ ìœ„ì¹˜ê°€ ì´ë™í•˜ëŠ” ìºë¦­í„°ì˜ ìœ„ì¹˜ì™€ ë™ì¼í•˜ë„ë¡ ìˆ˜ì •
+#define C_SEARCHEYE_SHUTTLE_POSITION_MSPARK		// 2012-11-29 by mspark, ì„œì¹˜ì•„ì´ ìœ„ì¹˜ê°€ ì´ë™í•˜ëŠ” ìºë¦­í„°ì˜ ìœ„ì¹˜ì™€ ë™ì¼í•˜ë„ë¡ ìˆ˜ì •
+#define S_KOR_TEST_MSWAR_BACK_TO_CITY_HSKIM		// 2012-12-05 by hskim, ëª¨ì„ ì „ ì‹œìž‘ì‹œì— ìƒëŒ€ ì„¸ë ¥ ë„ì‹œë§µìœ¼ë¡œ ì›Œí”„ - í•œêµ­ ë¨¼ì € í…ŒìŠ¤íŠ¸ í›„ ì „êµ­ê°€ ë°˜ì˜ì„ ìœ„í•´
 //#define _EXTENDED_CHATCOLOR
 //#define C_GAME_SINGLE_THREAD_YMJOO
 #define _STAFF_WARP_PERMISSIONS
@@ -160,33 +160,33 @@
 #define _ARENA_ADDITIONAL_SUPPLY_ITEMS
 #define S_MINI_DUMP_HSKIM
 #define S_ACCESS_INTERNAL_SERVER_HSSON
-#define	S_TRIGGER_OUTPOST_JHSEOL				// 2013-01-21 by jhseol, NGC ÀüÀü±âÁö Æ®¸®°Å ½Ã½ºÅÛ
-//#define	S_SKILL_NUMBERING_RENEWAL_JHSEOL	// 2013-03-12 by jhseol, ½ºÅ³ ³Ñ¹ö¸µ ½Ã½ºÅÛ ¼öÁ¤ - ¼­¹ö¿ë
-//#define	C_SKILL_NUMBERING_RENEWAL_BHSOHN	// 2013-03-12 by jhseol, ½ºÅ³ ³Ñ¹ö¸µ ½Ã½ºÅÛ ¼öÁ¤ - Å¬¶ó¿ë
+#define	S_TRIGGER_OUTPOST_JHSEOL				// 2013-01-21 by jhseol, NGC ì „ì „ê¸°ì§€ íŠ¸ë¦¬ê±° ì‹œìŠ¤í…œ
+//#define	S_SKILL_NUMBERING_RENEWAL_JHSEOL	// 2013-03-12 by jhseol, ìŠ¤í‚¬ ë„˜ë²„ë§ ì‹œìŠ¤í…œ ìˆ˜ì • - ì„œë²„ìš©
+//#define	C_SKILL_NUMBERING_RENEWAL_BHSOHN	// 2013-03-12 by jhseol, ìŠ¤í‚¬ ë„˜ë²„ë§ ì‹œìŠ¤í…œ ìˆ˜ì • - í´ë¼ìš©
 //#define SC_SHUT_DOWNMIN_SHCHO
 //#define S_GM_COMMAND_USE_SHCHO
-#define S_TRIGGER_SYSTEM_EX						// 2013-07-08 by jhseol, Æ®¸®°Å ½Ã½ºÅÛ È®Àå - ±âÁ¸ Æ®¸®°Å¿¡ ÀüÁø±âÁö Æ®¸®°ÅÀÇ Á¦¾î±â ±â´ÉÀ» Ãß°¡
+#define S_TRIGGER_SYSTEM_EX						// 2013-07-08 by jhseol, íŠ¸ë¦¬ê±° ì‹œìŠ¤í…œ í™•ìž¥ - ê¸°ì¡´ íŠ¸ë¦¬ê±°ì— ì „ì§„ê¸°ì§€ íŠ¸ë¦¬ê±°ì˜ ì œì–´ê¸° ê¸°ëŠ¥ì„ ì¶”ê°€
 #define S_LAUNCHER_USE_ID_PASSWORD_HSKIM
-#define C_USER_SCREENSHOTMODE_ISSHIN			//À¯Àú ½ºÅ©¸°¼¦ ¸ðµå Áö¿ø
+#define C_USER_SCREENSHOTMODE_ISSHIN			//ìœ ì € ìŠ¤í¬ë¦°ìƒ· ëª¨ë“œ ì§€ì›
 #define S_MS_WAR_FIN_SUPPLY_ITEM_ADD
 #define CHECK_SUM_ON
-#define C_CANADA_HACKSHEILD_JHAHN				// 2012-09-17 by jhahn	Ä³³ª´Ù ÇÙ½¯µå Á¦°Å ¹öÀü
-#define S_SERVER_CRASH_MSGBOX_REMOVE_MSPARK		// 2012-10-18 by mspark, °ÔÀÓÆ÷Áö ¼­¹ö Ãæµ¹ ½Ã ¸Þ½ÃÁö ¹Ú½º º¸ÀÌÁö ¾Ê´Â ÀÛ¾÷
-#define S_DISABLE_PREPARE_SHUTDOWN				// 2012-11-21 by hskim, PrepareShutdown ±â´É »èÁ¦
-#define C_ADMINISTRATOR_COPYPASTE_PERMISSION	// 2012-11-21 by mspark, °ü¸®ÀÚ º¹»ç, ºÙ¿©³Ö±â Çã¿ë
-#define S_AUTO_BLOCK_SYSTEM_HSKIM				// 2012-12-14 by hskim, ¸Þ¸ð¸®ÇÙ ÀÚµ¿ ºí·° ±â´É ±¸Çö
-#define S_ADDITIONAL_EXPERIENCE					// 2012-11-12 by hskim, ÈÞ½Ä °æÇèÄ¡
-#define C_WARNING_APPEARANCE_CHANGE				// 2012-10-30 by mspark, ¿ÜÇü º¯°æ °æ°í ¸Þ½ÃÁö Ãß°¡
-#define C_ABUSE_FILTER_RELAX					// 2013-04-03 by ssjung Ä³³ª´Ù ¿å¼³ ÇÊÅÍ ¿ÏÈ­
-#define S_DB_FULL_LOG_JHSEOL					// 2013-01-04 by jhseol, DB Ç®·Î±× ³²±â±â
+#define C_CANADA_HACKSHEILD_JHAHN				// 2012-09-17 by jhahn	ìºë‚˜ë‹¤ í•µì‰´ë“œ ì œê±° ë²„ì „
+#define S_SERVER_CRASH_MSGBOX_REMOVE_MSPARK		// 2012-10-18 by mspark, ê²Œìž„í¬ì§€ ì„œë²„ ì¶©ëŒ ì‹œ ë©”ì‹œì§€ ë°•ìŠ¤ ë³´ì´ì§€ ì•ŠëŠ” ìž‘ì—…
+#define S_DISABLE_PREPARE_SHUTDOWN				// 2012-11-21 by hskim, PrepareShutdown ê¸°ëŠ¥ ì‚­ì œ
+#define C_ADMINISTRATOR_COPYPASTE_PERMISSION	// 2012-11-21 by mspark, ê´€ë¦¬ìž ë³µì‚¬, ë¶™ì—¬ë„£ê¸° í—ˆìš©
+#define S_AUTO_BLOCK_SYSTEM_HSKIM				// 2012-12-14 by hskim, ë©”ëª¨ë¦¬í•µ ìžë™ ë¸”ëŸ­ ê¸°ëŠ¥ êµ¬í˜„
+#define S_ADDITIONAL_EXPERIENCE					// 2012-11-12 by hskim, íœ´ì‹ ê²½í—˜ì¹˜
+#define C_WARNING_APPEARANCE_CHANGE				// 2012-10-30 by mspark, ì™¸í˜• ë³€ê²½ ê²½ê³  ë©”ì‹œì§€ ì¶”ê°€
+#define C_ABUSE_FILTER_RELAX					// 2013-04-03 by ssjung ìºë‚˜ë‹¤ ìš•ì„¤ í•„í„° ì™„í™”
+#define S_DB_FULL_LOG_JHSEOL					// 2013-01-04 by jhseol, DB í’€ë¡œê·¸ ë‚¨ê¸°ê¸°
 #define S_REMANING_PROCESS_REMOVE_MSPARK
-#define S_DISABLE_ALONE_RUN_MODE_HSKIM			// 2013-06-12 by hskim, ÇÏ³ªÀÇ OS ¿¡¼­ ¼­¹ö µ¿½Ã ½ÇÇà
-#define S_ADMINTOOL_ENCHANT_DELETE_MODIFY_BCKIM	// 2012-11-21 by bckim, ¿î¿µÅø±â´ÉÃß°¡, ÀÎÃ¦Æ®¾ÆÀÌÅÛÁ¦°Å±â´É
-#define SC_PARTNER_SHAPE_CHANGE_HSKIM			// 2012-12-03 by hskim, ÆÄÆ®³Ê ±â°£Á¦ ¿ÜÇü º¯°æ
-#define GAMEFORGE4D_CHAT_MACRO_OUTPUT_TIME		// 2013-07-30 by ssjung °ÔÀÓ Æ÷Áö ÀÏ °æ¿ì ¸ÅÅ©·Î µô·¹ÀÌ 15ÃÊ ¿¡¼­ 5ºÐÀ¸·Î ¼öÁ¤
+#define S_DISABLE_ALONE_RUN_MODE_HSKIM			// 2013-06-12 by hskim, í•˜ë‚˜ì˜ OS ì—ì„œ ì„œë²„ ë™ì‹œ ì‹¤í–‰
+#define S_ADMINTOOL_ENCHANT_DELETE_MODIFY_BCKIM	// 2012-11-21 by bckim, ìš´ì˜íˆ´ê¸°ëŠ¥ì¶”ê°€, ì¸ì±ˆíŠ¸ì•„ì´í…œì œê±°ê¸°ëŠ¥
+#define SC_PARTNER_SHAPE_CHANGE_HSKIM			// 2012-12-03 by hskim, íŒŒíŠ¸ë„ˆ ê¸°ê°„ì œ ì™¸í˜• ë³€ê²½
+#define GAMEFORGE4D_CHAT_MACRO_OUTPUT_TIME		// 2013-07-30 by ssjung ê²Œìž„ í¬ì§€ ì¼ ê²½ìš° ë§¤í¬ë¡œ ë”œë ˆì´ 15ì´ˆ ì—ì„œ 5ë¶„ìœ¼ë¡œ ìˆ˜ì •
 
 #ifdef _ATUM_CLIENT
-	#define C_WAR_SYSTEM_RENEWAL_STRATEGYPOINT_JHSEOL	// 2012-11-22 by jhseol, ÀüÀï ½Ã½ºÅÛ ¸®´º¾ó - ÀüÁø±âÁöÀü(OutPost)¶§ ÀÎÇÇ ÀÔÀå Á¦ÇÑ
+	#define C_WAR_SYSTEM_RENEWAL_STRATEGYPOINT_JHSEOL	// 2012-11-22 by jhseol, ì „ìŸ ì‹œìŠ¤í…œ ë¦¬ë‰´ì–¼ - ì „ì§„ê¸°ì§€ì „(OutPost)ë•Œ ì¸í”¼ ìž…ìž¥ ì œí•œ
 	#define _WIREFRAME
 	#define _NOCLIP
 	#define _DRAW_EVENTS
@@ -200,7 +200,7 @@
 	//#define _WARRIOR_CLASS_KILL_BAR			//additional bar with showing current class and percent for next class
 	#define _WARRIOR_SHOW_SPHP_4ALL
 	#define _WARRIOR_ADDITIONAL_INFO			//show additional info near aim (hp and ammo status)
-	#define S_SERVER_CRASH_FILENAME_ADD_INFO	// 2013-05-28 by hskim, ¹Ì´Ï ´ýÇÁ ÆÄÀÏ ÀÌ¸§¿¡ ½Ã°£ Ãß°¡
+	#define S_SERVER_CRASH_FILENAME_ADD_INFO	// 2013-05-28 by hskim, ë¯¸ë‹ˆ ë¤í”„ íŒŒì¼ ì´ë¦„ì— ì‹œê°„ ì¶”ê°€
 	//#define CUSTOM_OPTIMIZER_HSSON
 	//#define C_CLIENT_FILE_LOG
 	//#define _ADVANCED_CONFIG
@@ -224,59 +224,59 @@
 #define S_BONUSEXPSYSTEM_RENEWAL				// Counters by Mob Kills (3600 & 300)
 #endif
 
-#if defined(DEACTICATION_ALL)					// ¸ðµç±¹°¡ »ç¿ë¾ÈÇÔ
-#define S_ARENA_EX_1ST_RESTORE_JHSEOL			// 2012-09-14 by jhseol, ¾Æ·¹³ª Ãß°¡°³¹ß restore - ¸®´º¾ó Àû¿ë »óÅÂ¿¡¼­ ÀÚ½ÅÀÇ ÄÉ¸¯ÅÍ·Î¸¸ ÇÃ·¹ÀÌ ÇÏµµ·Ï ¼öÁ¤
-#define C_ARENA_EX_1ST_RESTORE_MSPARK			// 2012-09-14 by mspark, ¾Æ·¹³ª Ãß°¡°³¹ß restore - ¸®´º¾ó Àû¿ë »óÅÂ¿¡¼­ ÀÚ½ÅÀÇ ÄÉ¸¯ÅÍ·Î¸¸ ÇÃ·¹ÀÌ ÇÏµµ·Ï ¼öÁ¤
+#if defined(DEACTICATION_ALL)					// ëª¨ë“ êµ­ê°€ ì‚¬ìš©ì•ˆí•¨
+#define S_ARENA_EX_1ST_RESTORE_JHSEOL			// 2012-09-14 by jhseol, ì•„ë ˆë‚˜ ì¶”ê°€ê°œë°œ restore - ë¦¬ë‰´ì–¼ ì ìš© ìƒíƒœì—ì„œ ìžì‹ ì˜ ì¼€ë¦­í„°ë¡œë§Œ í”Œë ˆì´ í•˜ë„ë¡ ìˆ˜ì •
+#define C_ARENA_EX_1ST_RESTORE_MSPARK			// 2012-09-14 by mspark, ì•„ë ˆë‚˜ ì¶”ê°€ê°œë°œ restore - ë¦¬ë‰´ì–¼ ì ìš© ìƒíƒœì—ì„œ ìžì‹ ì˜ ì¼€ë¦­í„°ë¡œë§Œ í”Œë ˆì´ í•˜ë„ë¡ ìˆ˜ì •
 #endif
 
 #ifdef INTECOM_VIET
-#define C_CLIENT_LIVE_TIME						// 2012-11-07 by bhsohn º£Æ®³² ÆÐÅ¶ Ã³¸®
-#define C_ARENA_PASSWORD_ALPHABET				// 2012-12-10 by jhjang ¾Æ·¹³ª ¾ÏÈ£ ¿µ¹®µµ °¡´ÉÇÏ°Ô ÀÔ·Â ¼öÁ¤ 
-#define S_B_GEAR_DAMAGE_PROBABILITY_INFO		// 2013-05-06 by bckim, B±â¾î Å¸°Ù µ¥¹ÌÁö È®ÀÎ
+#define C_CLIENT_LIVE_TIME						// 2012-11-07 by bhsohn ë² íŠ¸ë‚¨ íŒ¨í‚· ì²˜ë¦¬
+#define C_ARENA_PASSWORD_ALPHABET				// 2012-12-10 by jhjang ì•„ë ˆë‚˜ ì•”í˜¸ ì˜ë¬¸ë„ ê°€ëŠ¥í•˜ê²Œ ìž…ë ¥ ìˆ˜ì • 
+#define S_B_GEAR_DAMAGE_PROBABILITY_INFO		// 2013-05-06 by bckim, Bê¸°ì–´ íƒ€ê²Ÿ ë°ë¯¸ì§€ í™•ì¸
 
 #endif
 
 #ifndef INTECOM_VIET
-#define C_MOUSEFOCUS_BACKGROUND_NOTRESET		// 2012-12-17 by jhjang °ÔÀÓÀÌ ¹é±×¶ó¿îµåÀÏ¶§, ¸¶¿ì½º Æ÷Ä¿½º¸¦ ÃÊ±âÈ­ ÇÏÁö ¾Êµµ·Ï ¼öÁ¤
-#define C_JOIN_CHATROOM_MESSAGE					// 2013-01-08 by mspark, Ã¤ÆÃ¹æ¿¡ »õ·Î¿î À¯Àú°¡ ÀÔÀåÇßÀ» °æ¿ì ½Ã½ºÅÛ ¸Þ½ÃÁö Ãß°¡
-#define C_LONGTIME_WINDOW_ON					// 2012-12-06 by bhsohn Àå±â°£ window Å²ÈÄ, °ÔÀÓÁ¢¼Ó½Ã °ÔÀÓ ¸ØÃß¾î ÀÖ´Â Çö»ó Ã³¸®
-#define C_BAZZER_NOT_EXIT						// 2013-01-08 by jhjang °³ÀÎ»óÁ¡À» ¿¬ »óÅÂ¿¡¼­ Å¬¶óÀÌ¾ðÆ® ¸ØÃçÀÖÀ»¶§ °­Á¦ Á¾·á ¸·±â Ãß°¡
-#define C_AGEAR_REFINERYSHOP_CLOSE_MSPARK		// 2013-02-04 by mspark, A±â¾î º¸±Þ»óÁ¡¿¡ ·£µù ½Ã ÀÌµ¿ ¹öÆ°À» ´©¸¦°æ¿ì, º¸±Þ»óÁ¡ Ã¢ÀÌ ´ÝÈ÷µµ·Ï ÀÛ¾÷
-#define S_BUGFIX_DUPLICATE_ITEM_HSKIM			// 2013-02-21 by hskim, º£Æ®³² ¾ÆÀÌÅÛ º¹»ç ¹ö±× º¸¾È (DB Ã³¸®°¡ ³¡³¯¶§±îÁö °ü·Ã ÆÐÅ¶Àº ¹«½Ã) - »èÁ¦ ÁÖ±â¸¦ 1½Ã°£ (3600000) ¿¡¼­ 26.5½Ã°£À¸·Î º¯°æ (90000000)
-#define C_INGAME_MIX_ITEM						// 2013-02-20 by bhsohn ÀÎ°ÔÀÓ Á¶ÇÕÃ¢ Ã³¸®
-#define S_ADMINTOOL_IP_SEARCH_JHSEOL			// 2013-06-28 by jhseol, Ä³³ª´Ù ¾îµå¹ÎÅø IPÁ¶È¸ ¹®Á¦
-#define C_SHOP_ITEMCNT_INIT_BHSOHN				// 2013-06-20 by bhsohn »óÁ¡¿¡¼­ ¾ÆÀÌÅÛ ±¸¸ÅÈÄ ¼ýÀÚ ÃÊ±âÈ­ ÄÚµå Ãß°¡
+#define C_MOUSEFOCUS_BACKGROUND_NOTRESET		// 2012-12-17 by jhjang ê²Œìž„ì´ ë°±ê·¸ë¼ìš´ë“œì¼ë•Œ, ë§ˆìš°ìŠ¤ í¬ì»¤ìŠ¤ë¥¼ ì´ˆê¸°í™” í•˜ì§€ ì•Šë„ë¡ ìˆ˜ì •
+#define C_JOIN_CHATROOM_MESSAGE					// 2013-01-08 by mspark, ì±„íŒ…ë°©ì— ìƒˆë¡œìš´ ìœ ì €ê°€ ìž…ìž¥í–ˆì„ ê²½ìš° ì‹œìŠ¤í…œ ë©”ì‹œì§€ ì¶”ê°€
+#define C_LONGTIME_WINDOW_ON					// 2012-12-06 by bhsohn ìž¥ê¸°ê°„ window í‚¨í›„, ê²Œìž„ì ‘ì†ì‹œ ê²Œìž„ ë©ˆì¶”ì–´ ìžˆëŠ” í˜„ìƒ ì²˜ë¦¬
+#define C_BAZZER_NOT_EXIT						// 2013-01-08 by jhjang ê°œì¸ìƒì ì„ ì—° ìƒíƒœì—ì„œ í´ë¼ì´ì–¸íŠ¸ ë©ˆì¶°ìžˆì„ë•Œ ê°•ì œ ì¢…ë£Œ ë§‰ê¸° ì¶”ê°€
+#define C_AGEAR_REFINERYSHOP_CLOSE_MSPARK		// 2013-02-04 by mspark, Aê¸°ì–´ ë³´ê¸‰ìƒì ì— ëžœë”© ì‹œ ì´ë™ ë²„íŠ¼ì„ ëˆ„ë¥¼ê²½ìš°, ë³´ê¸‰ìƒì  ì°½ì´ ë‹«ížˆë„ë¡ ìž‘ì—…
+#define S_BUGFIX_DUPLICATE_ITEM_HSKIM			// 2013-02-21 by hskim, ë² íŠ¸ë‚¨ ì•„ì´í…œ ë³µì‚¬ ë²„ê·¸ ë³´ì•ˆ (DB ì²˜ë¦¬ê°€ ëë‚ ë•Œê¹Œì§€ ê´€ë ¨ íŒ¨í‚·ì€ ë¬´ì‹œ) - ì‚­ì œ ì£¼ê¸°ë¥¼ 1ì‹œê°„ (3600000) ì—ì„œ 26.5ì‹œê°„ìœ¼ë¡œ ë³€ê²½ (90000000)
+#define C_INGAME_MIX_ITEM						// 2013-02-20 by bhsohn ì¸ê²Œìž„ ì¡°í•©ì°½ ì²˜ë¦¬
+#define S_ADMINTOOL_IP_SEARCH_JHSEOL			// 2013-06-28 by jhseol, ìºë‚˜ë‹¤ ì–´ë“œë¯¼íˆ´ IPì¡°íšŒ ë¬¸ì œ
+#define C_SHOP_ITEMCNT_INIT_BHSOHN				// 2013-06-20 by bhsohn ìƒì ì—ì„œ ì•„ì´í…œ êµ¬ë§¤í›„ ìˆ«ìž ì´ˆê¸°í™” ì½”ë“œ ì¶”ê°€
 #define C_DECA_TOOLTIP	
-#define S_CANNOT_DO_GIFT_UNDER_LEVEL_BCKIM		// 2013-07-08 by bckim, Ä³³ª´Ù¿äÃ» ·¹º§70 ¹Ì¸¸Àº ¼±¹°ÇÏ±â ºÒ°¡
-#define C_FOCUS_MISS_CLIENT_NO_CLOSE			// 2013-06-28 by ssjung Æ÷Ä¿½º¸¦ ÀÒ¾úÀ» ½Ã 1ºÐÈÄ Å¬¶óÀÌ¾ðÆ®°¡ Á¾·áµÇ´Â Çö»ó Ä³³ª´Ù ¿¹¿ÜÃ³¸®
-#define C_LEAST_LV_GIFT							// 2013-07-09 by bhsohn 70 ·¹º§ ÀÌ»ó¸¸ ¼±¹°ÇÏ±â °¡´ÉÇÏ°Ô ¼öÁ¤
-#define SC_COLLECTION_ARMOR_JHSEOL_BCKIM		// 2013-05-31 by jhseol,bckim ¾Æ¸Ó ÄÃ·º¼Ç - ÄÁÅÙÃ÷ ¼±¾ð
+#define S_CANNOT_DO_GIFT_UNDER_LEVEL_BCKIM		// 2013-07-08 by bckim, ìºë‚˜ë‹¤ìš”ì²­ ë ˆë²¨70 ë¯¸ë§Œì€ ì„ ë¬¼í•˜ê¸° ë¶ˆê°€
+#define C_FOCUS_MISS_CLIENT_NO_CLOSE			// 2013-06-28 by ssjung í¬ì»¤ìŠ¤ë¥¼ ìžƒì—ˆì„ ì‹œ 1ë¶„í›„ í´ë¼ì´ì–¸íŠ¸ê°€ ì¢…ë£Œë˜ëŠ” í˜„ìƒ ìºë‚˜ë‹¤ ì˜ˆì™¸ì²˜ë¦¬
+#define C_LEAST_LV_GIFT							// 2013-07-09 by bhsohn 70 ë ˆë²¨ ì´ìƒë§Œ ì„ ë¬¼í•˜ê¸° ê°€ëŠ¥í•˜ê²Œ ìˆ˜ì •
+#define SC_COLLECTION_ARMOR_JHSEOL_BCKIM		// 2013-05-31 by jhseol,bckim ì•„ë¨¸ ì»¬ë ‰ì…˜ - ì»¨í…ì¸  ì„ ì–¸
 #define C_LABORATORY_UI_CHANGE_JWLEE
 
 #if defined(TEST140) || defined(YEDANG_KOR) || defined(WIKIGAMES_ENG)
-// 2013-06-18 ÇÑ±¹Àû¿ë
-#define S_MONTHL_ARMOR_EVENT_JHSEOL_BCKIM		// 2013-04-18 by jhseol,bckim ÀÌ´ÞÀÇ ¾Æ¸Ó - ÄÁÅÙÃ÷ ¼±¾ð
+// 2013-06-18 í•œêµ­ì ìš©
+#define S_MONTHL_ARMOR_EVENT_JHSEOL_BCKIM		// 2013-04-18 by jhseol,bckim ì´ë‹¬ì˜ ì•„ë¨¸ - ì»¨í…ì¸  ì„ ì–¸
 #define C_MONTHL_ARMOR_EVENT_JHSEOL_BCKIM
 #endif
 
 #endif
 
 //	#endif
-//#define S_WEB_CASHSHOP_SERVER_MODULE_HSKIM		// 2013-03-13 by hskim, À¥ Ä³½Ã »óÁ¡
-//#define S_DIRECT_DB_ITEM_INSERT_SECURITY_HSKIM	// 2013-05-20 by hskim, [º¸¾È ½Ã½ºÅÛ] ºñÁ¤»óÀûÀÎ ¹æ¹ýÀ¸·Î ¾ÆÀÌÅÛ Ãß°¡ ¹æÁö
-// 2013-06-10 ÇÑ±¹ Ãß°¡
-//#define S_UPGRADE_INFLUENCE_POINT_HSKIM		// 2013-05-09 by hskim, ¼¼·Â Æ÷ÀÎÆ® °³¼±
-//#define C_UPGRADE_INFLUENCE_POINT_BHSOHN		// 2013-05-07 by bhsohn ¼¼·ÂÆ÷ÀÎÆ® °³¼±¾È ½Ã½ºÅÛ
-// 2013-07-09 Ä³³ª´Ù, ¾Æ¸£Çî, °ÔÀÓÆ÷Áö Ãß°¡		// 2013-07-11 ÀÏº» Ãß°¡ 
-//#define S_ADMINTOOL_CASHSHOP_REALIGNMENT_BCKIM	// 2013-02-05 by bckim, Ä³½Ã¼¥ ÃßÃµÅÇ Á¤·Ä¼ø¼­ºÎ¿©
-//#define C_ITEM_EVENT_NOTIFY_MSG_CHANGE_JHSEOL		// 2013-04-08 by jhseol, ÀÌº¥Æ® ¾ÆÀÌÅÛ Áö±Þ ¾Ë¸²¹æ¹ý º¯°æ
-// 2013-04-19 ÇÑ±¹Àû¿ë
-// 2013-05-23 ÇÑ±¹Àû¿ë
-//#define SC_BUFF_PENALTY_JHSEOL_BCKIM			// 2013-05-07 by jhseol,bckim ¹öÇÁ ÆÐ³ÎÆ¼
-// 2013-06-27 ÇÑ±¹Àû¿ë
-//#define S_ITEMUID_ZERO_DEBUG_LOG_JHSEOL		// 2013-06-25 by jhseol, ¾ÆÀÌÅÛ UID '0' ÃßÀû¿ë µð¹ö±ë ·Î±×
+//#define S_WEB_CASHSHOP_SERVER_MODULE_HSKIM		// 2013-03-13 by hskim, ì›¹ ìºì‹œ ìƒì 
+//#define S_DIRECT_DB_ITEM_INSERT_SECURITY_HSKIM	// 2013-05-20 by hskim, [ë³´ì•ˆ ì‹œìŠ¤í…œ] ë¹„ì •ìƒì ì¸ ë°©ë²•ìœ¼ë¡œ ì•„ì´í…œ ì¶”ê°€ ë°©ì§€
+// 2013-06-10 í•œêµ­ ì¶”ê°€
+//#define S_UPGRADE_INFLUENCE_POINT_HSKIM		// 2013-05-09 by hskim, ì„¸ë ¥ í¬ì¸íŠ¸ ê°œì„ 
+//#define C_UPGRADE_INFLUENCE_POINT_BHSOHN		// 2013-05-07 by bhsohn ì„¸ë ¥í¬ì¸íŠ¸ ê°œì„ ì•ˆ ì‹œìŠ¤í…œ
+// 2013-07-09 ìºë‚˜ë‹¤, ì•„ë¥´í—¨, ê²Œìž„í¬ì§€ ì¶”ê°€		// 2013-07-11 ì¼ë³¸ ì¶”ê°€ 
+//#define S_ADMINTOOL_CASHSHOP_REALIGNMENT_BCKIM	// 2013-02-05 by bckim, ìºì‹œìƒµ ì¶”ì²œíƒ­ ì •ë ¬ìˆœì„œë¶€ì—¬
+//#define C_ITEM_EVENT_NOTIFY_MSG_CHANGE_JHSEOL		// 2013-04-08 by jhseol, ì´ë²¤íŠ¸ ì•„ì´í…œ ì§€ê¸‰ ì•Œë¦¼ë°©ë²• ë³€ê²½
+// 2013-04-19 í•œêµ­ì ìš©
+// 2013-05-23 í•œêµ­ì ìš©
+//#define SC_BUFF_PENALTY_JHSEOL_BCKIM			// 2013-05-07 by jhseol,bckim ë²„í”„ íŒ¨ë„í‹°
+// 2013-06-27 í•œêµ­ì ìš©
+//#define S_ITEMUID_ZERO_DEBUG_LOG_JHSEOL		// 2013-06-25 by jhseol, ì•„ì´í…œ UID '0' ì¶”ì ìš© ë””ë²„ê¹… ë¡œê·¸
 //#define C_SERVER_DOWN_ALARM
-//#define S_MULTI_RESOLUTION_JHSEOL 			// 2013-07-30 by jhseol, ¸ÖÆ¼ÇØ»óµµ Áö¿ø
+//#define S_MULTI_RESOLUTION_JHSEOL 			// 2013-07-30 by jhseol, ë©€í‹°í•´ìƒë„ ì§€ì›
 
 
 /////////////////////////////////////////////////////////////
