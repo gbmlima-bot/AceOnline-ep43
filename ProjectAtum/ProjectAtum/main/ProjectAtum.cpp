@@ -7,13 +7,13 @@
 #include "MGameDecryption.h"
 #include <ShuttleChild.h>
 
-// 2010-09-29 by jskim, ´ıÇÁ ³²±âµµ·Ï ¼öÁ¤ 
+// 2010-09-29 by jskim, ë¤í”„ ë‚¨ê¸°ë„ë¡ ìˆ˜ì • 
 #include "dbgHelp.h"
 #pragma comment(lib, "dbghelp.lib")
 
 #include "CustomOptimizer.h"
 
-#include "DarkCrash.h" // 2011-08-17 by hsson Å¬¶óÀÌ¾ğÆ® Å©·¡½¬ ³¯¶§ ¼­¹ö·Î Å¬¶ó Á¤º¸ Àü¼Û
+#include "DarkCrash.h" // 2011-08-17 by hsson í´ë¼ì´ì–¸íŠ¸ í¬ë˜ì‰¬ ë‚ ë•Œ ì„œë²„ë¡œ í´ë¼ ì •ë³´ ì „ì†¡
 
  #define  SET_CRT_DEBUG_FIELD(a) \
                  _CrtSetDbgFlag((a) | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG))
@@ -70,7 +70,7 @@ LONG __stdcall Exception_Minidump(_EXCEPTION_POINTERS* pExceptionInfo)
 
     MiniDumpWriteDump(hProcess, dwProcessID, hFile, MiniDumpNormal, pExceptionInfo ? &eInfo : NULL, NULL, NULL);
 
-	// 2011-08-17 by hsson Å¬¶óÀÌ¾ğÆ® Å©·¡½¬ ³¯¶§ ¼­¹ö·Î Å¬¶ó Á¤º¸ Àü¼Û
+	// 2011-08-17 by hsson í´ë¼ì´ì–¸íŠ¸ í¬ë˜ì‰¬ ë‚ ë•Œ ì„œë²„ë¡œ í´ë¼ ì •ë³´ ì „ì†¡
 #ifdef SC_DARK_CRASH_HSSON
 	Exception::CDarkCrash::OnPlayMiniDump( pExceptionInfo );
 	char* pc = new char[1024];
@@ -85,7 +85,7 @@ LONG __stdcall Exception_Minidump(_EXCEPTION_POINTERS* pExceptionInfo)
 
 	delete pc;
 #endif // SC_DARK_CRASH_HSSON
-	// end 2011-08-17 by hsson Å¬¶óÀÌ¾ğÆ® Å©·¡½¬ ³¯¶§ ¼­¹ö·Î Å¬¶ó Á¤º¸ Àü¼Û
+	// end 2011-08-17 by hsson í´ë¼ì´ì–¸íŠ¸ í¬ë˜ì‰¬ ë‚ ë•Œ ì„œë²„ë¡œ í´ë¼ ì •ë³´ ì „ì†¡
 #ifdef _CRASH_HANDLER
 	char buff[512];
 	sprintf(buff, "CrashReporter.exe -code 0x%08x -accountname %s -mapnumber %d -charnumber %d -dmpfile %s", pExceptionInfo->ExceptionRecord->ExceptionCode, g_pD3dApp->m_pShuttleChild->m_myShuttleInfo.AccountName, g_pD3dApp->GetMyShuttleMapChannelIndex().MapIndex, g_pD3dApp->m_pShuttleChild->m_myShuttleInfo.CharacterUniqueNumber, fileName);
@@ -106,7 +106,7 @@ LONG __stdcall Exception_Minidump(_EXCEPTION_POINTERS* pExceptionInfo)
 
     return EXCEPTION_EXECUTE_HANDLER;
 }
-// end 2010-09-29 by jskim, ´ıÇÁ ³²±âµµ·Ï ¼öÁ¤ 
+// end 2010-09-29 by jskim, ë¤í”„ ë‚¨ê¸°ë„ë¡ ìˆ˜ì • 
 HANDLE g_hMutexMonoInstance = NULL;
 HANDLE g_hMutexMonoInstanceTemp = NULL;
 #ifdef _WARRIOR_ANTICHEAT
@@ -370,12 +370,12 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 #ifdef _WARRIOR_ANTICHEAT
 	BOOL chk = EnumWindows(EnumWindowsProc, NULL);
 
-	if(chk == FALSE) {
+	if(false && chk == FALSE) {
 			MessageBox(NULL, "Hacking tool detected! \n Closing program.", "DreamACE Anti-Cheat", MB_OK);
 			exit(1);
 	} 
 	
-	 if(IsDebuggerPresent())
+	 if(false && IsDebuggerPresent())
 		{
 			MessageBox(NULL, "Hacking tool detected! \n Closing program.", "DreamACE Anti-Cheat", MB_OK);
 			exit(1);
@@ -387,7 +387,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 			exit(1);
 			return E_FAIL;
 		}
-		if(IsInsideVMWare())
+		if(false && IsInsideVMWare())
 		{
 			MessageBox(NULL, "Using VMWare is not allowed! \n Please run DreamACE outside of VMWare", "DreamACE Anti-Cheat", MB_OK);
 			exit(1);
@@ -399,14 +399,14 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 			exit(1);
 			return E_FAIL;
 		}
-		if(CheckHardwareBreakpoints() != 0)
+		if(false && CheckHardwareBreakpoints() != 0)
 		{
 			MessageBox(NULL, "Debug software detected! \n Close your debug software and Login Again.", "DreamACE Anti-Cheat", MB_OK);
 			exit(1);
 			return E_FAIL;
 		}
 		HKEY hSubKey = NULL;
-		if(ERROR_SUCCESS == RegOpenKeyEx(HKEY_CURRENT_USER, "SOFTWARE\\Cheat Engine", 0L, KEY_ALL_ACCESS, &hSubKey))
+		if(false && ERROR_SUCCESS == RegOpenKeyEx(HKEY_CURRENT_USER "SOFTWARE\\Cheat Engine", 0L, KEY_ALL_ACCESS, &hSubKey))
 		{// warriorsw checking cheat engine
 		MessageBox(NULL, "Cheat Engine not allowed! \n Remove Cheat Engine, Restart Computer and Login again.", "DreamACE Anti-Cheat", MB_OK);
 		exit(1);
@@ -417,21 +417,21 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 
 
-	pD3dApp.b_CanadaMutex = true;// 2012-09-17 by jhahn	Ä³³ª´Ù ÇÙ½¯µå Á¦°Å ¹öÀü
+	pD3dApp.b_CanadaMutex = true;// 2012-09-17 by jhahn	ìºë‚˜ë‹¤ í•µì‰´ë“œ ì œê±° ë²„ì „
 	g_cCustomOptimizer.AutoLauncher();
 
-	// 2013-05-03 by bhsohn ÇÙ½¯µå Dump ¾È³ª¿À´Â Çö»ó Ã³¸®
-	// 2010-09-29 by jskim, ´ıÇÁ ³²±âµµ·Ï ¼öÁ¤ 
+	// 2013-05-03 by bhsohn í•µì‰´ë“œ Dump ì•ˆë‚˜ì˜¤ëŠ” í˜„ìƒ ì²˜ë¦¬
+	// 2010-09-29 by jskim, ë¤í”„ ë‚¨ê¸°ë„ë¡ ìˆ˜ì • 
 //	SetUnhandledExceptionFilter(Exception_Minidump);
-	// end 2010-09-29 by jskim, ´ıÇÁ ³²±âµµ·Ï ¼öÁ¤ 
+	// end 2010-09-29 by jskim, ë¤í”„ ë‚¨ê¸°ë„ë¡ ìˆ˜ì • 
 	if(GAMEGUARD_TYPE != USE_GAMEGUARD_AHNLAB_HACKSHIELD)
 	{		
 		SetUnhandledExceptionFilter(Exception_Minidump);		
 	}
-	// END 2013-05-03 by bhsohn ÇÙ½¯µå Dump ¾È³ª¿À´Â Çö»ó Ã³¸®
+	// END 2013-05-03 by bhsohn í•µì‰´ë“œ Dump ì•ˆë‚˜ì˜¤ëŠ” í˜„ìƒ ì²˜ë¦¬
 
 
-	// 2012-09-17 by jhahn	Ä³³ª´Ù ÇÙ½¯µå Á¦°Å ¹öÀü
+	// 2012-09-17 by jhahn	ìºë‚˜ë‹¤ í•µì‰´ë“œ ì œê±° ë²„ì „
 #ifdef C_CANADA_HACKSHEILD_JHAHN
 	{
 		HANDLE hMutexTemp = NULL;	
@@ -448,7 +448,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		
 		
 		CloseHandle(hMutexTemp);
-		//end 2012-09-17 by jhahn	Ä³³ª´Ù ÇÙ½¯µå Á¦°Å ¹öÀü
+		//end 2012-09-17 by jhahn	ìºë‚˜ë‹¤ í•µì‰´ë“œ ì œê±° ë²„ì „
 		
 	}
 #endif
@@ -472,7 +472,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	}
 #endif // MULTI_LOADER_HSSON
 
-	// 2007-07-26 by bhsohn ¿¹´ç À©µµ¿ì ¸ğµå¸¸ µÇ´Â ¹ö±× ¼öÁ¤
+	// 2007-07-26 by bhsohn ì˜ˆë‹¹ ìœˆë„ìš° ëª¨ë“œë§Œ ë˜ëŠ” ë²„ê·¸ ìˆ˜ì •
 	//if(__argc != 12 && __argc != 16 && __argc != 11 && __argc != 14)
 	if(__argc != 13 && __argc != 17 && __argc != 12 && __argc != 16)
 	{
@@ -513,13 +513,13 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 		// Mutex Check
 		HANDLE hMutex = NULL;	
-		hMutex = ::OpenMutex(MUTEX_ALL_ACCESS, TRUE, (LPTSTR)szEncPassword);  // ¾ÏÈ£È­µÈÆĞ½º¿öµå°ªÀ» ³Ö´Â´Ù
+		hMutex = ::OpenMutex(MUTEX_ALL_ACCESS, TRUE, (LPTSTR)szEncPassword);  // ì•”í˜¸í™”ëœíŒ¨ìŠ¤ì›Œë“œê°’ì„ ë„£ëŠ”ë‹¤
 		if(hMutex == NULL)
 		{
 			DBGOUT("[Error] Mutex Error\n");
 			return FALSE;
 		}	
-		// 2006-10-18 by ispark, ReleaseMutex() -> CloseHandle()·Î º¯°æ
+		// 2006-10-18 by ispark, ReleaseMutex() -> CloseHandle()ë¡œ ë³€ê²½
 		CloseHandle(hMutex);
 		
 		// ExcuteType Check
@@ -545,19 +545,19 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		pD3dApp.m_IsFullMode = TRUE;
 #endif // ONLY_FULL_WINDOW_HSSON
 
-// 2012-09-17 by jhahn	Ä³³ª´Ù ÇÙ½¯µå Á¦°Å ¹öÀü
+// 2012-09-17 by jhahn	ìºë‚˜ë‹¤ í•µì‰´ë“œ ì œê±° ë²„ì „
 
 		if (pD3dApp.b_CanadaMutex)
 		{
-			// 2009-01-22 by bhsohn Xign Code½Ã, Sleep(3000)Ãß°¡
+			// 2009-01-22 by bhsohn Xign Codeì‹œ, Sleep(3000)ì¶”ê°€
 			if(!pD3dApp.StartGameGuard())
 			{
 				pD3dApp.CloseGameGuard();
 				return FALSE;
 			}		
-			// end 2009-01-22 by bhsohn Xign Code½Ã, Sleep(3000)Ãß°¡
+			// end 2009-01-22 by bhsohn Xign Codeì‹œ, Sleep(3000)ì¶”ê°€
 		}
-		// 2013-05-03 by bhsohn ÇÙ½¯µå Dump ¾È³ª¿À´Â Çö»ó Ã³¸®		
+		// 2013-05-03 by bhsohn í•µì‰´ë“œ Dump ì•ˆë‚˜ì˜¤ëŠ” í˜„ìƒ ì²˜ë¦¬		
 		if(GAMEGUARD_TYPE == USE_GAMEGUARD_AHNLAB_HACKSHIELD)
 		{		
 			SetUnhandledExceptionFilter(Exception_Minidump);
