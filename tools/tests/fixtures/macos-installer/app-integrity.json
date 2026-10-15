@@ -1,0 +1,42 @@
+{
+  "release": "ace-modern-v0.8.0",
+  "artifact": "ace-modern-online-macos-v0.8.zip",
+  "source": "Verified app tree from the desktop macOS 0.8.0 export; hashes are expected values, not a native execution claim.",
+  "files": [
+    {
+      "path": "Contents/Info.plist",
+      "bytes": 1777,
+      "sha256": "1b75f104cfa373c003b1abbe64b2d2878017722230dcb4763e5c61edfc510a03"
+    },
+    {
+      "path": "Contents/MacOS/ACE Modern",
+      "bytes": 170963648,
+      "sha256": "77b510ab86dc841db6562ba95131883f21aa5e705be763f86bc48ed5f75e29a1"
+    },
+    {
+      "path": "Contents/PkgInfo",
+      "bytes": 9,
+      "sha256": "7e50a30efad50208a173203ced60818d693bb61266b75aa10927d1a2adce80cb"
+    },
+    {
+      "path": "Contents/Resources/ACE Modern.pck",
+      "bytes": 3810974296,
+      "sha256": "dfab5cc36833c46bab4f2a366b43bbe414234f6c0c5c6d148af365d9d049d2e0"
+    },
+    {
+      "path": "Contents/Resources/PrivacyInfo.xcprivacy",
+      "bytes": 229,
+      "sha256": "0535353bb08c25b8ce5ed9ac7e442a5994f402e0f6cbc4bed668cfc63c2ceac3"
+    },
+    {
+      "path": "Contents/Resources/icon.icns",
+      "bytes": 443068,
+      "sha256": "71b13e0a862281769f3efb1cae362b0449c96b7f20d522eb21a55db6c8f9f4f9"
+    },
+    {
+      "path": "Contents/_CodeSignature/CodeResources",
+      "bytes": 3177,
+      "sha256": "6dd32c5236ebf85733ef67978d2a52ec571b296de468ca2718fe86b47b3e08f5"
+    }
+  ]
+}

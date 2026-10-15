@@ -1,0 +1,15 @@
+test_corrupt_existing_dedicated_part_is_preserved (__main__.InstallerTests.test_corrupt_existing_dedicated_part_is_preserved) ... ok
+test_file_hash_size_and_symlink (__main__.InstallerTests.test_file_hash_size_and_symlink) ... ok
+test_linux_is_rejected_before_any_download (__main__.InstallerTests.test_linux_is_rejected_before_any_download) ... ok
+test_partial_download_uses_continue_and_verifies_finished_result (__main__.InstallerTests.test_partial_download_uses_continue_and_verifies_finished_result) ... ok
+test_pins_match_published_manifest_and_desktop_report (__main__.InstallerTests.test_pins_match_published_manifest_and_desktop_report) ... ok
+test_publish_preserves_guide_and_licenses (__main__.InstallerTests.test_publish_preserves_guide_and_licenses) ... ok
+test_publish_refuses_existing_directory_without_merging (__main__.InstallerTests.test_publish_refuses_existing_directory_without_merging) ... ok
+test_syntax (__main__.InstallerTests.test_syntax) ... ok
+test_valid_download_is_reused_without_modification (__main__.InstallerTests.test_valid_download_is_reused_without_modification) ... ok
+test_wrong_download_stays_partial_and_is_never_promoted (__main__.InstallerTests.test_wrong_download_stays_partial_and_is_never_promoted) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.259s
+
+OK

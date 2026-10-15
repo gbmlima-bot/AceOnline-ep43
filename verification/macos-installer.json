@@ -1,0 +1,80 @@
+{
+  "verified": true,
+  "verified_at_utc": "2026-10-15T22:05:08.558924+00:00",
+  "scope": "Offline installer checks with small fixtures; Linux test host.",
+  "command": "python3 tools/test_install_macos.py",
+  "tests_run": 10,
+  "tests_passed": 10,
+  "checks": [
+    {
+      "name": "test_corrupt_existing_dedicated_part_is_preserved",
+      "passed": true
+    },
+    {
+      "name": "test_file_hash_size_and_symlink",
+      "passed": true
+    },
+    {
+      "name": "test_linux_is_rejected_before_any_download",
+      "passed": true
+    },
+    {
+      "name": "test_partial_download_uses_continue_and_verifies_finished_result",
+      "passed": true
+    },
+    {
+      "name": "test_pins_match_published_manifest_and_desktop_report",
+      "passed": true
+    },
+    {
+      "name": "test_publish_preserves_guide_and_licenses",
+      "passed": true
+    },
+    {
+      "name": "test_publish_refuses_existing_directory_without_merging",
+      "passed": true
+    },
+    {
+      "name": "test_syntax",
+      "passed": true
+    },
+    {
+      "name": "test_valid_download_is_reused_without_modification",
+      "passed": true
+    },
+    {
+      "name": "test_wrong_download_stays_partial_and_is_never_promoted",
+      "passed": true
+    }
+  ],
+  "exit_code": 0,
+  "shell_syntax_checked": true,
+  "test_host_os": "Linux",
+  "bash_3_2_executed": false,
+  "downloads_performed": false,
+  "macos_native_execution_performed": false,
+  "game_installed_on_user_mac": false,
+  "log": "verification/macos-installer-tests.log",
+  "files": [
+    {
+      "path": "tools/install_macos.sh",
+      "bytes": 10128,
+      "sha256": "fca846334016546b0fda04451cbb5299f1234ba0fecf49e6ea67059f5f8b15fb"
+    },
+    {
+      "path": "tools/test_install_macos.py",
+      "bytes": 7500,
+      "sha256": "06099066741d4b09dd81306becd24b4d5765b2bf8f57328a6295bcbc85bed0ea"
+    },
+    {
+      "path": "tools/tests/fixtures/macos-installer/app-integrity.json",
+      "bytes": 1384,
+      "sha256": "0586f61a67e70ba0360e2d7762884531c6f7c09459ec9541a475becd7e37a797"
+    }
+  ],
+  "limitations": [
+    "The tests exercise safety and integrity behavior with small local fixtures; they do not download the game.",
+    "No native macOS app execution or installation on the user Mac was performed.",
+    "Compatibility with Bash 3.2 is based on the supported syntax used; the automated checks ran with the available Linux Bash."
+  ]
+}
