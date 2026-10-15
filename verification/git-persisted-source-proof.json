@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "verified_commit": "8ef7d393a00a6fdb03c866ec555b49ade42bc467",
+  "tracked_runtime_and_server_data_blobs_verified": 84,
+  "matches_approved_canonical_bytes": true,
+  "git_normalization_changed_verified_files": false
+}
