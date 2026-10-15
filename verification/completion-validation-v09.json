@@ -286,10 +286,16 @@
       "name": "windows-pack-online-v09",
       "passed": true,
       "evidence": "verification/windows-pack-online-v09.json"
+    },
+    {
+      "name": "final_source_kit_applied_and_idempotent",
+      "passed": true,
+      "evidence": "verification/real-source-update-v09.json"
     }
   ],
   "source_engine_e2e_groups": 34,
   "python_tests": 132,
   "desktop_exports_verified": true,
-  "exported_packs_runtime_on_linux_verified": true
+  "exported_packs_runtime_on_linux_verified": true,
+  "source_kit_internal_report_frozen_before_packaging": true
 }

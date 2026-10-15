@@ -1,0 +1,11 @@
+dry-run: PASS {"ok": true, "release": "0.9.0", "base_files_hashed": 69, "preserved_asset_sizes_verified": 45577, "changed_files": 143, "dry_run": true, "already_applied": false, "native_desktop_executables_updated": false}
+apply: PASS {"ok": true, "release": "0.9.0", "base_files_hashed": 69, "preserved_asset_sizes_verified": 45577, "changed_files": 143, "dry_run": false, "already_applied": false, "native_desktop_executables_updated": false, "source_backup": "/workspace/ace-modern-v09-configured/.online-update-backups/v0.9-68g6vqrx"}
+idempotence: PASS {"ok": true, "release": "0.9.0", "base_files_hashed": 69, "preserved_asset_sizes_verified": 45577, "changed_files": 0, "dry_run": false, "already_applied": true, "native_desktop_executables_updated": false}
+Fresh baseline provenance PASS: {"files": 45858, "symlinks": 0, "hardlinked_asset_files": 45577, "hardlinked_asset_bytes": 5069713152, "zip_extracted_files": 281, "zip_extracted_bytes": 65513152, "all_art_hardlinks_verified_by_size_and_crc32": true, "source_code_extracted_from_zip": true, "all_nonhardlinked_baseline_files_reverified_against_zip_crc32": true, "source_fingerprint_count": 45858, "source_fingerprint_sha256": "ec9d6b606c309ffd6b22aa7fc2fed424b6f6b5fd9ac4c6cce7f3a0fa24954d8b"}
+Overlay and source backup hashes PASS; verifying original tree/ZIP preservation
+Original preservation verified 10000/45858
+Original preservation verified 20000/45858
+Original preservation verified 30000/45858
+Original preservation verified 40000/45858
+PASS real source update0.9; report /workspace/ace-modern-public/reports/real-source-update-v09.json
+FINAL PASS: /workspace/ace-modern-public/reports/real-source-update-v09.json; configured /workspace/ace-modern-v09-configured; original tree and ZIP preserved

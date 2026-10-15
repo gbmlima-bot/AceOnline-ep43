@@ -1,0 +1,120 @@
+{
+  "ok": true,
+  "release": "0.9.0",
+  "configured_base": "/workspace/ace-modern-v09-configured",
+  "original_tree": "/workspace/ace-modern",
+  "source_kit": "/tmp/ace-v09-configure-final-test/ace-completion-source-kit-v0.9",
+  "source_kit_archive_sha256": "885477ce347801f7fdc90c74b24be6a3215eb974f8d5d5490b60e472de37ebcf",
+  "base_source_zip": "/tmp/ace-github-publication/ace-modern-fontes-v0.8.zip",
+  "base_source_zip_sha256": "1d8acfa14f0a9fa9c6782c5811cab72172fba83a4001527b8b042f603c696f1c",
+  "base_source_zip_preserved": true,
+  "original_files_preserved": 45858,
+  "original_files_content_and_mode_unchanged": true,
+  "configured_tree_symlinks": 0,
+  "fresh_base": {
+    "files": 45858,
+    "symlinks": 0,
+    "hardlinked_asset_files": 45577,
+    "hardlinked_asset_bytes": 5069713152,
+    "zip_extracted_files": 281,
+    "zip_extracted_bytes": 65513152,
+    "all_art_hardlinks_verified_by_size_and_crc32": true,
+    "source_code_extracted_from_zip": true,
+    "all_nonhardlinked_baseline_files_reverified_against_zip_crc32": true,
+    "source_fingerprint_count": 45858,
+    "source_fingerprint_sha256": "ec9d6b606c309ffd6b22aa7fc2fed424b6f6b5fd9ac4c6cce7f3a0fa24954d8b"
+  },
+  "phases": [
+    {
+      "phase": "dry-run",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/ace-v09-configure-final-test/ace-completion-source-kit-v0.9/apply-update.py",
+        "--base",
+        "/workspace/ace-modern-v09-configured",
+        "--base-source-zip",
+        "/tmp/ace-github-publication/ace-modern-fontes-v0.8.zip",
+        "--dry-run"
+      ],
+      "result": {
+        "ok": true,
+        "release": "0.9.0",
+        "base_files_hashed": 69,
+        "preserved_asset_sizes_verified": 45577,
+        "changed_files": 143,
+        "dry_run": true,
+        "already_applied": false,
+        "native_desktop_executables_updated": false
+      },
+      "log": "reports/real-source-update-v09-dry-run.log"
+    },
+    {
+      "phase": "apply",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/ace-v09-configure-final-test/ace-completion-source-kit-v0.9/apply-update.py",
+        "--base",
+        "/workspace/ace-modern-v09-configured",
+        "--base-source-zip",
+        "/tmp/ace-github-publication/ace-modern-fontes-v0.8.zip"
+      ],
+      "result": {
+        "ok": true,
+        "release": "0.9.0",
+        "base_files_hashed": 69,
+        "preserved_asset_sizes_verified": 45577,
+        "changed_files": 143,
+        "dry_run": false,
+        "already_applied": false,
+        "native_desktop_executables_updated": false,
+        "source_backup": "/workspace/ace-modern-v09-configured/.online-update-backups/v0.9-68g6vqrx"
+      },
+      "log": "reports/real-source-update-v09-apply.log"
+    },
+    {
+      "phase": "idempotence",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/ace-v09-configure-final-test/ace-completion-source-kit-v0.9/apply-update.py",
+        "--base",
+        "/workspace/ace-modern-v09-configured",
+        "--base-source-zip",
+        "/tmp/ace-github-publication/ace-modern-fontes-v0.8.zip"
+      ],
+      "result": {
+        "ok": true,
+        "release": "0.9.0",
+        "base_files_hashed": 69,
+        "preserved_asset_sizes_verified": 45577,
+        "changed_files": 0,
+        "dry_run": false,
+        "already_applied": true,
+        "native_desktop_executables_updated": false
+      },
+      "log": "reports/real-source-update-v09-idempotence.log"
+    }
+  ],
+  "backup": {
+    "path": "/workspace/ace-modern-v09-configured/.online-update-backups/v0.9-68g6vqrx",
+    "receipt_sha256": "c4b55a352b046b1ecf001a9cda83d8c82934f799c675f3f3760d11099fac77d1",
+    "verified_original_files": 51
+  },
+  "overlay_files_sha256_verified": 143,
+  "client_project_sha256": "4d22c7da491bfe3b400581135db414b9a779848ab6e2f6cf03629fcd304c34c5",
+  "server_project_sha256": "41a7d56a895dbc2973595c1aeab6473cbb730a95a2b163e21cd32dc01aace2bd",
+  "native_execution_tested": false,
+  "seconds": 29.436,
+  "stage": "final_release_kit",
+  "final_release_kit_verified": true,
+  "controlled_reset": {
+    "ok": true,
+    "changed_paths_verified_before_reset": 143,
+    "restored_baseline_files": 51,
+    "removed_only_receipted_new_files": 92,
+    "previous_kit_sha256": "5ef8b48206a1d4ff68dec1231aa855895b8667e2fbfd272eb02f441b2ecff7e2",
+    "previous_backup": "/workspace/ace-modern-v09-configured/.online-update-backups/v0.9-1uiqs8h5",
+    "art_hardlinks_modified": false
+  },
+  "log": "reports/real-source-update-v09.log",
+  "kit_extraction_symlinks": 0
+}
