@@ -1,0 +1,119 @@
+ACE Modern 0.7 — interface e biblioteca de conteúdo original
+
+O HUD, o radar e a janela de inventário preservam as 531 imagens e os grupos
+da interface azul do cliente oficial. A janela unificada de inventário mantém
+379 × 506 unidades de tela e os encaixes do grupo original «inven».
+
+I — inventário do perfil local
+
+O inventário apresenta apenas itens realmente possuídos no perfil local.
+Cada célula mostra o ícone recuperado, a quantidade e uma descrição com ITEM,
+tipo, posição, requisitos de nível e atributos recuperados. A indicação de
+posse descreve a origem local; não representa uma conta no servidor oficial.
+
+Selecione um item e use «Equipar seleção». A solicitação preserva o número
+original do item e o encaixe primário, secundário, motor, armadura, CPU, radar ou acessório. O modelo valida
+posse, classe, nível, atributos e posição. Itens incompatíveis continuam consultáveis.
+Os encaixes e a prévia 3D exibem o equipamento atual. O quadro comporta 60
+células por página; as setas alcançam o restante do inventário sem alterar a
+geometria original. O inventário bloqueia armas, mas mantém o voo ativo.
+
+Os ícones seguem a ligação SourceIndex documentada no cliente. O campo
+icon_path já contém a resolução correta dos ícones normais e de habilidades.
+Onde o recurso específico não existe, a conversão indica explicitamente o
+ícone original de substituição 07900270. Não há ícones pintados ou gerados
+para simular recursos ausentes.
+
+M — mundo e biblioteca
+
+As abas Missões, Mapas, Itens originais e Aparências permitem buscar nomes ou códigos e
+percorrer páginas de oito registros. A área de rolagem conserva os detalhes
+sem criar centenas ou milhares de controles. O campo de busca captura o
+teclado; Enter ou Escape devolvem o foco. O painel pausa a simulação.
+
+Missões mostram o identificador e título originais, a procedência, o estado,
+objetivos, progresso, recompensa e requisitos. Quando um comportamento ou
+recurso falta, a interface mostra o motivo e não oferece uma ação executável.
+Aceitar e entregar são solicitações ao modelo do mundo, que confere as regras.
+A lista recebe os registros compactos ao abrir ou atualizar o painel; ASTs e
+descrições completas dos scripts não são copiados a cada quadro.
+
+«Texto original / detalhes» consulta apenas a missão selecionada e abre sua
+descrição e seus diálogos de apresentação, andamento, conclusão e falha.
+O texto coreano recuperado fica selecionável e mantém o hash de origem.
+Separadores de linha são exibidos como quebras; BBCode não é interpretado
+e escapes desconhecidos de bytes permanecem literais.
+
+Mapas mostram os registros catalogados e se seus recursos estão disponíveis.
+O botão «Visitar» é uma ferramenta explícita de exploração local; os portais
+do mundo continuam usando as rotas recuperadas do cliente. Mapas sem os
+recursos necessários têm o botão desativado e exibem um motivo. O filtro
+«Disponíveis» restringe a lista aos recursos convertidos ou missões acessíveis.
+
+Itens originais consulta o índice compacto de 16.079 modelos ITEM. Os ícones,
+nomes, códigos, requisitos e preços são dados recuperados do cliente. Esta
+aba não concede itens, não representa uma loja e não altera o inventário.
+O índice é carregado apenas no primeiro acesso à aba; a apresentação usa
+oito registros por vez.
+
+Aparências consulta os modelos originais de armadura importados. O filtro
+«Minha classe» está ativo inicialmente; modelos de outras classes permanecem
+consultáveis com o filtro desligado, com teste visual desativado. O teste usa
+o SourceIndex do ITEM e mantém equipamento, motor e atributos. Não concede
+nem equipa a armadura. «Visual padrão» restaura a nave base da classe atual.
+
+Salvar [F5] e Carregar [F9] solicitam persistência do perfil neste computador.
+Música solicita ativar ou silenciar a trilha original vinculada ao mapa.
+Esses controles são adaptações do novo cliente local, separados da arte
+e das regras recuperadas do jogo.
+
+Validação: test_legacy_ui.gd conserva as verificações de imagens, grupos,
+geometria, redimensionamento e entradas reais da interface. A suíte adicional
+test_library_ui.gd cobre a navegação de 597 missões e 238 mapas de teste,
+pesquisa, filtros, bloqueios, progresso e recompensas ao vivo, inventário
+baseado em ITEM nativo, solicitações de equipamento, salvamento e áudio.
+Também confere o índice completo e o vínculo original do ícone 07001950.
+
+Sistemas jogáveis — contratos da interface 0.7
+
+As novas abas Serviços, Habilidades, Atributos e Rede LAN recebem snapshots
+dos modelos. Nenhum botão concede posse, debita SPI ou decide sucesso. As
+ações são solicitações, revalidadas pelo integrador antes de alterar dados.
+Mensagens de rejeição e os motivos de bloqueio permanecem visíveis em texto.
+A janela conserva o tema azul e as dimensões originais do HUD/inventário.
+
+Serviços consulta apenas oito resultados por vez do ServiceModel, por busca,
+modo e offset. Comprar e Vender enviam identidade e quantidade escolhida;
+Receitas preserva ingredientes possuídos/exigidos, custo e probabilidade;
+Manutenção usa orçamentos calculados para HP/DP/EP/SP e munições. O acesso
+exige cidade/contato apropriado: sem permissão explícita, os controles ficam
+bloqueados. O catálogo completo de itens continua separado da loja local.
+
+Habilidades pagina as definições sem criar centenas de controles. Aprender
+exige os critérios e o custo do modelo; Atribuir vincula uma habilidade já
+aprendida ao slot escolhido de 1 a 8. A barra original usa oito botões reais,
+SP atual/máximo e recarga restante, com ícones recuperados quando disponíveis.
+Alvos, efeitos ou parâmetros não suportados são desativados com motivo.
+
+Atributos mostra o saldo de pontos, totais e alocações por atributo; +1
+solicita uma distribuição validada. I equipa os itens possuídos e mostra
+armadura, CPU, radar e acessórios nos encaixes originais. Retirar equipamento
+também passa pelo modelo e não pode invalidar requisitos de outros itens.
+Testar uma aparência em M continua sendo uma prévia cosmética separada.
+
+Rede LAN tem endereço/porta editáveis e ações Hospedar, Entrar e Desconectar.
+O painel mostra o estado real do ENet e a presença validada dos participantes,
+com identificador para distinguir nomes iguais. A conexão tem no máximo oito
+participantes e compartilha naves e chat; combate, inventário, missões e
+recompensas seguem individuais. Não utiliza o serviço original do jogo.
+
+O chat envia pelo transporte somente enquanto conectado; a confirmação e o
+eco vêm da rede. Desconectado, Enter registra uma nota pessoal da sessão.
+Nomes e mensagens são texto simples, sem interpretação de BBCode. Campos de
+IP, busca, quantidade e slots capturam o teclado para evitar disparos/voo
+enquanto se digita; fechar M devolve o foco.
+
+Validação adicional: test_systems_ui.gd cobre páginas limitadas, filtros e
+quantidades, custo/posse sem mutação da UI, serviços bloqueados e orçamentos,
+aprendizado/atribuição/ativação por id, SP, distribuição, remoção de armadura,
+IP com dois-pontos preservado em JSON e chat literal com foco de teclado.

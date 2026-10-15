@@ -1,0 +1,18 @@
+{
+  "tls_verification_enabled": true,
+  "local_ca_fixture_only": true,
+  "admin_rotation_ok": true,
+  "hello_op": "hello",
+  "protocol": "ace-pve/1",
+  "rotated_old_token_rejected": true,
+  "authenticated_through_wss": true,
+  "snapshot_bytes": 6215,
+  "frame_budget_respected": true,
+  "https_readyz": 200,
+  "godot_log_files": 0,
+  "raw_tokens_in_file_logs": false,
+  "images": {
+    "ace-modern-server:0.8.0": "sha256:490f25aa3a16098f5f5200f2e5997bf7db6fe1ddec7b8bebff3261315e977a4f",
+    "ace-modern-proxy:2.10.2": "sha256:43ea103eaf31873d1fbee41c8fa9d4ee457a084a5c02825f299e63a6a9666771"
+  }
+}

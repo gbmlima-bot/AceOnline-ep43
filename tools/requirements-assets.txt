@@ -1,0 +1,6 @@
+# Optional: needed only to reconvert DirectX X resources, not to run the game.
+# Native dependency: libassimp 5.4.3 (Assimp X importer).
+numpy==2.3.5
+Pillow==12.3.0
+pyassimp==5.2.5
+fonttools==4.61.1

@@ -1,0 +1,154 @@
+{
+  "scope": "Referências oficiais publicadas; datas/builds das capturas não comprovados. O pacote de 2025 é autoridade independente para os recursos e dados de layout.",
+  "records": [
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-masang-img3_01.gif",
+      "context_url": "https://ao.masanggames.co.kr/AO_SUB_guide",
+      "image_url": "https://ao.masanggames.co.kr/_AceOnline/_images/intro/img3_01.gif",
+      "source_kind": "official_publisher_guide",
+      "dimensions_px": [
+        723,
+        500
+      ],
+      "bytes": 174027,
+      "sha256": "86d9277c5fe8c1d9d74fa4422989b81ff19af7147e9ca1ecf03dc4b285eeb14f",
+      "description_pt": "Guia oficial, aba 게임화면 (tela de jogo). Captura real anotada: gauge circular dual ring no topo esquerdo, radar circular topo direito, chat inferior esquerdo, quickslots inferior central e sistema inferior direito. Inventário fechado.",
+      "publication_date": null,
+      "episode_version": null,
+      "date_limit": "Página não declara data de publicação nem episódio. Arte de guia disponível atualmente não prova que corresponda à versão atual do cliente.",
+      "landmarks_px_approx": {
+        "gauge_outer_circle": [
+          9,
+          30,
+          115,
+          94
+        ],
+        "ammo_bar": [
+          10,
+          7,
+          180,
+          20
+        ],
+        "radar": [
+          598,
+          29,
+          98,
+          98
+        ],
+        "chat": [
+          8,
+          375,
+          234,
+          112
+        ],
+        "quickslots": [
+          246,
+          458,
+          235,
+          25
+        ],
+        "bottom_menu": [
+          484,
+          458,
+          228,
+          27
+        ]
+      },
+      "page_declared_dimensions_px": [
+        723,
+        520
+      ],
+      "png_derivative": {
+        "local_path": "/workspace/analysis/ace-online-layout/reference-masang-img3_01.png",
+        "sha256": "e827d4ff362138ebbac046c01a1350b4cfb5e4a6731a110092188c17c3f20d28",
+        "bytes": 156026,
+        "dimensions_px": [
+          723,
+          500
+        ],
+        "method": "ImageMagick convert GIF frame[0] to PNG; full RGBA byte comparison equal",
+        "rgba_sha256": "63edff596f24b63aa64a31686290d469a4e812420e6e30972c3b23eee9e4ae3a"
+      },
+      "project_path": "docs/reference-images/reference-masang-img3_01.png",
+      "delivered_sha256": "e827d4ff362138ebbac046c01a1350b4cfb5e4a6731a110092188c17c3f20d28"
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-masang-trd4.png",
+      "context_url": "https://ao.masanggames.co.kr/AO_SUB_SYSTEM16",
+      "image_url": "https://ao.masanggames.co.kr/_AceOnline/_images/system/trd4.png",
+      "source_kind": "official_publisher_guide",
+      "dimensions_px": [
+        775,
+        547
+      ],
+      "bytes": 720034,
+      "sha256": "033f2dab40324fce60178af4c5e850909a5b40690c96b6eaf3cf97eed15fb886",
+      "description_pt": "Guia oficial de comércio: aba de registro de itens em ITEM TRADE CENTER. Coluna INVENTORY aberta com nave, equipamentos laterais e grade de itens. Gauge circular aparece atrás no topo esquerdo. Este é o inventário embutido no centro de comércio, não a janela flutuante standalone.",
+      "publication_date": null,
+      "episode_version": null,
+      "date_limit": "Página não declara data de publicação nem episódio. Arte de guia disponível atualmente não prova que corresponda à versão atual do cliente.",
+      "landmarks_px_approx": {
+        "inventory_panel": [
+          170,
+          98,
+          306,
+          402
+        ],
+        "gear_preview": [
+          210,
+          145,
+          229,
+          173
+        ],
+        "item_grid": [
+          194,
+          321,
+          256,
+          149
+        ]
+      },
+      "authority_limit": "Trade-center inventory subpanel; do not treat tc_inven as the standalone inventory window.",
+      "project_path": "docs/reference-images/reference-masang-trd4.png",
+      "delivered_sha256": "033f2dab40324fce60178af4c5e850909a5b40690c96b6eaf3cf97eed15fb886"
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-suba-ep46-4.jpg",
+      "context_url": "https://ace.subagames.com/episode4.aspx",
+      "image_url": "https://static.subagames.com/ACE/images/episode4/page/tn/screenshot4.jpg",
+      "source_kind": "official_publisher_episode4.6_announcement",
+      "dimensions_px": [
+        750,
+        457
+      ],
+      "sha256": "8246e75e1f6b9ce8c57ae1c0f583e92fc3a754014540ab4f4337323108cd57c4",
+      "publication_date": null,
+      "episode_context": "4.6 (explicit page announcement text)",
+      "episode_version": "exact screenshot build unknown",
+      "description_pt": "HUD em voo, gauge circular topo esquerdo, radar topo direito e quickslots inferiores; a disposição de chat/SP difere da referência antiga. Inventário fechado.",
+      "date_limit": "Page explicitly announces Episode4.6. Neither a 2025 screenshot date nor version0.4.5.158 is established.",
+      "project_path": "docs/reference-images/reference-suba-ep46-4.jpg",
+      "delivered_sha256": "8246e75e1f6b9ce8c57ae1c0f583e92fc3a754014540ab4f4337323108cd57c4"
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-suba-tutorial-inventory-shop.jpg",
+      "context_url": "https://ace.subagames.com/guide.aspx",
+      "document_url": "https://static.subagames.com/ACE/documents/Ace_Online_Tutorial.pdf",
+      "source_kind": "image_extracted_without_repainting_from_official_tutorial_pdf",
+      "extracted_image_filename": "pdf-images/page-010.jpg",
+      "pdf_page_number": "not asserted from pdfimages sequential filename",
+      "dimensions_px": [
+        1274,
+        694
+      ],
+      "sha256": "6901b94ba10941349aa4a6b689d5a9a4116047a44510471a6f87e674dd1238c9",
+      "publication_date": null,
+      "pdf_creation_date_reported": "2009-09-23 (PDF metadata inspected by root agent; not proof of game build)",
+      "visible_screenshot_timestamp": "2009/09/22 17:16",
+      "episode_version": null,
+      "description_pt": "Inventário/equipamento lado a lado com loja, grade10x6; é variante em contexto de NPC shop, não prova isolada da posição standalone.",
+      "date_limit": "PDF metadata and visible screenshot timestamp are historical context; neither establishes exact EP3.5 build.",
+      "project_path": "docs/reference-images/reference-suba-tutorial-inventory-shop.jpg",
+      "delivered_sha256": "6901b94ba10941349aa4a6b689d5a9a4116047a44510471a6f87e674dd1238c9"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "project": "godot-sqlite",
+  "upstream": "https://github.com/2shady4u/godot-sqlite",
+  "release": "v4.9",
+  "release_url": "https://github.com/2shady4u/godot-sqlite/releases/download/v4.9/addons.zip",
+  "archive_sha256": "95e91b72fe32984a84edaf6357a78753661f37a170cb362f5b948e0ede7c2cb0",
+  "scope": "Dedicated Linuxx86_64 server only; no client extension required",
+  "files": [
+    {
+      "path": "server/addons/godot-sqlite/LICENSE.md",
+      "bytes": 1094,
+      "sha256": "24f129f1d5ce9913b4408e09bb74f50259dd10bb8b4b49478ff5a0d2c977fa60"
+    },
+    {
+      "path": "server/addons/godot-sqlite/bin/libgdsqlite.linux.template_debug.x86_64.so",
+      "bytes": 3849728,
+      "sha256": "a2fa1dddab744135a3ce0f16da6a84d41ec981ffc85560ecb3abf54d9ad4c393"
+    },
+    {
+      "path": "server/addons/godot-sqlite/bin/libgdsqlite.linux.template_release.x86_64.so",
+      "bytes": 4037024,
+      "sha256": "6bc7d4f045ba1903c08931a4f8f39be6a5424d37971d3f3a068f618846fc21ec"
+    },
+    {
+      "path": "server/addons/godot-sqlite/gdsqlite.gdextension",
+      "bytes": 2310,
+      "sha256": "2561bffa02c8bb58b12f0b9a7c987f7a2744cf23b0f96a5145ef48da354d46eb"
+    },
+    {
+      "path": "server/addons/godot-sqlite/gdsqlite.gdextension.uid",
+      "bytes": 20,
+      "sha256": "f6e6af04914e00d216053ba56cc8f89f4cb16db950d5e1570805dd89a194d318"
+    },
+    {
+      "path": "server/addons/godot-sqlite/godot-sqlite.gd",
+      "bytes": 420,
+      "sha256": "d463eff0155a4871e4d49b60648cb5ad0cec74f694314ba8c1f34996dc292fed"
+    },
+    {
+      "path": "server/addons/godot-sqlite/godot-sqlite.gd.uid",
+      "bytes": 20,
+      "sha256": "55ab79e28ff9a85f47b5aa2eff5a4e2ede22e2ce6768b4a99b6271a718fe30bb"
+    },
+    {
+      "path": "server/addons/godot-sqlite/plugin.cfg",
+      "bytes": 252,
+      "sha256": "4ef050a4ca418cbd1f972e29a3d1e3fa4559c3c536da45b47e24dd30c44c97eb"
+    }
+  ]
+}

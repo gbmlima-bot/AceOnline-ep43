@@ -1,0 +1,50 @@
+Física baseada no fonte original — ACE Modern
+
+O núcleo arcade foi substituído por regras identificadas no cliente EP35 e conferidas no EP43. Os motores usam registros ITEM reais do pacote Masang 20250709. Foram implementados voo e movimento terrestre concretos; a fidelidade completa não foi demonstrada contra o cliente original em execução, que não foi iniciado.
+
+Motores e unidades
+
+B-GEAR 12000100 usa ITEM 7001230; M-GEAR 12001100 usa 7002580; A-GEAR 12002100 usa 7002590; I-GEAR 12003100 usa 7002570. São escolhas locais explícitas de motores originais de nível 1, compatíveis com cada ReqUnitKind. Não são equipamento inicial histórico recuperado.
+
+Os quatro motores selecionados têm AbilityMin 130, AbilityMax 160, Range 220 e Time 20000. Reset inicia em 130; voo normal converge para 160 e booster para 220; a capacidade térmica permite 20 segundos de booster. RangeAngle é aproximadamente 2,02; BoosterAngle é 1,6 em B/I e 1,5 em M/A. B/I compartilham essas regras nos registros escolhidos; diferenças adicionais não foram inventadas por classe. Charging 50 do A controla o movimento terrestre.
+
+Os valores são unidades do jogo. O 98 chamado GRAVITY no fonte corrige a velocidade pela inclinação; não é simulação de aceleração gravitacional de corpo rígido nem calibração em metros. speed representa a velocidade do motor; travel_speed desconta a correção antes de integrar a posição. boost_energy representa BURN térmico, nunca HP, SP ou combustível do tanque.
+
+Regras portadas
+
+ShuttleChild.cpp:3943–3948 carrega os campos do motor. As rotinas 10080–10089, 10128 e 10170–10176 aplicam v+=(alvo−v)*dt: ganho 1 no voo/booster e ganho 4 no freio. O freio também preserva a divisão por 2 quando a redução calculada é menor que 0,005, seguida pelo piso do motor.
+
+A correção de inclinação usa 98*(1−2*acos(direção·cima)/PI), aproxima o valor com ganho 1 e aplica o piso de velocidade efetiva (10016–10055). A posição usa essa velocidade e o empuxo lateral 0,5*taxaLateral*velocidadeCruzeiro (9893–9918 e 10526–10535).
+
+Pitch/yaw usam envelopes de 0,5 e 0,7 e rampa SpeedPenalty*0,1. RangeAngle ou BoosterAngle multiplica a taxa de giro (7216–7278; AtumSJ.cpp:990–1028). A inclinação visual segue o ramo de direção/empuxo lateral, com ganho 1 e teto de 72 graus aplicado depois da aproximação (8361–8406). Não foi acrescentada uma força aerodinâmica para transformar roll em curva.
+
+O booster consome capacidade em segundos; fora do booster recupera 10% da capacidade por segundo. O superaquecimento só libera de novo a partir de 90% (1483–1519; AtumDefine.h:178). O teste de esgotamento não positivo segue a correção EP43:1536–1539. Combustível vazio e carga igual ou superior a 0,8 bloqueiam booster; acima de 0,9 a velocidade é restringida ao mínimo. O modelo recebe combustível externamente: não inventa consumo, recuperação ou capacidade de tanque. Queda/morte por combustível ainda exige a máquina de estados correspondente.
+
+O teto vem de ClientMaxAltitudeHeight+WaterHeight, não da altura do editor: MAP_INFO 3002 fornece 2400−170=2230; 3003 fornece 2400+50=2450. configure_world recebe os limites do mundo ativo. O default horizontal preserva a margem original de 40 unidades de 3002; terreno e consultas de colisão são responsabilidade do WorldModel.
+
+Solo, pouso e cerco
+
+A-GEAR pousado usa Charging 50: acelera para frente, permite ré até −25, desacelera sem comando e gira a 1 radiano por segundo (8606–8617 e 9932–9989). B/M/I pousadas ficam paradas. land recebe ponto e normal aprovados pelo mundo; set_ground_contact acompanha o solo. take_off volta ao voo e set_siege trava o movimento terrestre do A. Cerco não concede bônus de arma ou habilidades inventados.
+
+A regra de elegibilidade original permite bEnableLand ou A-GEAR aéreo e exige distância ao alvo menor que 180 (13910–13920). Assim, B/M/I exigem a área de pouso; A pode pedir pouso fora dela. Essa consulta fica na integração com o mundo. As transições do núcleo são pontes locais instantâneas, com 5 unidades de folga na decolagem. Os patterns cinematográficos e a autorização por sessão do legado não foram portados. A orientação no solo usa diretamente a normal do mundo; a suspensão e os raios originais do corpo completo também não estão reproduzidos.
+
+Colisão
+
+O ramo blocked_tile preserva speed*=−0,5 e taxaLateral*=0,8 (8306–8309). Para contatos normais, AtumGlobal.cpp:2390–2400 fornece a reflexão d−2*dot(d,n)*n, e ShuttleChild.cpp:10808/10926 limita a velocidade após o impacto a max(mínimoMotor,60). Essas respostas usam a normal do novo sweep. A detecção de contato e a correção de posição continuam adaptadas ao WorldModel; não se afirma que os raios/corpo D3DX completos foram portados. O impacto é encaminhado ao combate, que é o dono do dano e dos vitais. Objetos com Collision=0 não devem gerar esse contato.
+
+Entrada, tempo e limites
+
+A API reset/advance/forward/position/orientation/speed/boost_energy foi preservada. O teclado substitui o cursor normalizado: W/S é pitch, Q/E é yaw e o nome de entrada roll, usado por A/D, fornece o empuxo lateral original. Em solo A, W/S vira frente/ré. Teclas e sinais são adaptação do novo cliente, não reprodução da configuração antiga de mouse/joystick.
+
+As equações explícitas do fonte rodam a 120 Hz, com resto acumulado e limite de 0,5 s por chamada. Esse relógio é uma adaptação determinística; o legado usava dt de frame. A troca local de GEAR preserva pose e fração térmica; reset restaura voo e velocidade mínima.
+
+Ainda faltam hyperbooster, modificadores de habilidade/enchant/formation/joystick, esquiva de rolagem autorizada pelo servidor, estados de robô/warp/observer, patterns completos de decolagem/pouso, queda por combustível e habilidades completas de cerco. A integração de mundo/combate é validada separadamente.
+
+Verificação e origem
+
+O teste isolado no Godot 4.7.2 passou 89 verificações: fixtures numéricas independentes, 30/60/144 Hz, voo/boost/freio, curva e bank, gravidade, calor, peso, teto, quatro perfis reais e solo/ré/cerco do A. Não executou cena principal nem cliente legado. Após 120 ticks normais a partir de 130, a recorrência fonte produz velocidade 149,0097620333 e distância 141,1486526503; ambos são conferidos pelo teste.
+
+EP35: commit 7c3e47ac47844e5c415d356a94d6201a0b9a38c4.
+EP43: commit f880284fafa3af9b4b1a4bb2938efef1b328bb8e.
+OMI: SHA256 4831431a42bd37ac3ecffc067989330f6304ce214c0a77e8062d28f1fffb5f48.
+physics-original.json contém caminhos, linhas, SHA256, offsets dos motores, adaptações e escopo das verificações.

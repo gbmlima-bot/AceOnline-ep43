@@ -1,0 +1,448 @@
+RECURSOS ORIGINAIS — ACE MODERN 0.7
+
+Cobertura calculada dos manifestos da entrega:
+{
+  "gear_count": 4,
+  "gear_ids": [
+    "12000100",
+    "12001100",
+    "12002100",
+    "12003100"
+  ],
+  "map_catalog_count": 238,
+  "explorable_map_count": 217,
+  "explorable_map_ids": [
+    1001,
+    1002,
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    3002,
+    3003,
+    3004,
+    3005,
+    3006,
+    3007,
+    3008,
+    3009,
+    3013,
+    3014,
+    3015,
+    3016,
+    3017,
+    3018,
+    3019,
+    3020,
+    3021,
+    3022,
+    3023,
+    3024,
+    3025,
+    3028,
+    3029,
+    3031,
+    3034,
+    3035,
+    3036,
+    3041,
+    3042,
+    3043,
+    3044,
+    3045,
+    3060,
+    3063,
+    3064,
+    3067,
+    3068,
+    3069,
+    3080,
+    3081,
+    3084,
+    3085,
+    3086,
+    3087,
+    3088,
+    3089,
+    3090,
+    3091,
+    3092,
+    3301,
+    3302,
+    3303,
+    3306,
+    3307,
+    3308,
+    3309,
+    3311,
+    3312,
+    3313,
+    3314,
+    3316,
+    3317,
+    3321,
+    3322,
+    3323,
+    3326,
+    3331,
+    3332,
+    3333,
+    3334,
+    3335,
+    3336,
+    3337,
+    3338,
+    3341,
+    3342,
+    3343,
+    3346,
+    3347,
+    3351,
+    3352,
+    3361,
+    3362,
+    3366,
+    3367,
+    3368,
+    3371,
+    3372,
+    3376,
+    3377,
+    3378,
+    3379,
+    3381,
+    3386,
+    3387,
+    3388,
+    3389,
+    3390,
+    3391,
+    3392,
+    3393,
+    3394,
+    3395,
+    3396,
+    3397,
+    3401,
+    3402,
+    3406,
+    3407,
+    3408,
+    3411,
+    3412,
+    3413,
+    3414,
+    3415,
+    3416,
+    3417,
+    3418,
+    3421,
+    3426,
+    3431,
+    3436,
+    3437,
+    3441,
+    3451,
+    3452,
+    3453,
+    3454,
+    3455,
+    4001,
+    4002,
+    4003,
+    4006,
+    4007,
+    4008,
+    4009,
+    4010,
+    4100,
+    4101,
+    4180,
+    4181,
+    4190,
+    4191,
+    4300,
+    4301,
+    4302,
+    4303,
+    4304,
+    4305,
+    4306,
+    4307,
+    4400,
+    4401,
+    4402,
+    4403,
+    6001,
+    6002,
+    6003,
+    6004,
+    6005,
+    6006,
+    6007,
+    6008,
+    6009,
+    6010,
+    6011,
+    6012,
+    6013,
+    6014,
+    6015,
+    6016,
+    6017,
+    6018,
+    7001,
+    7002,
+    7003,
+    7004,
+    7005,
+    7006,
+    7007,
+    8001,
+    9000,
+    9001,
+    9002,
+    9011,
+    9012,
+    9013,
+    9014,
+    9015,
+    9016,
+    9021,
+    9022,
+    9023,
+    9024,
+    9025,
+    9026,
+    9027,
+    9028,
+    9029,
+    9030,
+    9031,
+    9032,
+    9033,
+    9101,
+    9102,
+    9200,
+    9201,
+    9202
+  ],
+  "native_terrain_world_count": 158,
+  "native_non_tile_world_count": 59,
+  "complete_static_scenery_maps": 110,
+  "partial_static_scenery_maps": 107,
+  "unavailable_map_count": 21,
+  "complete_definition": "Available native terrain or native non-tile world composition, eligible collision/flags, original props and linked daytime sky/clouds without recorded static-resource gaps; not complete MMO gameplay.",
+  "scenery_placements": 34362,
+  "pooled_prop_models": 1575,
+  "source_prop_models": 1580,
+  "sky_cloud_models": 260,
+  "native_mapobject_codes": 2462,
+  "available_mapobject_models": 2301,
+  "extra_prop_models_without_invented_placements": 726,
+  "native_events": 4509,
+  "native_portal_records": 364,
+  "source_event_dats": 221,
+  "native_missions": 597,
+  "semantically_supported_missions": 537,
+  "blocked_mission_scripts": 60,
+  "mission_availability": "Semantic support is not playability: map/actor availability and native level, faction, gear and prerequisite requirements still gate execution.",
+  "supported_skill_ranks": 245,
+  "blocked_skill_definitions": 312,
+  "native_items": 16079,
+  "native_skill_definitions": 557,
+  "local_shop_stock_items": 2596,
+  "crafting_recipe_definitions": 39230,
+  "supported_crafting_recipes": 304,
+  "blocked_crafting_recipes": 38926,
+  "skill_coverage": {
+    "blocked": 312,
+    "blocked_reasons": {
+      "Ação especial sem parâmetros de atributo; movimento próprio ainda não portado.": 15,
+      "Definição base; aprenda um nível efetivo desta habilidade.": 95,
+      "Efeito de sistema, evento ou formação; concessão original não recuperada.": 30,
+      "Efeito nativo 121 ainda não portado; habilidade bloqueada por inteiro.": 18,
+      "Efeito nativo 122 ainda não portado; habilidade bloqueada por inteiro.": 1,
+      "Efeito nativo 124 ainda não portado; habilidade bloqueada por inteiro.": 7,
+      "Efeito nativo 130 ainda não portado; habilidade bloqueada por inteiro.": 2,
+      "Efeito nativo 138 ainda não portado; habilidade bloqueada por inteiro.": 3,
+      "Efeito nativo 140 ainda não portado; habilidade bloqueada por inteiro.": 1,
+      "Efeito nativo 171 ainda não portado; habilidade bloqueada por inteiro.": 4,
+      "Efeito nativo 173 ainda não portado; habilidade bloqueada por inteiro.": 1,
+      "Efeito nativo 218 ainda não portado; habilidade bloqueada por inteiro.": 1,
+      "Efeito nativo 61 ainda não portado; habilidade bloqueada por inteiro.": 3,
+      "Efeito nativo 81 ainda não portado; habilidade bloqueada por inteiro.": 7,
+      "Exige formação ou múltiplos alvos; execução local não presume um grupo.": 56,
+      "Modo alternável ou carregado ainda não portado.": 68
+    },
+    "catalogued": 557,
+    "supported": 245,
+    "supported_is_not_automatically_learned": true
+  },
+  "progression": {
+    "experience_rows": 126,
+    "max_level": 125,
+    "stat_rows": 342,
+    "level9_initial_xp": 8008
+  },
+  "native_monster_records": 1340,
+  "available_monster_records": 1297,
+  "monster_models": 541,
+  "native_armor_source_indices": 319,
+  "gear_appearance_models": 308,
+  "armor_items_with_model": 7817,
+  "decoded_images": 10127,
+  "image_packs": 33,
+  "exact_item_icons": 14139,
+  "item_icon_bindings": 16079,
+  "mp3_count": 118,
+  "wav_count": 616,
+  "bgm_bindings": 72,
+  "effect_sound_bindings": 18,
+  "original_ui_images": 531,
+  "selected_ui_groups": 19,
+  "official_inventory_files": 10798,
+  "official_inventory_entries": 10823,
+  "converted_glb_files": 3641
+}
+
+ORIGEM
+
+Pacote: https://install.masangsoft.com/20250709/ACEonline.7z
+SHA-256: 8395f1f33dda8165f70f30d2a6ad094c5f64e144403fce98337e5012be795841
+OMI plaintext: 4831431a42bd37ac3ecffc067989330f6304ce214c0a77e8062d28f1fffb5f48
+EP3.5: 7c3e47ac47844e5c415d356a94d6201a0b9a38c4
+EP4.3: f880284fafa3af9b4b1a4bb2938efef1b328bb8e
+
+Nenhum executável original do jogo ou launcher foi iniciado. O inventário
+oficial rastreia arquivos por tamanho/hash; a presença no inventário não
+equivale a conversão ou implementação funcional. O arquivo oficial completo
+não é redistribuído. Os manifestos distinguem importado, parcial e bloqueado.
+
+MALHAS E PIXELS
+
+Os .obj são contêineres CGameData, não Wavefront OBJ. Payloads DirectX X
+foram convertidos para GLB com poses, normais, UVs, hierarquia e vínculos de
+textura documentados. JPEGs vinculados são incorporados sem recompressão;
+TGAs decodificadas para PNG preservam pixels e alpha. Imagens da interface
+azul original preservam também seus bytes e recortes/grupos. As demais
+imagens decodificadas têm hashes de origem e RGBA nos índices.
+
+Assimp/Blender e correções documentadas de pele/bind pose não reproduzem
+automaticamente o renderer DirectX. Materiais modernos, iluminação, flags
+de alpha, normais reparadas e orientação têm registros por modelo. Malhas
+animadas usam poses estáticas/bind pose; animações, multitexture/glow e
+efeitos anexos completos não foram portados. A-GEAR/B/M/I base e as
+aparências importadas são recursos distintos; o teste visual de armadura
+não modifica os atributos de equipamento do jogador.
+
+MUNDO
+
+O catálogo original MAP_INFO registra os vínculos DAT/MAP/TEX/SKY/CLD e
+parâmetros. Mapas exploráveis possuem terreno/altura/flags e composição de
+props carregáveis, ou uma composição original sem tiles marcada no catálogo.
+Os mundos sem tiles conservam objetos/limites nativos sem criar um terreno
+fictício. «Cenário estático completo» significa ausência de lacunas
+registradas nesses recursos e céus/nuvens diurnos vinculados. Não significa
+servidor, missões, animações ou dinâmica original completos. Mapas parciais
+mantêm as lacunas visíveis no catálogo, sem substituição por arte genérica.
+
+Poses, alturas e flags vêm dos DATs. A transformação de coordenadas de cada
+terreno está nos metadados. A colisão segue diagonal B-D do fonte, flags de
+água e faces de objetos Collision=1; alguns terrenos são renderizados com
+diagonal A-C. Esfera de raio 4, sweep contínuo, folga, posição segura e câmera
+com prevenção de oclusão são adaptações de integração do novo motor.
+
+Patches estáticos de água seguem os metadados dos mapas e usam as texturas
+water/black originais, com pixels e alpha preservados. O shader DirectX
+completo de distorção/reflexo da água permanece ausente.
+
+Eventos e destinos de portal são recuperados dos DATs; proximidade e
+cooldown são políticas locais. NPCs usam nome/saudação BUILDINGNPC e posição
+DAT event9 quando disponível. O fallback de NPC3 perto do início conserva
+a indicação de posição local. Marcadores e alcance 120 são adaptações.
+
+MISSÕES, ITENS E PROGRESSÃO
+
+Os scripts recuperados preservam textos, ASTs, offsets e hashes. O compilador
+executa apenas cláusulas de semântica reconhecida e bloqueia as demais;
+requisitos de mapa/modelo, nível, facção, classe e missão anterior continuam
+necessários. A quantidade de scripts semanticamente suportados não deve
+ser anunciada como a quantidade de missões jogáveis pelo perfil inicial.
+
+101/102 mantêm o fluxo inicial. 102 exige 2028200×1 e 2028100×3 em 3302 e
+paga 320 SPI/91 XP uma vez. 9999 é alias de cidade da facção: 2→2001, 4→2002;
+o perfil local normal usa start_city_map_id 2001. Só a indisponibilidade da
+cidade ativa o fallback explícito ao mapa onde a missão foi aceita.
+
+O catálogo ITEM preserva identidades e campos recuperados. Ícones normais
+seguem SourceIndex; habilidades usam a ligação derivada de SKILL_BASE_NUM.
+O índice distingue ícones exatos e fallback original 07900270, sem desenho
+novo. A biblioteca não concede posse. O inventário local valida quantidade,
+classe, nível, atributos e posição, aceita armas/motor/armadura/CPU/radar e
+acessórios suportados, além de recompensa de item declarada pela missão.
+A biblioteca completa é distinta dos subconjuntos executáveis de loja,
+receitas e habilidades; cada operação revalida as condições e os recursos.
+
+Os equipamentos usam requisitos e incrementos de atributo por classe recuperados.
+Pontos podem ser distribuídos em M; armadura, CPU e radar aplicam os campos
+portados. Bônus e campos desconhecidos bloqueiam o equipamento por inteiro.
+O SkillModel executa apenas o subconjunto documentado, com SP, recarga e
+aprendizado explícito; formação, múltiplos alvos e efeitos não portados ficam
+bloqueados. Consulte docs/skills-implementation.json para cobertura detalhada.
+
+O ServiceModel usa ITEM.Price/MinTradeQuantity, venda pelo percentual do fonte,
+custos de refinaria e receitas conservadoras. Estoque de loja, imposto zero
+e acesso por cidade/contato são políticas locais, sem banco de economia oficial.
+Crafting consome ingredientes e SPI conforme a chance recuperada; o RNG local
+é persistido, sem alegar a sequência do servidor original.
+
+A tabela de experiência vem do fonte EP3.5 fixado, níveis 0..125. XP ganho,
+XP efetivo e excedente descartado são separados; subida de nível e limite
+por recompensa seguem os ramos portados. Pontos são distribuídos com os
+incrementos por classe e limites recuperados. Não se presume a tabela do servidor de 2025.
+
+INIMIGOS E COMBATE
+
+MEX fornece identidade, aparência, nível, HP e campos efetivamente validados.
+Nenhum banco de spawns do servidor foi obtido. Encontros de missão usam os
+códigos originais dos objetivos; posições, scheduler, movimentos e atributos
+ausentes do servidor são declarados locais. Cidades não recebem encontros
+fabricados. Belligerence interpreta ramos reconhecidos sem alegar IA completa.
+
+Cadência, munição por projétil, calor, alcance, chance, defesa/perfuração,
+DP antes de HP e penalidade de colisão têm referências no fonte. Armas e
+visibilidade consultam o mundo. Pursuit de míssil, volumes de acerto,
+reaparecimento e RNG local não equivalem às trajetórias Cinema originais.
+
+ÁUDIO E INTERFACE
+
+MP3/WAV são preservados em seus formatos. BGM usa MAP_INFO.Bgm e o registro
+nativo; efeitos usam vínculos identificados e fallback só quando declarado.
+O catálogo de áudio é mais amplo que os eventos implementados no runtime.
+
+O HUD e inventário preservam 531 imagens/19 grupos selecionados da interface
+azul 2025. A janela comum usa inven; tc_inven é Trade Center. O painel M é
+uma apresentação nova e explícita de exploração/biblioteca. HP/DP/munição,
+alvo, missões, equipamento e quantidades refletem o estado local. SP e os
+oito atalhos usam o modelo de habilidades; efeitos não portados permanecem incompletos. O combustível usa a fórmula por distância/tempo
+recuperada; o movimento da queda sem combustível é uma ponte local.
+
+EVIDÊNCIAS E LIMITES
+
+Consulte client/assets/original_worlds/catalog.json, original_library/*,
+local_world/mission_support.json, legacy_rules/* e docs/recursos-originais.json.
+docs/physics-original.*, docs/world-implementation.txt, docs/combate-original.*
+e docs/ui-library.txt detalham regras e adaptações. Relatórios atuais são
+reports/validation.json e reports/render-validation.json com release 0.7.0.
+
+Há perfil persistente local, economia local e LAN opcional de presença/chat,
+sem autenticação, economia oficial ou combate/progressão compartilhados.
+O ambiente validado é Linux; macOS universal/M4 e Windows x64 precisam de
+execução nativa. Sem notarização Apple ou assinatura Authenticode. Não houve
+comparação funcional/pixel integral com o cliente original em execução.
+As licenças das ferramentas não atribuem licença aberta aos recursos do jogo.
+Comparações 0.3/0.4 são históricas, sem apresentar capturas antigas como 0.7.

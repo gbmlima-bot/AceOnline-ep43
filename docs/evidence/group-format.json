@@ -1,0 +1,123 @@
+{
+  "source_resource": "/workspace/targets/ace-client-extracted/Res-tex/Group.tex",
+  "source_sha256": "5fd1f85960423dfd0f917abe873bf85b1e345eabab771f28a421979880d5e239",
+  "source_size": 546476,
+  "archive_entries": 167,
+  "selected_groups": [
+    "Gage",
+    "MainGB",
+    "inven",
+    "inven_0",
+    "inven_1",
+    "minimap",
+    "minimapZI",
+    "Mbtn_C",
+    "Mbtn_F",
+    "Mbtn_G",
+    "Mbtn_H",
+    "Mbtn_M",
+    "Mbtn_R",
+    "Mbtn_S",
+    "OP_menu",
+    "macro",
+    "macro_btn",
+    "voiceChat",
+    "voice_btn"
+  ],
+  "layout_json": "/workspace/analysis/ace-online-layout/group-layout.json",
+  "client_layout_path": "res://assets/legacy_ui/group_layout.json",
+  "format": {
+    "record": "IMAGEFILEMAIN",
+    "record_stride": 364,
+    "fields": {
+      "translation": 0,
+      "center": 12,
+      "scaling": 24,
+      "control_min": 36,
+      "control_max": 48,
+      "max_position": 60,
+      "angle": 72,
+      "scale_percent": 76,
+      "matrix16floats": 80,
+      "name100": 144,
+      "target100": 244,
+      "type": 344,
+      "rect4int32": 348
+    },
+    "group_payload": "metadataIMAGEFILEMAIN364 + header(nVer,ImageCount,CtrlCount)12 + ImageCount*364",
+    "observed_nVer": 12,
+    "node_types": {
+      "IMAGE_TYPE": 1,
+      "CONTROL_TYPE": 3
+    },
+    "byte_order": "little endian; int32/float32",
+    "sources": [
+      "EP43 INFGroupManager.h:13-53",
+      "EP43 INFGroupManager.cpp:59-105",
+      "EP43 Common/AtumDefine.h:1219-1225"
+    ]
+  },
+  "interpretation": [
+    "IMAGE nodes reference interface.tex name; rect+scaling+scale_percent+translation define composed image pieces.",
+    "CONTROL nodes use target_name and control_min/control_max to position runtime widgets/animated gauges/buttons; they do not draw a texture automatically.",
+    "Group metadata translation may be editor/default position and must be reconciled with runtime Move/SetTransVector calls.",
+    "Images render in record order; keep overlapping skins/overlay order.",
+    "No named main-chat group exists among167archive entries; voiceChat/macro groups are distinct from main chat. Main chat placement still needs its source rules.",
+    "inven_0/inven_1 are alternate archived layouts; active group name per source is inven. Do not auto-select alternatives."
+  ],
+  "inven": {
+    "image_count": 18,
+    "local_bounds": [
+      0,
+      0,
+      379,
+      506
+    ],
+    "equipment_overlay_xy": [
+      19,
+      41
+    ],
+    "items_overlay_xy": [
+      19,
+      254
+    ],
+    "grid_xy_source_ep43": [
+      25,
+      254
+    ],
+    "not_tc_inven": true
+  },
+  "Gage": {
+    "anchor_note": "local CONTROL anchors from actual resource; group metadata100,100is not automatically screen origin",
+    "sp_control_min": [
+      46,
+      68,
+      0
+    ],
+    "sp_control_max": [
+      119,
+      105,
+      0
+    ]
+  },
+  "validation": {
+    "source_sha256": "5fd1f85960423dfd0f917abe873bf85b1e345eabab771f28a421979880d5e239",
+    "parsed_named_groups": 19,
+    "validated_records": 122,
+    "checks": [
+      "Official inven record parsed:18records and379x506bounds",
+      "Rejected negativecount",
+      "Rejected excesscount",
+      "Rejected unknownversion",
+      "Rejected outoftexturecrop",
+      "Rejected invalidnodetype",
+      "Rejected truncatedpayload"
+    ],
+    "scope": "No game code executed. Parser grammar compared with immutable EP43 source; real shipped2025 payload length/header/rect bounds validated."
+  },
+  "assets_manifest": {
+    "selected_count": 531,
+    "selected_bytes": 6991908,
+    "sha256": "4542e0dbddbb3c756a3f8049af814b80d7a4a95081e7e85dff1dd7803b2121e4"
+  }
+}

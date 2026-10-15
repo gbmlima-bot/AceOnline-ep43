@@ -1,0 +1,56 @@
+ADAPTAÇÃO DO LAYOUT AZUL — PRÉVIA LOCAL 0.3
+
+A fonte primária da composição é Res-tex/Group.tex do pacote oficial Masang
+20250709, SHA-256 5fd1f85960423dfd0f917abe873bf85b1e345eabab771f28a421979880d5e239.
+O JSON selecionado fica em client/assets/legacy_ui/group_layout.json. O fonte
+EP4.3, commit f880284fafa3af9b4b1a4bb2938efef1b328bb8e, documenta o formato e
+os pontos em que o jogo consulta esses grupos. O instalador declara 0.4.5.158;
+a versão do core do cliente não foi confirmada.
+
+CORREÇÕES EM RELAÇÃO À PRÉVIA 0.2
+
+O inventário anterior escolheu tc_inven pelo aspecto da imagem. A referência
+oficial do ITEM TRADE CENTER mostra essa moldura em um painel da tela de
+comércio. O inventário comum moderno consulta o grupo inven, não tc_inven.
+O grupo real contém 18 imagens e ocupa 379 × 506 pixels. Seu equipamento está
+em (19,41), a camada de itens em (19,254); as células começam em (25,254), com
+10 colunas, 6 linhas, passo 32 e áreas de 30 × 30 pixels no fonte EP4.3.
+
+Os indicadores anteriores foram alinhados por inspeção dos contornos das
+imagens. O grupo Gage fornece âncoras explícitas: energia (17,40), escudo
+(82,40), SP (46,68), boost (8,30), combustível (82,31), ícone de combustível
+(158,83). Os controles de armas começam em (40,2) e (170,2). Esses valores são
+locais ao grupo e não substituem suas âncoras de tela.
+
+A variante azul não deve receber o SP pequeno separado nem as duas janelas
+independentes da interface histórica EP3.5. O guia Masang mistura imagens de
+gerações diferentes; a captura Suba EP4.6 e o próprio pacote ajudam a separar
+as variantes. Datas e builds das capturas oficiais não foram comprovados.
+
+COMPOSIÇÃO E LIMITES
+
+legacy_group.gd aplica a ordem das imagens, recortes e geometria dos grupos
+selecionados; controles são âncoras, não imagens. A translação de metadados
+100,100 não vira automaticamente origem na tela: o chamador pode substituí-la.
+Nos grupos usados, imagens têm rotação zero, percent 1 e limite mínimo zero.
+Esses dados não validam casos genéricos de transformação fora da seleção.
+
+A distribuição dos elementos na tela também depende de regras do cliente:
+HUD acima à esquerda, radar/minimapa à direita, chat à esquerda, sistema à
+direita, atalhos ao centro inferior e menus abaixo à direita. A inspeção dos
+fontes orienta essas âncoras, e a implementação Godot adapta o redimensionamento.
+
+Os 531 TGA selecionados preservam bytes, alpha e orientação. Títulos e molduras
+vêm das artes originais. O texto dinâmico usa a renderização do novo motor;
+fontes, espaçamento, estados e diferenças de DPI ainda exigem comparação com
+uma sessão equivalente do cliente original para afirmar equivalência integral.
+
+Velocidade, altitude e boost são dados do treino local. Energia, escudo, SP,
+munição, moeda, itens e habilidades não representam uma conta original. O chat
+não envia mensagens a um servidor. Nave, terreno e minimapa de treino ainda
+pertencem ao protótipo, sem equivalência comprovada ao mundo original.
+
+As capturas Godot de antes e depois são reconstruções. As imagens publicadas
+pelos operadores estão identificadas separadamente em comparacao-layout.html.
+O cliente original não foi executado neste ambiente. Testes e execução Linux
+não estabelecem execução em macOS/Windows nem igualdade pixel a pixel.

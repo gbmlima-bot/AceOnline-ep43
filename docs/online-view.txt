@@ -1,0 +1,69 @@
+ACE Modern 0.8 — integração da arena online
+
+OnlineView integra o cliente WebSocket dedicado ao Main e ao CombatRuntime.
+A arena desta entrega é cooperativa PvE, restrita ao mapa original 3002 e ao
+I-GEAR. Ela não implementa o protocolo nem o mundo persistente completo do
+servidor original de ACE Online/AirRivals.
+
+Separação de perfis
+
+Antes de iniciar a conexão, o cliente captura um checkpoint do perfil offline
+em memória e suspende os sistemas locais. Desde connecting, Main deixa de
+avançar voo, combate, habilidades, missões e recompensas locais. Salvamento
+manual, carregamento, autosave e salvamento ao sair ficam bloqueados. A LAN
+é desconectada. O checkpoint offline e os arquivos de progresso não são
+enviados ao servidor; o cliente não oferece upload de save offline.
+
+O transporte autentica somente a credencial transitória do piloto. A UI limpa
+o campo antes do callback e recebe exclusivamente o estado público da conexão.
+A rejeição de autenticação, perda de conexão ou desconexão explícita restaura
+o checkpoint offline pela rotina de importação existente, sem salvar dados da
+arena no perfil local. Essa rotina regenera encontros locais; seu identificador
+transitório pode mudar, mas os recursos e o progresso do personagem são
+restaurados. Falha ao restaurar mantém o salvamento bloqueado.
+
+Autoridade e controles
+
+O cliente envia controles a 30 Hz: eixos, boost, freio, disparos, seleção do
+próximo alvo e direção normalizada da mira. Não envia posição, origem do tiro,
+dano, recompensa nem inventário. A sequência começa após a última sequência
+confirmada no estado do piloto, inclusive numa reconexão. Atalhos de habilidade
+emitem comandos identificados; somente o servidor aplica SP, efeito e recarga.
+
+Abrir M ou focar um campo de texto neutraliza os controles enviados. O servidor
+continua simulando a arena; M não pausa inimigos, outros pilotos ou projéteis.
+F2, reset, pausa, viagens, equipamentos, atributos e serviços do perfil local
+permanecem bloqueados. A biblioteca e o controle de áudio ficam disponíveis.
+
+Apresentação
+
+O decoder valida esquema, mapa, classe, identidade autenticada, limites e tipos
+dos snapshots. Arrays de posição e orientação viram Vector3 e Quaternion.
+Nomes, ícones e caminhos de recursos são resolvidos no catálogo nativo local;
+caminhos recebidos pela rede não são carregados como recursos.
+
+A nave própria, a câmera e o HUD seguem o estado confirmado pelo servidor.
+Pilotos remotos recebem interpolação visual; NPCs e projéteis usam os modelos
+originais convertidos. Os nós remotos são separados dos nós offline ocultos.
+Animação de efeitos e expiração de rastros são apresentação, sem avanço local
+do modelo de combate. Chat é texto literal e recompensas confirmadas aparecem
+como aviso e saldo do servidor, sem crédito no inventário offline.
+
+Não há previsão de movimento do cliente nesta entrega. Latência da conexão
+afeta a resposta percebida. O mapa, regras de encontro, kit inicial e política
+de recompensas são a configuração explícita desta arena dedicada; não são uma
+reconstituição de contas, spawns ou economia do serviço original.
+
+Validação
+
+client/tests/test_online_view.gd cobre o DTO de ArenaModel real, tipos de pose,
+identidade privada, recursos nativos, limites, neutralização de controles,
+cadência de 30 Hz, sequência retomada, comandos de habilidades, isolamento do
+CombatModel e guardas de persistência do Main. Exercita também o início e a
+desconexão do OnlineClient real, preservação do checkpoint e invalidação da
+assinatura visual na reconexão, sem precisar de importação gráfica.
+
+client/tests/test_online_ui.gd exercita os controles reais sem imagens, com
+credencial mascarada/apagada, estados pendentes, bloqueios, hotbar do servidor,
+SP e chat literal. A prova de cena real com servidor e recursos importados é
+registrada separadamente em reports/ pelo teste de integração de produção.

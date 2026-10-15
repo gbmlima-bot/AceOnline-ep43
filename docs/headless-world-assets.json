@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "map_id": 3002,
+  "scope": "native_numeric_map_collision_only",
+  "scripts": [
+    "scripts/world_model.gd",
+    "scripts/online/headless_world.gd"
+  ],
+  "files": [
+    {
+      "path": "assets/original_world/3002_terrain.json",
+      "bytes": 82763,
+      "sha256": "715204dee6ff9aed2d51c55708964621651de21ad1d83d14567b64f3f3b3c8b3"
+    },
+    {
+      "path": "assets/original_world/3002_heights.f32",
+      "bytes": 264196,
+      "sha256": "6e0771f46c38d7809740ae3aba21a983b4a1e50001563ea09d6ce2442aca850d"
+    },
+    {
+      "path": "assets/original_world/3002_water_flags.u8",
+      "bytes": 65536,
+      "sha256": "ba5138c5d888f58e573b64318b1cd0028d0bed814fd5a54ffb6a4740aa08fc46"
+    },
+    {
+      "path": "assets/original_world/3002_landing_flags.u8",
+      "bytes": 65536,
+      "sha256": "1453de317826cc40dbf33816bae50a3f94f8fd3ee414f74d3d581c1e38ea72ae"
+    },
+    {
+      "path": "assets/original_props/placements.json",
+      "bytes": 1018217,
+      "sha256": "483ef21478f0f1f4c2a164d8e6f186b27d3b27fb1c807d8d6064b6916680cb29"
+    },
+    {
+      "path": "assets/original_props/03001700_collision.json",
+      "bytes": 84615,
+      "sha256": "ae672213954ce03e659e9081606e37945c678112b40e82b2505fa29c40bb2cbf"
+    },
+    {
+      "path": "assets/original_props/03001800_collision.json",
+      "bytes": 43233,
+      "sha256": "c152faf4d92d76c9e7b34788a89389de675e2498b8aef47579613e320cd196e0"
+    },
+    {
+      "path": "assets/original_props/03002000_collision.json",
+      "bytes": 86318,
+      "sha256": "2492e2e140393fe7e516af15738405316d2b4a5b28c7bca49b6f9cef0a8d77c1"
+    },
+    {
+      "path": "assets/original_props/03002600_collision.json",
+      "bytes": 139913,
+      "sha256": "c286be0eb22c5be4bcf101fa8b2f7182068aa694d7e27410313365dd94d9a37b"
+    },
+    {
+      "path": "assets/original_props/03002700_collision.json",
+      "bytes": 17283,
+      "sha256": "50a3fb2fe14a0d1012921b3a40ba9d2b1ffc59e541c9bdb028f05b15ecc73494"
+    },
+    {
+      "path": "assets/original_props/03002800_collision.json",
+      "bytes": 23162,
+      "sha256": "dec78fee4bacbbae07e592fda452810eb03aae48bb6d9740625b92aaf2f7d34c"
+    },
+    {
+      "path": "assets/original_props/03002900_collision.json",
+      "bytes": 15878,
+      "sha256": "76b3421ba3bf6994821cc8a9db71cbfef2a303fcce7b91cc8bfb33294d735203"
+    },
+    {
+      "path": "assets/original_props/03003000_collision.json",
+      "bytes": 87325,
+      "sha256": "1a0e70f6d76e37e6b64d16b11c553dc9e993f61b3b47b95d26cce9d3696b5cf1"
+    },
+    {
+      "path": "assets/original_props/03003500_collision.json",
+      "bytes": 99314,
+      "sha256": "d0306f15723e27d30ae6869ef8961c94cf702e97616c276fd15e317c8dfb659e"
+    },
+    {
+      "path": "assets/original_props/03003800_collision.json",
+      "bytes": 5825,
+      "sha256": "8b0825b6d58dab686374758a952fad8d93e22617ac39ce2b6fe64f248fd711ec"
+    }
+  ],
+  "data_file_count": 15,
+  "data_bytes": 2099114,
+  "collision_models": 10,
+  "collision_instances": 31,
+  "source_archive_sha256": "8395f1f33dda8165f70f30d2a6ad094c5f64e144403fce98337e5012be795841",
+  "native_spawns_available": false,
+  "excluded_runtime_assets": [
+    "*.glb",
+    "*.png",
+    "*.jpg",
+    "*.mp3",
+    "*.wav",
+    ".godot",
+    "original executables",
+    "full maps/catalogs.json",
+    "full WorldRuntime/quests/NPC UI"
+  ]
+}

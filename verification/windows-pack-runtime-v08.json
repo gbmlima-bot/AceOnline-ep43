@@ -1,0 +1,19 @@
+{
+  "release": "0.8.0",
+  "passed": true,
+  "artifact_platform": "windows",
+  "exported_pack_executed": true,
+  "execution_engine": "official Godot4.7.2 Linux x86_64",
+  "headless_passed": true,
+  "opengl_passed": true,
+  "fresh_userdata": true,
+  "normal_exit_clean": true,
+  "native_macos_windows_execution": false,
+  "pack_bytes": 3920239280,
+  "logs": [
+    "reports/windows-pack-headless-v08.log",
+    "reports/windows-pack-rendered-v08.log"
+  ],
+  "capture": "reports/windows-pack-preview-v08.png",
+  "capture_sha256": "5b884d68f66614fbc45edb7f273919478399386e2a5ea174250d8856680dd210"
+}

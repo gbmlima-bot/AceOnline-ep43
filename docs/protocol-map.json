@@ -1,0 +1,412 @@
+{
+  "scope": {
+    "source_root": "/workspace/targets/ace-online-ep35",
+    "commit": "7c3e47ac47844e5c415d356a94d6201a0b9a38c4",
+    "method": "Leitura estática de código e referências por linha. Nenhum binário do alvo foi executado e nenhum serviço foi contatado.",
+    "language": "pt-BR"
+  },
+  "architecture": [
+    {
+      "name": "Entrada e descoberta",
+      "direction": "Cliente → PreServer → banco de contas; PreServer → Cliente",
+      "classification": "observacao_estatica",
+      "observation": "PreServer recebe login, consulta conta e devolve endpoints separados de FieldServer e IMServer.",
+      "sources": [
+        {
+          "file": "Server/GameServer/PreServer/Main/PreIOCPSocket.cpp",
+          "lines": "1263-1405"
+        },
+        {
+          "file": "Server/GameServer/PreServer/Main/AtumPreDBManager.cpp",
+          "lines": "55,207-208,256-269,374-379"
+        },
+        {
+          "file": "Server/GameServer/PreServer/Main/PreIOCPSocket.cpp",
+          "lines": "2553-2558"
+        }
+      ]
+    },
+    {
+      "name": "Sessão de jogo",
+      "direction": "Cliente → FieldServer ↔ PreServer; FieldServer → banco de jogo",
+      "classification": "observacao_estatica",
+      "observation": "FieldServer pede T_FP_CONNECT_AUTH_USER ao PreServer. A resposta encaminha QT_GetAllCharacterInfoByID ao gerenciador de banco; seleção e criação de personagem usam filas de consulta.",
+      "sources": [
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "13279-13294"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/PreWinSocket.cpp",
+          "lines": "312-347"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "13493-13495,13692"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/AtumFieldDBManager.cpp",
+          "lines": "76-79"
+        }
+      ]
+    },
+    {
+      "name": "Sessão social",
+      "direction": "Cliente → IMServer → banco",
+      "classification": "observacao_estatica",
+      "observation": "IMServer recebe login próprio e enfileira QT_AuthChatLogin; gerenciador executa procedimento via ODBC e devolve T_IC_CONNECT_LOGIN_OK.",
+      "sources": [
+        {
+          "file": "Server/GameServer/IMServer/Main/IMIOCPSocket.cpp",
+          "lines": "1661-1695,877-900"
+        },
+        {
+          "file": "Server/GameServer/IMServer/Main/AtumIMDBManager.cpp",
+          "lines": "26,79-115"
+        }
+      ]
+    },
+    {
+      "name": "Autorização de servidor",
+      "direction": "PreServer → AuthenticationServer → banco de autenticação",
+      "classification": "observacao_estatica",
+      "observation": "Sob S_AUTHENTICATION_SERVER_HSKIM, PreServer envia T_PAUTH_CONNECT_LOGIN com metadados de servidor. AuthenticationServer verifica GameName, IP/netmask, Allow e Shutdown e registra resultado.",
+      "sources": [
+        {
+          "file": "Server/GameServer/PreServer/Main/PreGlobal.cpp",
+          "lines": "2057,2100-2112"
+        },
+        {
+          "file": "Server/GameServer/AuthenticationServer/Main/AuthenticationIOCPSocket.cpp",
+          "lines": "85,160-234"
+        },
+        {
+          "file": "Server/GameServer/AuthenticationServer/Main/AtumAuthenticationDBManager.cpp",
+          "lines": "79-81,124-139"
+        },
+        {
+          "file": "Server/Database/MSSQL/000_Main/AuthenticationServer_03_CREATE_PROCEDURE_SELECT_ACCOUNT.sql",
+          "lines": "13"
+        }
+      ],
+      "inference": "É autorização de instalação/servidor, aparentemente licenciamento, e não uma etapa obrigatória de autenticação individual de jogadores.",
+      "gap": "Não foi determinada a configuração de compilação ativa; T_PA_ADMIN_* designa AdminTool/PreServer e não AuthenticationServer."
+    },
+    {
+      "name": "Simulação NPC",
+      "direction": "FieldServer ↔ NPCServer",
+      "classification": "observacao_estatica",
+      "observation": "FieldServer abre UDP por mapa e associa o peer ao endereço e porta do NPCServer.",
+      "sources": [
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCP.cpp",
+          "lines": "2160-2205"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "16794-16799"
+        }
+      ]
+    }
+  ],
+  "transport_and_framing": [
+    {
+      "name": "TCP e IOCP",
+      "direction": "Cliente ↔ servidores de sessão",
+      "classification": "observacao_estatica",
+      "observation": "CWinSocket cria AF_INET/SOCK_STREAM; CIOCP cria listener SOCK_STREAM/overlapped, aceita com WSAAccept e associa socket a completion port. Worker usa GetQueuedCompletionStatus. Leitura e escrita TCP usam WSARecv/WSASend.",
+      "sources": [
+        {
+          "file": "Client/SocketLib/main/WinSocket.cpp",
+          "lines": "102,352-357,460-465"
+        },
+        {
+          "file": "Server/Common/IOCP.cpp",
+          "lines": "255,806,835,1029,1067,1161"
+        },
+        {
+          "file": "Server/Common/IOCPSocket.cpp",
+          "lines": "161,241"
+        }
+      ]
+    },
+    {
+      "name": "UDP implementado e uso concreto",
+      "direction": "FieldServer ↔ NPCServer",
+      "classification": "observacao_estatica",
+      "observation": "CIOCPSocket::OpenUDPPort cria SOCK_DGRAM e usa WSARecvFrom/WSASendTo; OpenUDPPortForOtherServer configura canal NPC por mapa. Ramo UDP retira cabeçalho de quatro bytes e despacha diretamente.",
+      "sources": [
+        {
+          "file": "Server/Common/IOCPSocket.cpp",
+          "lines": "165,282,801-825,1177"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCP.cpp",
+          "lines": "2192-2205"
+        }
+      ],
+      "gap": "UDP disponível na biblioteca não prova uso no tráfego cliente de movimento. O caminho de cliente inspecionado usa socket TCP."
+    },
+    {
+      "name": "Enquadramento binário",
+      "direction": "Bibliotecas comuns cliente/servidor",
+      "classification": "observacao_estatica",
+      "observation": "Cabeçalho de 4 bytes: comprimento do corpo USHORT (2), flag de codificação/índice (1), sequência (1). Corpo contém mensagens com tipo USHORT de 2 bytes seguido de struct C++. Variante codificada documenta checksum de 1 byte e preenchimento de 0 a 3 bytes. Limite nominal SIZE_MAX_PACKET=1492. Não são reproduzidas tabelas ou regras de codificação.",
+      "sources": [
+        {
+          "file": "Server/Common/SocketHeader.h",
+          "lines": "23-32,52-65,73-77"
+        },
+        {
+          "file": "Server/Common/WinPacket.h",
+          "lines": "113-127"
+        }
+      ]
+    },
+    {
+      "name": "Recomposição e despacho",
+      "direction": "Stream TCP → mensagens",
+      "classification": "observacao_estatica",
+      "observation": "CRecvPacket::AddTail preserva cabeçalhos parciais, extrai comprimento, acumula corpo e valida conclusão. OnReceive percorre os bytes recebidos e chama handler por tipo de servidor. FieldIOCPSocket despacha tipos para handlers com verificação de sizeof e de estado.",
+      "sources": [
+        {
+          "file": "Server/Common/WinPacket.h",
+          "lines": "244-276,293-322"
+        },
+        {
+          "file": "Server/Common/IOCPSocket.cpp",
+          "lines": "828-902"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "7828-7868,13187-13198,16491-16517"
+        }
+      ],
+      "inference": "Uma leitura de socket não equivale a uma mensagem: segmentação/coalescência é tratada por framing próprio. A cópia direta de structs sugere dependência de ABI, packing e tipos Windows.",
+      "gap": "Tamanhos totais de structs e byte order não foram validados por compilação; não assumir serialização portável."
+    }
+  ],
+  "representative_flows": [
+    {
+      "name": "T_PC_CONNECT_VERSION / VERSION_OK",
+      "direction": "Cliente/launcher ↔ PreServer",
+      "classification": "observacao_estatica",
+      "observation": "Família de mensagens de versão está declarada; handler de login exige CP_VERSIONCHECKED.",
+      "sources": [
+        {
+          "file": "Client/Common/AtumProtocol.h",
+          "lines": "1990-1992"
+        },
+        {
+          "file": "Server/GameServer/PreServer/Main/PreIOCPSocket.cpp",
+          "lines": "1279"
+        }
+      ],
+      "gap": "Transição completa de atualização/versão não foi rastreada."
+    },
+    {
+      "name": "T_PC_CONNECT_LOGIN / LOGIN_OK",
+      "direction": "Cliente ↔ PreServer ↔ banco de contas",
+      "classification": "observacao_estatica",
+      "observation": "Entrada valida tamanho/estado e enfileira QT_PRE_Login no ramo comum; consulta atum_PreServerGetAccountInfo e compara representação de senha; sucesso inclui endpoints Field/IM.",
+      "sources": [
+        {
+          "file": "Server/GameServer/PreServer/Main/PreIOCPSocket.cpp",
+          "lines": "1263-1405,2553-2558,2596"
+        },
+        {
+          "file": "Server/GameServer/PreServer/Main/AtumPreDBManager.cpp",
+          "lines": "55,207-208,256-269,379"
+        },
+        {
+          "file": "Server/GameServer/CommonGameServer/StringDefineProcedure.h",
+          "lines": "345"
+        }
+      ],
+      "gap": "Há variantes por distribuidor e autenticação externa; não foram generalizadas como fluxo universal."
+    },
+    {
+      "name": "T_FC_CONNECT_LOGIN / T_FP_CONNECT_AUTH_USER",
+      "direction": "Cliente → FieldServer → PreServer → FieldServer",
+      "classification": "observacao_estatica",
+      "observation": "MSG_FC_CONNECT_LOGIN contém campos de conta/senha/IP privado. Handler passa a CS_RECVLOGIN e envia pedido de autorização de usuário ao PreServer; resposta dispara carregamento dos personagens.",
+      "sources": [
+        {
+          "file": "Client/Common/AtumProtocol.h",
+          "lines": "3791-3797"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "13240-13243,13279-13294"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/PreWinSocket.cpp",
+          "lines": "312-347"
+        }
+      ]
+    },
+    {
+      "name": "T_FC_CONNECT_LOGIN_OK",
+      "direction": "FieldServer → Cliente",
+      "classification": "observacao_estatica",
+      "observation": "Resposta inclui AccountUniqueNumber, NumCharacters e três slots de FC_CONNECT_LOGIN_INFO, além de informações auxiliares; resposta de DB muda estado para CS_LOGINED.",
+      "sources": [
+        {
+          "file": "Client/Common/AtumProtocol.h",
+          "lines": "3959-3970"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "12369-12386"
+        }
+      ]
+    },
+    {
+      "name": "T_FC_CHARACTER_GET_CHARACTER / GET_CHARACTER_OK",
+      "direction": "Cliente ↔ FieldServer → banco",
+      "classification": "observacao_estatica",
+      "observation": "Pedido confere identidade da conta, identificador do personagem e estado; enfileira QT_GetCharacterInfoByName. QP correspondente vincula parâmetros e executa procedimento ODBC; callback constrói resposta.",
+      "sources": [
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "13424-13495,12321"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/AtumFieldDBManager.cpp",
+          "lines": "2698-2700,2750-2754"
+        }
+      ]
+    },
+    {
+      "name": "T_FC_CHARACTER_CREATE / CREATE_OK",
+      "direction": "Cliente ↔ FieldServer → banco",
+      "classification": "observacao_estatica",
+      "observation": "Dispatcher chama Process_FC_CHARACTER_CREATE; operação enfileira QT_CreateCharacter e callback monta CREATE_OK.",
+      "sources": [
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "7843-7844,13501,13692,10064"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/AtumFieldDBManager.cpp",
+          "lines": "2404"
+        }
+      ]
+    },
+    {
+      "name": "T_FC_CHARACTER_GAMESTART / GAMESTART_OK",
+      "direction": "Cliente ↔ FieldServer",
+      "classification": "observacao_estatica",
+      "observation": "Pedido identifica ClientIndex e CharacterUniqueNumber; handler recupera cache e chama CharacterGameStartRoutine. Resposta anuncia endpoint do mapa, posição, clima, mapa/canal e atributos atuais.",
+      "sources": [
+        {
+          "file": "Client/Common/AtumProtocol.h",
+          "lines": "4743-4765"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "15560-15595,15710"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket2.cpp",
+          "lines": "16925-16949"
+        }
+      ]
+    },
+    {
+      "name": "T_IC_CONNECT_LOGIN / LOGIN_OK",
+      "direction": "Cliente ↔ IMServer → banco",
+      "classification": "observacao_estatica",
+      "observation": "IMServer processa sessão social independente; rejeita duplicidade e enfileira QT_AuthChatLogin. ODBC executa PROCEDURE_080822_0207 e retorno envia LOGIN_OK.",
+      "sources": [
+        {
+          "file": "Client/Common/AtumProtocol.h",
+          "lines": "4354-4362"
+        },
+        {
+          "file": "Server/GameServer/IMServer/Main/IMIOCPSocket.cpp",
+          "lines": "1661-1695,877-900"
+        },
+        {
+          "file": "Server/GameServer/IMServer/Main/AtumIMDBManager.cpp",
+          "lines": "79-115"
+        }
+      ]
+    },
+    {
+      "name": "T_FC_MOVE / MOVE_OK; T_FN_MOVE_OK",
+      "direction": "Cliente → FieldServer → clientes próximos e NPCServer",
+      "classification": "observacao_estatica",
+      "observation": "Pedido contém índice, intervalo e vetores posição/alvo/up. Handler exige índice da própria sessão e CS_PLAYING, verifica posição, atualiza/propaga estado. Movimento é enviado ao NPC e aos clientes do canal/alcance.",
+      "sources": [
+        {
+          "file": "Client/Common/AtumProtocol.h",
+          "lines": "5508-5536"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "16480-16544,16794-16799,16809-16817,16828-16844"
+        }
+      ],
+      "gap": "A cadência exata, normalização completa e todos os filtros de movimento não foram reconstruídos."
+    },
+    {
+      "name": "T_FC_ITEM_GET_ITEM",
+      "direction": "Cliente → FieldServer",
+      "classification": "observacao_estatica",
+      "observation": "Pedido de coleta identifica ClientIndex e ItemFieldIndex. Handler verifica tamanho, vínculo à sessão e validade do personagem antes de continuar.",
+      "sources": [
+        {
+          "file": "Client/Common/AtumProtocol.h",
+          "lines": "8412-8416"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "21569-21600"
+        }
+      ],
+      "gap": "Transação completa de coleta e persistência não foi rastreada."
+    },
+    {
+      "name": "T_FC_STORE_GET_ITEM",
+      "direction": "Cliente → FieldServer → banco",
+      "classification": "observacao_estatica",
+      "observation": "Pedido de armazenamento valida conta/personagem e regras; cópia do pedido é enfileirada como QT_GetStoreItem. Dispatcher de banco chama QP_NewGetStoreItem, que lê itens por armazenamento.",
+      "sources": [
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "8168-8169,20306-20326,20450-20471"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/AtumFieldDBManager.cpp",
+          "lines": "115,7266-7289"
+        }
+      ],
+      "gap": "Carregamento de inventário em memória e armazenamento externo têm ramos distintos; este recorte documenta o caminho de consulta ao banco."
+    },
+    {
+      "name": "T_FC_ITEM_USE_ITEM / USE_ITEM_OK",
+      "direction": "Cliente ↔ FieldServer",
+      "classification": "observacao_estatica",
+      "observation": "Pedido contém ClientIndex e ItemUniqueNumber. Handler verifica tamanho e estado, incluindo morte e bazar; estruturas da resposta são declaradas.",
+      "sources": [
+        {
+          "file": "Client/Common/AtumProtocol.h",
+          "lines": "8514-8524"
+        },
+        {
+          "file": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+          "lines": "23682-23696"
+        }
+      ],
+      "gap": "Efeitos e escrita de cada categoria de item não foram individualmente auditados."
+    }
+  ],
+  "limits": [
+    "Evidência de fonte, sem captura de rede nem validação do comportamento em execução.",
+    "Cliente/Common e Server/GameServer/CommonGameServer contêm cópias das definições; paridade completa das cópias não foi auditada.",
+    "Não foram publicados dados reais de contas, credenciais, tokens, endereços de implantação ou tabelas de codificação.",
+    "Esquema, procedimentos instalados, macros de serviço e opções de compilação podem mudar o comportamento observado. Comentários de SQL foram diferenciados de chamadas ODBC efetivas.",
+    "Não foi montado cliente de replay nem examinada evasão de mecanismos antitrapaça."
+  ]
+}

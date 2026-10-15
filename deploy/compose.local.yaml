@@ -1,0 +1,11 @@
+# Use together with compose.yaml. No TLS certificate or domain is needed locally.
+services:
+  game:
+    networks: [backend, local]
+    ports:
+      - "127.0.0.1:${ACE_LOCAL_WS_PORT:-9080}:9080"
+      - "127.0.0.1:${ACE_LOCAL_HEALTH_PORT:-9081}:9081"
+  caddy:
+    profiles: [public]
+networks:
+  local:

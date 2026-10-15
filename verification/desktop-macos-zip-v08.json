@@ -1,0 +1,87 @@
+{
+  "platform": "macos",
+  "architectures": [
+    "arm64",
+    "x86_64"
+  ],
+  "native_executed": false,
+  "zip_crc_all_members": true,
+  "executable_permission": true,
+  "plist_version": "0.8.0",
+  "pck": {
+    "version": 4,
+    "engine": [
+      4,
+      7,
+      2
+    ],
+    "flags": 2,
+    "start": 0,
+    "file_base": 112,
+    "directory_offset": 3806257784,
+    "file_count": 45635,
+    "application_version": "0.8.0",
+    "required_script_bindings": [
+      {
+        "source": "res://scripts/main.gd",
+        "packed": "res://scripts/main.gdc",
+        "offset": 3662606384,
+        "bytes": 37823,
+        "md5": "9fe739721f636288bb1c5f50c3392615"
+      },
+      {
+        "source": "res://scripts/game_systems.gd",
+        "packed": "res://scripts/game_systems.gdc",
+        "offset": 3662466084,
+        "bytes": 13492,
+        "md5": "3db25f30823d10ded1fa609abf8b1250"
+      },
+      {
+        "source": "res://scripts/legacy_hud.gd",
+        "packed": "res://scripts/legacy_hud.gdc",
+        "offset": 3662504159,
+        "bytes": 87798,
+        "md5": "302d9400848e86b49ea36a29a5c84789"
+      },
+      {
+        "source": "res://scripts/online/online_client.gd",
+        "packed": "res://scripts/online/online_client.gdc",
+        "offset": 3662359241,
+        "bytes": 8608,
+        "md5": "d3aec0f796c39d345a8f21e74d46d33a"
+      },
+      {
+        "source": "res://scripts/online/json_wire.gd",
+        "packed": "res://scripts/online/json_wire.gdc",
+        "offset": 3662356930,
+        "bytes": 2311,
+        "md5": "41514fbac51189228dcdf998cd1b54cd"
+      },
+      {
+        "source": "res://scripts/online/arena_model.gd",
+        "packed": "res://scripts/online/arena_model.gdc",
+        "offset": 3662324826,
+        "bytes": 24683,
+        "md5": "b6506d16333ad50dd00593ca77392981"
+      },
+      {
+        "source": "res://scripts/online/online_view.gd",
+        "packed": "res://scripts/online/online_view.gdc",
+        "offset": 3662367849,
+        "bytes": 20268,
+        "md5": "7f7d978fda9a882298f1ef27c8983629"
+      },
+      {
+        "source": "res://scripts/combat_runtime.gd",
+        "packed": "res://scripts/combat_runtime.gdc",
+        "offset": 3662419051,
+        "bytes": 31035,
+        "md5": "e1863dd3d6363ba5f426d7d7e9ad3a05"
+      }
+    ],
+    "project_binary_md5": "2d9d106dca3ef93db8a1b774c93b181a",
+    "code_md5_verified": 53
+  },
+  "sha256": "5de3a098c210b78e3a10b8160fbf8f03bd18c630802c985765dd83d1a55d3db4",
+  "bytes": 3362117557
+}

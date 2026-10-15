@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "kind": "partial source-equation port plus explicit local encounter",
+  "source_repository": "https://github.com/bhsdp1/AceOnline-ep35",
+  "source_commit": "7c3e47ac47844e5c415d356a94d6201a0b9a38c4",
+  "files": [
+    {
+      "path": "Server/GameServer/CommonGameServer/AtumSJ.cpp",
+      "sha256": "b40640d0ffa089c09339c33aa25d88dd0a2d2890210beba0818d4f3a2101e37b",
+      "references": [
+        "488-493 GetAttackProbabilityC",
+        "578-605 GetAttackC",
+        "720-747 GetDefenseM",
+        "834-896 shot/cadence/range/prepare",
+        "1041-1048 GetWarHeadSpeed",
+        "1942-1946 GetCharacterHP",
+        "2319-2330 GetPenaltyCollisionBYSpeed"
+      ]
+    },
+    {
+      "path": "Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp",
+      "sha256": "880804ac845f2b4af9fa9416cae7b04953dd2094c10feba553f4f458f021f709",
+      "references": [
+        "1718-1754 DecreaseCharacterHPDP",
+        "3481-3584 hit probability",
+        "3673-3756 defense/damage/min/max",
+        "6315-6327 secondary ammo",
+        "14019 collision penalty"
+      ]
+    },
+    {
+      "path": "Client/EtcLib/main/WeaponItemInfo.cpp",
+      "sha256": "ff1027786f28e079e0814d8fe0e270c6e973b3811fc093b11a0b61c48d99a978",
+      "references": [
+        "181-223,300-329 overheat",
+        "1254-1353 one secondary attack per projectile",
+        "1431-1457 bundle/missile/rocket share secondary launch path"
+      ]
+    },
+    {
+      "path": "Client/DataRenderLib/main/WeaponMissileData.cpp",
+      "sha256": "69f8a70d41d76a4ed3e67e2d889eddbc3c8fab9a3d3eab90869007efba7bae4a",
+      "references": [
+        "220-253 source launch pose",
+        "506-583 Cinema movement"
+      ]
+    },
+    {
+      "path": "Client/InterfaceLib/main/INFItemInfo.cpp",
+      "sha256": "74266dfb5e383381780c600a84d32f74feb51e957ccda3f6458b0892c9150690",
+      "references": [
+        "1227 RangeAngle radians to degrees"
+      ]
+    },
+    {
+      "path": "Client/EffectLib/main/ObjectAniData.cpp",
+      "sha256": "d56519a4de7599e14211778482586a72c8f793e07aa63047c7215ee871269790",
+      "references": [
+        "90-104 texture animation"
+      ]
+    },
+    {
+      "path": "Client/Common/AtumParam.h",
+      "sha256": "0bee3d02698d3c9e49c968c7a37db4f608de5fa004bf93c732021f89dcc7c897",
+      "references": [
+        "810-825 GEAR masks and unit kinds",
+        "1519-1526 equipment positions enum"
+      ]
+    }
+  ],
+  "native_rules": "client/assets/legacy_rules/combat.json",
+  "native_monsters": "client/assets/legacy_rules/monsters.json",
+  "local_adaptations": "client/assets/local_encounter.json",
+  "assets": "client/assets/original_combat/manifest.json",
+  "effect_descriptors": "docs/evidence/combat-effect-descriptors.json",
+  "tests": [
+    "client/tests/test_combat.gd",
+    "client/tests/test_combat_runtime.gd"
+  ],
+  "limitations": [
+    "No original executable or security component run",
+    "No server/account/session interoperability",
+    "NPC AI, equipment stats absent from MEX, spawn positions and respawn timers explicitly local",
+    "Missile guidance is a local adaptation, not a port of Cinema trajectories",
+    "Mesh animation and impact/particle/trace renderer incomplete",
+    "Modern PBR lighting and sphere target hit volumes do not prove original visual/physics equivalence",
+    "A-Gear uses source-compatible native ITEMs but shares B/M/I weapon effects as explicit local visualization; bundle Cinema and area explosion are not restored"
+  ],
+  "native_weapon_catalog": "client/assets/legacy_rules/weapons.json",
+  "library_expansion": {
+    "actor_registry": "res://assets/original_library/actors/actors.json",
+    "items_catalog": "res://assets/original_library/catalogs/items.json",
+    "native_item_count_expected": 16079,
+    "inventory_slots": {
+      "primary": 2,
+      "secondary": 4,
+      "engine": 6
+    },
+    "encounters": "original actor identities, HP, level and appearance; local positions/defaults/AI, no recovered server spawns",
+    "persistence": "versioned local character and reward ledger; native creatures/projectiles regenerate",
+    "level_progression": {
+      "table": "res://assets/original_library/catalogs/level_experience.json",
+      "native_cap": 125,
+      "local_start_level": 9,
+      "experience_origin": 8008,
+      "award_policy": "at most one level, cap99percent following level; preserve raw earned quest ledger and track discarded XP",
+      "reference": "FieldIOCPSocket.cpp:79,887-947; AtumSJ.cpp:1186-1209; AtumParam.h:6362",
+      "bonus_stats_per_level": 1,
+      "stat_allocation": "not simulated"
+    },
+    "tests": [
+      "test_combat.gd",
+      "test_combat_runtime.gd",
+      "test_inventory.gd"
+    ],
+    "belligerence_reference": "AtumParam.h:1116-1160",
+    "strategic_unit_fixture": {
+      "MonsterUnitKind": 2131100,
+      "HP": 65626208
+    }
+  }
+}

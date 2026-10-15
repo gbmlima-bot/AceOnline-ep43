@@ -1,0 +1,38 @@
+ACE Modern 0.7 — visita LAN e chat de sessão
+
+Este módulo é novo código Godot/ENet. Não usa o protocolo de contas ou o servidor original de ACE Online.
+
+O que funciona
+- Um anfitrião e até sete convidados, na mesma rede local, compartilham as posições, orientações, mapas, classes GEAR e aparências das naves.
+- Naves de outros mapas ficam no catálogo de participantes; a integração visual só desenha visitantes no mesmo mapa.
+- Chat de sessão bidirecional, com remetente identificado pelo ID da conexão. O histórico fica apenas em memória.
+- Sair remove as naves remotas. Reconectar cria uma identidade de conexão nova. Encerrar o anfitrião devolve os convidados ao jogo individual.
+
+Como conectar
+1. Abra o jogo em dois computadores na mesma rede. No painel de sessão LAN, o primeiro jogador escolhe Hospedar; a porta padrão é UDP 24680.
+2. Consulte o IP local do anfitrião nas configurações de rede do macOS/Windows. O convidado informa esse IP e a mesma porta e escolhe Entrar.
+3. Os dois pilotos precisam visitar o mesmo mapa para enxergar as naves um do outro. O chat funciona entre mapas.
+4. Se o sistema operacional perguntar sobre conexões de rede, permita o jogo apenas na rede desejada. O programa não muda firewall, encaminha portas ou cria acesso público automaticamente.
+
+Limites importantes
+Combate, inimigos, danos, mortes, missões, inventários e recompensas continuam individuais. A visita LAN não sincroniza o mundo de combate e não pode conceder itens ou XP a outro jogador. As posições recebidas são validadas, mas o anfitrião não reexecuta a física de voo de cada cliente. Não há contas, autenticação de internet, persistência de servidor, chat externo ou servidor MMO original. Não é indicado expor esta sessão diretamente à internet.
+
+Validação implementada
+- O ID do remetente vem da conexão ENet; o cliente não escolhe o dono de um estado. Só o anfitrião publica a lista de participantes e entrega mensagens aos convidados.
+- Somente o schema de voo é aceito: mapa numérico, uma das quatro classes GEAR, posição/rotação finitas e limitadas, velocidade limitada, nome curto e identificador numérico de aparência. Recursos, danos, recompensas e caminhos de arquivos não fazem parte do protocolo.
+- Estado publicado em até 15 Hz; o anfitrião impõe 20 estados/s por participante, com pequena tolerância de rajada. Chat: até 280 caracteres/1.024 bytes e um envio/s, com rajada de três mensagens. Nomes e mensagens não aceitam caracteres de controle.
+- No máximo oito jogadores. Histórico limitado a cem mensagens. Desserialização de objetos desativada. Fechamento e desconexão limpam participantes e estados.
+
+Contrato de integração
+Node: res://scripts/local_multiplayer.gd
+host(port=24680) -> Error; join(address,port=24680) -> Error; leave() -> void.
+publish_state({map_index:int,gear_id:String,position:[x,y,z],rotation:[Euler x,y,z],speed:float,name?:String,appearance_id?:int}) -> bool.
+appearance_id aceita 0 ou um índice de aparência de 8000000 a 8999999; a integração visual ainda verifica se o recurso existe e se é compatível com a classe.
+send_chat(text:String) -> bool. Use texto simples na interface; não interprete mensagens como BBCode ou HTML.
+snapshot() -> {status,mode,connected,address,host,port,peer_id,peer_count,members,peers,chat,message,max_players,shared_combat:false,transport,rejected_states,rejected_chats}.
+peers é um Dictionary cujas chaves são String(peer_id); cada valor contém o estado validado e peer_id. chat é Array[{peer_id,text,name}].
+Sinais: peers_updated(), chat_received(peer_id,text), status_changed(status).
+
+Teste reproduzível
+godot --headless --path client --script res://tests/test_multiplayer.gd
+O teste abre dois processos Godot independentes, reserva uma porta UDP local livre e verifica hospedagem, conexão, estados, chat, dados inválidos, tentativa de falsificar ID, limites, troca de mapa, saída, reconexão e encerramento do anfitrião. Não carrega assets do jogo nem acessa um serviço externo.

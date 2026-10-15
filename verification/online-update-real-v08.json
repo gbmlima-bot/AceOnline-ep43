@@ -1,0 +1,125 @@
+{
+  "assets_preserved": 45579,
+  "base_archive": "/workspace/shared/ace-modern-systems/ace-modern-systems-fontes-v0.7.zip",
+  "base_files_verified": 45788,
+  "completed_utc": "2026-10-15T13:35:55.204638+00:00",
+  "desktop_export_performed": false,
+  "godot_import_performed": false,
+  "hardlinks_used": false,
+  "kit_archive": "/workspace/shared/ace-modern-online/ace-online-kit-v0.8.zip",
+  "log_sha256": "abc903e0e87a1bc40e40d741d348e5da11e8cc0e52f232c26f07ea24f494e26e",
+  "overlay_files_verified": 256,
+  "passed": true,
+  "plan": {
+    "app_bytes": 69284637,
+    "app_files": 47,
+    "available_free_bytes": 9430237184,
+    "base_uncompressed_bytes": 5221172628,
+    "extraction_performed": false,
+    "kit_uncompressed_bytes": 240534765,
+    "required_free_bytes": 6067862942,
+    "temporary_parent": "/tmp"
+  },
+  "public_deployment_performed": false,
+  "rebuilt_app_files_verified": 47,
+  "reflinks_used": false,
+  "release": "0.8.0",
+  "scope": "published_kit_applied_to_independent_complete_original_v07_source",
+  "started_utc": "2026-10-15T13:34:47.601982+00:00",
+  "steps": [
+    {
+      "base_sha256": "bc5d9a6755e14f44a59bb307d7b75a1b881a60be5334a425314f7c48667705e8",
+      "kit_sha256": "edeac3bf07e8a924a2c5ba497796a3fbc80be20406f88b256fc2978b8dcccd65",
+      "name": "published_archive_checksums",
+      "passed": true
+    },
+    {
+      "base_files": 45993,
+      "kit_files": 357,
+      "name": "independent_archives_extracted",
+      "passed": true
+    },
+    {
+      "files": 45788,
+      "name": "complete_v07_base_verified",
+      "passed": true
+    },
+    {
+      "elapsed_seconds": 9.167,
+      "name": "published_updater_dry_run",
+      "passed": true,
+      "result": {
+        "already_applied": false,
+        "base_files_verified": 45788,
+        "changed_files": 81,
+        "dry_run": true,
+        "ok": true,
+        "release": "0.8.0"
+      }
+    },
+    {
+      "name": "dry_run_preserves_all_base_files",
+      "passed": true
+    },
+    {
+      "elapsed_seconds": 9.134,
+      "name": "published_updater_applied",
+      "passed": true,
+      "result": {
+        "already_applied": false,
+        "base_files_verified": 45788,
+        "changed_files": 81,
+        "dry_run": false,
+        "ok": true,
+        "release": "0.8.0",
+        "source_backup": "/tmp/ace-online-real-proof-tci7zh8z/base/ace-modern/.online-update-backups/v0.8-p0llqjcg"
+      }
+    },
+    {
+      "elapsed_seconds": 9.541,
+      "name": "published_updater_reapplied",
+      "passed": true,
+      "result": {
+        "already_applied": true,
+        "base_files_verified": 45788,
+        "changed_files": 0,
+        "dry_run": false,
+        "ok": true,
+        "release": "0.8.0"
+      }
+    },
+    {
+      "files": 256,
+      "name": "overlay_matches_published_hashes_and_frozen_source",
+      "passed": true
+    },
+    {
+      "asset_files": 45579,
+      "name": "native_assets_and_untouched_base_preserved",
+      "passed": true,
+      "untouched_files": 45603,
+      "userdata_sentinel": true
+    },
+    {
+      "elapsed_seconds": 0.183,
+      "name": "real_server_application_rebuild",
+      "passed": true,
+      "result": {
+        "application_bytes": 69284637,
+        "files": 47,
+        "ok": true,
+        "output": "/tmp/ace-online-real-proof-tci7zh8z/rebuilt"
+      }
+    },
+    {
+      "bytes": 69284637,
+      "files": 47,
+      "name": "rebuilt_app_matches_approved_standalone",
+      "passed": true,
+      "reference": "bundle-manifest.json plus application_files(src)"
+    }
+  ],
+  "temporary_directory": "/tmp/ace-online-real-proof-tci7zh8z",
+  "temporary_extractions_removed": true,
+  "zip_repacked": false
+}

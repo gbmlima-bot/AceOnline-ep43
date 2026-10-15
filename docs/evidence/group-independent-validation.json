@@ -1,0 +1,69 @@
+{
+  "tested_file": "/workspace/ace-modern/tools/read_group_layout.py",
+  "tested_file_sha256": "a51137ac7f31ed62b19cac2994634458c2036bb9425e9fcebfb5895e62aa3468",
+  "source_resource_sha256": "5fd1f85960423dfd0f917abe873bf85b1e345eabab771f28a421979880d5e239",
+  "checks": [
+    {
+      "group": "Gage",
+      "mutation": "negativeImageCount",
+      "result": "rejected",
+      "reason": "Gage: unsupported version/count/payload bounds"
+    },
+    {
+      "group": "Gage",
+      "mutation": "excessImageCount",
+      "result": "rejected",
+      "reason": "Gage: unsupported version/count/payload bounds"
+    },
+    {
+      "group": "Gage",
+      "mutation": "NaNcontrolMin",
+      "result": "rejected",
+      "reason": "Non-finite transform float"
+    },
+    {
+      "group": "Gage",
+      "mutation": "NaNmetadataTranslation",
+      "result": "rejected",
+      "reason": "Non-finite transform float"
+    },
+    {
+      "group": "MainGB",
+      "mutation": "cropRectOutsideTexture",
+      "result": "rejected",
+      "reason": "MainGB: source rect outside texture MainGB"
+    },
+    {
+      "group": "MainGB",
+      "mutation": "negativeCropRect",
+      "result": "rejected",
+      "reason": "MainGB: invalid image rect"
+    },
+    {
+      "group": "Gage",
+      "mutation": "truncation",
+      "result": "rejected",
+      "reason": "Gage: unsupported version/count/payload bounds"
+    },
+    {
+      "group": "Gage",
+      "mutation": "none",
+      "result": "accepted",
+      "nodes": 10
+    },
+    {
+      "group": "inven",
+      "mutation": "none",
+      "result": "accepted",
+      "nodes": 18
+    },
+    {
+      "group": "MainGB",
+      "mutation": "none",
+      "result": "accepted",
+      "nodes": 1
+    }
+  ],
+  "bounds_semantics": "image_bounds_unrotated_local excludes CONTROL_TYPE3 nodes. Their raw bounds remain in nodes.control_min/control_max; upstream CalculateMinMax uses controls too, so renderer must include them when computing full group bounds.",
+  "execution_scope": "Own Python parser only; binary payload bytes inspected/mutated in memory; no game/Windows code executed."
+}

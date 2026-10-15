@@ -1,0 +1,35 @@
+{
+  "capture_written": true,
+  "checks": 40,
+  "display": "X11",
+  "failures": [],
+  "initial_draw_seconds": 13.485,
+  "input_hz": 7.10479573712256,
+  "menu_clock": {
+    "elapsed_after": 20.1999999999995,
+    "elapsed_before": 19.8666666666662,
+    "native_npc_speeds": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "peer_tick_after": 2424,
+    "peer_tick_before": 2384,
+    "targets_changed": false,
+    "tick_after": 2424,
+    "tick_before": 2384
+  },
+  "online_state_not_injected": true,
+  "production_main": true,
+  "real_server": true,
+  "tokens_logged": false,
+  "exported_pack_executed_on_linux": true,
+  "native_macos_windows_execution": false,
+  "private_fixture_deleted_before_connection": true,
+  "capture": {
+    "file": "windows-pack-online-preview-v08.png",
+    "sha256": "03eb7d230ec112ed065c75f316296989fa0cc63ae1dd8bdacbe8e309e7ee30d0",
+    "bytes": 1198381
+  },
+  "passed": true
+}

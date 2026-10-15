@@ -1,0 +1,91 @@
+{
+  "base_commit": "7c3e47ac47844e5c415d356a94d6201a0b9a38c4",
+  "analysis": "Leitura estatica; nao houve port, build ou execucao nesta avaliacao.",
+  "scope_counts": {
+    "Client": {
+      "cpp": 337,
+      "headers": 638
+    },
+    "Server": {
+      "cpp": 488,
+      "headers": 771
+    },
+    "Common": {
+      "cpp": 0,
+      "headers": 15
+    }
+  },
+  "portability_boundaries": [
+    {
+      "area": "cliente_grafico",
+      "file": "Client/DirectXLib/main/d3dapp.cpp",
+      "line": 238,
+      "observation": "Direct3DCreate9: renderer DirectX 9.",
+      "file_sha256": "292cbda76f386ca6b7301d70bf87269fc7bfbbebcde0975ba197f99e7746ec4f"
+    },
+    {
+      "area": "cliente_entrada",
+      "file": "Client/DirectXLib/main/KeyBoardInput.cpp",
+      "line": 45,
+      "observation": "DirectInput8Create: entrada dependente de Windows.",
+      "file_sha256": "1dba09cdffa29d8e935f2d450619f316030badd544807795e7dac8a8cf59aa6d"
+    },
+    {
+      "area": "cliente_audio",
+      "file": "Client/DirectXLib/main/MusicMP3.cpp",
+      "line": 18,
+      "observation": "CoInitialize e interfaces COM de DirectShow.",
+      "file_sha256": "b15b3699d93e73821fca9b0681c5b08d51034aa1c177079c31110064ef4b24c3"
+    },
+    {
+      "area": "servidor_rede",
+      "file": "Server/Common/IOCP.cpp",
+      "line": 806,
+      "observation": "CreateIoCompletionPort: infraestrutura de rede Windows.",
+      "file_sha256": "10105ad96b87727a743c27b510bbfb749b8e0cc5c81ead2e019151c7891f0315"
+    },
+    {
+      "area": "servidor_banco",
+      "file": "Server/GameServer/CommonGameServer/AtumDBManager.cpp",
+      "line": 308,
+      "observation": "SQLDriverConnect: acesso ODBC ao banco.",
+      "file_sha256": "c407c3abc694d59c9a5db59ab497d57c54dccaf9c3c714490fb74769e55e908d"
+    }
+  ],
+  "architecture_recommendation": "Cliente multiplataforma novo em Godot; preservar backend e contratos legados enquanto suas dependencias sao caracterizadas.",
+  "first_milestone": "Especificar e testar formatos de mensagens e separar dominio de sockets/Windows, sem mudar comportamento do jogo.",
+  "milestones": [
+    {
+      "id": 1,
+      "name": "Caracterizar legado e contratos",
+      "acceptance": "Mensagens e tamanhos documentados; fixtures de bytes com proveniencia; diferenciar testes sinteticos de capturas reais."
+    },
+    {
+      "id": 2,
+      "name": "Prototipo de cliente na plataforma escolhida",
+      "acceptance": "Inicializacao, voo e cena minima; recursos temporarios identificados; sem alegar equivalencia ao cliente antigo."
+    },
+    {
+      "id": 3,
+      "name": "Fatia funcional cliente-servidor",
+      "acceptance": "Sessao de teste local, personagem e entrada em um mapa, com servicos e banco disponiveis."
+    },
+    {
+      "id": 4,
+      "name": "Migracao progressiva de sistemas",
+      "acceptance": "Inventario, combate, NPCs e persistencia testados por fluxo antes de substituir componentes legados."
+    }
+  ],
+  "constraints": [
+    "A compilacao do legado nao foi validada.",
+    "Pacote de recursos EP3.5 e configuracoes centrais ausentes.",
+    "Preservacao do protocolo binario exige revisar tamanhos de tipos, alinhamento, ordem de bytes e macros de build.",
+    "O navegador exige uma camada de comunicacao compativel com as APIs de rede do browser; nao oferece sockets TCP/UDP arbitrarios.",
+    "Sem baseline funcional, equivalencia de gameplay e compatibilidade de servidor permanecem nao estabelecidas."
+  ],
+  "platform_target": [
+    "macOS",
+    "Windows"
+  ],
+  "selected_client_engine": "Godot 4.7.2 (standard, GDScript)"
+}

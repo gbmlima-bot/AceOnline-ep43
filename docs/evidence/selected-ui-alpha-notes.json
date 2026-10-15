@@ -1,0 +1,30 @@
+{
+  "selected_count": 446,
+  "selected_bytes": 4534340,
+  "source_resource_sha256": "03c050159944267f9ab4374c3dd02a6de17d3f0cc2a275d8f60ab44e24939a51",
+  "pixel_transformation": "none",
+  "header_combinations": [
+    {
+      "tga_image_type": 10,
+      "depth": 32,
+      "descriptor_alpha_bits": 8,
+      "top_origin": false,
+      "count": 434
+    },
+    {
+      "tga_image_type": 2,
+      "depth": 32,
+      "descriptor_alpha_bits": 8,
+      "top_origin": false,
+      "count": 12
+    }
+  ],
+  "legacy_loader": {
+    "color_key": 0,
+    "default_tint": "0xFFFFFFFF",
+    "image_loader": "D3DXCreateTextureFromFileInMemoryEx with D3DFMT_UNKNOWN; payload passed unmodified",
+    "source": "Client/InterfaceLib/main/INFImage.cpp:25,101-103,137"
+  },
+  "godot": "Import original TGA with its alpha channel and orientation. No black-to-transparent, alpha stripping, premultiplication or repainting applied. Per-widget tint/blend behavior belongs in renderer, not raw extraction.",
+  "note": "Artwork from official2025 client0.4.5.158; placement referenceEP3.5 does not establish full historical fidelity."
+}

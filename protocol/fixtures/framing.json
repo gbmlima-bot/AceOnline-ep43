@@ -1,0 +1,52 @@
+{
+  "fixture_version": 1,
+  "origin": "synthetic offline bytes; no network capture, account or game messages",
+  "stage": "original unencoded envelope only; encoding bit clear; payload opaque",
+  "byte_order": "little-endian profile inferred from native Windows x86 reads/writes",
+  "source_commit": "7c3e47ac47844e5c415d356a94d6201a0b9a38c4",
+  "sources": [
+    {
+      "path": "Server/Common/SocketHeader.h",
+      "lines": "23-32,73-77",
+      "sha256": "11c59a3dc1c97f2dad574c12e1e30f308098d109341d40eec7e80d943ecbe1f7"
+    },
+    {
+      "path": "Server/Common/WinPacket.h",
+      "lines": "105-127,244-346",
+      "sha256": "bb3785aaf8331f580b34d5207a076b9382ca9cdc3ea74827861583defce9656b"
+    },
+    {
+      "path": "Server/Common/IOCPSocket.cpp",
+      "lines": "828-841,861-902",
+      "sha256": "98d5b052db19bf2a4070cf3d6da15223f9db75d9c15e3a00395241d5d05e4e01"
+    }
+  ],
+  "limits": {
+    "header_bytes": 4,
+    "sender_body_max": 1492,
+    "receiver_body_max": 1496,
+    "body_min": 1,
+    "zero_length_policy": "explicit error; legacy RecvCompleted never completes a zero body"
+  },
+  "valid": [
+    {"id": "one_opaque_byte", "frame_hex": "01000000aa", "payload_hex": "aa", "raw_sequence": 0, "raw_flags": 0},
+    {"id": "two_opaque_bytes", "frame_hex": "0200000000ff", "payload_hex": "00ff", "raw_sequence": 0, "raw_flags": 0},
+    {"id": "opaque_body_with_zero", "frame_hex": "06000000deadbeef0001", "payload_hex": "deadbeef0001", "raw_sequence": 0, "raw_flags": 0},
+    {"id": "raw_sequence_metadata", "frame_hex": "030000ff102030", "payload_hex": "102030", "raw_sequence": 255, "raw_flags": 0},
+    {"id": "low_flag_bits_are_raw", "frame_hex": "01007f7f42", "payload_hex": "42", "raw_sequence": 127, "raw_flags": 127}
+  ],
+  "invalid": [
+    {"id": "zero_length", "frame_hex": "00000000", "error": "invalid_length"},
+    {"id": "receiver_limit_plus_one", "frame_hex": "d9050000", "error": "invalid_length"},
+    {"id": "uint16_max", "frame_hex": "ffff0000", "error": "invalid_length"},
+    {"id": "encoding_bit_set", "frame_hex": "01008001ff", "error": "unsupported_encoded_frame"},
+    {"id": "all_flag_bits_set", "frame_hex": "0100ffff42", "error": "unsupported_encoded_frame"}
+  ],
+  "truncated": [
+    {"id": "one_header_byte", "frame_hex": "01"},
+    {"id": "two_header_bytes", "frame_hex": "0100"},
+    {"id": "three_header_bytes", "frame_hex": "010000"},
+    {"id": "header_without_body", "frame_hex": "01000000"},
+    {"id": "partial_body", "frame_hex": "030000001020"}
+  ]
+}

@@ -1,0 +1,232 @@
+{
+  "release": "0.8.0",
+  "created_utc": "2026-10-15T13:03:51.409405+00:00",
+  "scope": "dedicated_server_and_source_client_release_gate;desktop_artifact_integrity_reported_separately",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "results": [
+    {
+      "name": "offline_flight",
+      "passed": true,
+      "log": "reports/flight-v08.log",
+      "checks": 143
+    },
+    {
+      "name": "offline_inventory",
+      "passed": true,
+      "log": "reports/inventory-v08.log",
+      "checks": 40
+    },
+    {
+      "name": "offline_inventory_equipment",
+      "passed": true,
+      "log": "reports/inventory_equipment-v08.log",
+      "checks": 129
+    },
+    {
+      "name": "offline_services",
+      "passed": true,
+      "log": "reports/services-v08.log",
+      "checks": 49
+    },
+    {
+      "name": "offline_local_save",
+      "passed": true,
+      "log": "reports/local_save-v08.log",
+      "checks": 11
+    },
+    {
+      "name": "native_numeric_world",
+      "passed": true,
+      "log": "reports/headless-world.log",
+      "checks": 27
+    },
+    {
+      "name": "world_minimal_staging_missing_corrupt_data",
+      "passed": true,
+      "log": "reports/headless-world-minimal-bundle.json",
+      "checks": 19
+    },
+    {
+      "name": "sqlite_transactions_rotation_backup_receipt_retention",
+      "passed": true,
+      "log": "reports/server-store-v1.log",
+      "checks": 55
+    },
+    {
+      "name": "shared_native_combat_flight_rewards_and_restart_determinism",
+      "passed": true,
+      "log": "reports/online-arena-v08.log",
+      "checks": 81
+    },
+    {
+      "name": "websocket_transport_tls_limits_and_node_exit",
+      "passed": true,
+      "log": "reports/online-transport.log",
+      "checks": 125,
+      "details": {
+        "expected_diagnostic": "Untrusted TLS fixture is deliberately rejected; mbedtls error lines are expected."
+      }
+    },
+    {
+      "name": "online_view_authority_and_dto",
+      "passed": true,
+      "log": "reports/online-view.log",
+      "checks": 35
+    },
+    {
+      "name": "blue_online_ui_and_fuel_states",
+      "passed": true,
+      "log": "reports/online-ui.log",
+      "checks": 41
+    },
+    {
+      "name": "production_main_parse_final",
+      "passed": true,
+      "log": "reports/online-main-parse.log"
+    },
+    {
+      "name": "real_server_two_clients_reconnect_and_restart",
+      "passed": true,
+      "log": "reports/server-e2e.log",
+      "checks": 51
+    },
+    {
+      "name": "production_client_real_server_two_pilots_gl",
+      "passed": true,
+      "log": "reports/online-scene-e2e.log",
+      "checks": 40
+    },
+    {
+      "name": "production_client_structured_evidence",
+      "passed": true,
+      "log": "reports/online-scene-e2e.json",
+      "details": {
+        "initial_draw_seconds": 12.782,
+        "input_hz_software_gl": 7.84313725490196,
+        "input_limit_hz": 30,
+        "native_npc_speeds": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "no_npc_patrol_assumed": true
+      }
+    },
+    {
+      "name": "legacy_production_scene_missions_economy_skills_persistence",
+      "passed": true,
+      "log": "reports/systems-integration-v08.log",
+      "checks": 117
+    },
+    {
+      "name": "docker_bundle_ops_unit_tests",
+      "passed": true,
+      "log": "reports/server-deploy-tests.log",
+      "checks": 14
+    },
+    {
+      "name": "docker_runtime_backup_restore_graceful_stop_and_wss",
+      "passed": true,
+      "log": "reports/server-deploy-smoke.json",
+      "details": {
+        "public_deployment_performed": false,
+        "local_ca_fixture_only": true
+      }
+    },
+    {
+      "name": "caddy_verified_tls_auth_rotation_and_no_token_logs",
+      "passed": true,
+      "log": "reports/server-wss-proxy-smoke.json"
+    },
+    {
+      "name": "source_update_server_rebuild_and_kit_evidence_fixtures",
+      "passed": true,
+      "log": "reports/online-kit-tests.log",
+      "checks": 23
+    },
+    {
+      "name": "desktop_packager_binary_pck_parsers_and_safe_handoff",
+      "passed": true,
+      "log": "reports/desktop-packager-tests-v08.log",
+      "checks": 10
+    },
+    {
+      "name": "complete_client_import_final",
+      "passed": true,
+      "log": "reports/import-final-v08.log"
+    }
+  ],
+  "source_sha256": {
+    "client/export_presets.cfg": "125a53b7f761155258800c6b728ee3669de12337d83a14ac2b25993df8614162",
+    "client/project.godot": "7c7b09cdf23f4a32efc68215ee71e3b7f8822885a0e284da62d22f074dab8970",
+    "client/scripts/combat_model.gd": "866c5433b0f0b31fa166a283b8d90b2bf64701de0b309ad915697ab49bac8cbe",
+    "client/scripts/combat_runtime.gd": "28da58ff9ec082f7c5f25ecc4fb5cf8a73eb34ad69fa4e13b85af71b9bc92d58",
+    "client/scripts/flight_model.gd": "f99f4fc5841ce6d85739ad9609eb377f1766b4d7770d1e483e626efb92631f9e",
+    "client/scripts/game_systems.gd": "c173d7180100163f62f82d9e170014720158e8d651cfbcbaa49d3e168dbd7e7a",
+    "client/scripts/inventory_model.gd": "b3d51d98ec56507f0a69382dc7de9c6662eb8cc612b815708e1a016d0b5cd20e",
+    "client/scripts/legacy_group.gd": "95d5bcd9ae87eab4e9c9fe839242051a0fc73ec8881f69774d104c36ceb88902",
+    "client/scripts/legacy_hud.gd": "f859d30b446c16019c5f5593185bebb92c2a2606c13e7f16efee0b15064d963c",
+    "client/scripts/local_multiplayer.gd": "c6a15ce382f3394a6f1b5257b3377bbf05f6968832d2e259e8f56e65ca4f4d78",
+    "client/scripts/local_save.gd": "1a6c58ef099bfea5bcd4abafab759c242016cedb45b13a4ec5f791c55e217190",
+    "client/scripts/main.gd": "2c3e7b219709ae3ef84e9a2de574187a5fcd0a35827176b845ac75e27ef4e726",
+    "client/scripts/native_equipment.gd": "112d1504357617eee9f4f1a3d0273d5bc16afb50e93eded092d93d8229ba77fd",
+    "client/scripts/online/arena_model.gd": "eb2d089766a53f95e05934c98a13cbc967feac636f63d8932d7120708ff373d3",
+    "client/scripts/online/headless_world.gd": "a878e11e4be138aa180cda708985e8a8b07baba6f3f8c159e55e44b1ac601974",
+    "client/scripts/online/json_wire.gd": "1cdb6a4019edf736ba43824ede229a520f5598a89f573af8387bfffa6f453741",
+    "client/scripts/online/online_client.gd": "5480d999807cbc6baba9ee9c1f570ef3dcf53930a5cc7f784fb896701a73bbfc",
+    "client/scripts/online/online_view.gd": "af11940d2e36be8d036db60b8c94b510a411cdb0bdd251c78b1d65034898f45e",
+    "client/scripts/online/ws_server.gd": "0aaf3dc066a00e088deb42da7745c19b569526e7da97e2b7290907627fa5d7da",
+    "client/scripts/original_asset.gd": "8f45bb753572e448e77a8d9ec9fc80ca5cba1e939c2f1a9449d1c38cdead8f0c",
+    "client/scripts/original_audio.gd": "66b7b9e7878835df0114b310d24268b2c3563e9a2a70f630463cc43f3035f034",
+    "client/scripts/original_props.gd": "165c6932a2a06dc3d8b2c699e9e98b2619aa31b1306a03fcff2244e4c05ccbce",
+    "client/scripts/original_water.gd": "df9133d0f540a0faf2248bb36354c0b6e923c242f43184c49d340d344450cdc8",
+    "client/scripts/protocol/plain_framing.gd": "1e9b198945fa10e997270faedb50578bc0613d2da4fb391a61149272a5a181c6",
+    "client/scripts/service_model.gd": "8290b5221c258eefe3299a461155aea5ca12ea90f8fbda88420cfd7e28a06600",
+    "client/scripts/skill_model.gd": "ad508564aafaa8d2cdf69f4a121f1685767781c4bd467d1349f14ba2bc8ecfab",
+    "client/scripts/world_model.gd": "bc425f4e338287ced8c3345b1a9a0801216341a40349de247e2694d0cc2bc8f8",
+    "client/scripts/world_runtime.gd": "477a16d19296b2b8ff131db0cb64c8f295966193f327e266daf3c54243d1ce51",
+    "deploy/.dockerignore": "ffb141ba636f77ab11efc4933b83e205a8bfafd858596c2f1312014e5c650857",
+    "deploy/.env.example": "fb6508ad75ed868490321d1627fec0154dab857824a80c99134ebc7fe1f06015",
+    "deploy/Caddyfile": "806e0d4b879b9960589dd9801f465fc2d9d1d8a2b2a4c1d1e60c731436ac8e30",
+    "deploy/Dockerfile": "467658099000365c03d87747e67389cb0200239f50a38a075bb261bcf3084036",
+    "deploy/OPERACAO.txt": "ab30dfe51e57323432377ad21a2bc2e97b6c7d29403958b54d44b9d2a01fb7a9",
+    "deploy/compose.local.yaml": "7e9901f78f8ddb9aa292b78bfd19e4c7bd28ce993a678d3d88bd3e4c1bd1ce24",
+    "deploy/compose.yaml": "cbd32a14e75fc5adcd716fdfaa6ff606d9f6a115beae99796cf76d3ac20e7e30",
+    "deploy/images.lock.json": "6a32f7b88f921294952c865084990c7098bd9c782036832bb034fe6978559512",
+    "deploy/scripts/backup.sh": "2539d9e0932457ae3353292d45dc470a4be02f64664ac1f06712836d667979dc",
+    "deploy/scripts/create-pilot.sh": "02ee2ac6677db43d06b751c29e4698ad4f7d288033585e97f4ca15b890f1d01a",
+    "deploy/scripts/healthcheck.py": "32de363c5cfede1b45b390fd7e73bb5b97553508b3d535692887e140971b2739",
+    "deploy/scripts/restore.sh": "e4b8f58c17fe14619bde48456a331fbf66424e10d0a57d7873482def43c2778a",
+    "deploy/scripts/sqlite_ops.py": "12976bd950a06b4a6ed7f6e1657cae9f0a36ab7ed3f96ffa6c5150930b5941c6",
+    "deploy/scripts/start.sh": "e636ebe24656ec73aa840be457d8e46ead028f418cb92c485992506f319f2fce",
+    "deploy/scripts/supervisor.py": "1fb180044f39e26223c8f31f23435acf9c4a1b8bc71b80aec32f9176789df03a",
+    "deploy/tests/test_server_bundle.py": "34ad40a8b77d98a2fa3e82364945ec133f9c67153f06749dc732543f7542486d",
+    "deploy/tests/test_sqlite_ops.py": "17d6f39f730241669d535c2e4adea0b5eb810ab9610a923b371078806cbefa22",
+    "deploy/tests/test_supervisor.py": "97ee87895e4838a501f645f8399474e0e9d05825e43120deba05bc9b33e040f8",
+    "server/admin.gd": "7343a2fdf7249165cd7ca1d5214de0007c5492bb293f280e3514f3da3ebf9861",
+    "server/main.gd": "0f5ec4d4400159734ef053689545954e7520ac67f9fb15c3810392c89394f46d",
+    "server/project.godot": "12f45161bc512ca8edbb85d30d87021066c77b2fbc1c894ca5097e9f2507824c",
+    "server/server_app.gd": "39a06537db6fb7569fc1aeb66a7a85c3082c7a8da6d254a304e653e5d2eef79e",
+    "server/sqlite_store.gd": "9bd7589818237e3c2702b431be3d6e554a55babae4e933dc1cb9547b5857882d",
+    "tools/build_server_bundle.py": "9d2066b6dc63736088e69b5d2d8e5986f84937b4a6bc71896da74223f37a7bc4",
+    "tools/package_online_kit.py": "cc775805ca77de6a4ca3f8a8c0c222661df1fc7894d3bb400189a7bc4a660c1d"
+  },
+  "limits": {
+    "public_deployment_performed": false,
+    "hosting_and_domain_missing": true,
+    "macos_windows_native_execution": false,
+    "eight_player_load_test": false,
+    "online_maps": [
+      3002
+    ],
+    "online_gears": [
+      "12003100"
+    ],
+    "default_players": 2,
+    "max_configured_players": 8,
+    "native_server_spawn_drop_database_available": false,
+    "online_reward": "Explicit local policy:10SPI per defeated NPC per contributing pilot;0XP",
+    "client_offline_progress_uploaded": false,
+    "local_tls_fixture_is_not_a_public_acme_certificate": true
+  }
+}

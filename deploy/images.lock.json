@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "verified_registry": "docker.io",
+  "platform": "linux/amd64",
+  "images": {
+    "dockerfile_frontend": {
+      "tag": "1.7",
+      "index_digest": "sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e"
+    },
+    "debian": {
+      "tag": "13-slim",
+      "index_digest": "sha256:a29215f6a35e51e22adffa17f89e9d2ef06214e64a2bad10d765c46aea49f11f",
+      "amd64_digest": "sha256:918311b7b6c4c6f68b232ba516584925f6c78ad82b6fd534b98979df6438e483"
+    },
+    "caddy": {
+      "tag": "2.10.2-alpine",
+      "index_digest": "sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d",
+      "amd64_digest": "sha256:d8c17a862962def15cde69863a3a463f25a2664942eafd7bdbf050e9c3116b83"
+    }
+  },
+  "engine": {
+    "version": "4.7.2.stable.official.ed1daf0bf",
+    "binary_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+    "official_zip_sha256": "cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4",
+    "official_release": "https://github.com/godotengine/godot/releases/tag/4.7.2-stable"
+  }
+}

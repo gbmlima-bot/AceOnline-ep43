@@ -1,0 +1,35 @@
+{
+  "capture_written": true,
+  "checks": 40,
+  "display": "X11",
+  "failures": [],
+  "initial_draw_seconds": 12.333,
+  "input_hz": 8.53242320819113,
+  "menu_clock": {
+    "elapsed_after": 18.3333333333329,
+    "elapsed_before": 18.0666666666663,
+    "native_npc_speeds": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "peer_tick_after": 2200,
+    "peer_tick_before": 2168,
+    "targets_changed": false,
+    "tick_after": 2200,
+    "tick_before": 2168
+  },
+  "online_state_not_injected": true,
+  "production_main": true,
+  "real_server": true,
+  "tokens_logged": false,
+  "exported_pack_executed_on_linux": true,
+  "native_macos_windows_execution": false,
+  "private_fixture_deleted_before_connection": true,
+  "capture": {
+    "file": "macos-pack-online-preview-v08.png",
+    "sha256": "780e5bb447f32fd84f9817577b5e32a1c4303184896fdb2089f042925076649a",
+    "bytes": 1193257
+  },
+  "passed": true
+}

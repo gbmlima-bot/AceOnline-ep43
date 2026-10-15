@@ -1,0 +1,23 @@
+{
+  "archive_sha256": "8395f1f33dda8165f70f30d2a6ad094c5f64e144403fce98337e5012be795841",
+  "scope": "Three selected files materialized from official 7z, no executable launched. ZIP is an unmodified-file evidence carrier, not a client installer.",
+  "files": [
+    {
+      "path": "ACEonline.exe",
+      "bytes": 2988312,
+      "sha256": "901c99927b5aa9003663b52bc563d6a9a958f489490ea0d40e3cad4620b79c93"
+    },
+    {
+      "path": "Res-tex/interface.tex",
+      "bytes": 115930773,
+      "sha256": "03c050159944267f9ab4374c3dd02a6de17d3f0cc2a275d8f60ab44e24939a51"
+    },
+    {
+      "path": "Res-tex/select.tex",
+      "bytes": 4444277,
+      "sha256": "b1d59845c5f4fbe648ed6a54e632bd695060e5745f3f2c063a207f166380c412"
+    }
+  ],
+  "carrier_zip": "/workspace/analysis/ace-online-ui/client-ui-evidence.zip",
+  "carrier_sha256": "985a09a3ae8c1776b192322592b72a8c3be325f172355fbed9c13f093f632183"
+}

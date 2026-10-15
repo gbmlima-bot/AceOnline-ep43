@@ -1,0 +1,1524 @@
+{
+  "schema_version": 1,
+  "title": "Auditoria de layout — fonte EP3.5, prévia atual e complemento EP4.3",
+  "status": "read_only_audit_no_game_code_changes",
+  "source_versions": {
+    "ep35": {
+      "repo": "bhsdp1/AceOnline-ep35",
+      "commit": "7c3e47ac47844e5c415d356a94d6201a0b9a38c4",
+      "root": "/workspace/targets/ace-online-ep35"
+    },
+    "ep43": {
+      "repo": "bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "root": "/workspace/analysis/ace-online-layout/ep43-source",
+      "acquisition": "Only selected source text files via raw.githubusercontent.com; no executable run"
+    },
+    "artwork": {
+      "client_package": "Official Masang 2025 archive, declared version0.4.5.158",
+      "manifest": "/workspace/ace-modern/client/assets/legacy_ui/manifest.json"
+    },
+    "current_ui": "/workspace/ace-modern/client/scripts/legacy_hud.gd"
+  },
+  "key_findings": [
+    "A prévia atual não reproduz literalmente o layout EP3.5: há diferenças de coordenadas, estados de botões, módulos e estrutura do inventário.",
+    "tc_inven existe como imagem no pacote atual, mas nenhuma referência ao nome foi encontrada no Client EP3.5; seu uso no protótipo foi uma escolha por inspeção visual, sem prova de uso no inventário standalone.",
+    "O fonte EP3.5 ativo cria duas janelas independentes. A prévia combinou ambas em um frame único, portanto esse layout não pode ser atribuído ao EP3.5.",
+    "EP4.3 introduz C_EPSODE4_UI_CHANGE_JSKIM e composição dirigida por Res-Tex/group.tex. Os antigos defines coexistem em ramos de fallback e não devem ser tratados como coordenadas modernas ativas.",
+    "Para o alvo azul moderno, deve-se ler grupos Gage e inven do group.tex oficial e validar contra screenshot de versão/estado conhecidos, em vez de inferir posições pelo contorno de uma textura."
+  ],
+  "coordinate_rules": {
+    "origin": "top-left",
+    "W": "DirectX backbuffer Width",
+    "H": "DirectX backbuffer Height",
+    "integer_division": "Truncation in C++ formulas using integer W/H; e.g.(1024-219)/2=402",
+    "render_contract": [
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFImage.cpp",
+        "lines": [
+          15,
+          27
+        ],
+        "note": "Scale defaults1,1; no crop; white tint"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFImage.cpp",
+        "lines": [
+          62,
+          65
+        ],
+        "note": "Move stores exact translation"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFImage.cpp",
+        "lines": [
+          100,
+          111
+        ],
+        "note": "Natural dimensions are decoder SrcInfo width/height"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFImage.cpp",
+        "lines": [
+          132,
+          137
+        ],
+        "note": "Draw uses stored rect/scale/rotation/translation directly"
+      }
+    ]
+  },
+  "comparisons": [
+    {
+      "id": "gauges_hp",
+      "ep35": {
+        "resource": "eneNN",
+        "position": [
+          15,
+          29
+        ]
+      },
+      "current": {
+        "resource": "ene19",
+        "position": [
+          18,
+          42
+        ]
+      },
+      "delta_px": [
+        3,
+        13
+      ],
+      "status": "adapted_from_pixels",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            69,
+            70
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            1390,
+            1398
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            241
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "gauges_shield",
+      "ep35": {
+        "resource": "sheNN",
+        "position": [
+          83,
+          29
+        ]
+      },
+      "current": {
+        "resource": "she19",
+        "position": [
+          82,
+          42
+        ]
+      },
+      "delta_px": [
+        -1,
+        13
+      ],
+      "status": "adapted_from_pixels",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            71,
+            72
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            1401,
+            1409
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            242
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "gauges_sp",
+      "ep35": {
+        "resource": "skilNN",
+        "position": [
+          120,
+          22
+        ]
+      },
+      "current": {
+        "resource": "skil19",
+        "position": [
+          46,
+          70
+        ]
+      },
+      "delta_px": [
+        -74,
+        48
+      ],
+      "status": "different_layout",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            73,
+            74
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            1412,
+            1420
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            243
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "gauges_boost",
+      "ep35": {
+        "resource": "BostNN",
+        "position": [
+          9,
+          21
+        ],
+        "scale": [
+          1.125,
+          1.125
+        ]
+      },
+      "current": {
+        "resource": "BostNN",
+        "position": [
+          8,
+          32
+        ],
+        "scale": [
+          1,
+          1
+        ]
+      },
+      "delta_px": [
+        -1,
+        11
+      ],
+      "status": "different_position_and_scale",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            75,
+            76
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            1423,
+            1429
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            244
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "gauges_fuel",
+      "ep35": {
+        "resource": "fueNN / fuelG00..01",
+        "position": [
+          6,
+          5
+        ]
+      },
+      "current": {
+        "fuel_position": [
+          82,
+          33
+        ],
+        "icon_position": [
+          164,
+          90
+        ]
+      },
+      "status": "different_layout",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            77,
+            78
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            1431,
+            1446
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            245,
+            246
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "speed",
+      "ep35": {
+        "position": [
+          "80-digit_count*8",
+          "90"
+        ],
+        "atlas_cell": [
+          19,
+          17
+        ],
+        "advance": 16,
+        "leading_zero": "not forced; uses actual digit count; negative sign supported"
+      },
+      "current": {
+        "position": [
+          "56+16*i",
+          "112"
+        ],
+        "digits": 3,
+        "leading_zero": "always zero padded; local model converted to km/h"
+      },
+      "delta_y_px": 22,
+      "status": "different_vertical_position_and_number_format",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            86,
+            89
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            1507,
+            1533
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            254,
+            262
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "bottom_strip_xp",
+      "ep35": {
+        "bottom_strip": [
+          "0",
+          "H-39"
+        ],
+        "bottom_strip_size": [
+          "W",
+          39
+        ],
+        "xp_background": [
+          "(W-234)/2",
+          "H-51"
+        ],
+        "xp_fill": [
+          "(W-219)/2",
+          "H-48"
+        ]
+      },
+      "current": {
+        "bottom_strip": [
+          "0",
+          "H-49"
+        ],
+        "bottom_strip_size": [
+          "W",
+          49
+        ],
+        "xp_background": [
+          "floor((W-234)/2)",
+          "H-64"
+        ],
+        "xp_fill": "hidden"
+      },
+      "status": "different_strip_height_and_xp_y",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            35,
+            45
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            866,
+            887
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            480,
+            484
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "radar",
+      "ep35": {
+        "frame": [
+          "W-140",
+          "34"
+        ],
+        "frame_pivot": [
+          69,
+          69
+        ],
+        "site": [
+          "W-98",
+          "48"
+        ],
+        "player": [
+          "W-75",
+          "98"
+        ],
+        "terrain": [
+          "W-129",
+          "44"
+        ],
+        "terrain_size": [
+          118,
+          118
+        ]
+      },
+      "current": {
+        "frame": [
+          "W-178",
+          "28"
+        ],
+        "site": [
+          "W-122",
+          "57"
+        ],
+        "player": [
+          "W-99",
+          "107"
+        ],
+        "terrain": [
+          "W-154",
+          "52"
+        ],
+        "terrain_size": [
+          118,
+          118
+        ]
+      },
+      "status": "different_offsets_to_fit_current_bitmap",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+          "lines": [
+            43,
+            88
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+          "lines": [
+            653,
+            667
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            485,
+            490
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "quickslot",
+      "ep35": {
+        "origin": [
+          "(W-318)/2",
+          "H-34"
+        ],
+        "declared_size": [
+          318,
+          30
+        ],
+        "slots": 10,
+        "pages": 3,
+        "stride": 32,
+        "arrow_up": [
+          "bar_x+322",
+          "bar_y"
+        ],
+        "arrow_down": [
+          "bar_x+322",
+          "bar_y+23"
+        ],
+        "initial_button_state": 3
+      },
+      "current": {
+        "origin": [
+          "floor((W-324)/2)",
+          "H-49"
+        ],
+        "native_bitmap_size": [
+          336,
+          40
+        ],
+        "number_bitmap_size": [
+          332,
+          49
+        ],
+        "arrow_state": 0
+      },
+      "status": "different_origin_and_button_state",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp",
+          "lines": [
+            34,
+            35
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp",
+          "lines": [
+            68,
+            70
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.h",
+          "lines": [
+            17,
+            37
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            491,
+            495
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "main_menu",
+      "ep35": {
+        "count": 5,
+        "origin": [
+          "W-251",
+          "H-22"
+        ],
+        "stride": 50,
+        "hitbox": [
+          47,
+          18
+        ],
+        "resource_format": "mnbtn{button}{state}",
+        "initial_state": 3,
+        "state_map": {
+          "hover": 0,
+          "down": 1,
+          "disabled": 2,
+          "normal": 3
+        },
+        "buttons": [
+          "inventory",
+          "gear_info",
+          "community",
+          "mission (index3 click handled separately)",
+          "system_options"
+        ]
+      },
+      "current": {
+        "count": 5,
+        "origin": [
+          "W-285",
+          "H-51"
+        ],
+        "stride": 55,
+        "button_size": [
+          55,
+          51
+        ],
+        "resource_format": "mnbtn{button}0",
+        "enabled_actions": [
+          "inventory",
+          "pause"
+        ],
+        "notes": "Other icons tinted/disabled; system icon is repurposed for pause."
+      },
+      "status": "different_position_size_state_and_actions",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+          "lines": [
+            108,
+            112
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+          "lines": [
+            716,
+            725
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+          "lines": [
+            2262,
+            2265
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+          "lines": [
+            3453,
+            3474
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+          "lines": [
+            3792,
+            3853
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/Common/AtumDefine.h",
+          "lines": [
+            497,
+            502
+          ]
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            448,
+            467
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            506
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "chat",
+      "ep35": {
+        "box_origin": [
+          "0",
+          "H-44-chat_height"
+        ],
+        "default_content_size": [
+          353,
+          120
+        ],
+        "saved_dimensions": true,
+        "input_background": [
+          "3",
+          "H-20"
+        ],
+        "input_hitbox": [
+          "53",
+          "H-20",
+          240,
+          20
+        ],
+        "filters": {
+          "origin": [
+            "3",
+            "H-37"
+          ],
+          "stride": 37,
+          "resource_format": "cicon_li{index+1}"
+        },
+        "options": [
+          "310",
+          "H-18"
+        ],
+        "language": [
+          "24",
+          "H-18"
+        ],
+        "show_hide": [
+          "328",
+          "H-20"
+        ]
+      },
+      "current": {
+        "box_origin": [
+          "0",
+          "H-164"
+        ],
+        "fixed_content_size": [
+          353,
+          120
+        ],
+        "input_background": [
+          "3",
+          "H-23"
+        ],
+        "input_control": [
+          "53",
+          "H-actual_control_height-3"
+        ],
+        "filters": "not implemented",
+        "options": "not implemented",
+        "language": "not implemented",
+        "show_hide": "not implemented",
+        "header": "REGISTRO LOCAL"
+      },
+      "status": "box_anchor_matches_default_field_but_controls_missing",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+          "lines": [
+            56,
+            110
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+          "lines": [
+            231,
+            239
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+          "lines": [
+            895,
+            917
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+          "lines": [
+            1175,
+            1192
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+          "lines": [
+            1679,
+            1721
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            496,
+            499
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "altimeter_weapons",
+      "ep35": {
+        "altimeter": {
+          "resources": [
+            "altig",
+            "altip"
+          ],
+          "origin": [
+            "W-32",
+            "183"
+          ],
+          "pin": [
+            "W-37",
+            "183+nPos"
+          ]
+        },
+        "primary_weapon": {
+          "origin": [
+            23,
+            178
+          ],
+          "gage": [
+            60,
+            181
+          ],
+          "font": [
+            78,
+            188
+          ]
+        },
+        "secondary_weapon": {
+          "origin": [
+            23,
+            207
+          ],
+          "gage": [
+            60,
+            210
+          ],
+          "font": [
+            78,
+            217
+          ]
+        }
+      },
+      "current": {
+        "altitude": "text under gauge only",
+        "weapons": "no weapon panel or ammunition counts"
+      },
+      "status": "original_modules_missing",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+          "lines": [
+            121,
+            122
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+          "lines": [
+            884,
+            890
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+          "lines": [
+            5331,
+            5359
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFWeaponInfo.cpp",
+          "lines": [
+            29,
+            41
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+          "lines": [
+            1463,
+            1465
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            252,
+            253
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "inventory_structure",
+      "ep35": {
+        "controller": "CINFInvenExtend",
+        "panels": [
+          "CINFInvenItem",
+          "CINFInvenEquip"
+        ],
+        "origins": {
+          "item": [
+            0,
+            241
+          ],
+          "equip": [
+            429,
+            241
+          ]
+        },
+        "backgrounds": {
+          "item": "w_wi12 at item panel origin",
+          "equip": "w_wi11 at equipment panel origin"
+        },
+        "independent_visibility": true,
+        "independent_dragging": true,
+        "dimensions": "natural image GetImgSize; no literal full-envelope size"
+      },
+      "current": {
+        "panels": "single draggable frame plus embedded equipment child",
+        "frame": "tc_inven",
+        "size": [
+          384,
+          502
+        ],
+        "origin": [
+          0,
+          241
+        ],
+        "equipment_child": [
+          20,
+          30
+        ],
+        "equipment_overlay": "w_wi11 at child origin",
+        "item_overlay": "w_wi12 at (20,230)"
+      },
+      "status": "unsupported_ep35_composition",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+          "lines": [
+            596,
+            601
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFCityBase.h",
+          "lines": [
+            133,
+            139
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+          "lines": [
+            3928,
+            3949
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.cpp",
+          "lines": [
+            230,
+            243
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.cpp",
+          "lines": [
+            391,
+            420
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+          "lines": [
+            282,
+            285
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenEquip.cpp",
+          "lines": [
+            447,
+            466
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            353,
+            397
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "inventory_grid",
+      "ep35": {
+        "columns": 10,
+        "rows": 6,
+        "cell_size": 30,
+        "stride": 32,
+        "local_slot_origin": [
+          51,
+          30
+        ],
+        "local_icon_origin": [
+          52,
+          31
+        ]
+      },
+      "current": {
+        "columns": 10,
+        "rows": 6,
+        "cell_size": 30,
+        "stride": 32,
+        "local_slot_origin": [
+          26,
+          230
+        ],
+        "content": "empty"
+      },
+      "delta_local_px": [
+        -25,
+        200
+      ],
+      "status": "different_placement",
+      "evidence": [
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+          "lines": [
+            41,
+            44
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+          "lines": [
+            401,
+            416
+          ],
+          "note": ""
+        },
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            397,
+            402
+          ],
+          "note": ""
+        }
+      ]
+    }
+  ],
+  "tc_inven_provenance": {
+    "negative_search": {
+      "command": "rg -n -i --fixed-strings tc_inven /workspace/targets/ace-online-ep35/Client",
+      "result": "no matches",
+      "scope": "entire Client source tree"
+    },
+    "current_choice": {
+      "source": "Visual inspection of a384×502 image with INVENTORY heading; inferred composition",
+      "evidence": [
+        {
+          "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+          "lines": [
+            359,
+            360
+          ],
+          "note": ""
+        }
+      ]
+    },
+    "correction": "An image heading and dimensions establish its appearance, not the runtime UI that uses it. Parent research identifies Trade Center context; do not use it as authority for standalone inventory.",
+    "external_context": "Masang Trade Center guide system16/trd4 provided by parent research; official reference selection still being consolidated."
+  },
+  "ep35_control_flow": {
+    "normal_flight": [
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/Interface.cpp",
+        "lines": [
+          1294,
+          1303
+        ],
+        "note": "UnitInfoBar.Render + GameMain.Render only when interface shown, not tutorial, not observer"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+        "lines": [
+          2189,
+          2215
+        ],
+        "note": "Chat/mission/unit-state branch for GAME/SHOP"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/Interface.cpp",
+        "lines": [
+          1351,
+          1358
+        ],
+        "note": "Quickslot then WindowsRender"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/Interface.cpp",
+        "lines": [
+          2998,
+          3004
+        ],
+        "note": "RenderInvenWnd independently, then ordered windows"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+        "lines": [
+          7750,
+          7759
+        ],
+        "note": "RenderInvenWnd only calls inventory Render"
+      }
+    ],
+    "hidden_observer_tutorial": [
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/Interface.cpp",
+        "lines": [
+          1312,
+          1345
+        ],
+        "note": "HideRender gauges + optional chat; tutorial uses old left/right windows; observer altimeter"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+        "lines": [
+          1662,
+          1675
+        ],
+        "note": "Chat box hidden if interface off or observer"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp",
+        "lines": [
+          328,
+          334
+        ],
+        "note": "Quickslot returns in observer"
+      }
+    ],
+    "shop_and_city": [
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+        "lines": [
+          603,
+          607
+        ],
+        "note": "Radar returns in SHOP"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/Interface.cpp",
+        "lines": [
+          1479,
+          1491
+        ],
+        "note": "CITY invokes CityBase boxes, RenderCityUpInfo, quickslot, CityBase.Render, GameMain.Render"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+        "lines": [
+          2189,
+          2191
+        ],
+        "note": "GameMain chat invocation is guarded GAME/SHOP; CITY handling inside Chat.Render alone does not prove controller invocation"
+      }
+    ],
+    "generic_frame": [
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+        "lines": [
+          3916,
+          3928
+        ],
+        "note": "Old flag=1 branch commented; active inventory path sets generic window flag0"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFWindow.cpp",
+        "lines": [
+          5508,
+          5513
+        ],
+        "note": "Generic left-window draw requires old flag1"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+        "lines": [
+          4013,
+          4013
+        ],
+        "note": "Inventory excluded from old side-panel transition"
+      },
+      {
+        "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.cpp",
+        "lines": [
+          391,
+          420
+        ],
+        "note": "New inventory Render only loops visible item/equip panels"
+      }
+    ]
+  },
+  "ep43_findings": {
+    "macro": "C_EPSODE4_UI_CHANGE_JSKIM",
+    "macro_active_definition": {
+      "file": "/workspace/analysis/ace-online-layout/ep43-source/Common/Contents.h",
+      "lines": [
+        130
+      ],
+      "include": {
+        "file": "/workspace/analysis/ace-online-layout/ep43-source/Common/AtumDefine.h",
+        "lines": [
+          6
+        ]
+      },
+      "status": "active unconditional define in downloaded source; official2025 binary configuration not independently established"
+    },
+    "group_loader": [
+      {
+        "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGroupManager.cpp",
+        "lines": [
+          28,
+          38
+        ],
+        "note": "Loads group.tex"
+      },
+      {
+        "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGroupManager.cpp",
+        "lines": [
+          59,
+          105
+        ],
+        "note": "Parses group root/header/image/control records; images reference interface.tex"
+      },
+      {
+        "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGroupManager.h",
+        "lines": [
+          13,
+          52
+        ],
+        "note": "Header fields and IMAGEFILEMAIN structure"
+      }
+    ],
+    "hud": [
+      {
+        "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+        "lines": [
+          848,
+          850
+        ],
+        "note": "Group Gage initialization"
+      },
+      {
+        "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+        "lines": [
+          1630,
+          1632
+        ],
+        "note": "MainGB position from named group control"
+      },
+      {
+        "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+        "lines": [
+          2861,
+          2863
+        ],
+        "note": "ene00 control supplies HP position"
+      },
+      {
+        "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+        "lines": [
+          2887,
+          2889
+        ],
+        "note": "she00 control supplies shield position"
+      },
+      {
+        "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+        "lines": [
+          2917,
+          2919
+        ],
+        "note": "skil00 control supplies SP position"
+      },
+      {
+        "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+        "lines": [
+          2929,
+          2932
+        ],
+        "note": "Bost00 control position, no old1.125 scale"
+      },
+      {
+        "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+        "lines": [
+          2941,
+          2955
+        ],
+        "note": "fue00/fuelG00 named controls"
+      }
+    ],
+    "menu": {
+      "origin": [
+        "W-275",
+        "H-53"
+      ],
+      "stride": 55,
+      "background": [
+        "W-335",
+        "H-53"
+      ],
+      "evidence": [
+        {
+          "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMain.cpp",
+          "lines": [
+            124,
+            131
+          ],
+          "note": ""
+        }
+      ]
+    },
+    "quickslot": {
+      "origin": [
+        "336+(W-(330+335+336))/2",
+        "H-57"
+      ],
+      "note": "Deliberately lays out chat+quickslot+menu combined widths; not simply screen center.",
+      "evidence": [
+        {
+          "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainQSlot.cpp",
+          "lines": [
+            38,
+            51
+          ],
+          "note": ""
+        }
+      ]
+    },
+    "radar": {
+      "frame": [
+        "W-189",
+        "24"
+      ],
+      "pivot": "native image width/height halves",
+      "player": [
+        "W-189+frame_width/2-player_width/2",
+        "100"
+      ],
+      "evidence": [
+        {
+          "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainMiniMap.cpp",
+          "lines": [
+            769,
+            790
+          ],
+          "note": ""
+        }
+      ]
+    },
+    "inventory": {
+      "note": "EP4 branch uses group inven, shared item/equipment origin and grid local(25,254); detailed audit delegated to existing protocol agent."
+    },
+    "pending_resource": "Res-Tex/group.tex groups Gage/inven must be decoded before choosing exact modern coordinates."
+  },
+  "visual_references": [
+    {
+      "file": "/workspace/analysis/ace-online-layout/pdf-images/page-002.jpg",
+      "source": "Official Suba tutorial PDF, creation date reported2009-09-23 by parent",
+      "state": "Annotated flight HUD",
+      "observation": "Separate upper-right SP gauge, fuel above, ammunition below left, flat bottom menus/chat filters.",
+      "limitation": "Red rectangles and explanatory captions are PDF annotations, not game UI; this is a classic reference, not proof of 2025 layout."
+    },
+    {
+      "file": "/workspace/analysis/ace-online-layout/pdf-images/page-010.jpg",
+      "source": "Same official PDF",
+      "state": "Weapon Shop, not ordinary free-flight inventory",
+      "observation": "Two visible panels: gear preview left, item grid next to it, shop to right.",
+      "limitation": "Shop has its own origins and low-resolution repositioning; do not copy these absolute coordinates as normal inventory."
+    }
+  ],
+  "recommendation": {
+    "selected_reference": "Awaiting parent/user visual target; parent currently assumes modern blue from 2025 assets.",
+    "before_implementation": [
+      "Decode group.tex and capture Gage/inven image/control positions and rects.",
+      "Choose one visual generation, client state and resolution for comparison.",
+      "Use controller/group records for position, scale, crop and active button state; validate with official screenshots.",
+      "Keep local/offline state explicit and avoid fictional account data while restoring layout."
+    ]
+  },
+  "source_snapshot": [
+    {
+      "file": "/workspace/ace-modern/client/scripts/legacy_hud.gd",
+      "sha256": "ef351aabcc17ca2e13204a75640a867344c6a6dfdcec00bf4986d31cd49205dd"
+    },
+    {
+      "file": "/workspace/analysis/ace-online-layout/ep43-source/Common/AtumDefine.h",
+      "sha256": "a9f550b12955923ee1c35eec59cbbf25ba3b29ec51a22b4bfedc1c31927bae5c"
+    },
+    {
+      "file": "/workspace/analysis/ace-online-layout/ep43-source/Common/Contents.h",
+      "sha256": "a1bb0400b96b948f2a766cea921cbf901fe62d4a2c9f831661838600702dba79"
+    },
+    {
+      "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMain.cpp",
+      "sha256": "16d6636eb0713f7d758a55019652f32c87f13f72ab6b14aac97109817b938b7f"
+    },
+    {
+      "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainMiniMap.cpp",
+      "sha256": "20fecf9fd08a54536d1a89a0d3e7430bdd3ddc17af92362d9d4dd8c84bfd7163"
+    },
+    {
+      "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainQSlot.cpp",
+      "sha256": "6f26ee706b4135f3d9e09635e437db89118f08f0d848bf7d456c58fd2b63e594"
+    },
+    {
+      "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+      "sha256": "4cfe8ccf780e8dc73ec2634242b4f91b1698d88c9dd5bceabacfe319954d3757"
+    },
+    {
+      "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGroupManager.cpp",
+      "sha256": "49f3622406b8b010f3f57af3b12f8874119f3ed418f3ae3eac7420ad044b34ec"
+    },
+    {
+      "file": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFGroupManager.h",
+      "sha256": "9a327cccf731be127bd2f5ff791414e0054246f13d0145924033377d7c0a4129"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/Common/AtumDefine.h",
+      "sha256": "42b9e59f22267139ce59efa8cca0b35a38f714fe783dd7861ea0bdfe59fa3cb3"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFCityBase.h",
+      "sha256": "e607e4dafd9f0ad8cef7c42fdd68ab7ab9c8b46c1610b68d268bedc064a31c25"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+      "sha256": "721eb2efb8ea9ce6f6b31bc8cfa963b108420d1d1b2f7f44ec03859dae7d39d5"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+      "sha256": "9e0aea8d5475e99ff099ae55741068c5cee23c1d1412f6949ef1fbb2730a96be"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+      "sha256": "03dfcf4fe378b466382b52f1a50641f6d28277f29f98eb14a9c81922faf4089c"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp",
+      "sha256": "d8ac953d9272ca5ef3e2fe71bd0e9047b47886991dd9fb42befbd36a43c5587f"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.h",
+      "sha256": "7de0364bffc3470c71a8b9542778c7797e60f0c9b19565fb0f647fe84ecb26ba"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+      "sha256": "1e4fbea34a57b0fde46514f63b335937eb3c6d64d826c200f3376f0b0aaa512b"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFImage.cpp",
+      "sha256": "991e00ad84fa16edc199cb19eaa8b8d6bf82039273c92439ede76e2bdb21e83a"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenEquip.cpp",
+      "sha256": "91203d80d2db5e0f5f42aa8e67529cf6f558482bfff3867f4b4a180d213587d4"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.cpp",
+      "sha256": "9641ec88c42ce33675f3f4b1df35d88c93fcc94947a4f39db1f35babf7f0dd15"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+      "sha256": "dc26b6a2f2d39c9a05efe2ea249a15feab71e4739e7dbb211df335991e56bbd4"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFWeaponInfo.cpp",
+      "sha256": "033058d73249c52557394c2d866fadb35d3bbdf1f9ba663f26483c14aaab7eb6"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFWindow.cpp",
+      "sha256": "caa027bd1f0fda9147fc329a240a85a91adeeb984b40ff51c03ad8b7aaa0ad40"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/Interface.cpp",
+      "sha256": "2186d24a90895ec803de00ab9d00a46acf393d52e48fea1d4404e09599cbc7ec"
+    }
+  ]
+}

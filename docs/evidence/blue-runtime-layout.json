@@ -1,0 +1,261 @@
+{
+  "target": "Official 2025 blue client UI; local Godot reconstruction, not an original-client runtime capture",
+  "package_declared_version": "0.4.5.158",
+  "source_commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+  "group_tex_sha256": "5fd1f85960423dfd0f917abe873bf85b1e345eabab771f28a421979880d5e239",
+  "runtime_layout_sha256": "e86700174579181c40876b7ae0d1472af29cf67fbdab43e741f7fc90b282cb58",
+  "manifest_sha256": "4542e0dbddbb3c756a3f8049af814b80d7a4a95081e7e85dff1dd7803b2121e4",
+  "rendered_groups": [
+    "Gage",
+    "MainGB",
+    "inven",
+    "minimap"
+  ],
+  "coordinates": {
+    "gauges": {
+      "origin": [
+        0,
+        0
+      ],
+      "anchor_group": "Gage",
+      "art_group": "MainGB",
+      "speed_digits": {
+        "origin": [
+          56,
+          105
+        ],
+        "advance": 16,
+        "source_cell": [
+          19,
+          17
+        ]
+      },
+      "unmodelled_values": "dashes at original text regions; artwork is preview"
+    },
+    "inventory": {
+      "composition_group": "inven",
+      "size": [
+        379,
+        506
+      ],
+      "first_open": "floor(W/2)-floor(width/2), floor(H/2)-floor(height/2)",
+      "reopen": "last session drag position, clamped into viewport",
+      "group_editor_translation": "ignored; active caller sets position",
+      "grid_origin": [
+        25,
+        254
+      ],
+      "grid_shape": [
+        10,
+        6
+      ],
+      "cell": 30,
+      "stride": 32,
+      "close_origin": [
+        361,
+        6
+      ]
+    },
+    "radar": {
+      "frame_origin": [
+        "W-189",
+        24
+      ],
+      "frame_native_size": [
+        166,
+        166
+      ],
+      "local_content": "training rings relative to flight position/heading"
+    },
+    "minimap": {
+      "frame_origin": [
+        "W-177",
+        186
+      ],
+      "group": "minimap",
+      "frame_size": [
+        140,
+        140
+      ],
+      "terrain_view_origin": [
+        "W-170",
+        193
+      ],
+      "terrain_view_size": [
+        126,
+        126
+      ],
+      "content": "shared procedural world rendered by a local top-down Camera3D; not an original map"
+    },
+    "altimeter": {
+      "bar_origin": [
+        "W-32",
+        188
+      ],
+      "pin_x": "bar.x-(pin.width-bar.width)/2",
+      "content": "flight altitude normalized to actual local flight bounds"
+    },
+    "quickslots": {
+      "origin": [
+        "336+trunc((W-1001)/2)",
+        "H-57"
+      ],
+      "empty": true
+    },
+    "chat": {
+      "frame_origin": [
+        0,
+        "H-180"
+      ],
+      "source_width": 318,
+      "source_height": 120,
+      "outer_size": [
+        339,
+        130
+      ],
+      "filters_origin": [
+        2,
+        "H-54"
+      ],
+      "filter_stride": 37,
+      "filter_count": 9,
+      "input_origin": [
+        52,
+        "H-34"
+      ],
+      "input_width": 240,
+      "note_submit": "stores locally then selects Local filter; never sends network data"
+    },
+    "system": {
+      "origin": [
+        "W-335",
+        "H-183"
+      ],
+      "source_size": [
+        335,
+        120
+      ],
+      "frame": "c_c00..22, swapped/flipped top corners per EP4, sysbar at5,-4",
+      "content": "local session events only"
+    },
+    "menus": {
+      "first_icon": "FAQ op_faq3",
+      "origin": [
+        "W-330",
+        "H-53"
+      ],
+      "following_five": "inventory, info, community, trade, system; idle mnbtnN3",
+      "stride": 55,
+      "idle_scale": 0.8,
+      "native_art_size": [
+        55,
+        51
+      ],
+      "idle_art_and_hitbox_size": [
+        44,
+        40.8
+      ],
+      "hover": "grows to1 over1s, CENTER_BOTTOM offset X=width*(scale−.8)/2,Y=width*(scale−.8), source width used for both axes"
+    },
+    "experience": {
+      "origin": [
+        0,
+        "H-12"
+      ],
+      "width": "W",
+      "fill": "none; no fabricated level or progression"
+    }
+  },
+  "source_references": [
+    {
+      "file": "INFGameMain.cpp",
+      "lines": [
+        125,
+        151,
+        842,
+        857,
+        874,
+        888,
+        4606,
+        4611,
+        5671,
+        5676,
+        6138,
+        6148
+      ]
+    },
+    {
+      "file": "INFGameMainUnitInfoBar.cpp",
+      "lines": [
+        1630,
+        1646,
+        2198,
+        2303
+      ]
+    },
+    {
+      "file": "INFGameMainChat.cpp",
+      "lines": [
+        65,
+        119,
+        388,
+        1080,
+        1088,
+        1429,
+        1955,
+        1965,
+        1973,
+        2004,
+        2515,
+        2586
+      ]
+    },
+    {
+      "file": "INFGameMainWisperChat.cpp",
+      "lines": [
+        2504,
+        2521,
+        2603,
+        2637,
+        3027,
+        3110
+      ]
+    },
+    {
+      "file": "INFGameMainMiniMap.cpp",
+      "lines": [
+        905,
+        906,
+        928,
+        937
+      ]
+    },
+    {
+      "file": "INFInvenItem.cpp",
+      "lines": [
+        46,
+        69,
+        2121,
+        2162
+      ]
+    },
+    {
+      "file": "INFInvenExtend.cpp",
+      "lines": [
+        2999,
+        3024
+      ]
+    }
+  ],
+  "limitations": [
+    "No original-client runtime was executed, so pixel-for-pixel equality is not claimed.",
+    "EP43 caller code and 2025 shipped layout resources are distinct versions; group data supplies composition, source supplies call geometry.",
+    "Gear and terrain are procedural placeholders.",
+    "Inventory is an empty local preview, without item/account/saldo/persistence data.",
+    "HP, shield, SP, fuel, ammunition and EXP have no underlying model; art is preview and numbers stay dashes.",
+    "Only flight speed, boost, altitude, local ring radar and procedural terrain view reflect simulated state.",
+    "Chat channels do not connect to players; Arena and Sala remain disabled.",
+    "Information, community and trade menu actions explain local unavailability.",
+    "F1 help and the small local badge are intentional additions."
+  ]
+}

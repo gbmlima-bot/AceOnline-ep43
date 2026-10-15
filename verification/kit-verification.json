@@ -1,0 +1,2176 @@
+{
+  "approved_evidence_files_verified": 23,
+  "approved_source_hashes_verified": 53,
+  "artifact": "ace-online-kit-v0.8.zip",
+  "base_source_manifest_files": 45788,
+  "bytes": 93628840,
+  "crc_verified": true,
+  "created_utc": "2026-10-15T13:05:53.770250+00:00",
+  "full_base_updater_execution_performed": true,
+  "full_manifest_verified": true,
+  "manifest": {
+    "files": [
+      {
+        "bytes": 1612,
+        "executable": false,
+        "path": "LEIA-ME.txt",
+        "sha256": "2b315aad802694c7343cf544ec14a692b3a432cd29f77d570caf63eadf0a5e3e"
+      },
+      {
+        "bytes": 12670,
+        "executable": false,
+        "path": "ONLINE-PVE.md",
+        "sha256": "0e710a6c6a8310668627c1c6839afc58b1c3feb808193fa53eaed1ce5df6ba75"
+      },
+      {
+        "bytes": 28503,
+        "executable": false,
+        "path": "apply-update.py",
+        "sha256": "cc775805ca77de6a4ca3f8a8c0c222661df1fc7894d3bb400189a7bc4a660c1d"
+      },
+      {
+        "bytes": 8891851,
+        "executable": false,
+        "path": "base-manifest.json",
+        "sha256": "23880f4e1674d10c7792fc231b7e748f964421fc4f0c4d3ea2ddbc3220ce23c0"
+      },
+      {
+        "bytes": 119,
+        "executable": false,
+        "path": "client-source-overlay/.gitignore",
+        "sha256": "6050f0d99417fa5e831d4c8fb19a57f08099810c93a33c6287ac62ff49b1e74b"
+      },
+      {
+        "bytes": 1798,
+        "executable": false,
+        "path": "client-source-overlay/README.md",
+        "sha256": "c51e746540fe5e7ccdf388173f99a94bd6400e6033aae276f9469312ec432744"
+      },
+      {
+        "bytes": 1798,
+        "executable": false,
+        "path": "client-source-overlay/README.txt",
+        "sha256": "c51e746540fe5e7ccdf388173f99a94bd6400e6033aae276f9469312ec432744"
+      },
+      {
+        "bytes": 1241,
+        "executable": false,
+        "path": "client-source-overlay/client/export_presets.cfg",
+        "sha256": "125a53b7f761155258800c6b728ee3669de12337d83a14ac2b25993df8614162"
+      },
+      {
+        "bytes": 174,
+        "executable": false,
+        "path": "client-source-overlay/client/main.tscn",
+        "sha256": "c54422da47ee868962bd4cadd331a39f8ca81be29665a4f59f7a923cce64a5dd"
+      },
+      {
+        "bytes": 889,
+        "executable": false,
+        "path": "client-source-overlay/client/project.godot",
+        "sha256": "7c7b09cdf23f4a32efc68215ee71e3b7f8822885a0e284da62d22f074dab8970"
+      },
+      {
+        "bytes": 30816,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/combat_model.gd",
+        "sha256": "866c5433b0f0b31fa166a283b8d90b2bf64701de0b309ad915697ab49bac8cbe"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/combat_model.gd.uid",
+        "sha256": "ee0bf839cce4c7a925458995007975ec8606ac9c3e8bfa8448ff95e413a24947"
+      },
+      {
+        "bytes": 41745,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/combat_runtime.gd",
+        "sha256": "28da58ff9ec082f7c5f25ecc4fb5cf8a73eb34ad69fa4e13b85af71b9bc92d58"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/combat_runtime.gd.uid",
+        "sha256": "9d39a19f5a531614bea047baf8dde7ba2ee7d882bd3473c7d262da58c96077b9"
+      },
+      {
+        "bytes": 23600,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/flight_model.gd",
+        "sha256": "f99f4fc5841ce6d85739ad9609eb377f1766b4d7770d1e483e626efb92631f9e"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/flight_model.gd.uid",
+        "sha256": "58b97aebee8777b4ca6c280941cd95e95bd34714663a947d5e4493064e32ae17"
+      },
+      {
+        "bytes": 16623,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/game_systems.gd",
+        "sha256": "c173d7180100163f62f82d9e170014720158e8d651cfbcbaa49d3e168dbd7e7a"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/game_systems.gd.uid",
+        "sha256": "9c8e29608bad5394bee1197b824af7cd444b7a156693e77cd8e6fe4596f75b99"
+      },
+      {
+        "bytes": 28820,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/inventory_model.gd",
+        "sha256": "b3d51d98ec56507f0a69382dc7de9c6662eb8cc612b815708e1a016d0b5cd20e"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/inventory_model.gd.uid",
+        "sha256": "1a96b693fc4a3099007abae78e7b778375ce8f2aed5cd5f8689934bcf1ad8385"
+      },
+      {
+        "bytes": 6040,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/legacy_group.gd",
+        "sha256": "95d5bcd9ae87eab4e9c9fe839242051a0fc73ec8881f69774d104c36ceb88902"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/legacy_group.gd.uid",
+        "sha256": "b0cab9eaf74c7a123aedaf6cf7b184cd5d12f0ccd6c77a7f26fcc51cbd0a74cd"
+      },
+      {
+        "bytes": 116659,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/legacy_hud.gd",
+        "sha256": "f859d30b446c16019c5f5593185bebb92c2a2606c13e7f16efee0b15064d963c"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/legacy_hud.gd.uid",
+        "sha256": "e9b542706c323a04dd2e510f126ff0bcae36859a578d882a551e26f01c6b6313"
+      },
+      {
+        "bytes": 12968,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/local_multiplayer.gd",
+        "sha256": "c6a15ce382f3394a6f1b5257b3377bbf05f6968832d2e259e8f56e65ca4f4d78"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/local_multiplayer.gd.uid",
+        "sha256": "0db743368b6bfebbcdbe6ab685233cae24e819d796fbf5d47e0f20a5fa774c0a"
+      },
+      {
+        "bytes": 4855,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/local_save.gd",
+        "sha256": "1a6c58ef099bfea5bcd4abafab759c242016cedb45b13a4ec5f791c55e217190"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/local_save.gd.uid",
+        "sha256": "c5f5b3bcf5628bcfc356205d004d1c9b4480aae75b01681282bc46bd55e4afe8"
+      },
+      {
+        "bytes": 49127,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/main.gd",
+        "sha256": "2c3e7b219709ae3ef84e9a2de574187a5fcd0a35827176b845ac75e27ef4e726"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/main.gd.uid",
+        "sha256": "1bf55907364b3365de079c0ced8bc5d922d490dce5a5d03b07d009d446dea4cc"
+      },
+      {
+        "bytes": 4281,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/native_equipment.gd",
+        "sha256": "112d1504357617eee9f4f1a3d0273d5bc16afb50e93eded092d93d8229ba77fd"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/native_equipment.gd.uid",
+        "sha256": "5c4da9280617b119a933a6724d72feafeb5d41448862ed839feffdc11468f6cf"
+      },
+      {
+        "bytes": 33805,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/arena_model.gd",
+        "sha256": "eb2d089766a53f95e05934c98a13cbc967feac636f63d8932d7120708ff373d3"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/arena_model.gd.uid",
+        "sha256": "90b4126009f06134b611aada85d8b80df976cbca0d55ae65bf364b4dcf11ca0c"
+      },
+      {
+        "bytes": 10471,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/headless_world.gd",
+        "sha256": "a878e11e4be138aa180cda708985e8a8b07baba6f3f8c159e55e44b1ac601974"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/headless_world.gd.uid",
+        "sha256": "830e4ed66523c2766bd648a06fbc7d640825190fe47fb51071a64e0146916217"
+      },
+      {
+        "bytes": 2753,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/json_wire.gd",
+        "sha256": "1cdb6a4019edf736ba43824ede229a520f5598a89f573af8387bfffa6f453741"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/json_wire.gd.uid",
+        "sha256": "b68add2d4165e2d0243fe11f9aeb51a3dc74e6c7afaafe446d3a1cbf3d266bc0"
+      },
+      {
+        "bytes": 10335,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/online_client.gd",
+        "sha256": "5480d999807cbc6baba9ee9c1f570ef3dcf53930a5cc7f784fb896701a73bbfc"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/online_client.gd.uid",
+        "sha256": "37428fd2c7133f0942f5fce3506b96ed505937badd98828a602329862a10a69e"
+      },
+      {
+        "bytes": 27330,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/online_view.gd",
+        "sha256": "af11940d2e36be8d036db60b8c94b510a411cdb0bdd251c78b1d65034898f45e"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/online_view.gd.uid",
+        "sha256": "4e64bdb67ce2007076dd35af4b0078dd28cd577afe00f8336292255abcaccc73"
+      },
+      {
+        "bytes": 8197,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/ws_server.gd",
+        "sha256": "0aaf3dc066a00e088deb42da7745c19b569526e7da97e2b7290907627fa5d7da"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/online/ws_server.gd.uid",
+        "sha256": "65f0a4d217b3b3172369baac62be07a279b93eb12938266099616ef28bc482dc"
+      },
+      {
+        "bytes": 4641,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/original_asset.gd",
+        "sha256": "8f45bb753572e448e77a8d9ec9fc80ca5cba1e939c2f1a9449d1c38cdead8f0c"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/original_asset.gd.uid",
+        "sha256": "901ceb29db615a6164c70368e71fb8251deaaf59c8d448682879e869ab0d4187"
+      },
+      {
+        "bytes": 3270,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/original_audio.gd",
+        "sha256": "66b7b9e7878835df0114b310d24268b2c3563e9a2a70f630463cc43f3035f034"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/original_audio.gd.uid",
+        "sha256": "53557b79e7d7823227a02668461181289e9223b758e16cebb41ff5f443359e30"
+      },
+      {
+        "bytes": 8045,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/original_props.gd",
+        "sha256": "165c6932a2a06dc3d8b2c699e9e98b2619aa31b1306a03fcff2244e4c05ccbce"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/original_props.gd.uid",
+        "sha256": "20180b2a0df5c256d2f600f30d00aa6b81e74ee84c6577f1701968f5b719be03"
+      },
+      {
+        "bytes": 3167,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/original_water.gd",
+        "sha256": "df9133d0f540a0faf2248bb36354c0b6e923c242f43184c49d340d344450cdc8"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/original_water.gd.uid",
+        "sha256": "a9056236d90dbbd5b87630045764f5556a8212ecea968064ff37a37f57249b15"
+      },
+      {
+        "bytes": 3122,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/protocol/plain_framing.gd",
+        "sha256": "1e9b198945fa10e997270faedb50578bc0613d2da4fb391a61149272a5a181c6"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/protocol/plain_framing.gd.uid",
+        "sha256": "d55c37f0dbdc63a582b771bcc902aa6158aac3183199d6fce651dd14be56deba"
+      },
+      {
+        "bytes": 18751,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/service_model.gd",
+        "sha256": "8290b5221c258eefe3299a461155aea5ca12ea90f8fbda88420cfd7e28a06600"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/service_model.gd.uid",
+        "sha256": "6c230a6c2d309d0c514cbcaca0c82b06557df96e941d041ee9bd68a6b1bbb9f2"
+      },
+      {
+        "bytes": 20744,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/skill_model.gd",
+        "sha256": "ad508564aafaa8d2cdf69f4a121f1685767781c4bd467d1349f14ba2bc8ecfab"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/skill_model.gd.uid",
+        "sha256": "6de2516dc931a60e8b77de80cf3fd9368257a56c07653e5bb8968aacd66ad490"
+      },
+      {
+        "bytes": 24690,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/world_model.gd",
+        "sha256": "bc425f4e338287ced8c3345b1a9a0801216341a40349de247e2694d0cc2bc8f8"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/world_model.gd.uid",
+        "sha256": "a67bcdf617cd8ffb2fa9aee68aca03214c6e378d935479a6bca6f75e828d22b8"
+      },
+      {
+        "bytes": 73660,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/world_runtime.gd",
+        "sha256": "477a16d19296b2b8ff131db0cb64c8f295966193f327e266daf3c54243d1ce51"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/scripts/world_runtime.gd.uid",
+        "sha256": "36a0aa15770abdc0292f4fe0bff4ee068a4a4dedbbcf3bec4e54ecbccd081d12"
+      },
+      {
+        "bytes": 13374,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_combat.gd",
+        "sha256": "730f11f67cdb022fc373ad6973c64c852aa19dfc4472ff451b79ad9c7107c6cc"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_combat.gd.uid",
+        "sha256": "3bada11f9f165bba372e99eeeb77fe3f8da2c0726057605ea92604cce7fb2ce2"
+      },
+      {
+        "bytes": 17687,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_combat_runtime.gd",
+        "sha256": "785d452a2b4cdb9d5e79a7bbdd874ccc887c715924966355de29a3968d17cb28"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_combat_runtime.gd.uid",
+        "sha256": "2be3276865089f418e7f0f3c848eb0a6a53cd3a15f5d70f8e4989b1d713f24f5"
+      },
+      {
+        "bytes": 9732,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_expanded_game.gd",
+        "sha256": "4a8bf6edb828427c7be8b2293a2262db348af6959470b96b1cebec127287b9bb"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_expanded_game.gd.uid",
+        "sha256": "fd9fa86f5679add5669647d4e0f6116ab63f518308b4e9cc829a4fe207b872d2"
+      },
+      {
+        "bytes": 21366,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_flight.gd",
+        "sha256": "8e979fbafa5f7b707f5deb6f86af0ccc8dba6239bb0893078beb55c638e77147"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_flight.gd.uid",
+        "sha256": "ea0c99563c44bc0749368be1f4712877db2b2f71b1b2f53cad91f77d0767f580"
+      },
+      {
+        "bytes": 20621,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_gameplay.gd",
+        "sha256": "42b11c23451d7d85280db4904f3e3dadf3b481d5a638b6255ee62c02b544a808"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_gameplay.gd.uid",
+        "sha256": "00473c7caca1e8e8006c084499c3e8f4dec7398f893bf0bedb9faec9203c969c"
+      },
+      {
+        "bytes": 6646,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_headless_world.gd",
+        "sha256": "73e7a38f5c0d460b53f236258747246a30b891beef64ccb393d208b0a2aab67a"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_headless_world.gd.uid",
+        "sha256": "19878cb233cb17e97334c844d4ccd13d02334110451d09894e7155249bf7d2ed"
+      },
+      {
+        "bytes": 6043,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_inventory.gd",
+        "sha256": "fca435244a77d9884d442b24d15ef2e70ef273ee6ff89648121d0a0a2d2c1795"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_inventory.gd.uid",
+        "sha256": "3f3ea2cccec1618804f6c606dd50f22b55e147f1d918187fce9a8fb15e32c18f"
+      },
+      {
+        "bytes": 16064,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_inventory_equipment.gd",
+        "sha256": "11359c275f4274ad50e596a58937d55acbcd00122196e1868308583194b82a80"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_inventory_equipment.gd.uid",
+        "sha256": "06d85c6908f58941673f866d09d0afb472b6a16849a69de8369fb3899448da81"
+      },
+      {
+        "bytes": 33175,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_legacy_ui.gd",
+        "sha256": "c89bbb248394899d315ff8ccd8409304c5855107f9d7303cb3990efd8e470fe2"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_legacy_ui.gd.uid",
+        "sha256": "115a5ed7546f02c1763356417eeb7871954acc81706bb2e06e16a1c6674bd884"
+      },
+      {
+        "bytes": 17490,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_library_ui.gd",
+        "sha256": "f18eebc0b7aaec6a90c1dc7491c3506b80408e5e5e2f7feb1471e8eba421d893"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_library_ui.gd.uid",
+        "sha256": "ee37d3593449f508c2e030bc206106803c361312305cb02b9f5c424f052c489a"
+      },
+      {
+        "bytes": 2206,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_local_save.gd",
+        "sha256": "28a3300792f254fb5637cc4e3ba08b82ce2121326f7c1eaa7aa031bbcf1f7213"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_local_save.gd.uid",
+        "sha256": "7110aabdc7f001d05f62bbaf9d52fac5db31e7ba44535f6fad87038e68ed7cc0"
+      },
+      {
+        "bytes": 11332,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_multiplayer.gd",
+        "sha256": "3dcd4f2a96007004bb06c30ba5ab50e075b47ad64b6f5e636cb20d61fb5f363d"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_multiplayer.gd.uid",
+        "sha256": "d7130f88b5829bb749a5d07df7ebba77938ed6da342766781b046b512e266e83"
+      },
+      {
+        "bytes": 16985,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_online_arena.gd",
+        "sha256": "98add27eab539aafbcd29d13207a0f0cc080e980c9ebf01cfab6202935c7d2dd"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_online_arena.gd.uid",
+        "sha256": "b81691be6e3da00e330bc074bd40530f38c2669d2810f809002537343dd729a9"
+      },
+      {
+        "bytes": 17473,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_online_scene.gd",
+        "sha256": "9e9854819b3825732ef1799736c2a83e3696fa1976420e06dffab36ab9a0dfc0"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_online_scene.gd.uid",
+        "sha256": "09e5399418d64c401d05ff3617df2b9a0fb3346d11256b775f8fce62a954b5d8"
+      },
+      {
+        "bytes": 18385,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_online_transport.gd",
+        "sha256": "a0aac569af45d4e89af24f9c17e750e497c178f64bb367600ed57c665d89b99d"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_online_transport.gd.uid",
+        "sha256": "88703957ceaac446facfdf2cfc2d62ff8b9879cfaecefbac45f63115a2ffcfee"
+      },
+      {
+        "bytes": 12101,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_online_ui.gd",
+        "sha256": "265bf971279d1e8d4dc3bee3b93901b74df80a009020355a2346e026973844a0"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_online_ui.gd.uid",
+        "sha256": "1a1272081e1319a67f830d01617b429617ab3ccbdc14ba5dbb83b9c25cd97f1f"
+      },
+      {
+        "bytes": 10343,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_online_view.gd",
+        "sha256": "855772809aca13be694b661e477f61335c786a26d5db082aede9f0d052824d15"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_online_view.gd.uid",
+        "sha256": "db6e14457403abcd9b3a2fd1749c1a19df016e390fead26c39a5df1955d366f9"
+      },
+      {
+        "bytes": 15721,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_original_assets.gd",
+        "sha256": "6f6195ade38df9d248416ee4bd8976654fa4b2295d9e9d692584df3b1f91b145"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_original_assets.gd.uid",
+        "sha256": "75c23a431747aa6074d6f8f16850b8a1897bd53d4e4153b4d26db591e9ad0bf4"
+      },
+      {
+        "bytes": 13575,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_protocol.gd",
+        "sha256": "d054a4664623ded5fecee06d24630db602cfe4866caf5d3eb829440e8840d719"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_protocol.gd.uid",
+        "sha256": "d54660bcfb899c2f1e877d0301550068cafb016644f650e7e60c8fa8ef4d47fe"
+      },
+      {
+        "bytes": 1612,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_scene_controls.gd",
+        "sha256": "a505b7a7ee185445ff20d27997465c4f8626fd87f26391866ebc47bf504a0b8e"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_scene_controls.gd.uid",
+        "sha256": "5f0f8b3242abc06e832dfdb74201f6ec296a858b7271eed57778804df3fb8248"
+      },
+      {
+        "bytes": 9472,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_services.gd",
+        "sha256": "a4f624b66d1b43ff622b6f68d5caf3c21062794cdf199a700f587f51921a2718"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_services.gd.uid",
+        "sha256": "8500874b6f14dec6a5842bd7cb209044e0d70e13a9ef33374dda246b8228b334"
+      },
+      {
+        "bytes": 15206,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_skills.gd",
+        "sha256": "bec1b16270c40ce6b13ba38b4f0a8eef068008586eb4d7b7c445e8aa2feb1982"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_skills.gd.uid",
+        "sha256": "f38ba0305905b98eb3dce4493a831c7fd611a852d8a3331a414c9a55ea892bab"
+      },
+      {
+        "bytes": 21098,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_systems_integration.gd",
+        "sha256": "ecee03677bbd2055d79569420564c73ef373dae79bc90ceab989f09cb196ae1f"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_systems_integration.gd.uid",
+        "sha256": "3e409810eb2d5e049017b8da703cb10501d6d76755a4ef9b1f1da6112613eb54"
+      },
+      {
+        "bytes": 13222,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_systems_ui.gd",
+        "sha256": "06f09226da54e47bc52c0d9eebf42ad2a87eb14ad2df96ec3627f94036ef3fba"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_systems_ui.gd.uid",
+        "sha256": "ab22cc65ca38c4c9b47d362c917b2e89fd35cf57608be7a1afb6bff19461981f"
+      },
+      {
+        "bytes": 19219,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_world.gd",
+        "sha256": "4d66a82c7ff29ba258c569ebb416d5f9249a7e95ed17ef12f609d215b903f543"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_world.gd.uid",
+        "sha256": "173fd43aeb97c7301ee2c099bb032230cd3a0bd3b7a93b1a831deb531a5e94d0"
+      },
+      {
+        "bytes": 24638,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_world_expansion.gd",
+        "sha256": "02ef4d07e53495d91ea30587f67f15c9a92e37a5490b8b6818170f5f5d29de3d"
+      },
+      {
+        "bytes": 19,
+        "executable": false,
+        "path": "client-source-overlay/client/tests/test_world_expansion.gd.uid",
+        "sha256": "a552b40adeab28ca2f9ca666717f488ed42b1f130809a01a9c666afe07788e85"
+      },
+      {
+        "bytes": 124,
+        "executable": false,
+        "path": "client-source-overlay/deploy/.dockerignore",
+        "sha256": "ffb141ba636f77ab11efc4933b83e205a8bfafd858596c2f1312014e5c650857"
+      },
+      {
+        "bytes": 280,
+        "executable": false,
+        "path": "client-source-overlay/deploy/.env.example",
+        "sha256": "fb6508ad75ed868490321d1627fec0154dab857824a80c99134ebc7fe1f06015"
+      },
+      {
+        "bytes": 403,
+        "executable": false,
+        "path": "client-source-overlay/deploy/Caddyfile",
+        "sha256": "806e0d4b879b9960589dd9801f465fc2d9d1d8a2b2a4c1d1e60c731436ac8e30"
+      },
+      {
+        "bytes": 3134,
+        "executable": false,
+        "path": "client-source-overlay/deploy/Dockerfile",
+        "sha256": "467658099000365c03d87747e67389cb0200239f50a38a075bb261bcf3084036"
+      },
+      {
+        "bytes": 5179,
+        "executable": false,
+        "path": "client-source-overlay/deploy/OPERACAO.txt",
+        "sha256": "ab30dfe51e57323432377ad21a2bc2e97b6c7d29403958b54d44b9d2a01fb7a9"
+      },
+      {
+        "bytes": 301,
+        "executable": false,
+        "path": "client-source-overlay/deploy/compose.local.yaml",
+        "sha256": "7e9901f78f8ddb9aa292b78bfd19e4c7bd28ce993a678d3d88bd3e4c1bd1ce24"
+      },
+      {
+        "bytes": 1920,
+        "executable": false,
+        "path": "client-source-overlay/deploy/compose.yaml",
+        "sha256": "cbd32a14e75fc5adcd716fdfaa6ff606d9f6a115beae99796cf76d3ac20e7e30"
+      },
+      {
+        "bytes": 1088,
+        "executable": false,
+        "path": "client-source-overlay/deploy/images.lock.json",
+        "sha256": "6a32f7b88f921294952c865084990c7098bd9c782036832bb034fe6978559512"
+      },
+      {
+        "bytes": 600,
+        "executable": false,
+        "path": "client-source-overlay/deploy/scripts/backup.sh",
+        "sha256": "2539d9e0932457ae3353292d45dc470a4be02f64664ac1f06712836d667979dc"
+      },
+      {
+        "bytes": 372,
+        "executable": false,
+        "path": "client-source-overlay/deploy/scripts/create-pilot.sh",
+        "sha256": "02ee2ac6677db43d06b751c29e4698ad4f7d288033585e97f4ca15b890f1d01a"
+      },
+      {
+        "bytes": 453,
+        "executable": false,
+        "path": "client-source-overlay/deploy/scripts/healthcheck.py",
+        "sha256": "32de363c5cfede1b45b390fd7e73bb5b97553508b3d535692887e140971b2739"
+      },
+      {
+        "bytes": 1036,
+        "executable": false,
+        "path": "client-source-overlay/deploy/scripts/restore.sh",
+        "sha256": "e4b8f58c17fe14619bde48456a331fbf66424e10d0a57d7873482def43c2778a"
+      },
+      {
+        "bytes": 6923,
+        "executable": false,
+        "path": "client-source-overlay/deploy/scripts/sqlite_ops.py",
+        "sha256": "12976bd950a06b4a6ed7f6e1657cae9f0a36ab7ed3f96ffa6c5150930b5941c6"
+      },
+      {
+        "bytes": 209,
+        "executable": false,
+        "path": "client-source-overlay/deploy/scripts/start.sh",
+        "sha256": "e636ebe24656ec73aa840be457d8e46ead028f418cb92c485992506f319f2fce"
+      },
+      {
+        "bytes": 2249,
+        "executable": false,
+        "path": "client-source-overlay/deploy/scripts/supervisor.py",
+        "sha256": "1fb180044f39e26223c8f31f23435acf9c4a1b8bc71b80aec32f9176789df03a"
+      },
+      {
+        "bytes": 3972,
+        "executable": false,
+        "path": "client-source-overlay/deploy/tests/test_server_bundle.py",
+        "sha256": "34ad40a8b77d98a2fa3e82364945ec133f9c67153f06749dc732543f7542486d"
+      },
+      {
+        "bytes": 4811,
+        "executable": false,
+        "path": "client-source-overlay/deploy/tests/test_sqlite_ops.py",
+        "sha256": "17d6f39f730241669d535c2e4adea0b5eb810ab9610a923b371078806cbefa22"
+      },
+      {
+        "bytes": 2658,
+        "executable": false,
+        "path": "client-source-overlay/deploy/tests/test_supervisor.py",
+        "sha256": "97ee87895e4838a501f645f8399474e0e9d05825e43120deba05bc9b33e040f8"
+      },
+      {
+        "bytes": 12670,
+        "executable": false,
+        "path": "client-source-overlay/docs/ONLINE-PVE.md",
+        "sha256": "0e710a6c6a8310668627c1c6839afc58b1c3feb808193fa53eaed1ce5df6ba75"
+      },
+      {
+        "bytes": 4843,
+        "executable": false,
+        "path": "client-source-overlay/docs/combate-original.json",
+        "sha256": "6b51f16e48cb9868461dccb027160903fe566ae7baa6019d081ccf4fa9f450d5"
+      },
+      {
+        "bytes": 13939,
+        "executable": false,
+        "path": "client-source-overlay/docs/combate-original.txt",
+        "sha256": "25e5002bac2e91cd547157fb9800c70352b81dc026d3dd72d3dfb6d0b8fad3a7"
+      },
+      {
+        "bytes": 21469,
+        "executable": false,
+        "path": "client-source-overlay/docs/comparacao-layout.json",
+        "sha256": "dc8b10d5e870071063fa3258b0fd14441c39ac421c97210adeb5ec1329882319"
+      },
+      {
+        "bytes": 5342,
+        "executable": false,
+        "path": "client-source-overlay/docs/comparacao-layout.txt",
+        "sha256": "5cba01dab5d1714c910b2cf12fee7320945f49cd864137d2613668d3cb169e3b"
+      },
+      {
+        "bytes": 7365,
+        "executable": false,
+        "path": "client-source-overlay/docs/equipment-native.txt",
+        "sha256": "7f869d783bed939d5edb78da184032daf1f04eaa7f0076d932f0de1e564f9393"
+      },
+      {
+        "bytes": 5898,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/blue-runtime-layout.json",
+        "sha256": "ee717310bd267dd1a2b704e827ff95a166afdd219aac6f23345bbf54ebf2678a"
+      },
+      {
+        "bytes": 565,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/client-acquisition.json",
+        "sha256": "d316cad6bef7ae81fe58c0d0381f7dfc5bf6ad2ef7bece36718ca33857afb1b0"
+      },
+      {
+        "bytes": 18160,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/combat-effect-descriptors.json",
+        "sha256": "ffacbb472009e23567c878d3dbed5c6ca1e24c588588b10ea3da0a69912603b5"
+      },
+      {
+        "bytes": 3343,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/ep43-inventory-provenance.json",
+        "sha256": "b826d74464dde4de29e612bcd3843d690dbfadc18c39e04cb6c4d193006a9a94"
+      },
+      {
+        "bytes": 3038,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/ep43-menu-scale-audit.json",
+        "sha256": "f9c23627b642fdbe4e1e0ad0a8b6041a3b6fe3395857e966d91361426b6badeb"
+      },
+      {
+        "bytes": 1610,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/ep43-menu-scale-audit.txt",
+        "sha256": "4309424b5d67aff2940ebc379b800151c767d55510bfdf2fd488982b75ccc980"
+      },
+      {
+        "bytes": 898,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/extracted-files.json",
+        "sha256": "be0dc31a67674a110b8912ef63cfe47e98c20a1c3c21d97caf82bf165b5a77bd"
+      },
+      {
+        "bytes": 3609,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/group-format.json",
+        "sha256": "738ae398fd8e2d71f36fa39d5cf323bd32ad04191cff4d928fea32707c90ccc7"
+      },
+      {
+        "bytes": 2097,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/group-independent-validation.json",
+        "sha256": "079d7458c512fb45123aeda49f22f6f8d6414317b91cdb6c995b75841c8f942d"
+      },
+      {
+        "bytes": 566,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/group-parser-validation.json",
+        "sha256": "3c238e4396c250ee5bcd8ea3c2bae5bec543d3fc0bb39506ac76eb0a8b18b928"
+      },
+      {
+        "bytes": 2507,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/group-renderer-review.json",
+        "sha256": "9118a5eabccff2121f09a4e26f066baafe5a0dfe3d576176c295c63ff37c668d"
+      },
+      {
+        "bytes": 19856,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/layout-references.json",
+        "sha256": "0e77807e7e8fc4d25585abe6d2465635a097a7d5efc4d5a9f588199fb4e8124d"
+      },
+      {
+        "bytes": 41210,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/layout-source-audit-initial.json",
+        "sha256": "5874089f4a8a541693954d33e29d1ffa050643ee8767b3c049d3ede18b707309"
+      },
+      {
+        "bytes": 694,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/rea-client-artifact.json",
+        "sha256": "66d946d45248ee18b27258b9f9f6aeaa2e8ccfa0666fa951ce911b51f1edb6bd"
+      },
+      {
+        "bytes": 7696,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/rea-client-pe-resources.json",
+        "sha256": "6b6a20f96ccba367d3f76d240bb28f1ea71f49f610a54ef76d80425ab7908b9a"
+      },
+      {
+        "bytes": 9023,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/rea-client-ui-artifact.json",
+        "sha256": "301ebd8591a219cf6a0efe1f1e65b6737f0b4c7e58ba770cf0ecf38b68b0067d"
+      },
+      {
+        "bytes": 5481,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/rea-game-core-pe-resources.json",
+        "sha256": "bbe944560a814bb2c2613bef48b9df0d00b5b092a03a480d34d8e415c67ea3bc"
+      },
+      {
+        "bytes": 1106,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/selected-ui-alpha-notes.json",
+        "sha256": "63c1802e5ae3b7b19c8e9c44bee3e9c797d202a906763e72d7cfe513a9c8e0e3"
+      },
+      {
+        "bytes": 1182,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/selected-ui-current-validation.json",
+        "sha256": "7f6363d61010a4fc95747723f5eb7912d3ef49a00dfd0d6aa9f1bcd4c48d17d8"
+      },
+      {
+        "bytes": 752,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/selected-ui-extraction.txt",
+        "sha256": "ebe12d2177422e940882cb2a7fbb2261fbc26d5e78772c5ce27a63767d8bd985"
+      },
+      {
+        "bytes": 49098,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/ui-source-map.json",
+        "sha256": "32aaec2988ccd1e7f7e1757ac4d018fa1ed7edff629a0141d45ea8e22e702161"
+      },
+      {
+        "bytes": 447652,
+        "executable": false,
+        "path": "client-source-overlay/docs/evidence/weapon-audio-descriptors.json",
+        "sha256": "7e11e67bd27f2771d842191b45447467c44bcb188ad30c293a03a8969dd3c510"
+      },
+      {
+        "bytes": 2904,
+        "executable": false,
+        "path": "client-source-overlay/docs/extrair-recursos.txt",
+        "sha256": "e2c9f1c4223c16d2d2c5cc374c7dca06210f57f48957e79fd167cd8ab9a1d4f5"
+      },
+      {
+        "bytes": 5180,
+        "executable": false,
+        "path": "client-source-overlay/docs/flight-resources.txt",
+        "sha256": "46ca122251e3126a577d99e40391dd6efe93b8418cedcc445a1d28da7132f93d"
+      },
+      {
+        "bytes": 19293,
+        "executable": false,
+        "path": "client-source-overlay/docs/gameplay-status.json",
+        "sha256": "60d6fa2b0d1aa7fead7194d315da18a20ea37cf63a219b4934214aa0227d9dfe"
+      },
+      {
+        "bytes": 12660,
+        "executable": false,
+        "path": "client-source-overlay/docs/gameplay.txt",
+        "sha256": "310d566fa32376c0ce760df7d605ef9b5da161957090f4685abce8ab08a5f1de"
+      },
+      {
+        "bytes": 3337,
+        "executable": false,
+        "path": "client-source-overlay/docs/headless-world-assets.json",
+        "sha256": "9cfa8946a5fff33e1f7e35bbc2192e9be49804911cd3ef2df56caa1f6cc737d3"
+      },
+      {
+        "bytes": 4445,
+        "executable": false,
+        "path": "client-source-overlay/docs/headless-world-assets.txt",
+        "sha256": "62949aee979057972b26238baaf2e10921d084c7566b0da0f54131b707481014"
+      },
+      {
+        "bytes": 3386,
+        "executable": false,
+        "path": "client-source-overlay/docs/interface-adaptacao.txt",
+        "sha256": "527b2e0623150ef56782a5f19cb1715ca8e2b69952cf440057a5f5fd344273fb"
+      },
+      {
+        "bytes": 4076,
+        "executable": false,
+        "path": "client-source-overlay/docs/interface-original.txt",
+        "sha256": "d750ec83cd57b9f603c514abcbe318b08483899676ee3ab53420643362ef163b"
+      },
+      {
+        "bytes": 22534,
+        "executable": false,
+        "path": "client-source-overlay/docs/interface-provenance.json",
+        "sha256": "37124dcd5ad4322fdbbe704c957021c6c2930fc7dd5c104dd55739b80f8209a3"
+      },
+      {
+        "bytes": 1235,
+        "executable": false,
+        "path": "client-source-overlay/docs/interface-runtime-layout.txt",
+        "sha256": "d4c5e7fadd6c7beb8dc100ef08001b444bb5f83dca9d78ca75b1cbc91977d8a7"
+      },
+      {
+        "bytes": 7798,
+        "executable": false,
+        "path": "client-source-overlay/docs/limites-base-legada.txt",
+        "sha256": "fa1d27a11b05d2f241fbad2e5b2a80df79af49ab44d79d9728aacc2238c6fbbb"
+      },
+      {
+        "bytes": 3553,
+        "executable": false,
+        "path": "client-source-overlay/docs/modernizacao-avaliacao.json",
+        "sha256": "dbee1d2f57a2cad2ee75df7a238d3f4b3f4c8c9f9641e7e69c71dab984d166c5"
+      },
+      {
+        "bytes": 5677,
+        "executable": false,
+        "path": "client-source-overlay/docs/modernizacao-backend.txt",
+        "sha256": "d66921814a8fbc51e3b16533f40c4f2b6dd00d2a1b0e6a213b802751eeebd0e6"
+      },
+      {
+        "bytes": 4067,
+        "executable": false,
+        "path": "client-source-overlay/docs/multiplayer.txt",
+        "sha256": "57aaf5534d1ef1ee27d3a36667bac60d8b46a94f3f261c139f155752e2ad121f"
+      },
+      {
+        "bytes": 4401,
+        "executable": false,
+        "path": "client-source-overlay/docs/online-ui.txt",
+        "sha256": "86b370bf7a8e636dfda61f06119d9db2543fd8a05abd09f33d666d22414cdf86"
+      },
+      {
+        "bytes": 3998,
+        "executable": false,
+        "path": "client-source-overlay/docs/online-view.txt",
+        "sha256": "e16f2bfbb766a76fad43a261b9e56e57d7d390ab3016f1c8aa1c94e97b8b8c84"
+      },
+      {
+        "bytes": 6846,
+        "executable": false,
+        "path": "client-source-overlay/docs/original-library.txt",
+        "sha256": "d9a71ee17faa324b06c61d3a207b3c5b9cd9c517a62e59aca13bab2f88cb7829"
+      },
+      {
+        "bytes": 17470,
+        "executable": false,
+        "path": "client-source-overlay/docs/physics-original.json",
+        "sha256": "c65064f36779d6d22a724168cc107c1565d606f1f8f6297eb7357883e9ea8559"
+      },
+      {
+        "bytes": 6717,
+        "executable": false,
+        "path": "client-source-overlay/docs/physics-original.txt",
+        "sha256": "bcba2b2e243dd3c0686fd3b1b46e9799465eef271eb24f8ded7d7d68241cd2ad"
+      },
+      {
+        "bytes": 17425,
+        "executable": false,
+        "path": "client-source-overlay/docs/protocol-map.json",
+        "sha256": "39dcd01db05079ec09fec10bb25b60b8dcb1fee10b00695a73d5599d5559c3cf"
+      },
+      {
+        "bytes": 4581684,
+        "executable": false,
+        "path": "client-source-overlay/docs/recursos-originais.json",
+        "sha256": "679175d118a34731dcaa3abe4dd2a2877b08768fe27a2bd842bbb17c5caa23a5"
+      },
+      {
+        "bytes": 14057,
+        "executable": false,
+        "path": "client-source-overlay/docs/recursos-originais.txt",
+        "sha256": "32f561b66959b9066beb5ed82edbe5a194a8c086d98b3e901308865d855179d3"
+      },
+      {
+        "bytes": 6078,
+        "executable": false,
+        "path": "client-source-overlay/docs/services.txt",
+        "sha256": "019345c6ed7492e3b049b1a3eb1d134cfd0622ceb80d56b1b20de6ff52587a42"
+      },
+      {
+        "bytes": 403595,
+        "executable": false,
+        "path": "client-source-overlay/docs/skills-implementation.json",
+        "sha256": "41f9e3b7cf5159cd09776217020c65c9a09a0a8a13664980330e35b9c142e7b9"
+      },
+      {
+        "bytes": 7275,
+        "executable": false,
+        "path": "client-source-overlay/docs/ui-library.txt",
+        "sha256": "1ad631d059d6366eeb0fe22bb813ad670743b51d578ae2736d7cf357f73308fc"
+      },
+      {
+        "bytes": 6577,
+        "executable": false,
+        "path": "client-source-overlay/docs/visual-references.json",
+        "sha256": "208e4274236e7f5ed968c91916edef366b65e1cc67a99640419f06db751a84df"
+      },
+      {
+        "bytes": 16723,
+        "executable": false,
+        "path": "client-source-overlay/docs/world-implementation.txt",
+        "sha256": "6388ac679168baae52b5c4dccc070a10d8f205dba2353f6e6eb9cd26c6d481d2"
+      },
+      {
+        "bytes": 1094,
+        "executable": false,
+        "path": "client-source-overlay/server/addons/godot-sqlite/LICENSE.md",
+        "sha256": "24f129f1d5ce9913b4408e09bb74f50259dd10bb8b4b49478ff5a0d2c977fa60"
+      },
+      {
+        "bytes": 3849728,
+        "executable": false,
+        "path": "client-source-overlay/server/addons/godot-sqlite/bin/libgdsqlite.linux.template_debug.x86_64.so",
+        "sha256": "a2fa1dddab744135a3ce0f16da6a84d41ec981ffc85560ecb3abf54d9ad4c393"
+      },
+      {
+        "bytes": 4037024,
+        "executable": false,
+        "path": "client-source-overlay/server/addons/godot-sqlite/bin/libgdsqlite.linux.template_release.x86_64.so",
+        "sha256": "6bc7d4f045ba1903c08931a4f8f39be6a5424d37971d3f3a068f618846fc21ec"
+      },
+      {
+        "bytes": 2310,
+        "executable": false,
+        "path": "client-source-overlay/server/addons/godot-sqlite/gdsqlite.gdextension",
+        "sha256": "2561bffa02c8bb58b12f0b9a7c987f7a2744cf23b0f96a5145ef48da354d46eb"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/server/addons/godot-sqlite/gdsqlite.gdextension.uid",
+        "sha256": "f6e6af04914e00d216053ba56cc8f89f4cb16db950d5e1570805dd89a194d318"
+      },
+      {
+        "bytes": 420,
+        "executable": false,
+        "path": "client-source-overlay/server/addons/godot-sqlite/godot-sqlite.gd",
+        "sha256": "d463eff0155a4871e4d49b60648cb5ad0cec74f694314ba8c1f34996dc292fed"
+      },
+      {
+        "bytes": 20,
+        "executable": false,
+        "path": "client-source-overlay/server/addons/godot-sqlite/godot-sqlite.gd.uid",
+        "sha256": "55ab79e28ff9a85f47b5aa2eff5a4e2ede22e2ce6768b4a99b6271a718fe30bb"
+      },
+      {
+        "bytes": 252,
+        "executable": false,
+        "path": "client-source-overlay/server/addons/godot-sqlite/plugin.cfg",
+        "sha256": "4ef050a4ca418cbd1f972e29a3d1e3fa4559c3c536da45b47e24dd30c44c97eb"
+      },
+      {
+        "bytes": 2178,
+        "executable": false,
+        "path": "client-source-overlay/server/admin.gd",
+        "sha256": "7343a2fdf7249165cd7ca1d5214de0007c5492bb293f280e3514f3da3ebf9861"
+      },
+      {
+        "bytes": 30,
+        "executable": false,
+        "path": "client-source-overlay/server/main.gd",
+        "sha256": "0f5ec4d4400159734ef053689545954e7520ac67f9fb15c3810392c89394f46d"
+      },
+      {
+        "bytes": 550,
+        "executable": false,
+        "path": "client-source-overlay/server/project.godot",
+        "sha256": "12f45161bc512ca8edbb85d30d87021066c77b2fbc1c894ca5097e9f2507824c"
+      },
+      {
+        "bytes": 160,
+        "executable": false,
+        "path": "client-source-overlay/server/server.tscn",
+        "sha256": "9c3db6aae34befc734dc33254c901baa579f873450d5a11e0f18c333f370082b"
+      },
+      {
+        "bytes": 15245,
+        "executable": false,
+        "path": "client-source-overlay/server/server_app.gd",
+        "sha256": "39a06537db6fb7569fc1aeb66a7a85c3082c7a8da6d254a304e653e5d2eef79e"
+      },
+      {
+        "bytes": 14353,
+        "executable": false,
+        "path": "client-source-overlay/server/sqlite_store.gd",
+        "sha256": "9bd7589818237e3c2702b431be3d6e554a55babae4e933dc1cb9547b5857882d"
+      },
+      {
+        "bytes": 11902,
+        "executable": false,
+        "path": "client-source-overlay/server/tests/run_client_e2e.py",
+        "sha256": "bd3a6d5182b50126e1d07207ca37fe69d495ed19597e05f2f5cef41d8748fb1e"
+      },
+      {
+        "bytes": 4188,
+        "executable": false,
+        "path": "client-source-overlay/server/tests/run_server_e2e.py",
+        "sha256": "f3cb1ed60a617c88a38ae94469e698fad517f0820100980770f6e548b82844fd"
+      },
+      {
+        "bytes": 19565,
+        "executable": false,
+        "path": "client-source-overlay/server/tests/test_server_e2e.gd",
+        "sha256": "b2c6454db6ab82c98538e29d33f29e9193b31e099b76b41d7e8e3a45b459ac8b"
+      },
+      {
+        "bytes": 12024,
+        "executable": false,
+        "path": "client-source-overlay/server/tests/test_store.gd",
+        "sha256": "41ff044f9e0cca2ea5eb3366294b1c6471d48e0c88dca54c0c4fb39169903dfa"
+      },
+      {
+        "bytes": 1876,
+        "executable": false,
+        "path": "client-source-overlay/third_party/GODOT-SQLITE.json",
+        "sha256": "c584effbf2064ed082f51f2a8c3bb41ef7d5259b554d367e3da19d560a29aa13"
+      },
+      {
+        "bytes": 100108,
+        "executable": false,
+        "path": "client-source-overlay/third_party/Godot-COPYRIGHT.txt",
+        "sha256": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d"
+      },
+      {
+        "bytes": 1149,
+        "executable": false,
+        "path": "client-source-overlay/third_party/Godot-LICENSE.txt",
+        "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80"
+      },
+      {
+        "bytes": 684,
+        "executable": false,
+        "path": "client-source-overlay/third_party/godot-provenance.json",
+        "sha256": "f50598d71586488fdf275aba36aff6c009eb2b0d24e7d45abb75eac327d5dd50"
+      },
+      {
+        "bytes": 10740,
+        "executable": false,
+        "path": "client-source-overlay/tools/build_server_bundle.py",
+        "sha256": "9d2066b6dc63736088e69b5d2d8e5986f84937b4a6bc71896da74223f37a7bc4"
+      },
+      {
+        "bytes": 5494,
+        "executable": false,
+        "path": "client-source-overlay/tools/build_services.py",
+        "sha256": "877fdb4c697f96176a63eb59725d453d73c9345b98afad98585dfee195cd2f48"
+      },
+      {
+        "bytes": 3705,
+        "executable": false,
+        "path": "client-source-overlay/tools/catalog_original_assets.py",
+        "sha256": "9f6366df103ac02f7e9dad43efc2a608ce166892164264417df0933170208607"
+      },
+      {
+        "bytes": 6207,
+        "executable": false,
+        "path": "client-source-overlay/tools/compare_assets.py",
+        "sha256": "cc56a5326c091e8f10f75bd7ba5e6b55a31d6c6366dbb3ead7455029d20d1e23"
+      },
+      {
+        "bytes": 9030,
+        "executable": false,
+        "path": "client-source-overlay/tools/compare_layout.py",
+        "sha256": "3ec112b2d662c555abcd74db70d651e026697aa866eb39c3d9b4cf5b16f904a0"
+      },
+      {
+        "bytes": 17774,
+        "executable": false,
+        "path": "client-source-overlay/tools/compile_runtime_missions.py",
+        "sha256": "05b91b8cdf4a89f599a04631915b876e6fc9115ca84181a2eb5ac7163a6793c5"
+      },
+      {
+        "bytes": 5151,
+        "executable": false,
+        "path": "client-source-overlay/tools/convert_additional_terrain.py",
+        "sha256": "9185c82da65d658bed6806ee266381a8ce428a32d778bc7347cba0d87b21b10a"
+      },
+      {
+        "bytes": 12598,
+        "executable": false,
+        "path": "client-source-overlay/tools/convert_complete_props.py",
+        "sha256": "bf6a9ffd7da0bdb7706a62a56054363fc327e4e36da2ff2f745e2ff128a007d5"
+      },
+      {
+        "bytes": 4561,
+        "executable": false,
+        "path": "client-source-overlay/tools/convert_mission_terrain.py",
+        "sha256": "9e43f56361006f7cc8ad8ae6e9ee05c6a491d3fb7352490954af1cb04a13ed12"
+      },
+      {
+        "bytes": 9327,
+        "executable": false,
+        "path": "client-source-overlay/tools/convert_original_actor.py",
+        "sha256": "9264dc9905b1f7e9a713abb6193bf412f8f7d01daad74aafcbc9945abcb8dc4a"
+      },
+      {
+        "bytes": 5755,
+        "executable": false,
+        "path": "client-source-overlay/tools/convert_original_combat_effects.py",
+        "sha256": "e5d5218d615a118f41691c5187a225650cc4a887b0bd214e3ee5b426ac39aafe"
+      },
+      {
+        "bytes": 23380,
+        "executable": false,
+        "path": "client-source-overlay/tools/convert_original_gears.py",
+        "sha256": "003cc18f703e84380a012a3f740f45b5eb4c5baeb9c488d780fc2ee29715b32d"
+      },
+      {
+        "bytes": 13040,
+        "executable": false,
+        "path": "client-source-overlay/tools/convert_original_props.py",
+        "sha256": "3190889adbf03c194b367e9e6b4790a5d13844e1b8bf5ce135a7a022e81b9b05"
+      },
+      {
+        "bytes": 1140,
+        "executable": false,
+        "path": "client-source-overlay/tools/convert_original_sky.py",
+        "sha256": "ec97d8cf999ffee9b3648469d5b0caadf3124e0ee69a8eb0ccb90f4af036f429"
+      },
+      {
+        "bytes": 22156,
+        "executable": false,
+        "path": "client-source-overlay/tools/convert_original_terrain.py",
+        "sha256": "35efd30e969ff7eb168e78909bcf8a490663e0cf89947aa9d69629c0597793b7"
+      },
+      {
+        "bytes": 1019,
+        "executable": false,
+        "path": "client-source-overlay/tools/export.py",
+        "sha256": "561ab36d53807c1788275dab40518a1f0b2e7d5b013974a7add6a0927cef5851"
+      },
+      {
+        "bytes": 6908,
+        "executable": false,
+        "path": "client-source-overlay/tools/export_original_progression.py",
+        "sha256": "b6d6cc357022dd28944d75887750c4419641df62d8bd57f173a95a3a7c0275f9"
+      },
+      {
+        "bytes": 15584,
+        "executable": false,
+        "path": "client-source-overlay/tools/export_original_quests.py",
+        "sha256": "4f56f17621242f2b292b6d4050e430c0412e8d7bf7dc02f60b9f509e1ea1c116"
+      },
+      {
+        "bytes": 20899,
+        "executable": false,
+        "path": "client-source-overlay/tools/export_original_rules.py",
+        "sha256": "831f84fac68afd927102a11e37a2a3681365fa780562faac84c4aafb5807f0a8"
+      },
+      {
+        "bytes": 7999,
+        "executable": false,
+        "path": "client-source-overlay/tools/export_original_weapon_audio.py",
+        "sha256": "18e177b3a9cb402c3fc95eff4d42bea4b7d474df580dbf2b7b3e74a7d905afde"
+      },
+      {
+        "bytes": 32797,
+        "executable": false,
+        "path": "client-source-overlay/tools/import_available_worlds.py",
+        "sha256": "c5ac528a8a40ac8b0594bef20f699a2d287bf3bed82240350e1016c39e6db391"
+      },
+      {
+        "bytes": 12762,
+        "executable": false,
+        "path": "client-source-overlay/tools/import_non_tile_worlds.py",
+        "sha256": "c3fa500ca6997cd02d08feab437ac2c0a56a1dd356e22373098c5ed17642a92d"
+      },
+      {
+        "bytes": 43735,
+        "executable": false,
+        "path": "client-source-overlay/tools/import_original_actors.py",
+        "sha256": "b409ed588a27df51053a7d7cc6c7ad7c6ae18d13ecfe3792fe55775f5bf3e0db"
+      },
+      {
+        "bytes": 28490,
+        "executable": false,
+        "path": "client-source-overlay/tools/import_original_library.py",
+        "sha256": "2320185bf3f33d5f17163ec784dd90ee95d64fbac8e689b40a70482fefcb05e4"
+      },
+      {
+        "bytes": 3236,
+        "executable": false,
+        "path": "client-source-overlay/tools/import_remaining_props.py",
+        "sha256": "49f3be82093196c893539687af863191391d37909fbe0e4212bc33d6df03ca54"
+      },
+      {
+        "bytes": 11696,
+        "executable": false,
+        "path": "client-source-overlay/tools/import_scenery_assimp.py",
+        "sha256": "a3eef1350fe47f9d0de834cce96da11f1e6f17fcd8d99ed1ba6477e36e17d0be"
+      },
+      {
+        "bytes": 6748,
+        "executable": false,
+        "path": "client-source-overlay/tools/import_world_profile.py",
+        "sha256": "140e5be2c7efaaca5ab7a4ed82438dd56f11f89c5bc8f44fb157db5d02648bcb"
+      },
+      {
+        "bytes": 9148,
+        "executable": false,
+        "path": "client-source-overlay/tools/package.py",
+        "sha256": "dc364be1d762175aea9c509c25f27edf523e449cc67b3684700b50b87fddbcb4"
+      },
+      {
+        "bytes": 24613,
+        "executable": false,
+        "path": "client-source-overlay/tools/package_online_desktop.py",
+        "sha256": "a71d8ed55d2edf6e8f45d442001120062f2b33a1ed78ed5aff7a48c1848df2c8"
+      },
+      {
+        "bytes": 28503,
+        "executable": false,
+        "path": "client-source-overlay/tools/package_online_kit.py",
+        "sha256": "cc775805ca77de6a4ca3f8a8c0c222661df1fc7894d3bb400189a7bc4a660c1d"
+      },
+      {
+        "bytes": 6289,
+        "executable": false,
+        "path": "client-source-overlay/tools/read_group_layout.py",
+        "sha256": "a51137ac7f31ed62b19cac2994634458c2036bb9425e9fcebfb5895e62aa3468"
+      },
+      {
+        "bytes": 9615,
+        "executable": false,
+        "path": "client-source-overlay/tools/read_legacy_resources.py",
+        "sha256": "af7a6366ceff9725921be69f24550f6f4095918436a9f3362b514bb757518ec1"
+      },
+      {
+        "bytes": 2744,
+        "executable": false,
+        "path": "client-source-overlay/tools/share_original_props.py",
+        "sha256": "c9b7d233ead9fdff7e950849cd1f36f599a84bd6496cf33cb1af6da9aca5cb2c"
+      },
+      {
+        "bytes": 2782,
+        "executable": false,
+        "path": "client-source-overlay/tools/subset_korean_font.py",
+        "sha256": "ff50c6656681c0dbb0589cfad1a05af80712f69fdfab907fca0053b0d6e02a48"
+      },
+      {
+        "bytes": 2468,
+        "executable": false,
+        "path": "client-source-overlay/tools/test_build_services.py",
+        "sha256": "72645984b93735b1df68cb7d0406669aebd45815834b7275a8acbd8ba7889493"
+      },
+      {
+        "bytes": 6619,
+        "executable": false,
+        "path": "client-source-overlay/tools/test_compile_runtime_missions.py",
+        "sha256": "e3c25ad33c62004394bbd1a6ebfa60924561c545498fc7286dd813a840112ef8"
+      },
+      {
+        "bytes": 7988,
+        "executable": false,
+        "path": "client-source-overlay/tools/test_convert_original_props.py",
+        "sha256": "7327b690bdbd5473552490a2dc6c14f31606e7607366154f166e71fcffe16345"
+      },
+      {
+        "bytes": 10140,
+        "executable": false,
+        "path": "client-source-overlay/tools/test_convert_original_terrain.py",
+        "sha256": "3273ed50326fa58fd176435c1633efa2019f7fc4e0215c4ed060da3e5a0aae9a"
+      },
+      {
+        "bytes": 4084,
+        "executable": false,
+        "path": "client-source-overlay/tools/test_export_original_quests.py",
+        "sha256": "15174cdc1d8a957cf23bdf4be10eb61dadaebfa7aae81383f8a2404e15a2cc7b"
+      },
+      {
+        "bytes": 6075,
+        "executable": false,
+        "path": "client-source-overlay/tools/test_export_original_rules.py",
+        "sha256": "11d4660f52e220d615c99e38951bedc15b097dbf446922945befd9b5f6be0242"
+      },
+      {
+        "bytes": 7591,
+        "executable": false,
+        "path": "client-source-overlay/tools/test_import_available_worlds.py",
+        "sha256": "b5321d081b2123ec2eaf3b8873ada7e2053468d6f897442e893893015a596767"
+      },
+      {
+        "bytes": 4821,
+        "executable": false,
+        "path": "client-source-overlay/tools/test_import_original_actors.py",
+        "sha256": "7c1dfabb710afc33c20231794728a375a3a1923c78163ab672df5cf775180577"
+      },
+      {
+        "bytes": 11420,
+        "executable": false,
+        "path": "client-source-overlay/tools/test_import_original_library.py",
+        "sha256": "098dc2ad04b38f131c210d96aa67c4d38bb5057dc42b2e0b1378c7e040a871a5"
+      },
+      {
+        "bytes": 11147,
+        "executable": false,
+        "path": "client-source-overlay/tools/test_package_online_desktop.py",
+        "sha256": "031e73ae7ef929732a931fe08d3b60a5e60ae35b1d005c75f8ff28af721c4ad3"
+      },
+      {
+        "bytes": 21928,
+        "executable": false,
+        "path": "client-source-overlay/tools/test_package_online_kit.py",
+        "sha256": "c165123fa1c50abd7e8033e1a953809c47effb2305a8d6cba8d859c92c48be7e"
+      },
+      {
+        "bytes": 4105,
+        "executable": false,
+        "path": "client-source-overlay/tools/unpack_model_resources.py",
+        "sha256": "9d49742d468339f62916855062334d8fe4e3d619dace0a321b19391f02e1b260"
+      },
+      {
+        "bytes": 47110,
+        "executable": false,
+        "path": "client-source-overlay/tools/update_expanded_docs.py",
+        "sha256": "ae234918ef76b320e7d397e41315c379e543e5e5e5aa99bee2763700660e052b"
+      },
+      {
+        "bytes": 6218,
+        "executable": false,
+        "path": "client-source-overlay/tools/validate.py",
+        "sha256": "44c05fe27152c474585191afa7a12b68a80f4a0327e1d7033fd4a5053de93d70"
+      },
+      {
+        "bytes": 8123,
+        "executable": false,
+        "path": "client-source-overlay/tools/validate_imported_worlds.py",
+        "sha256": "eb00bc194ce11dcb4822e5f8ef88db0c8fac9d891154511d70a0d058fa64437f"
+      },
+      {
+        "bytes": 6114,
+        "executable": false,
+        "path": "client-source-overlay/tools/validate_original_data_assets.py",
+        "sha256": "0ce480c57b2999ba938d7a6ff2ed8fdb34f955cd4f034cbb7cc8ebe098c75e2f"
+      },
+      {
+        "bytes": 20314,
+        "executable": false,
+        "path": "client-source-overlay/tools/verify_delivery.py",
+        "sha256": "4b819eb1a628a5f6c1c77fea45b47377d81cd56bf332a32eb7b3febf484b2739"
+      },
+      {
+        "bytes": 49635,
+        "executable": false,
+        "path": "overlay-manifest.json",
+        "sha256": "850ab0155a524e14319b9b54b0e76e887fe9d85c91959f564c4d96cd9a26d983"
+      },
+      {
+        "bytes": 1803,
+        "executable": false,
+        "path": "reports/desktop-packager-tests-v08.log",
+        "sha256": "b024c3f5a470f59d1d7d69d2fa0388272b2b35d81e7b4c0bd09e1c4de3ef2b93"
+      },
+      {
+        "bytes": 125,
+        "executable": false,
+        "path": "reports/flight-v08.log",
+        "sha256": "6df6d311d50ad04978732a24a1eb505645b3b416abc6c46f47243149f2bebf4c"
+      },
+      {
+        "bytes": 7247,
+        "executable": false,
+        "path": "reports/headless-world-minimal-bundle.json",
+        "sha256": "217960af5e8ea2d63f622e1d3ae286bdbbdce08074d769ee2f194eb41505a2de"
+      },
+      {
+        "bytes": 196,
+        "executable": false,
+        "path": "reports/headless-world.log",
+        "sha256": "3dccd91e14bfc197c8681e74daedd8bb6b3dcbd533077e0dd04ff1c0674e8e8f"
+      },
+      {
+        "bytes": 1791,
+        "executable": false,
+        "path": "reports/import-final-v08.log",
+        "sha256": "0f84b9ee0bfd41b619c65144a30175402f2aea6e9e7734c572a1c5141991f7f6"
+      },
+      {
+        "bytes": 198,
+        "executable": false,
+        "path": "reports/inventory-v08.log",
+        "sha256": "2f015fa24314fe2eff997aec54275971c0f0b8b51a004d2cc7cfdd5d9f261496"
+      },
+      {
+        "bytes": 235,
+        "executable": false,
+        "path": "reports/inventory_equipment-v08.log",
+        "sha256": "85942e62abcc0b72c0b46f636a2ee7692315637bc7291a1e4ab69e130dcd3d22"
+      },
+      {
+        "bytes": 121,
+        "executable": false,
+        "path": "reports/local_save-v08.log",
+        "sha256": "ff04cb5f2222fc02e9a3bc8c39027bd9cd719756f61c11a3a4968135de36f11b"
+      },
+      {
+        "bytes": 355,
+        "executable": false,
+        "path": "reports/online-arena-v08.log",
+        "sha256": "ce87c0d93ec079ba4fd9b28ece8ddafdd560e83a1edd8efb2dd11b99749faba3"
+      },
+      {
+        "bytes": 122,
+        "executable": false,
+        "path": "reports/online-kit-tests.log",
+        "sha256": "7abf8bfd3c63bc074ecae3dd813cbf41fd989558c7b277f74ed9f1c890edeac8"
+      },
+      {
+        "bytes": 73,
+        "executable": false,
+        "path": "reports/online-main-parse.log",
+        "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+      },
+      {
+        "bytes": 800,
+        "executable": false,
+        "path": "reports/online-scene-e2e.json",
+        "sha256": "c8b9c7ada3bde12f38137cf32741388465a16ca42724b8b53cd545ad6499fe87"
+      },
+      {
+        "bytes": 711,
+        "executable": false,
+        "path": "reports/online-scene-e2e.log",
+        "sha256": "903c7729f396190a7a5359da99282b8fa145d3296dd51e154c261ed4d9f31944"
+      },
+      {
+        "bytes": 571,
+        "executable": false,
+        "path": "reports/online-transport.log",
+        "sha256": "145dca77a91903ccd2c471abf9703093c5aa5936bad169604fe56113a778b431"
+      },
+      {
+        "bytes": 136,
+        "executable": false,
+        "path": "reports/online-ui.log",
+        "sha256": "b0bcc038e24d1c3b556524ada84a78102324b643ac4d1edfbeb67445cdf02322"
+      },
+      {
+        "bytes": 138,
+        "executable": false,
+        "path": "reports/online-view.log",
+        "sha256": "9d832a64879645415ee5f8346b509128a39313fbf4cfbb7e69b2eb6939ebcd82"
+      },
+      {
+        "bytes": 1404,
+        "executable": false,
+        "path": "reports/server-deploy-smoke.json",
+        "sha256": "b536a9e1de8c861236170000097a54175cea6f1d642d973d1690007b20c86b98"
+      },
+      {
+        "bytes": 2054,
+        "executable": false,
+        "path": "reports/server-deploy-tests.log",
+        "sha256": "2ecd798e6bb76d139f9782e15d86db1fc156efdf169c752c3b42e77eed046d6a"
+      },
+      {
+        "bytes": 176,
+        "executable": false,
+        "path": "reports/server-e2e.log",
+        "sha256": "3615ec4182bc0e1a002b28a7cd92d99e9cbeacd0d1f29b3daa3076e3de71657a"
+      },
+      {
+        "bytes": 302,
+        "executable": false,
+        "path": "reports/server-store-v1.log",
+        "sha256": "0ed074e1a127e0d594ed424d6fabd792d19917bdb56f1b3809df2bb2c7963c6d"
+      },
+      {
+        "bytes": 599,
+        "executable": false,
+        "path": "reports/server-wss-proxy-smoke.json",
+        "sha256": "8be0d79c946b2cbe53f28555f3d2210d0037f7d4c60dabc0ffeba434ecbac10f"
+      },
+      {
+        "bytes": 227,
+        "executable": false,
+        "path": "reports/services-v08.log",
+        "sha256": "043ce6d7d8f4093e0a795957903e2139701e708cec4a8826db4503df1e19a7a9"
+      },
+      {
+        "bytes": 1030,
+        "executable": false,
+        "path": "reports/systems-integration-v08.log",
+        "sha256": "c6b49b0dc2fac57e982881ea48500e0ce1f803f880bdf63283d1bca03b242a16"
+      },
+      {
+        "bytes": 124,
+        "executable": false,
+        "path": "server-bundle/.dockerignore",
+        "sha256": "ffb141ba636f77ab11efc4933b83e205a8bfafd858596c2f1312014e5c650857"
+      },
+      {
+        "bytes": 280,
+        "executable": false,
+        "path": "server-bundle/.env.example",
+        "sha256": "fb6508ad75ed868490321d1627fec0154dab857824a80c99134ebc7fe1f06015"
+      },
+      {
+        "bytes": 403,
+        "executable": false,
+        "path": "server-bundle/Caddyfile",
+        "sha256": "806e0d4b879b9960589dd9801f465fc2d9d1d8a2b2a4c1d1e60c731436ac8e30"
+      },
+      {
+        "bytes": 3134,
+        "executable": false,
+        "path": "server-bundle/Dockerfile",
+        "sha256": "467658099000365c03d87747e67389cb0200239f50a38a075bb261bcf3084036"
+      },
+      {
+        "bytes": 5179,
+        "executable": false,
+        "path": "server-bundle/OPERACAO.txt",
+        "sha256": "ab30dfe51e57323432377ad21a2bc2e97b6c7d29403958b54d44b9d2a01fb7a9"
+      },
+      {
+        "bytes": 8335,
+        "executable": false,
+        "path": "server-bundle/bundle-manifest.json",
+        "sha256": "db8db1bc1dab68b73deaaab3e6321ac856220991d1a0f9caf994e44cb220632f"
+      },
+      {
+        "bytes": 301,
+        "executable": false,
+        "path": "server-bundle/compose.local.yaml",
+        "sha256": "7e9901f78f8ddb9aa292b78bfd19e4c7bd28ce993a678d3d88bd3e4c1bd1ce24"
+      },
+      {
+        "bytes": 1920,
+        "executable": false,
+        "path": "server-bundle/compose.yaml",
+        "sha256": "cbd32a14e75fc5adcd716fdfaa6ff606d9f6a115beae99796cf76d3ac20e7e30"
+      },
+      {
+        "bytes": 1088,
+        "executable": false,
+        "path": "server-bundle/images.lock.json",
+        "sha256": "6a32f7b88f921294952c865084990c7098bd9c782036832bb034fe6978559512"
+      },
+      {
+        "bytes": 146414384,
+        "executable": true,
+        "path": "server-bundle/runtime/godot",
+        "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+      },
+      {
+        "bytes": 600,
+        "executable": true,
+        "path": "server-bundle/scripts/backup.sh",
+        "sha256": "2539d9e0932457ae3353292d45dc470a4be02f64664ac1f06712836d667979dc"
+      },
+      {
+        "bytes": 372,
+        "executable": true,
+        "path": "server-bundle/scripts/create-pilot.sh",
+        "sha256": "02ee2ac6677db43d06b751c29e4698ad4f7d288033585e97f4ca15b890f1d01a"
+      },
+      {
+        "bytes": 453,
+        "executable": false,
+        "path": "server-bundle/scripts/healthcheck.py",
+        "sha256": "32de363c5cfede1b45b390fd7e73bb5b97553508b3d535692887e140971b2739"
+      },
+      {
+        "bytes": 1036,
+        "executable": true,
+        "path": "server-bundle/scripts/restore.sh",
+        "sha256": "e4b8f58c17fe14619bde48456a331fbf66424e10d0a57d7873482def43c2778a"
+      },
+      {
+        "bytes": 6923,
+        "executable": false,
+        "path": "server-bundle/scripts/sqlite_ops.py",
+        "sha256": "12976bd950a06b4a6ed7f6e1657cae9f0a36ab7ed3f96ffa6c5150930b5941c6"
+      },
+      {
+        "bytes": 209,
+        "executable": true,
+        "path": "server-bundle/scripts/start.sh",
+        "sha256": "e636ebe24656ec73aa840be457d8e46ead028f418cb92c485992506f319f2fce"
+      },
+      {
+        "bytes": 2249,
+        "executable": false,
+        "path": "server-bundle/scripts/supervisor.py",
+        "sha256": "1fb180044f39e26223c8f31f23435acf9c4a1b8bc71b80aec32f9176789df03a"
+      },
+      {
+        "bytes": 4397,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/legacy_rules/combat.json",
+        "sha256": "3888ebec541cc8944a77f26b8de5db621e0267210e7e4c0fa6bb95c8e85fe04d"
+      },
+      {
+        "bytes": 760219,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/legacy_rules/engines.json",
+        "sha256": "34b5e4bb7b77532ac60c106a580f7cfd5af310131df50eb325409bec6aab401e"
+      },
+      {
+        "bytes": 1011592,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/legacy_rules/monsters.json",
+        "sha256": "077f2b88c9c18b34c04628013ad410ed4177a9b7e67f28e20292c6429136b666"
+      },
+      {
+        "bytes": 2309838,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/legacy_rules/weapons.json",
+        "sha256": "b6086b23299ef8c318c79b9e7b4b04a5ce46d54453829405a029b9359621906b"
+      },
+      {
+        "bytes": 6902,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/local_encounter.json",
+        "sha256": "603e6ecbf34d2ee8ac675b430fbab999142b4e3d62ef84450a382447317f5f42"
+      },
+      {
+        "bytes": 18372363,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/local_services/economy.json",
+        "sha256": "4a7636429b21f40bfcd7fb4fed7195affe98ac482b910b6785211f73e8f91aa5"
+      },
+      {
+        "bytes": 21202057,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_library/catalogs/items.json",
+        "sha256": "7b983721f9da9d19747aa9709f9d9ed8138f97f28159de616595e85ae8c33446"
+      },
+      {
+        "bytes": 42458,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_library/catalogs/level_experience.json",
+        "sha256": "f7967986a5b4427aef482bf920b73c43a9a40e6cbc4eb698e3ad6204748d944d"
+      },
+      {
+        "bytes": 140497,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_library/catalogs/level_stat_values.json",
+        "sha256": "5dc0e6e2f2f8957f610a2350ccaa3af4c7f7a769fb74d3fb860252ec592c99bc"
+      },
+      {
+        "bytes": 14486036,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_library/catalogs/omi-native.bin",
+        "sha256": "4831431a42bd37ac3ecffc067989330f6304ce214c0a77e8062d28f1fffb5f48"
+      },
+      {
+        "bytes": 719564,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_library/catalogs/skills.json",
+        "sha256": "8599730080517654d473163aface8e19bd5055c55b798791f5ec2ba23e001fa0"
+      },
+      {
+        "bytes": 84615,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_props/03001700_collision.json",
+        "sha256": "ae672213954ce03e659e9081606e37945c678112b40e82b2505fa29c40bb2cbf"
+      },
+      {
+        "bytes": 43233,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_props/03001800_collision.json",
+        "sha256": "c152faf4d92d76c9e7b34788a89389de675e2498b8aef47579613e320cd196e0"
+      },
+      {
+        "bytes": 86318,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_props/03002000_collision.json",
+        "sha256": "2492e2e140393fe7e516af15738405316d2b4a5b28c7bca49b6f9cef0a8d77c1"
+      },
+      {
+        "bytes": 139913,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_props/03002600_collision.json",
+        "sha256": "c286be0eb22c5be4bcf101fa8b2f7182068aa694d7e27410313365dd94d9a37b"
+      },
+      {
+        "bytes": 17283,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_props/03002700_collision.json",
+        "sha256": "50a3fb2fe14a0d1012921b3a40ba9d2b1ffc59e541c9bdb028f05b15ecc73494"
+      },
+      {
+        "bytes": 23162,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_props/03002800_collision.json",
+        "sha256": "dec78fee4bacbbae07e592fda452810eb03aae48bb6d9740625b92aaf2f7d34c"
+      },
+      {
+        "bytes": 15878,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_props/03002900_collision.json",
+        "sha256": "76b3421ba3bf6994821cc8a9db71cbfef2a303fcce7b91cc8bfb33294d735203"
+      },
+      {
+        "bytes": 87325,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_props/03003000_collision.json",
+        "sha256": "1a0e70f6d76e37e6b64d16b11c553dc9e993f61b3b47b95d26cce9d3696b5cf1"
+      },
+      {
+        "bytes": 99314,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_props/03003500_collision.json",
+        "sha256": "d0306f15723e27d30ae6869ef8961c94cf702e97616c276fd15e317c8dfb659e"
+      },
+      {
+        "bytes": 5825,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_props/03003800_collision.json",
+        "sha256": "8b0825b6d58dab686374758a952fad8d93e22617ac39ce2b6fe64f248fd711ec"
+      },
+      {
+        "bytes": 1018217,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_props/placements.json",
+        "sha256": "483ef21478f0f1f4c2a164d8e6f186b27d3b27fb1c807d8d6064b6916680cb29"
+      },
+      {
+        "bytes": 264196,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_world/3002_heights.f32",
+        "sha256": "6e0771f46c38d7809740ae3aba21a983b4a1e50001563ea09d6ce2442aca850d"
+      },
+      {
+        "bytes": 65536,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_world/3002_landing_flags.u8",
+        "sha256": "1453de317826cc40dbf33816bae50a3f94f8fd3ee414f74d3d581c1e38ea72ae"
+      },
+      {
+        "bytes": 82763,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_world/3002_terrain.json",
+        "sha256": "715204dee6ff9aed2d51c55708964621651de21ad1d83d14567b64f3f3b3c8b3"
+      },
+      {
+        "bytes": 65536,
+        "executable": false,
+        "path": "server-bundle/src/client/assets/original_world/3002_water_flags.u8",
+        "sha256": "ba5138c5d888f58e573b64318b1cd0028d0bed814fd5a54ffb6a4740aa08fc46"
+      },
+      {
+        "bytes": 30816,
+        "executable": false,
+        "path": "server-bundle/src/client/scripts/combat_model.gd",
+        "sha256": "866c5433b0f0b31fa166a283b8d90b2bf64701de0b309ad915697ab49bac8cbe"
+      },
+      {
+        "bytes": 23600,
+        "executable": false,
+        "path": "server-bundle/src/client/scripts/flight_model.gd",
+        "sha256": "f99f4fc5841ce6d85739ad9609eb377f1766b4d7770d1e483e626efb92631f9e"
+      },
+      {
+        "bytes": 28820,
+        "executable": false,
+        "path": "server-bundle/src/client/scripts/inventory_model.gd",
+        "sha256": "b3d51d98ec56507f0a69382dc7de9c6662eb8cc612b815708e1a016d0b5cd20e"
+      },
+      {
+        "bytes": 4281,
+        "executable": false,
+        "path": "server-bundle/src/client/scripts/native_equipment.gd",
+        "sha256": "112d1504357617eee9f4f1a3d0273d5bc16afb50e93eded092d93d8229ba77fd"
+      },
+      {
+        "bytes": 33805,
+        "executable": false,
+        "path": "server-bundle/src/client/scripts/online/arena_model.gd",
+        "sha256": "eb2d089766a53f95e05934c98a13cbc967feac636f63d8932d7120708ff373d3"
+      },
+      {
+        "bytes": 10471,
+        "executable": false,
+        "path": "server-bundle/src/client/scripts/online/headless_world.gd",
+        "sha256": "a878e11e4be138aa180cda708985e8a8b07baba6f3f8c159e55e44b1ac601974"
+      },
+      {
+        "bytes": 2753,
+        "executable": false,
+        "path": "server-bundle/src/client/scripts/online/json_wire.gd",
+        "sha256": "1cdb6a4019edf736ba43824ede229a520f5598a89f573af8387bfffa6f453741"
+      },
+      {
+        "bytes": 8197,
+        "executable": false,
+        "path": "server-bundle/src/client/scripts/online/ws_server.gd",
+        "sha256": "0aaf3dc066a00e088deb42da7745c19b569526e7da97e2b7290907627fa5d7da"
+      },
+      {
+        "bytes": 18751,
+        "executable": false,
+        "path": "server-bundle/src/client/scripts/service_model.gd",
+        "sha256": "8290b5221c258eefe3299a461155aea5ca12ea90f8fbda88420cfd7e28a06600"
+      },
+      {
+        "bytes": 20744,
+        "executable": false,
+        "path": "server-bundle/src/client/scripts/skill_model.gd",
+        "sha256": "ad508564aafaa8d2cdf69f4a121f1685767781c4bd467d1349f14ba2bc8ecfab"
+      },
+      {
+        "bytes": 24690,
+        "executable": false,
+        "path": "server-bundle/src/client/scripts/world_model.gd",
+        "sha256": "bc425f4e338287ced8c3345b1a9a0801216341a40349de247e2694d0cc2bc8f8"
+      },
+      {
+        "bytes": 3337,
+        "executable": false,
+        "path": "server-bundle/src/docs/headless-world-assets.json",
+        "sha256": "9cfa8946a5fff33e1f7e35bbc2192e9be49804911cd3ef2df56caa1f6cc737d3"
+      },
+      {
+        "bytes": 1094,
+        "executable": false,
+        "path": "server-bundle/src/server/addons/godot-sqlite/LICENSE.md",
+        "sha256": "24f129f1d5ce9913b4408e09bb74f50259dd10bb8b4b49478ff5a0d2c977fa60"
+      },
+      {
+        "bytes": 3849728,
+        "executable": false,
+        "path": "server-bundle/src/server/addons/godot-sqlite/bin/libgdsqlite.linux.template_debug.x86_64.so",
+        "sha256": "a2fa1dddab744135a3ce0f16da6a84d41ec981ffc85560ecb3abf54d9ad4c393"
+      },
+      {
+        "bytes": 4037024,
+        "executable": false,
+        "path": "server-bundle/src/server/addons/godot-sqlite/bin/libgdsqlite.linux.template_release.x86_64.so",
+        "sha256": "6bc7d4f045ba1903c08931a4f8f39be6a5424d37971d3f3a068f618846fc21ec"
+      },
+      {
+        "bytes": 2310,
+        "executable": false,
+        "path": "server-bundle/src/server/addons/godot-sqlite/gdsqlite.gdextension",
+        "sha256": "2561bffa02c8bb58b12f0b9a7c987f7a2744cf23b0f96a5145ef48da354d46eb"
+      },
+      {
+        "bytes": 2178,
+        "executable": false,
+        "path": "server-bundle/src/server/admin.gd",
+        "sha256": "7343a2fdf7249165cd7ca1d5214de0007c5492bb293f280e3514f3da3ebf9861"
+      },
+      {
+        "bytes": 30,
+        "executable": false,
+        "path": "server-bundle/src/server/main.gd",
+        "sha256": "0f5ec4d4400159734ef053689545954e7520ac67f9fb15c3810392c89394f46d"
+      },
+      {
+        "bytes": 550,
+        "executable": false,
+        "path": "server-bundle/src/server/project.godot",
+        "sha256": "12f45161bc512ca8edbb85d30d87021066c77b2fbc1c894ca5097e9f2507824c"
+      },
+      {
+        "bytes": 160,
+        "executable": false,
+        "path": "server-bundle/src/server/server.tscn",
+        "sha256": "9c3db6aae34befc734dc33254c901baa579f873450d5a11e0f18c333f370082b"
+      },
+      {
+        "bytes": 15245,
+        "executable": false,
+        "path": "server-bundle/src/server/server_app.gd",
+        "sha256": "39a06537db6fb7569fc1aeb66a7a85c3082c7a8da6d254a304e653e5d2eef79e"
+      },
+      {
+        "bytes": 14353,
+        "executable": false,
+        "path": "server-bundle/src/server/sqlite_store.gd",
+        "sha256": "9bd7589818237e3c2702b431be3d6e554a55babae4e933dc1cb9547b5857882d"
+      },
+      {
+        "bytes": 1876,
+        "executable": false,
+        "path": "server-bundle/src/third_party/GODOT-SQLITE.json",
+        "sha256": "c584effbf2064ed082f51f2a8c3bb41ef7d5259b554d367e3da19d560a29aa13"
+      },
+      {
+        "bytes": 1876,
+        "executable": false,
+        "path": "server-bundle/third_party/GODOT-SQLITE.json",
+        "sha256": "c584effbf2064ed082f51f2a8c3bb41ef7d5259b554d367e3da19d560a29aa13"
+      },
+      {
+        "bytes": 100108,
+        "executable": false,
+        "path": "server-bundle/third_party/Godot-COPYRIGHT.txt",
+        "sha256": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d"
+      },
+      {
+        "bytes": 1149,
+        "executable": false,
+        "path": "server-bundle/third_party/Godot-LICENSE.txt",
+        "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80"
+      },
+      {
+        "bytes": 684,
+        "executable": false,
+        "path": "server-bundle/third_party/godot-provenance.json",
+        "sha256": "f50598d71586488fdf275aba36aff6c009eb2b0d24e7d45abb75eac327d5dd50"
+      },
+      {
+        "bytes": 10740,
+        "executable": false,
+        "path": "server-bundle/tools/build_server_bundle.py",
+        "sha256": "9d2066b6dc63736088e69b5d2d8e5986f84937b4a6bc71896da74223f37a7bc4"
+      },
+      {
+        "bytes": 15300,
+        "executable": false,
+        "path": "validation.json",
+        "sha256": "424a09d95f2fec6638df0a660f7c105c798209a1893d0b9f4f6f1d22800b2030"
+      }
+    ],
+    "release": "0.8.0",
+    "schema_version": 1
+  },
+  "native_desktop_execution_performed": false,
+  "overlay_bytes": 15587488,
+  "overlay_files": 256,
+  "passed": true,
+  "public_deployment_performed": false,
+  "real_updater_proof": {
+    "assets_preserved": 45579,
+    "completed_utc": "2026-10-15T13:35:55.204638+00:00",
+    "log": "ace-online-update-real-v0.8.log",
+    "log_sha256": "abc903e0e87a1bc40e40d741d348e5da11e8cc0e52f232c26f07ea24f494e26e",
+    "overlay_files": 256,
+    "passed": true,
+    "rebuilt_app_files": 47,
+    "report": "ace-online-update-real-v0.8.json",
+    "report_sha256": "83cfb35ad2ee72bcf374105aac167ec1957f5ee23f16f8780eaf14bd751e66cd"
+  },
+  "release": "0.8.0",
+  "scope": "dedicated_server_and_source_client_release_gate;desktop_artifact_integrity_reported_separately",
+  "sha256": "edeac3bf07e8a924a2c5ba497796a3fbc80be20406f88b256fc2978b8dcccd65",
+  "source_freeze_sha256": "7ba71c36b0174ea6b42d0636a51482fbe0659bb88cbe1da65fc8231827096aa5",
+  "updater_fixture_tests": 23,
+  "verified_payload_bytes": 240458870,
+  "verified_payload_files": 356
+}

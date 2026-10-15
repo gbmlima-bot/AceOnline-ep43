@@ -1,0 +1,100 @@
+ACE Modern 0.7 — sistemas locais e presença LAN
+
+Jogo local em Godot 4.7.2 para macOS e Windows. A reconstrução incorpora recursos recuperados do cliente oficial e regras selecionadas dos fontes EP3.5/EP4.3: voo, exploração, combate, missões, inventário, atributos, habilidades suportadas, serviços, crafting e áudio. O perfil é salvo neste computador. Uma conexão LAN opcional compartilha presença e chat entre até oito participantes; combate, missões e recompensas continuam individuais. O servidor e o MMO originais não foram reconstruídos.
+
+Executar
+
+Na entrega ace-modern-systems, extraia o ZIP da plataforma e abra o aplicativo:
+
+- ace-modern-systems-macos-v0.7.zip: macOS universal arm64 + x86_64, incluindo Mac M4.
+- ace-modern-systems-windows-v0.7.zip: Windows x86_64.
+- ace-modern-systems-fontes-v0.7.zip: projeto, dados convertidos, ferramentas e evidências.
+- gameplay.html: apresentação com capturas novas incorporadas; gameplay.txt: descrição em texto.
+
+Os exports são gerados e verificados no Linux. A execução nativa no macOS/M4 e no Windows ainda precisa de teste. O aplicativo macOS não é notarizado; o Windows não possui assinatura Authenticode.
+
+Pelos fontes, importe client/project.godot no Godot 4.7.2 padrão, sem .NET, e pressione F5 no editor. Os recursos necessários para executar já estão no projeto; o cliente antigo e os conversores não são necessários. Renderer: GL Compatibility.
+
+Conteúdo absorvido
+
+- 217 de 238 mundos exploráveis (158 com terreno nativo e 59 composições originais sem tiles): 110 com cenário estático completo segundo os recursos verificados, 107 parciais e 21 indisponíveis. Isso não equivale a todos os sistemas originais desses mapas. O catálogo registra 34.362 posições de cenário, 1.575 modelos de objeto e 364 registros originais de portal.
+- A biblioteca ampliada cobre 2.301 dos 2.462 modelos MAPOBJECT. Os 726 modelos adicionais foram convertidos e catalogados sem inventar posições para colocá-los nos mapas.
+- 597 scripts originais recuperados. O compilador suporta a semântica de 537; 60 têm cláusulas bloqueadas. Uma missão ainda depende dos mapas, modelos de inimigo, nível, facção, classe e pré-requisitos. O painel explica cada bloqueio; o número de scripts suportados não significa que todos estejam disponíveis ao perfil inicial.
+- 16.079 registros ITEM, 557 definições de habilidade e a tabela original de experiência até o nível 125. O inventário contém apenas os itens do perfil local; equipamentos e recompensas têm identidades nativas. As habilidades têm 245 níveis com efeitos suportados e 312 definições bloqueadas (incluindo bases/protótipos), com aprendizado explícito pago, SP, recarga e oito atalhos; alvos e parâmetros não portados continuam bloqueados.
+- 1.297 de 1.340 registros de inimigo têm apresentação 3D disponível, usando 541 modelos compartilhados. Dados originais de identidade, nível e HP são preservados. Posições, escalonamento e comportamentos ausentes do servidor usam políticas locais explícitas.
+- 308 modelos originais de aparência GEAR, vinculados a 7.817 itens de armadura. M permite testar uma aparência compatível com a classe atual sem conceder a armadura ou alterar os atributos.
+- 10.127 imagens de 33 packs, incluindo ícones ITEM resolvidos por vínculo original; 118 MP3 e 616 WAV. O runtime usa vínculos nativos de BGM e efeitos selecionados. Importar o catálogo não implementa automaticamente todos os eventos de áudio, habilidades ou efeitos.
+- Economia local: 2.596 modelos no estoque selecionado localmente; 304 receitas interpretadas de 39.230, com ingredientes, SPI e chance de sucesso originais recuperados. As demais permanecem bloqueadas com motivo. Preços, lotes, venda e manutenção têm fórmulas do fonte; estoque, imposto zero e acesso aos contatos são políticas locais.
+- Atributos distribuíveis e equipamento real de armadura, CPU e radar; requisitos de atributos, nível, classe e modificadores suportados são revalidados. Bônus desconhecidos são bloqueados.
+- Rede LAN opcional: hospedagem, entrada por IP e chat de texto simples, até oito participantes. Compartilha presença e naves; os sistemas de combate e progressão continuam individuais.
+- Interface azul preservada: 531 imagens e 19 grupos selecionados. HP, escudo, munição, alvo, missões e inventário refletem os modelos. SP e os atalhos 1–8 refletem o SkillModel; efeitos ainda não implementados permanecem bloqueados.
+
+Experimentar
+
+1. Em um perfil novo, a sessão começa no mapa 3002 com I-GEAR e nível local 9. Abra M para consultar missões ou mapas. O painel pausa a simulação; use os filtros e as páginas.
+2. Perto do contato NPC3, aceite 101 e depois 102. A segunda missão leva ao terreno 3302: elimine 2028200 × 1 e 2028100 × 3; Tab seleciona o alvo e os botões do mouse disparam.
+3. Ao concluir, receba 320 SPI e 91 XP uma única vez. O destino simbólico original 9999 resolve a cidade da facção: 2001 para VCN e 2002 para ANI; o perfil local normal usa a cidade inicial configurada, 2001. O retorno ao mapa de aceitação permanece apenas como fallback explícito caso os recursos da cidade faltem.
+4. Em M → Mapas, use Visitar para explorar os mapas disponíveis. É uma ferramenta de viagem rápida local; os portais no mundo mantêm os destinos recuperados dos dados originais. Mapas parciais identificam lacunas de composição.
+5. Em I, selecione um item possuído e use Equipar seleção. Posse, nível, classe e encaixe são validados. A aba Itens originais em M consulta modelos de item e não concede equipamento.
+6. Em M → Aparências, teste modelos da sua classe ou alterne a classe com F2. Visual padrão restaura a nave base. O teste é cosmético e mantém as regras/equipamentos selecionados.
+7. Em M → Serviços, consulte Comprar, Vender, Receitas e Manutenção. Os serviços exigem a cidade/contato apropriado, saldo e requisitos válidos. Crafting debita os ingredientes e SPI mesmo quando a tentativa falha, conforme a chance recuperada.
+8. O treinamento inicial local disponibiliza habilidades básicas compatíveis, sem alegar posse de conta original. Em M → Habilidades, aprenda outra habilidade compatível e atribua a um dos slots 1–8. A ativação usa SP e recarga reais; um efeito não suportado mostra o motivo do bloqueio. Em M → Atributos, distribua os pontos obtidos por progressão.
+9. Em M → Rede LAN, uma cópia hospeda e a outra informa seu IP local e porta 24680. A conexão mostra naves e permite chat, mantendo combate, inventário e missões independentes.
+10. F5 salva, F9 carrega. Há salvamento automático a cada 30 segundos e ao sair, com checksum e backup. O perfil é local, sem login. M → Música ativa/silencia a trilha vinculada ao mapa.
+
+O treino de 3002 e seus anéis são conteúdo novo, identificado como local. Os encontros fora das missões não representam uma recuperação do banco de spawns do servidor.
+
+Controles
+
+- W / S: Inclinar; A-GEAR no solo: frente / ré.
+- A / D: Empuxo lateral e inclinação visual; direção terrestre A.
+- Q / E: Guinar; E próximo de NPC/portal interage.
+- Mouse · botões 1 / 2: Mirar · arma primária / secundária.
+- Tab: Selecionar alvo; trava exige cone, alcance e visibilidade.
+- Shift / Espaço: Booster / freio.
+- G / T: Pousar/decolar / cerco A-GEAR no solo.
+- M: Biblioteca, serviços, habilidades, atributos e rede LAN; pausa o jogo local.
+- 1–8: Usar a habilidade atribuída, com SP e recarga validados.
+- I: Inventário real arrastável; voo continua, armas ficam bloqueadas.
+- F2: Alternar B/M/A/I-GEAR, inclusive no inventário.
+- F5 / F9: Salvar / carregar o perfil local.
+- P / R: Pausar / reiniciar voo e encontro; conserva progresso e inventário.
+- F1: Ajuda.
+- Enter / Esc: Enviar chat LAN quando conectado ou nota local / liberar campos de texto.
+
+Ao digitar no chat ou na busca, as teclas não acionam voo/atalhos. O inventário mantém o voo; chat, inventário, ajuda e biblioteca bloqueiam disparos. R é um reset explícito de voo/encontro, sem apagar o progresso salvo.
+
+Fidelidade e limites
+
+Os motores ITEM selecionados dirigem o núcleo portado de aceleração, giro, empuxo lateral, freio, boost/calor e movimento terrestre do A-GEAR. A colisão usa terreno, flags de água e objetos com MAPOBJECTINFO.Collision=1. Tiros, mísseis e visibilidade consultam o mundo. A câmera evita a geometria elegível; não se atribui colisão a todos os modelos apenas por estarem visíveis.
+
+As superfícies estáticas de água usam os patches dos mapas e as texturas originais water/black, com alpha preservado. O shader DirectX completo de distorção/reflexo não foi portado.
+
+O combate usa fórmulas do legado para cadência, munição por projétil, calor, alcance, acerto/defesa/perfuração e escudo antes de HP. O runtime inclui os ramos Belligerence interpretados, mas o escalonamento, posições e diversos atributos ausentes do servidor são locais. Cidades 2001/2002 não recebem encontros fabricados.
+
+As cidades 2001/2002 têm terreno, objetos e posições de NPC originais para exploração e interação local. A sessão continua usando o GEAR em voo; o personagem a pé e a câmera humana da cidade não foram implementados.
+
+O combustível usa o consumo por distância/tempo recuperado; a queda sem combustível tem gatilho nativo e trajetória balística adaptada localmente. EP atual, gasto e estado de falta de combustível são persistidos e reabastecidos pelos serviços suportados.
+
+A progressão usa os limiares de experiência do fonte fixado, inclusive limites nativos de subida por recompensa. XP ganho, XP efetivo e excedente descartado são mantidos separados. Pontos de atributo podem ser distribuídos com os incrementos e limites recuperados por classe. A tabela pública não prova a configuração do servidor de 2025.
+
+Ainda faltam servidor MMO/contas e combate compartilhado, spawns e IA completos, mapas indisponíveis e lacunas de cenário, cláusulas especiais de missão, todos os efeitos/atributos de habilidades e equipamentos, estoque/impostos oficiais e crafting com instâncias/enchant, estados avançados de voo e hyperbooster, equivalência física integral da queda sem combustível, animações, trajetórias Cinema e shaders/efeitos/clima completos, inclusive distorção/reflexo da água. As malhas são estáticas ou bind poses; luz, materiais, câmera, controles, colisão contínua e perfil inicial têm adaptações documentadas. Unidades físicas em metros não foram calibradas. O cliente original não foi executado para comparação visual ou funcional.
+
+Evidências e validação
+
+docs/gameplay-status.json contém contagens e cobertura calculadas dos manifestos; docs/gameplay.txt e docs/gameplay.html apresentam a entrega. docs/world-implementation.txt, docs/physics-original.*, docs/combate-original.* e docs/ui-library.txt separam os dados recuperados das adaptações. Os catálogos completos ficam em client/assets/original_library e client/assets/original_worlds/catalog.json. Todos os 10.798 arquivos do inventário oficial são rastreados por origem/hash; rastrear um arquivo não significa que seu comportamento foi implementado.
+
+Pacote oficial: https://install.masangsoft.com/20250709/ACEonline.7z
+SHA-256: 8395f1f33dda8165f70f30d2a6ad094c5f64e144403fce98337e5012be795841
+
+Fontes fixados: EP3.5 https://github.com/bhsdp1/AceOnline-ep35, commit 7c3e47ac47844e5c415d356a94d6201a0b9a38c4; EP4.3 https://github.com/bhsdp1/AceOnline-ep43, commit f880284fafa3af9b4b1a4bb2938efef1b328bb8e. Nenhum executável original foi iniciado. O pacote oficial completo não está nos downloads.
+
+Para validar/exportar, instale os templates oficiais 4.7.2 e execute na raiz:
+
+python3 tools/validate.py --godot /caminho/do/Godot --original-source /caminho/do/cliente-original-extraido
+python3 tools/export.py --godot /caminho/do/Godot --target macOS
+python3 tools/export.py --godot /caminho/do/Godot --target Windows
+
+No macOS, o editor costuma ser /Applications/Godot.app/Contents/MacOS/Godot. reports/validation.json registra a rodada atual de testes; reports/render-validation.json registra testes com renderização e export Linux. Somente relatórios com release 0.7.0 validam esta entrega. As capturas da apresentação são da reconstrução Godot 0.7, sem alegar execução do original. As comparações de interface 0.3 e recursos 0.4 são históricas e permanecem identificadas.
+
+As licenças de Godot/Assimp/ferramentas não transferem licença aberta aos recursos do jogo. Os avisos e a fonte coreana Noto derivada/OFL estão em third_party/.

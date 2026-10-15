@@ -1,0 +1,636 @@
+{
+  "schema_version": 1,
+  "method": "Bounded plaintext container reads only; no original executable or protected-data decoder used.",
+  "source_commit": "7c3e47ac47844e5c415d356a94d6201a0b9a38c4",
+  "source_files": {
+    "Client/EffectLib/main/CharacterInfo.h": "9c307f16cbcb16ad5388dfb8325f05c456b43bc3ff6c8075fa1dd95356056b8a",
+    "Client/EffectLib/main/CharacterInfo.cpp": "836da4053c4afce9a38e588c939eaad88c0e404041ba696398c1a1a083a435b4",
+    "Client/EffectLib/main/EffectRender.cpp": "c9fd113fb47ae27d55ef9e020adf455c201bab6254c1d0603a906f1a51b999bd",
+    "Client/EffectLib/main/ObjectAniData.h": "fb77e96229cb08609423af430f546f8976d8257efb51fe7f4a5d5de10d9da7b6",
+    "Client/EffectLib/main/Effect.h": "02465abc299e45aa2bdc4907b2761f0feb49809e4db9135cb66e4403c7305f1e",
+    "Client/DataRenderLib/main/WeaponMissileData.cpp": "69f8a70d41d76a4ed3e67e2d889eddbc3c8fab9a3d3eab90869007efba7bae4a"
+  },
+  "source_references": [
+    "WeaponMissileData.cpp:263-270 SourceIndex to character effect",
+    "CharacterInfo.cpp:1391-1416 CharacterData/body/effect dispatch",
+    "CharacterInfo.h:14-55 observed Win32 sizes24/88/96",
+    "EffectRender.cpp:338-351 eight-character object lookup",
+    "EffectRender.cpp:3531-3535 original descriptor container paths",
+    "EffectRender.cpp:3698-3702 object effect payload",
+    "ObjectAniData.h:14-45 object filenames and render policy",
+    "EffectRender.cpp:232-248 Res-eff mesh package loading"
+  ],
+  "files": [
+    {
+      "filename": "objectinfo.inf",
+      "bytes": 10144948,
+      "sha256": "667d289a89953b30a1ce7504431aca26b79f7338c8e92379e2fc3a8609ed4ab1",
+      "selected_entries": [
+        {
+          "name": "07001950",
+          "offset": 4282260,
+          "bytes": 576,
+          "sha256": "afa8616748102a3bf10cebef5aaf8871ab791fa2bbf57f5409ed55c3a62f0aaa",
+          "character_bytes": 24,
+          "body_bytes": 88,
+          "effect_bytes": 96,
+          "closed_exactly": true,
+          "bodies": [
+            {
+              "mask": 131072,
+              "name": "fire",
+              "offset": 4282284,
+              "effects": []
+            },
+            {
+              "mask": 262144,
+              "name": "bullet",
+              "offset": 4282372,
+              "effects": [
+                {
+                  "type": 0,
+                  "name": "06303300.eff",
+                  "offset": 4282460,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                }
+              ]
+            },
+            {
+              "mask": 524288,
+              "name": "hit",
+              "offset": 4282556,
+              "effects": [
+                {
+                  "type": 2,
+                  "name": "06400100.eff",
+                  "offset": 4282644,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 2,
+                  "name": "06400121.eff",
+                  "offset": 4282740,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "07900000",
+          "offset": 7085668,
+          "bytes": 1152,
+          "sha256": "2a3f263bc883fad74c1118f1954f290b95c615521a6ec63df3cc09a9ef404746",
+          "character_bytes": 24,
+          "body_bytes": 88,
+          "effect_bytes": 96,
+          "closed_exactly": true,
+          "bodies": [
+            {
+              "mask": 131072,
+              "name": "fire",
+              "offset": 7085692,
+              "effects": []
+            },
+            {
+              "mask": 262144,
+              "name": "bullet",
+              "offset": 7085780,
+              "effects": [
+                {
+                  "type": 0,
+                  "name": "06374500.eff",
+                  "offset": 7085868,
+                  "position": [
+                    0.0,
+                    0.0,
+                    2.5
+                  ]
+                },
+                {
+                  "type": 2,
+                  "name": "06400187.eff",
+                  "offset": 7085964,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 3,
+                  "name": "06100009.eff",
+                  "offset": 7086060,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 0,
+                  "name": "06502160.eff",
+                  "offset": 7086156,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                }
+              ]
+            },
+            {
+              "mask": 524288,
+              "name": "hit",
+              "offset": 7086252,
+              "effects": [
+                {
+                  "type": 2,
+                  "name": "06400147.eff",
+                  "offset": 7086340,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 2,
+                  "name": "06400144.eff",
+                  "offset": 7086436,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 2,
+                  "name": "06400146.eff",
+                  "offset": 7086532,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 2,
+                  "name": "06400145.eff",
+                  "offset": 7086628,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 0,
+                  "name": "06359900.eff",
+                  "offset": 7086724,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "objectinfo2.inf",
+      "bytes": 6899092,
+      "sha256": "af2d59234a673b88de91c6dee62bda7491aa14520acd5f8ed29792b3c51168e4",
+      "selected_entries": [
+        {
+          "name": "07001950",
+          "offset": 2892844,
+          "bytes": 576,
+          "sha256": "afa8616748102a3bf10cebef5aaf8871ab791fa2bbf57f5409ed55c3a62f0aaa",
+          "character_bytes": 24,
+          "body_bytes": 88,
+          "effect_bytes": 96,
+          "closed_exactly": true,
+          "bodies": [
+            {
+              "mask": 131072,
+              "name": "fire",
+              "offset": 2892868,
+              "effects": []
+            },
+            {
+              "mask": 262144,
+              "name": "bullet",
+              "offset": 2892956,
+              "effects": [
+                {
+                  "type": 0,
+                  "name": "06303300.eff",
+                  "offset": 2893044,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                }
+              ]
+            },
+            {
+              "mask": 524288,
+              "name": "hit",
+              "offset": 2893140,
+              "effects": [
+                {
+                  "type": 2,
+                  "name": "06400100.eff",
+                  "offset": 2893228,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 2,
+                  "name": "06400121.eff",
+                  "offset": 2893324,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "07900000",
+          "offset": 5042820,
+          "bytes": 1152,
+          "sha256": "2a3f263bc883fad74c1118f1954f290b95c615521a6ec63df3cc09a9ef404746",
+          "character_bytes": 24,
+          "body_bytes": 88,
+          "effect_bytes": 96,
+          "closed_exactly": true,
+          "bodies": [
+            {
+              "mask": 131072,
+              "name": "fire",
+              "offset": 5042844,
+              "effects": []
+            },
+            {
+              "mask": 262144,
+              "name": "bullet",
+              "offset": 5042932,
+              "effects": [
+                {
+                  "type": 0,
+                  "name": "06374500.eff",
+                  "offset": 5043020,
+                  "position": [
+                    0.0,
+                    0.0,
+                    2.5
+                  ]
+                },
+                {
+                  "type": 2,
+                  "name": "06400187.eff",
+                  "offset": 5043116,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 3,
+                  "name": "06100009.eff",
+                  "offset": 5043212,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 0,
+                  "name": "06502160.eff",
+                  "offset": 5043308,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                }
+              ]
+            },
+            {
+              "mask": 524288,
+              "name": "hit",
+              "offset": 5043404,
+              "effects": [
+                {
+                  "type": 2,
+                  "name": "06400147.eff",
+                  "offset": 5043492,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 2,
+                  "name": "06400144.eff",
+                  "offset": 5043588,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 2,
+                  "name": "06400146.eff",
+                  "offset": 5043684,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 2,
+                  "name": "06400145.eff",
+                  "offset": 5043780,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                {
+                  "type": 0,
+                  "name": "06359900.eff",
+                  "offset": 5043876,
+                  "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "effectinfo.inf",
+      "bytes": 2926544,
+      "sha256": "8cd87b7f253efbc71bd6ec49c54a678902c03948bb02a248f070b54da0e1d045",
+      "selected_entries": [
+        {
+          "name": "06303300",
+          "offset": 68712,
+          "bytes": 184,
+          "sha256": "82a75e01993e20240cd8898e4c73435fabf2d9e690cefad03d81737ed05e34de",
+          "header": [
+            10,
+            1,
+            0
+          ],
+          "object_file": "06303300.obj",
+          "fields": {
+            "scale": 1.0,
+            "animation_type": 0,
+            "texture_animation_velocity": 0.10000000149011612,
+            "object_animation_velocity": 90.0,
+            "tick": 0.02500000037252903,
+            "z_test": 1,
+            "color_rgba": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "alpha_blend": 1,
+            "src_blend": 2,
+            "dst_blend": 2,
+            "texture_op": 4,
+            "animation_loop": 0,
+            "environment_light": 0,
+            "alpha_test": 0,
+            "alpha_reference": 0,
+            "z_write": 0
+          }
+        },
+        {
+          "name": "06374500",
+          "offset": 210776,
+          "bytes": 184,
+          "sha256": "80531bb2112733f00534ee556df6a8df2f6a4fe78ff4b01f39eb3f3dfc228213",
+          "header": [
+            10,
+            1,
+            0
+          ],
+          "object_file": "06374500.obj",
+          "fields": {
+            "scale": 1.0,
+            "animation_type": 1,
+            "texture_animation_velocity": 0.009999999776482582,
+            "object_animation_velocity": 1.0,
+            "tick": 0.02500000037252903,
+            "z_test": 1,
+            "color_rgba": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "alpha_blend": 1,
+            "src_blend": 2,
+            "dst_blend": 2,
+            "texture_op": 4,
+            "animation_loop": 1,
+            "environment_light": 1,
+            "alpha_test": 0,
+            "alpha_reference": 8,
+            "z_write": 0
+          }
+        },
+        {
+          "name": "06502160",
+          "offset": 1423144,
+          "bytes": 184,
+          "sha256": "997277c990d4e1458c273b862fcfb1947cff170b83b1bca1057c0c85fe07425b",
+          "header": [
+            10,
+            1,
+            0
+          ],
+          "object_file": "06502160.obj",
+          "fields": {
+            "scale": 1.0,
+            "animation_type": 0,
+            "texture_animation_velocity": 1.0,
+            "object_animation_velocity": 1.0,
+            "tick": 0.02500000037252903,
+            "z_test": 1,
+            "color_rgba": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "alpha_blend": 0,
+            "src_blend": 2,
+            "dst_blend": 2,
+            "texture_op": 4,
+            "animation_loop": 0,
+            "environment_light": 1,
+            "alpha_test": 0,
+            "alpha_reference": 8,
+            "z_write": 0
+          }
+        }
+      ]
+    },
+    {
+      "filename": "effectInfo2.inf",
+      "bytes": 2141120,
+      "sha256": "2918ba61183bd54a0a9cd32d5aaf0d24b1d502e2d1352a7663683e46f68a26c8",
+      "selected_entries": [
+        {
+          "name": "06303300",
+          "offset": 52840,
+          "bytes": 184,
+          "sha256": "82a75e01993e20240cd8898e4c73435fabf2d9e690cefad03d81737ed05e34de",
+          "header": [
+            10,
+            1,
+            0
+          ],
+          "object_file": "06303300.obj",
+          "fields": {
+            "scale": 1.0,
+            "animation_type": 0,
+            "texture_animation_velocity": 0.10000000149011612,
+            "object_animation_velocity": 90.0,
+            "tick": 0.02500000037252903,
+            "z_test": 1,
+            "color_rgba": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "alpha_blend": 1,
+            "src_blend": 2,
+            "dst_blend": 2,
+            "texture_op": 4,
+            "animation_loop": 0,
+            "environment_light": 0,
+            "alpha_test": 0,
+            "alpha_reference": 0,
+            "z_write": 0
+          }
+        },
+        {
+          "name": "06374500",
+          "offset": 194904,
+          "bytes": 184,
+          "sha256": "80531bb2112733f00534ee556df6a8df2f6a4fe78ff4b01f39eb3f3dfc228213",
+          "header": [
+            10,
+            1,
+            0
+          ],
+          "object_file": "06374500.obj",
+          "fields": {
+            "scale": 1.0,
+            "animation_type": 1,
+            "texture_animation_velocity": 0.009999999776482582,
+            "object_animation_velocity": 1.0,
+            "tick": 0.02500000037252903,
+            "z_test": 1,
+            "color_rgba": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "alpha_blend": 1,
+            "src_blend": 2,
+            "dst_blend": 2,
+            "texture_op": 4,
+            "animation_loop": 1,
+            "environment_light": 1,
+            "alpha_test": 0,
+            "alpha_reference": 8,
+            "z_write": 0
+          }
+        },
+        {
+          "name": "06502160",
+          "offset": 1176232,
+          "bytes": 184,
+          "sha256": "997277c990d4e1458c273b862fcfb1947cff170b83b1bca1057c0c85fe07425b",
+          "header": [
+            10,
+            1,
+            0
+          ],
+          "object_file": "06502160.obj",
+          "fields": {
+            "scale": 1.0,
+            "animation_type": 0,
+            "texture_animation_velocity": 1.0,
+            "object_animation_velocity": 1.0,
+            "tick": 0.02500000037252903,
+            "z_test": 1,
+            "color_rgba": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "alpha_blend": 0,
+            "src_blend": 2,
+            "dst_blend": 2,
+            "texture_op": 4,
+            "animation_loop": 0,
+            "environment_light": 1,
+            "alpha_test": 0,
+            "alpha_reference": 8,
+            "z_write": 0
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Descriptor layout matches selected entries and closes exactly; not a general parser for all current effects.",
+    "Static first-frame effects preserve selected source mesh/textures, not the original time-based effect renderer.",
+    "D3DBLEND value2 is ONE; src2/dst2 is additive."
+  ]
+}

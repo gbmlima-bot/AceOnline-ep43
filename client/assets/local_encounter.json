@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "kind": "explicit_local_encounter",
+  "description": "Local encounter for exercising ported combat equations. These positions, enemy AI/loadout, player loadout and respawn times are adaptations, not recovered map spawns or a restored original mission.",
+  "native_rules": "res://assets/legacy_rules/combat.json",
+  "monster_code": 2000000,
+  "player": {
+    "max_hp": 600.0,
+    "max_shield": 400.0,
+    "level": 9,
+    "attack_bonus": 0.0,
+    "attack_probability_bonus": 0.0,
+    "defense": 0.0,
+    "dodge": 0.0,
+    "pierce": 0.0
+  },
+  "player_hp_reference": "EP35 Server/GameServer/CommonGameServer/AtumSJ.cpp:1942-1946 returns600; DP/level/stats/session quantities below are a local loadout without a character account.",
+  "primary_ammo": 1000,
+  "secondary_ammo": 48,
+  "monster_overrides": {
+    "Defense": 0.0,
+    "DefenseProbability": 0.0,
+    "DP": 0.0,
+    "MoveSpeed": 25.0,
+    "hostile": true
+  },
+  "monster_loadout": "The same native primary ITEM7000040 is assigned locally; the client MEX record does not identify an NPC weapon.",
+  "spawn_offsets": [
+    [
+      -45.0,
+      35.0,
+      -240.0
+    ],
+    [
+      90.0,
+      65.0,
+      -430.0
+    ],
+    [
+      -125.0,
+      50.0,
+      -650.0
+    ]
+  ],
+  "movement": "Local pursuit and orbit within120sourceunits; original NPC scheduler/path rules are not ported.",
+  "player_respawn_seconds": 4.0,
+  "enemy_respawn_seconds": 12.0,
+  "critical_hits": "Disabled, matching the inactive critical-hit branch in the audited EP35 battle source.",
+  "maps": {
+    "3002": {
+      "scope": "Local Hornian encounter; no native spawn positions recovered.",
+      "targets": [
+        {
+          "monster_code": 2000000,
+          "offset": [
+            -45.0,
+            35.0,
+            -240.0
+          ]
+        },
+        {
+          "monster_code": 2000000,
+          "offset": [
+            90.0,
+            65.0,
+            -430.0
+          ]
+        },
+        {
+          "monster_code": 2000000,
+          "offset": [
+            -125.0,
+            50.0,
+            -650.0
+          ]
+        }
+      ]
+    },
+    "3302": {
+      "scope": "Native quest102 monster identities/counts, locally composed spawn positions and AI. No original spawn coordinates claimed.",
+      "quest_id": 102,
+      "targets": [
+        {
+          "monster_code": 2028200,
+          "offset": [
+            -35,
+            30,
+            -210
+          ]
+        },
+        {
+          "monster_code": 2028100,
+          "offset": [
+            80,
+            45,
+            -330
+          ]
+        },
+        {
+          "monster_code": 2028100,
+          "offset": [
+            -100,
+            65,
+            -460
+          ]
+        },
+        {
+          "monster_code": 2028100,
+          "offset": [
+            25,
+            25,
+            -570
+          ]
+        }
+      ]
+    }
+  },
+  "native_weapon_catalog": "res://assets/legacy_rules/weapons.json",
+  "gear_loadout_scope": "Explicit local selection of native level1 ITEMs by ReqUnitKind and Position2/4, not recovered account equipment. F2 preserves session vitals, ammunition and rewards.",
+  "gear_loadouts": {
+    "12000100": {
+      "reference_class": "B-GEAR",
+      "unit_kind": 1,
+      "primary": 7000040,
+      "secondary": 7901000
+    },
+    "12001100": {
+      "reference_class": "M-GEAR",
+      "unit_kind": 16,
+      "primary": 7000040,
+      "secondary": 7901000
+    },
+    "12002100": {
+      "reference_class": "A-GEAR",
+      "unit_kind": 256,
+      "primary": 7000050,
+      "secondary": 7900440
+    },
+    "12003100": {
+      "reference_class": "I-GEAR",
+      "unit_kind": 4096,
+      "primary": 7000040,
+      "secondary": 7901000
+    }
+  },
+  "gear_loadout_evidence": {
+    "7000040": {
+      "ReqUnitKind": 61695,
+      "Position": 2,
+      "ReqMinLevel": 1,
+      "Kind": 0,
+      "SourceIndex": 7001950,
+      "_source": {
+        "id": "omi",
+        "offset": 1736,
+        "size": 576,
+        "record_index": 3,
+        "sha256": "8183c0e0e332cef52c7307cfdda348242a0c7d5a749bdb3487663d171c7cf5ea"
+      }
+    },
+    "7901000": {
+      "ReqUnitKind": 61695,
+      "Position": 4,
+      "ReqMinLevel": 1,
+      "Kind": 9,
+      "SourceIndex": 7900000,
+      "_source": {
+        "id": "omi",
+        "offset": 4185800,
+        "size": 576,
+        "record_index": 7267,
+        "sha256": "0cedf57ec734cdafbc6c3561d25cdf3a4cdfca0cf04eddb693ca7409d3114ab1"
+      }
+    },
+    "7000050": {
+      "ReqUnitKind": 3840,
+      "Position": 2,
+      "ReqMinLevel": 1,
+      "Kind": 3,
+      "SourceIndex": 7000050,
+      "_source": {
+        "id": "omi",
+        "offset": 2312,
+        "size": 576,
+        "record_index": 4,
+        "sha256": "2bb5b0da26e738f221ed8583863d9e118d2172c9c49c1b0a2f547612183dac96"
+      }
+    },
+    "7900440": {
+      "ReqUnitKind": 3840,
+      "Position": 4,
+      "ReqMinLevel": 1,
+      "Kind": 10,
+      "SourceIndex": 7900440,
+      "_source": {
+        "id": "omi",
+        "offset": 4177736,
+        "size": 576,
+        "record_index": 7253,
+        "sha256": "9ff4854b4b23e50af8189e49aeb235c5045dd6053cf16aada47cf069e662aef8"
+      }
+    }
+  },
+  "a_gear_weapon_visual_scope": "Shared original B/M/I primary and missile/glow assets are a local visualization adaptation. A-Gear ITEM7000050/7900440 descriptor links are not claimed; the bundle uses the same explicitly local pursuit model, with native damage/cadence/speed and no restored Cinema or splash simulation.",
+  "generic_encounters": {
+    "scope": "Native mission target identities and MEX HP/level/appearance; generated LOCAL positions, local default defense/speed/weapons. Other maps receive three available native actors within five levels of the local character, excluding faction war units. This is not original map spawning.",
+    "actor_registry": "res://assets/original_library/actors/actors.json",
+    "missing_actor_policy": "omit and report; never replace species with another model",
+    "mission_refresh": "active_objectives kill codes in the current map; refresh preserves character supplies, vitals, death and cooldowns"
+  },
+  "inventory": {
+    "scope": "Small explicit local reserve: four native class engines and four unique starter weapons; additional items are granted only from validated native mission rewards. Full catalog metadata does not confer ownership.",
+    "native_items": "res://assets/original_library/catalogs/items.json",
+    "equipment_positions": {
+      "primary": 2,
+      "secondary": 4,
+      "engine": 6
+    },
+    "progression": "Native source EXP table to125; local level9 origin8008, earned quest XP ledger, effective/discarded XP respecting one-level/99% award cap. Native bonus stat grants stored, allocation not simulated.",
+    "save_scope": "Character vitals, heat, cooldowns, inventory and reward ledger persist; local creatures/projectiles regenerate on load."
+  }
+}

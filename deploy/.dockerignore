@@ -1,0 +1,11 @@
+*
+!src/
+!src/**
+!tools/
+!tools/build_server_bundle.py
+!runtime/
+!runtime/godot
+!scripts/
+!scripts/**
+!Caddyfile
+!Dockerfile

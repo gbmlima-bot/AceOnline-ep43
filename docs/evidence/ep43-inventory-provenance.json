@@ -1,0 +1,63 @@
+{
+  "repository": "bhsdp1/AceOnline-ep43",
+  "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+  "method": "read-only text download at immutable commit",
+  "files": [
+    {
+      "file": "INFCityBase.h",
+      "repository_path": "ProjectAtum/InterfaceLib/main/INFCityBase.h",
+      "url": "https://raw.githubusercontent.com/bhsdp1/AceOnline-ep43/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFCityBase.h",
+      "bytes": 19427,
+      "sha256": "cb9a6ec36ddc858fec182d23130c6a3e55be9d01e7bd329f349eb53f2465c6cb",
+      "tree_blob_sha": "3d622402d57723fa2fb59de3e2f67fbca0b7c290"
+    },
+    {
+      "file": "INFInvenEquip.cpp",
+      "repository_path": "ProjectAtum/InterfaceLib/main/INFInvenEquip.cpp",
+      "url": "https://raw.githubusercontent.com/bhsdp1/AceOnline-ep43/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFInvenEquip.cpp",
+      "bytes": 85394,
+      "sha256": "7944d78bd45f147206272bc515d65d0d168f0651c9bfa50043bbe059024b63ba",
+      "tree_blob_sha": "de1663ba230b9549e5be32c7c969341e99c71cbe"
+    },
+    {
+      "file": "INFInvenEquip.h",
+      "repository_path": "ProjectAtum/InterfaceLib/main/INFInvenEquip.h",
+      "url": "https://raw.githubusercontent.com/bhsdp1/AceOnline-ep43/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFInvenEquip.h",
+      "bytes": 3821,
+      "sha256": "9ae8097cc3322efa62ab492e1000f7a138d373669129b0c7da417cf2dc174fee",
+      "tree_blob_sha": "24aa63155984612117916b3bf3fa455af0c0d473"
+    },
+    {
+      "file": "INFInvenExtend.cpp",
+      "repository_path": "ProjectAtum/InterfaceLib/main/INFInvenExtend.cpp",
+      "url": "https://raw.githubusercontent.com/bhsdp1/AceOnline-ep43/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFInvenExtend.cpp",
+      "bytes": 121663,
+      "sha256": "3557aca53c279ea5eddc3ea947b46c0d52d14bc73ec96b4336e664651e1ca06c",
+      "tree_blob_sha": "92753bb5dafa1b4cc67108206e7c526dd41d88e5"
+    },
+    {
+      "file": "INFInvenExtend.h",
+      "repository_path": "ProjectAtum/InterfaceLib/main/INFInvenExtend.h",
+      "url": "https://raw.githubusercontent.com/bhsdp1/AceOnline-ep43/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFInvenExtend.h",
+      "bytes": 8937,
+      "sha256": "cca01d9e89e1e1855eae17b9d53bf5e2a7cc486366f4d0d63e0c427f1701a31f",
+      "tree_blob_sha": "e57034fbbb3b8259aa3b1c9cf5e4a0f7587d26fc"
+    },
+    {
+      "file": "INFInvenItem.cpp",
+      "repository_path": "ProjectAtum/InterfaceLib/main/INFInvenItem.cpp",
+      "url": "https://raw.githubusercontent.com/bhsdp1/AceOnline-ep43/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFInvenItem.cpp",
+      "bytes": 79930,
+      "sha256": "cb927d22fcd1c618e44696d597da2a1dbd267bf5583b7f1c45d9b2e1ae1ca08f",
+      "tree_blob_sha": "aebe58624da0e40bb0197ba333c1195ca9cffe29"
+    },
+    {
+      "file": "INFInvenItem.h",
+      "repository_path": "ProjectAtum/InterfaceLib/main/INFInvenItem.h",
+      "url": "https://raw.githubusercontent.com/bhsdp1/AceOnline-ep43/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFInvenItem.h",
+      "bytes": 4713,
+      "sha256": "301783facf802d0e4c22f3aabace00a16157a48ed1a34ee0f5b3968a476a1e43",
+      "tree_blob_sha": "d4bad99d48d5697b731f68a3836f4dbb8a0eef2d"
+    }
+  ]
+}

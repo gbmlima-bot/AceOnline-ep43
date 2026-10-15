@@ -1,0 +1,379 @@
+{
+  "title": "Official ACE Online visual references — HUD and inventory layout",
+  "retrieved_at_utc": "2026-10-14T23:06:53.968041+00:00",
+  "records": [
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-masang-img3_01.gif",
+      "context_url": "https://ao.masanggames.co.kr/AO_SUB_guide",
+      "image_url": "https://ao.masanggames.co.kr/_AceOnline/_images/intro/img3_01.gif",
+      "source_kind": "official_publisher_guide",
+      "dimensions_px": [
+        723,
+        500
+      ],
+      "bytes": 174027,
+      "sha256": "86d9277c5fe8c1d9d74fa4422989b81ff19af7147e9ca1ecf03dc4b285eeb14f",
+      "description_pt": "Guia oficial, aba 게임화면 (tela de jogo). Captura real anotada: gauge circular dual ring no topo esquerdo, radar circular topo direito, chat inferior esquerdo, quickslots inferior central e sistema inferior direito. Inventário fechado.",
+      "publication_date": null,
+      "episode_version": null,
+      "date_limit": "Página não declara data de publicação nem episódio. Arte de guia disponível atualmente não prova que corresponda à versão atual do cliente.",
+      "landmarks_px_approx": {
+        "gauge_outer_circle": [
+          9,
+          30,
+          115,
+          94
+        ],
+        "ammo_bar": [
+          10,
+          7,
+          180,
+          20
+        ],
+        "radar": [
+          598,
+          29,
+          98,
+          98
+        ],
+        "chat": [
+          8,
+          375,
+          234,
+          112
+        ],
+        "quickslots": [
+          246,
+          458,
+          235,
+          25
+        ],
+        "bottom_menu": [
+          484,
+          458,
+          228,
+          27
+        ]
+      },
+      "page_declared_dimensions_px": [
+        723,
+        520
+      ],
+      "png_derivative": {
+        "local_path": "/workspace/analysis/ace-online-layout/reference-masang-img3_01.png",
+        "sha256": "e827d4ff362138ebbac046c01a1350b4cfb5e4a6731a110092188c17c3f20d28",
+        "bytes": 156026,
+        "dimensions_px": [
+          723,
+          500
+        ],
+        "method": "ImageMagick convert GIF frame[0] to PNG; full RGBA byte comparison equal",
+        "rgba_sha256": "63edff596f24b63aa64a31686290d469a4e812420e6e30972c3b23eee9e4ae3a"
+      }
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-masang-img3_02.gif",
+      "context_url": "https://ao.masanggames.co.kr/AO_SUB_guide",
+      "image_url": "https://ao.masanggames.co.kr/_AceOnline/_images/intro/img3_02.gif",
+      "source_kind": "official_publisher_guide",
+      "dimensions_px": [
+        400,
+        210
+      ],
+      "bytes": 23165,
+      "sha256": "87a526c63670baf31c8979e72bdfae817d9b1b86a41d692ea55c73ffb1f3d2bf",
+      "description_pt": "Diagrama antigo de funções do gauge: SP no pequeno círculo superior direito; HP/DP nos dois lados do círculo principal, velocidade ao centro. Essa disposição diverge de outras capturas atuais na mesma página.",
+      "publication_date": null,
+      "episode_version": null,
+      "date_limit": "Página não declara data de publicação nem episódio. Arte de guia disponível atualmente não prova que corresponda à versão atual do cliente.",
+      "png_derivative": {
+        "local_path": "/workspace/analysis/ace-online-layout/reference-masang-img3_02.png",
+        "sha256": "6f78e74b0563933cedbf6e2662114e794d206579e24551ff2dd621da853605fe",
+        "bytes": 16154,
+        "dimensions_px": [
+          400,
+          210
+        ],
+        "method": "ImageMagick convert GIF frame[0] to PNG; full RGBA byte comparison equal",
+        "rgba_sha256": "71cbc36455541c3deadb41359bc27331ba08186d2e25aa00f36d59b87181bca0"
+      },
+      "variant_inconsistency": "A própria página mistura variantes: img3_02 tem pequeno gauge SP separado; img3_01 mostra setor SP superior central. Não inferir identidade de versão/episódio entre as imagens.",
+      "authority_limit": "Guide mixes old diagram and later screenshot variants; this is not authoritative evidence for current 2025 placement or SP position."
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-masang-img4_03.gif",
+      "context_url": "https://ao.masanggames.co.kr/AO_SUB_guide",
+      "image_url": "https://ao.masanggames.co.kr/_AceOnline/_images/intro/img4_03.gif",
+      "source_kind": "official_publisher_guide",
+      "dimensions_px": [
+        723,
+        500
+      ],
+      "bytes": 153394,
+      "sha256": "a3f336cc94f5435fd77ab385dd57447d5217d4a109f8395fd0820d482a87e500",
+      "description_pt": "Captura anotada de controles de voo com HUD circular e quickslots; inventário fechado.",
+      "publication_date": null,
+      "episode_version": null,
+      "date_limit": "Página não declara data de publicação nem episódio. Arte de guia disponível atualmente não prova que corresponda à versão atual do cliente.",
+      "png_derivative": {
+        "local_path": "/workspace/analysis/ace-online-layout/reference-masang-img4_03.png",
+        "sha256": "df259749af930583404a8f6f09ec70c4096ef922a3fcc4c493d8c94d1e8fb8b5",
+        "bytes": 135050,
+        "dimensions_px": [
+          723,
+          500
+        ],
+        "method": "ImageMagick convert GIF frame[0] to PNG; full RGBA byte comparison equal",
+        "rgba_sha256": "ec4e62740892ea2959b55dbbb59e7b44fdfbb8117e1942760d491e1d033e710b"
+      }
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-masang-trd4.png",
+      "context_url": "https://ao.masanggames.co.kr/AO_SUB_SYSTEM16",
+      "image_url": "https://ao.masanggames.co.kr/_AceOnline/_images/system/trd4.png",
+      "source_kind": "official_publisher_guide",
+      "dimensions_px": [
+        775,
+        547
+      ],
+      "bytes": 720034,
+      "sha256": "033f2dab40324fce60178af4c5e850909a5b40690c96b6eaf3cf97eed15fb886",
+      "description_pt": "Guia oficial de comércio: aba de registro de itens em ITEM TRADE CENTER. Coluna INVENTORY aberta com nave, equipamentos laterais e grade de itens. Gauge circular aparece atrás no topo esquerdo. Este é o inventário embutido no centro de comércio, não a janela flutuante standalone.",
+      "publication_date": null,
+      "episode_version": null,
+      "date_limit": "Página não declara data de publicação nem episódio. Arte de guia disponível atualmente não prova que corresponda à versão atual do cliente.",
+      "landmarks_px_approx": {
+        "inventory_panel": [
+          170,
+          98,
+          306,
+          402
+        ],
+        "gear_preview": [
+          210,
+          145,
+          229,
+          173
+        ],
+        "item_grid": [
+          194,
+          321,
+          256,
+          149
+        ]
+      },
+      "authority_limit": "Trade-center inventory subpanel; do not treat tc_inven as the standalone inventory window."
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-masang-trd3.png",
+      "context_url": "https://ao.masanggames.co.kr/AO_SUB_SYSTEM16",
+      "image_url": "https://ao.masanggames.co.kr/_AceOnline/_images/system/trd3.png",
+      "source_kind": "official_publisher_guide",
+      "dimensions_px": [
+        775,
+        546
+      ],
+      "bytes": 763146,
+      "sha256": "c64a8b3796bd3ff9459f476d6a642cb7f7ebd61a858296e569ef8b78649020ad",
+      "description_pt": "Guia oficial de comércio: aba de compra, útil para o frame de janela azul/ciano e o gauge circular ao fundo; não mostra inventário.",
+      "publication_date": null,
+      "episode_version": null,
+      "date_limit": "Página não declara data de publicação nem episódio. Arte de guia disponível atualmente não prova que corresponda à versão atual do cliente."
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-suba-ep32-a.jpg",
+      "context_url": "https://ace.subagames.com/PressRelease.aspx/2009/6/13/107-suba-games-launch-ace-online-episode-3-2-this-week",
+      "image_url": "https://static.subagames.com/ACE/pressrelease/2009/06132009a.jpg",
+      "source_kind": "official_publisher_press_release_with_embedded_gameplay_screenshot",
+      "dimensions_px": [
+        480,
+        360
+      ],
+      "sha256": "b58872a5417f750afadc2d0c293888bad7427c91f03db4b495e80be3b1c3f500",
+      "publication_date": "2009-06-13 (page date/path); body announces June2009 launch",
+      "episode_context": "3.2",
+      "episode_version": "image build number not independently established",
+      "description_pt": "Captura de gameplay com gauge circular, radar e HUD; sem inventário aberto. A imagem contém marca MMOSite e é reutilizada na publicação oficial.",
+      "date_limit": "Official page explicitly discusses Episode3.2, but exact build/date of each screenshot is not certified."
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-suba-ep32-c.jpg",
+      "context_url": "https://ace.subagames.com/PressRelease.aspx/2009/6/13/107-suba-games-launch-ace-online-episode-3-2-this-week",
+      "image_url": "https://static.subagames.com/ACE/pressrelease/2009/06132009c.jpg",
+      "source_kind": "official_publisher_press_release_with_embedded_gameplay_screenshot",
+      "dimensions_px": [
+        480,
+        360
+      ],
+      "sha256": "73cc91b60713eabafead3a018c919110262b5e00832ec9b5a1069ca6872b5697",
+      "publication_date": "2009-06-13 (page date/path); body announces June2009 launch",
+      "episode_context": "3.2",
+      "episode_version": "image build number not independently established",
+      "description_pt": "Captura de gameplay com gauge circular, radar e HUD; sem inventário aberto. A imagem contém marca MMOSite e é reutilizada na publicação oficial.",
+      "date_limit": "Official page explicitly discusses Episode3.2, but exact build/date of each screenshot is not certified."
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-suba-ep32-d.jpg",
+      "context_url": "https://ace.subagames.com/PressRelease.aspx/2009/6/13/107-suba-games-launch-ace-online-episode-3-2-this-week",
+      "image_url": "https://static.subagames.com/ACE/pressrelease/2009/06132009d.jpg",
+      "source_kind": "official_publisher_press_release_with_embedded_gameplay_screenshot",
+      "dimensions_px": [
+        480,
+        360
+      ],
+      "sha256": "2cfcdaeb71d3a8bb68f8fad930159ce3266371208ab8b5715cb9bd5fe105082c",
+      "publication_date": "2009-06-13 (page date/path); body announces June2009 launch",
+      "episode_context": "3.2",
+      "episode_version": "image build number not independently established",
+      "description_pt": "Captura de gameplay com gauge circular, radar e HUD; sem inventário aberto. A imagem contém marca MMOSite e é reutilizada na publicação oficial.",
+      "date_limit": "Official page explicitly discusses Episode3.2, but exact build/date of each screenshot is not certified."
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-suba-ep32-e.jpg",
+      "context_url": "https://ace.subagames.com/PressRelease.aspx/2009/6/13/107-suba-games-launch-ace-online-episode-3-2-this-week",
+      "image_url": "https://static.subagames.com/ACE/pressrelease/2009/06132009e.jpg",
+      "source_kind": "official_publisher_press_release_with_embedded_gameplay_screenshot",
+      "dimensions_px": [
+        480,
+        360
+      ],
+      "sha256": "456182c52bb2a04fe9a7e3525f4964a4c8b67b8fa0b934256eecf8f003d4936c",
+      "publication_date": "2009-06-13 (page date/path); body announces June2009 launch",
+      "episode_context": "3.2",
+      "episode_version": "image build number not independently established",
+      "description_pt": "Captura de gameplay com gauge circular, radar e HUD; sem inventário aberto. A imagem contém marca MMOSite e é reutilizada na publicação oficial.",
+      "date_limit": "Official page explicitly discusses Episode3.2, but exact build/date of each screenshot is not certified."
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-suba-ep46-2.jpg",
+      "context_url": "https://ace.subagames.com/episode4.aspx",
+      "image_url": "https://static.subagames.com/ACE/images/episode4/page/tn/screenshot2.jpg",
+      "source_kind": "official_publisher_episode4.6_announcement",
+      "dimensions_px": [
+        750,
+        457
+      ],
+      "sha256": "57ca0c0e3efba63d95bcf78c5f7f3c5631c483331bf385eaf561d2b60e2b624b",
+      "publication_date": null,
+      "episode_context": "4.6 (explicit page announcement text)",
+      "episode_version": "exact screenshot build unknown",
+      "description_pt": "HUD em voo, gauge circular topo esquerdo, radar topo direito e quickslots inferiores; a disposição de chat/SP difere da referência antiga. Inventário fechado.",
+      "date_limit": "Page explicitly announces Episode4.6. Neither a 2025 screenshot date nor version0.4.5.158 is established."
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-suba-ep46-3.jpg",
+      "context_url": "https://ace.subagames.com/episode4.aspx",
+      "image_url": "https://static.subagames.com/ACE/images/episode4/page/tn/screenshot3.jpg",
+      "source_kind": "official_publisher_episode4.6_announcement",
+      "dimensions_px": [
+        750,
+        457
+      ],
+      "sha256": "34a974e02f735f144d8cd6976d7e6a069021cccc3abe92fa500fe2e9ccb3888f",
+      "publication_date": null,
+      "episode_context": "4.6 (explicit page announcement text)",
+      "episode_version": "exact screenshot build unknown",
+      "description_pt": "HUD em voo, gauge circular topo esquerdo, radar topo direito e quickslots inferiores; a disposição de chat/SP difere da referência antiga. Inventário fechado.",
+      "date_limit": "Page explicitly announces Episode4.6. Neither a 2025 screenshot date nor version0.4.5.158 is established."
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-suba-ep46-4.jpg",
+      "context_url": "https://ace.subagames.com/episode4.aspx",
+      "image_url": "https://static.subagames.com/ACE/images/episode4/page/tn/screenshot4.jpg",
+      "source_kind": "official_publisher_episode4.6_announcement",
+      "dimensions_px": [
+        750,
+        457
+      ],
+      "sha256": "8246e75e1f6b9ce8c57ae1c0f583e92fc3a754014540ab4f4337323108cd57c4",
+      "publication_date": null,
+      "episode_context": "4.6 (explicit page announcement text)",
+      "episode_version": "exact screenshot build unknown",
+      "description_pt": "HUD em voo, gauge circular topo esquerdo, radar topo direito e quickslots inferiores; a disposição de chat/SP difere da referência antiga. Inventário fechado.",
+      "date_limit": "Page explicitly announces Episode4.6. Neither a 2025 screenshot date nor version0.4.5.158 is established."
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-suba-tutorial-hud.jpg",
+      "context_url": "https://ace.subagames.com/guide.aspx",
+      "document_url": "https://static.subagames.com/ACE/documents/Ace_Online_Tutorial.pdf",
+      "source_kind": "image_extracted_without_repainting_from_official_tutorial_pdf",
+      "extracted_image_filename": "pdf-images/page-002.jpg",
+      "pdf_page_number": "not asserted from pdfimages sequential filename",
+      "dimensions_px": [
+        1274,
+        694
+      ],
+      "sha256": "885ca04fd4ac288b3539d456b4cf909661bd593fc7860d2be7f08d383364529c",
+      "publication_date": null,
+      "pdf_creation_date_reported": "2009-09-23 (PDF metadata inspected by root agent; not proof of game build)",
+      "visible_screenshot_timestamp": null,
+      "episode_version": null,
+      "description_pt": "HUD anotado do tutorial oficial; referência histórica.",
+      "date_limit": "PDF metadata and visible screenshot timestamp are historical context; neither establishes exact EP3.5 build."
+    },
+    {
+      "local_path": "/workspace/analysis/ace-online-layout/reference-suba-tutorial-inventory-shop.jpg",
+      "context_url": "https://ace.subagames.com/guide.aspx",
+      "document_url": "https://static.subagames.com/ACE/documents/Ace_Online_Tutorial.pdf",
+      "source_kind": "image_extracted_without_repainting_from_official_tutorial_pdf",
+      "extracted_image_filename": "pdf-images/page-010.jpg",
+      "pdf_page_number": "not asserted from pdfimages sequential filename",
+      "dimensions_px": [
+        1274,
+        694
+      ],
+      "sha256": "6901b94ba10941349aa4a6b689d5a9a4116047a44510471a6f87e674dd1238c9",
+      "publication_date": null,
+      "pdf_creation_date_reported": "2009-09-23 (PDF metadata inspected by root agent; not proof of game build)",
+      "visible_screenshot_timestamp": "2009/09/22 17:16",
+      "episode_version": null,
+      "description_pt": "Inventário/equipamento lado a lado com loja, grade10x6; é variante em contexto de NPC shop, não prova isolada da posição standalone.",
+      "date_limit": "PDF metadata and visible screenshot timestamp are historical context; neither establishes exact EP3.5 build."
+    }
+  ],
+  "key_findings": [
+    "Official Masang guide and Suba Episode3.2/4.6 pages confirm the circular gauge family, radar at upper right, and bottom quickslots.",
+    "The same Masang guide contains mismatched-era gauge illustrations; the small-SP diagram must not override a later screenshot or selected target version.",
+    "Masang trd4 confirms tc_inven is an embedded inventory panel in Item Trade Center; it is not evidence for the standalone inventory window.",
+    "The historical Suba PDF shows separate equipment/items panels beside an NPC shop.",
+    "No editorial official screenshot proving a standalone blue inventory window in client0.4.5.158/2025 was located within this bounded search."
+  ],
+  "excluded_or_secondary": [
+    {
+      "path": "/workspace/analysis/ace-online-layout/reference-suba-home-ss3.jpg",
+      "reason": "Official homepage promotional gameplay image with HUD hidden; unsuitable for matching interface layout."
+    },
+    {
+      "path": "/workspace/analysis/ace-online-layout/reference-suba-home-ss4.jpg",
+      "reason": "Official homepage promotional gameplay image with HUD hidden; unsuitable for matching interface layout."
+    },
+    {
+      "path": "/workspace/analysis/ace-online-layout/reference-suba-home-ss6.jpg",
+      "reason": "Official homepage promotional gameplay image with HUD hidden; unsuitable for matching interface layout."
+    },
+    {
+      "context_url": "https://ao.masanggames.co.kr/AceOnline_screen/11502673",
+      "reason": "Imagem comunitária com logo JTBC; HUD circular mas sem inventário. Post de 2025 não prova atualização da arte editorial."
+    },
+    {
+      "context_url": "https://ao.masanggames.co.kr/AceOnline_screen/10160930",
+      "reason": "Somente tooltip de item e pequeno recorte de inventário, sem layout completo."
+    },
+    {
+      "context_url": "https://ao.masanggames.co.kr/AceOnline_screen/11295485",
+      "reason": "Somente tooltip de item, sem layout completo."
+    }
+  ],
+  "limits": [
+    "Do not use a prototype screenshot as original-client evidence.",
+    "Currently served official guide images may be old; HTTP Last-Modified dates (e.g.2024 storage migration) do not prove screenshot capture date or game version.",
+    "Screenshot dimensions are image dimensions, not a certified client viewport; guide/browser scaling or cropping can affect exact pixel correspondence.",
+    "A modern-vs-historical visual target must be selected before combining assets and placement rules.",
+    "No Godot files changed; no game/installer execution."
+  ],
+  "searches": [
+    "Official Suba index/guide/sitemap/Episode4.6/2009Episode3.2 press release",
+    "Official Masang AO_SUB_guide and AO_SUB_SYSTEM16",
+    "Search queries for official-domain inventory/interface screenshots; current standalone blue inventory remains unverified"
+  ]
+}

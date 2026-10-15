@@ -1,0 +1,13 @@
+* text=auto
+*.gd text eol=lf
+*.py text eol=lf
+*.sh text eol=lf
+*.godot text eol=lf
+*.tscn text eol=lf
+*.so binary
+*.bin binary
+*.f32 binary
+*.u8 binary
+*.png binary
+*.jpg binary
+*.zip binary

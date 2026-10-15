@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-10-15T13:47:27.462664+00:00",
+  "audited_path": "/workspace/ace-modern",
+  "audit_mode": "Read-only inspection; this report records results already obtained. No new scan was performed while writing this report.",
+  "scope": [
+    "File and directory inventory",
+    "Large-file identification",
+    "Private-data filename review",
+    "Credential-pattern review of text files",
+    "Existing license and provenance review"
+  ],
+  "source_mutations": false,
+  "inventory": {
+    "total_files": 46295,
+    "total_bytes": 5485338513,
+    "regular_files_only": true,
+    "symlinks_found": 0,
+    "top_level": [
+      {
+        "path": ".",
+        "files": 3,
+        "bytes": 3715
+      },
+      {
+        "path": "client",
+        "files": 45689,
+        "bytes": 5090464252
+      },
+      {
+        "path": "build",
+        "files": 74,
+        "bytes": 215891895
+      },
+      {
+        "path": "reports",
+        "files": 312,
+        "bytes": 133318865
+      },
+      {
+        "path": "docs",
+        "files": 63,
+        "bytes": 35981024
+      },
+      {
+        "path": "server",
+        "files": 18,
+        "bytes": 7971063
+      },
+      {
+        "path": "tools",
+        "files": 95,
+        "bytes": 1467228
+      },
+      {
+        "path": "third_party",
+        "files": 7,
+        "bytes": 121733
+      },
+      {
+        "path": "deploy",
+        "files": 24,
+        "bytes": 76255
+      },
+      {
+        "path": "protocol",
+        "files": 10,
+        "bytes": 42483
+      }
+    ],
+    "major_asset_directories": [
+      {
+        "path": "client/assets",
+        "files": 45579,
+        "bytes": 5089484093
+      },
+      {
+        "path": "client/assets/original_library",
+        "files": 37492,
+        "bytes": 2773223936
+      },
+      {
+        "path": "client/assets/original_worlds",
+        "files": 6760,
+        "bytes": 2243312995
+      }
+    ],
+    "files_over_50_mib": [
+      {
+        "path": "build/server-bundle/runtime/godot",
+        "bytes": 146414384,
+        "over_100_mib": true,
+        "kind": "Generated server bundle copy of official Godot engine"
+      }
+    ],
+    "godot_import_configuration": {
+      "suffix": ".import",
+      "files": 21228,
+      "bytes": 21429266,
+      "note": "Import configuration sidecars are distinct from generated .godot caches."
+    }
+  },
+  "private_data_review": {
+    "actual_dotenv_files_found": 0,
+    "dotenv_templates": [
+      "deploy/.env.example",
+      "build/server-bundle/.env.example"
+    ],
+    "database_or_sqlite_data_files_found": 0,
+    "private_key_files_found": 0,
+    "private_backups_found": 0,
+    "userdata_directories_found": 0,
+    "credential_scan": {
+      "text_files_scanned": 2713,
+      "text_bytes_scanned": 596514652,
+      "high_confidence_pattern_matches": 0,
+      "patterns_reviewed": [
+        "Private PEM keys",
+        "GitHub tokens",
+        "AWS access-key identifiers",
+        "Google API keys",
+        "Slack tokens",
+        "JWT literals",
+        "Connection URLs containing username and password"
+      ],
+      "literal_review_findings": [
+        {
+          "path": "client/tests/test_online_ui.gd",
+          "line": 78,
+          "signal": "Credential-related string literal",
+          "classification": "Synthetic test fixture verifying removal of the token from UI state; no credential value recorded"
+        }
+      ],
+      "limitation": "Pattern and filename review is not a proof that every possible secret representation is absent."
+    }
+  },
+  "exclusion_guidance_at_audit_time": {
+    "generated_paths": [
+      "build/",
+      "reports/",
+      "**/__pycache__/",
+      "*.pyc",
+      "client/.godot/",
+      "client/.godot-editor/"
+    ],
+    "preventive_private_data_rules": [
+      "Actual .env files, with an exception for .env.example templates",
+      "SQLite database, WAL and SHM files",
+      "Userdata and backup directories",
+      "Export credentials"
+    ],
+    "observed_cache_directories": [
+      "build/__pycache__",
+      "deploy/tests/__pycache__",
+      "deploy/scripts/__pycache__",
+      "tools/__pycache__",
+      "protocol/__pycache__",
+      "protocol/tests/__pycache__"
+    ]
+  },
+  "licenses_and_provenance": {
+    "general_project_license_at_audit_time": "No general LICENSE, COPYING or COPYRIGHT file was present at the canonical project root.",
+    "preserve": [
+      {
+        "paths": [
+          "third_party/Godot-LICENSE.txt",
+          "third_party/Godot-COPYRIGHT.txt",
+          "third_party/godot-provenance.json"
+        ],
+        "scope": "Godot engine and bundled third-party components"
+      },
+      {
+        "paths": [
+          "server/addons/godot-sqlite/LICENSE.md",
+          "third_party/GODOT-SQLITE.json"
+        ],
+        "scope": "godot-sqlite v4.9; MIT notice and binary provenance"
+      },
+      {
+        "paths": [
+          "third_party/Noto-CJK-COPYRIGHT.txt",
+          "third_party/korean-font-provenance.json"
+        ],
+        "scope": "Noto CJK font subset; SIL Open Font License 1.1"
+      },
+      {
+        "paths": [
+          "third_party/asset-tools-provenance.json"
+        ],
+        "scope": "Conversion tool provenance; explicitly does not grant rights to original game assets"
+      },
+      {
+        "paths": [
+          "docs/interface-provenance.json",
+          "docs/evidence/",
+          "client/assets/legacy_rules/manifest.json",
+          "client/assets/original_worlds/manifest.json",
+          "client/assets/original_3d/manifest.json",
+          "client/assets/original_props/manifest.json"
+        ],
+        "scope": "Original-package, legacy-source and derived-resource evidence"
+      }
+    ],
+    "original_assets": "Existing Godot, SQLite, font and conversion-tool licenses do not cover the original AirRivals/ACE Online resources. The reviewed provenance does not establish authorization to redistribute those resources. Git LFS and Releases address file size, not licensing.",
+    "scope_limit": "This audit records existing notices and evidence; it does not grant or assign any license."
+  },
+  "integrator_publication_plan": {
+    "status": "Reported by root agent after the read-only audit; not independently rescanned for this report.",
+    "public_checkout": "/workspace/ace-modern-public",
+    "expanded_gitignore": true,
+    "git_asset_scope": "Only 26 numerical data files required by the server; artistic assets are handled separately in release artifacts.",
+    "full_source_import_configuration": "Preserve *.import configuration; exclude .godot generated caches.",
+    "license_presentation": "README preserves the distinction between project code, third-party licenses and original game assets; no general license is attributed to the original assets."
+  }
+}

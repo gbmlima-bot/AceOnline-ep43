@@ -1,0 +1,19 @@
+{
+  "release": "0.8.0",
+  "passed": true,
+  "artifact_platform": "macos",
+  "exported_pack_executed": true,
+  "execution_engine": "official Godot4.7.2 Linux x86_64",
+  "headless_passed": true,
+  "opengl_passed": true,
+  "fresh_userdata": true,
+  "normal_exit_clean": true,
+  "native_macos_windows_execution": false,
+  "pack_bytes": 3810974296,
+  "logs": [
+    "reports/macos-pack-headless-v08.log",
+    "reports/macos-pack-rendered-v08.log"
+  ],
+  "capture": "reports/macos-pack-preview-v08.png",
+  "capture_sha256": "accf3b2243b0e87fdb4a5a9d0874a1ffda3025d173e73d867e82e88a6c225a95"
+}

@@ -1,0 +1,282 @@
+{
+  "delivery": {
+    "path": "/workspace/shared/ace-modern-online/ace-modern-online-macos-v0.8.zip",
+    "bytes": 3362117557,
+    "sha256": "5de3a098c210b78e3a10b8160fbf8f03bd18c630802c985765dd83d1a55d3db4",
+    "platform": "macos",
+    "release": "0.8.0",
+    "native_executed": false,
+    "verification_report": "reports/desktop-macos-v08.json",
+    "published_at_utc": "2026-10-15T13:15:51Z"
+  },
+  "retirement": {
+    "old": {
+      "path": "/workspace/shared/ace-modern-systems/ace-modern-systems-macos-v0.7.zip",
+      "bytes": 3363168469,
+      "sha256": "de881fea7f96c6207264604d8fc189c3f9c18344241b74fc6d69112b2f586525"
+    },
+    "replacement": "/workspace/shared/ace-modern-online/ace-modern-online-macos-v0.8.zip",
+    "replacement_raw_sha256": "88f9171f1fa7a5e178a5d614fc9fb8c5530c2d7fbf540226b9c47855f619838a",
+    "release": "0.8.0",
+    "reason": "Verified0.8 desktop replacement; historic full-source archives preserved",
+    "state": "retired_replaced",
+    "historical_index": {
+      "path": "/workspace/shared/ace-modern-systems/downloads-v07-historical.json",
+      "sha256": "ff491b558fd39395b503916909be3429bb0c031a51cf18195b927fa48e848d4b",
+      "bytes": 1316
+    },
+    "replacement_sha256": "5de3a098c210b78e3a10b8160fbf8f03bd18c630802c985765dd83d1a55d3db4",
+    "replacement_bytes": 3362117557
+  },
+  "raw_verification": {
+    "platform": "macos",
+    "artifact_kind": "app_directory",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "native_executed": false,
+    "zip_crc_all_members": false,
+    "executable_permission": true,
+    "plist_version": "0.8.0",
+    "pck": {
+      "version": 4,
+      "engine": [
+        4,
+        7,
+        2
+      ],
+      "flags": 2,
+      "start": 0,
+      "file_base": 112,
+      "directory_offset": 3806257784,
+      "file_count": 45635,
+      "application_version": "0.8.0",
+      "required_script_bindings": [
+        {
+          "source": "res://scripts/main.gd",
+          "packed": "res://scripts/main.gdc",
+          "offset": 3662606384,
+          "bytes": 37823,
+          "md5": "9fe739721f636288bb1c5f50c3392615"
+        },
+        {
+          "source": "res://scripts/game_systems.gd",
+          "packed": "res://scripts/game_systems.gdc",
+          "offset": 3662466084,
+          "bytes": 13492,
+          "md5": "3db25f30823d10ded1fa609abf8b1250"
+        },
+        {
+          "source": "res://scripts/legacy_hud.gd",
+          "packed": "res://scripts/legacy_hud.gdc",
+          "offset": 3662504159,
+          "bytes": 87798,
+          "md5": "302d9400848e86b49ea36a29a5c84789"
+        },
+        {
+          "source": "res://scripts/online/online_client.gd",
+          "packed": "res://scripts/online/online_client.gdc",
+          "offset": 3662359241,
+          "bytes": 8608,
+          "md5": "d3aec0f796c39d345a8f21e74d46d33a"
+        },
+        {
+          "source": "res://scripts/online/json_wire.gd",
+          "packed": "res://scripts/online/json_wire.gdc",
+          "offset": 3662356930,
+          "bytes": 2311,
+          "md5": "41514fbac51189228dcdf998cd1b54cd"
+        },
+        {
+          "source": "res://scripts/online/arena_model.gd",
+          "packed": "res://scripts/online/arena_model.gdc",
+          "offset": 3662324826,
+          "bytes": 24683,
+          "md5": "b6506d16333ad50dd00593ca77392981"
+        },
+        {
+          "source": "res://scripts/online/online_view.gd",
+          "packed": "res://scripts/online/online_view.gdc",
+          "offset": 3662367849,
+          "bytes": 20268,
+          "md5": "7f7d978fda9a882298f1ef27c8983629"
+        },
+        {
+          "source": "res://scripts/combat_runtime.gd",
+          "packed": "res://scripts/combat_runtime.gdc",
+          "offset": 3662419051,
+          "bytes": 31035,
+          "md5": "e1863dd3d6363ba5f426d7d7e9ad3a05"
+        }
+      ],
+      "project_binary_md5": "2d9d106dca3ef93db8a1b774c93b181a",
+      "code_md5_verified": 53
+    },
+    "sha256": "88f9171f1fa7a5e178a5d614fc9fb8c5530c2d7fbf540226b9c47855f619838a",
+    "bytes": 3982386204,
+    "tree": [
+      {
+        "path": "Contents/Info.plist",
+        "bytes": 1777,
+        "sha256": "1b75f104cfa373c003b1abbe64b2d2878017722230dcb4763e5c61edfc510a03",
+        "mode": 420
+      },
+      {
+        "path": "Contents/MacOS/ACE Modern",
+        "bytes": 170963648,
+        "sha256": "77b510ab86dc841db6562ba95131883f21aa5e705be763f86bc48ed5f75e29a1",
+        "mode": 493
+      },
+      {
+        "path": "Contents/PkgInfo",
+        "bytes": 9,
+        "sha256": "7e50a30efad50208a173203ced60818d693bb61266b75aa10927d1a2adce80cb",
+        "mode": 420
+      },
+      {
+        "path": "Contents/Resources/ACE Modern.pck",
+        "bytes": 3810974296,
+        "sha256": "dfab5cc36833c46bab4f2a366b43bbe414234f6c0c5c6d148af365d9d049d2e0",
+        "mode": 420
+      },
+      {
+        "path": "Contents/Resources/PrivacyInfo.xcprivacy",
+        "bytes": 229,
+        "sha256": "0535353bb08c25b8ce5ed9ac7e442a5994f402e0f6cbc4bed668cfc63c2ceac3",
+        "mode": 420
+      },
+      {
+        "path": "Contents/Resources/icon.icns",
+        "bytes": 443068,
+        "sha256": "71b13e0a862281769f3efb1cae362b0449c96b7f20d522eb21a55db6c8f9f4f9",
+        "mode": 420
+      },
+      {
+        "path": "Contents/_CodeSignature/CodeResources",
+        "bytes": 3177,
+        "sha256": "6dd32c5236ebf85733ef67978d2a52ec571b296de468ca2718fe86b47b3e08f5",
+        "mode": 420
+      }
+    ],
+    "release": "0.8.0",
+    "artifact": "/tmp/ace-online-v08/macos/ACE Modern.app",
+    "export_log": "/workspace/ace-modern/reports/export-macos-v08.log",
+    "source_fingerprint": {
+      "client/project.godot": {
+        "sha256": "7c7b09cdf23f4a32efc68215ee71e3b7f8822885a0e284da62d22f074dab8970",
+        "bytes": 889
+      },
+      "client/export_presets.cfg": {
+        "sha256": "125a53b7f761155258800c6b728ee3669de12337d83a14ac2b25993df8614162",
+        "bytes": 1241
+      },
+      "client/scripts/combat_model.gd": {
+        "sha256": "866c5433b0f0b31fa166a283b8d90b2bf64701de0b309ad915697ab49bac8cbe",
+        "bytes": 30816
+      },
+      "client/scripts/combat_runtime.gd": {
+        "sha256": "28da58ff9ec082f7c5f25ecc4fb5cf8a73eb34ad69fa4e13b85af71b9bc92d58",
+        "bytes": 41745
+      },
+      "client/scripts/flight_model.gd": {
+        "sha256": "f99f4fc5841ce6d85739ad9609eb377f1766b4d7770d1e483e626efb92631f9e",
+        "bytes": 23600
+      },
+      "client/scripts/game_systems.gd": {
+        "sha256": "c173d7180100163f62f82d9e170014720158e8d651cfbcbaa49d3e168dbd7e7a",
+        "bytes": 16623
+      },
+      "client/scripts/inventory_model.gd": {
+        "sha256": "b3d51d98ec56507f0a69382dc7de9c6662eb8cc612b815708e1a016d0b5cd20e",
+        "bytes": 28820
+      },
+      "client/scripts/legacy_group.gd": {
+        "sha256": "95d5bcd9ae87eab4e9c9fe839242051a0fc73ec8881f69774d104c36ceb88902",
+        "bytes": 6040
+      },
+      "client/scripts/legacy_hud.gd": {
+        "sha256": "f859d30b446c16019c5f5593185bebb92c2a2606c13e7f16efee0b15064d963c",
+        "bytes": 116659
+      },
+      "client/scripts/local_multiplayer.gd": {
+        "sha256": "c6a15ce382f3394a6f1b5257b3377bbf05f6968832d2e259e8f56e65ca4f4d78",
+        "bytes": 12968
+      },
+      "client/scripts/local_save.gd": {
+        "sha256": "1a6c58ef099bfea5bcd4abafab759c242016cedb45b13a4ec5f791c55e217190",
+        "bytes": 4855
+      },
+      "client/scripts/main.gd": {
+        "sha256": "2c3e7b219709ae3ef84e9a2de574187a5fcd0a35827176b845ac75e27ef4e726",
+        "bytes": 49127
+      },
+      "client/scripts/native_equipment.gd": {
+        "sha256": "112d1504357617eee9f4f1a3d0273d5bc16afb50e93eded092d93d8229ba77fd",
+        "bytes": 4281
+      },
+      "client/scripts/online/arena_model.gd": {
+        "sha256": "eb2d089766a53f95e05934c98a13cbc967feac636f63d8932d7120708ff373d3",
+        "bytes": 33805
+      },
+      "client/scripts/online/headless_world.gd": {
+        "sha256": "a878e11e4be138aa180cda708985e8a8b07baba6f3f8c159e55e44b1ac601974",
+        "bytes": 10471
+      },
+      "client/scripts/online/json_wire.gd": {
+        "sha256": "1cdb6a4019edf736ba43824ede229a520f5598a89f573af8387bfffa6f453741",
+        "bytes": 2753
+      },
+      "client/scripts/online/online_client.gd": {
+        "sha256": "5480d999807cbc6baba9ee9c1f570ef3dcf53930a5cc7f784fb896701a73bbfc",
+        "bytes": 10335
+      },
+      "client/scripts/online/online_view.gd": {
+        "sha256": "af11940d2e36be8d036db60b8c94b510a411cdb0bdd251c78b1d65034898f45e",
+        "bytes": 27330
+      },
+      "client/scripts/online/ws_server.gd": {
+        "sha256": "0aaf3dc066a00e088deb42da7745c19b569526e7da97e2b7290907627fa5d7da",
+        "bytes": 8197
+      },
+      "client/scripts/original_asset.gd": {
+        "sha256": "8f45bb753572e448e77a8d9ec9fc80ca5cba1e939c2f1a9449d1c38cdead8f0c",
+        "bytes": 4641
+      },
+      "client/scripts/original_audio.gd": {
+        "sha256": "66b7b9e7878835df0114b310d24268b2c3563e9a2a70f630463cc43f3035f034",
+        "bytes": 3270
+      },
+      "client/scripts/original_props.gd": {
+        "sha256": "165c6932a2a06dc3d8b2c699e9e98b2619aa31b1306a03fcff2244e4c05ccbce",
+        "bytes": 8045
+      },
+      "client/scripts/original_water.gd": {
+        "sha256": "df9133d0f540a0faf2248bb36354c0b6e923c242f43184c49d340d344450cdc8",
+        "bytes": 3167
+      },
+      "client/scripts/protocol/plain_framing.gd": {
+        "sha256": "1e9b198945fa10e997270faedb50578bc0613d2da4fb391a61149272a5a181c6",
+        "bytes": 3122
+      },
+      "client/scripts/service_model.gd": {
+        "sha256": "8290b5221c258eefe3299a461155aea5ca12ea90f8fbda88420cfd7e28a06600",
+        "bytes": 18751
+      },
+      "client/scripts/skill_model.gd": {
+        "sha256": "ad508564aafaa8d2cdf69f4a121f1685767781c4bd467d1349f14ba2bc8ecfab",
+        "bytes": 20744
+      },
+      "client/scripts/world_model.gd": {
+        "sha256": "bc425f4e338287ced8c3345b1a9a0801216341a40349de247e2694d0cc2bc8f8",
+        "bytes": 24690
+      },
+      "client/scripts/world_runtime.gd": {
+        "sha256": "477a16d19296b2b8ff131db0cb64c8f295966193f327e266daf3c54243d1ce51",
+        "bytes": 73660
+      }
+    },
+    "verified": true,
+    "verified_at_utc": "2026-10-15T13:13:27Z"
+  }
+}

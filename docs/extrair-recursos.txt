@@ -1,0 +1,50 @@
+Extração reproduzível dos recursos de interface
+
+Os fontes entregues já contêm as 531 imagens de interface usadas na prévia. Não é necessário
+instalar o cliente original para abrir este projeto Godot.
+
+Para estudar outros elementos do mesmo pacote, obtenha o arquivo oficial:
+https://install.masangsoft.com/20250709/ACEonline.7z
+SHA-256: 8395f1f33dda8165f70f30d2a6ad094c5f64e144403fce98337e5012be795841
+
+Extraia somente Res-tex/interface.tex com um leitor 7-Zip. Não é necessário
+executar o instalador ou os executáveis do jogo. Na raiz deste projeto:
+
+  python3 tools/read_legacy_resources.py /caminho/interface.tex --manifest inventario.json
+
+Para extrair imagens escolhidas, use nomes do inventário e destinos novos:
+
+  python3 tools/read_legacy_resources.py /caminho/interface.tex --extract-name MainGB --extract-name tc_inven --output-dir extraidos --manifest selecionados.json
+
+O utilitário preserva bytes e registra offsets, dimensões e SHA-256. Não
+sobrescreve arquivos. Ele aceita somente o contêiner puro identificado como
+CGameData 1000/1000, verifica limites e recusa variantes desconhecidas.
+O manifesto desse utilitário é um inventário de extração; o manifesto Godot
+inclui adicionalmente nomes lógicos e caminhos res:// para carregar as artes.
+
+O formato estudado tem um cabeçalho global de 20 bytes (<5i), seguido por
+registros de 24 bytes (<3i10s2s) e seus payloads contíguos. A contagem fica em
+offset 12; tamanho e nome ficam em +4 e +12 de cada registro. O parser não
+decodifica pixels, não decripta variantes nem executa conteúdo extraído.
+
+Referências do formato:
+Client/EtcLib/main/GameDataLast.h e GameDataLast.cpp no fonte EP3.5.
+https://github.com/kronthto/ao-archive/tree/769a7ee53d197b0945a0d34dac25529aa177c886
+
+O cliente azul mais recente também inclui Res-tex/Group.tex: dados de composição,
+recortes, escalas e âncoras de controles. Extraia esse arquivo do mesmo pacote e
+use o inventário de imagens gerado acima:
+
+  python3 tools/read_group_layout.py /caminho/Group.tex --texture-inventory inventario.json --group Gage --group inven --output grupos.json
+
+O parser aceita somente a variante observada (versão 12, registros de 364 bytes,
+subcabeçalho de 12 bytes). Confere comprimentos, números finitos, tipos e recortes
+das imagens; não executa o cliente. O JSON conserva controles como âncoras,
+separados das imagens desenhadas. A posição de um grupo no editor pode ser
+substituída em tempo de execução; não deve virar automaticamente posição na tela.
+
+As imagens e os grupos recuperados não fornecem sozinhos uma interface funcional:
+âncoras de tela, estados de botões, tipografia, dados e ações precisam ser
+adaptados ao novo cliente. O layout atual é uma reconstrução parcial,
+documentada em interface-original.txt e comparacao-layout.txt; não foi validado
+contra o jogo original em execução neste ambiente.

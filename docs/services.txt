@@ -1,0 +1,103 @@
+ACE Modern 0.7 — serviços locais baseados em dados originais
+
+Loja e economia
+
+O estoque local ilimitado contém 2.596 ITEMs escolhidos por Kind interpretável,
+Price positivo, lote válido e ausência de flags cash, temporário, GM, arena e
+restrições de transferência. Este estoque NÃO é o SHOP_ITEM de um servidor:
+a base comercial, preços customizados, tributos e reposição não estão disponíveis.
+A política local usa ITEM.Price e imposto zero, exige nível/classe compatíveis
+na compra e deixa itens sem saldo visíveis com a razão do bloqueio.
+
+Compra cobra Price × quantidade/MinTradeQuantity. A quantidade deve ser múltipla
+do lote nativo. Venda usa a taxa nativa 0,2f, com as conversões float32 do C++
+antes do inteiro: sete registros caros diferem em 1 SPI de um Price/5 exato.
+Itens countable são vendidos em lotes completos; esta restrição local impede a
+venda parcial com pagamento zero que o código legado permite. Equipamentos são
+vendidos uma unidade por vez. Não se pode vender o último exemplar equipado.
+Itens nativos sem transferência permanecem bloqueados. Materiais de Price1 podem
+ter venda0, conforme o arredondamento original; os preços ficam visíveis na UI.
+
+As transações usam Inventory.exchange: validam ingredientes, existência dos itens,
+quantidades, SPI e overflow antes de qualquer mutação. A remoção do último item
+equipado é recusada. O mundo/NPC deve autorizar a operação antes da chamada.
+ServiceModel não aceita tráfego de servidor nem implementa autenticação remota.
+
+Fabricação
+
+39.230 receitas preservadas: 304 interpretáveis e 38.926 bloqueadas.
+Bloqueios principais (primeira razão): 32.268 transformações de instância,
+4.075 ingredientes ausentes do ITEM atual, 2.576 resultados com comportamento
+especial ainda indisponível e 7 resultados ausentes.
+
+A importação original preservava os quatro bytes finais como opaque_tail_hex.
+A definição EP4.3 pinned esclarece: BYTE Visible no offset56 + três bytes de
+padding. Os valores 00000000 e 01000000 são interpretados como hidden/visible
+somente no catálogo derivado; o arquivo original permanece intacto.
+
+Cada tentativa consome as quantidades nativas SourceItem e MixingCost; entrega
+uma unidade TargetItemNum em caso de sucesso. O código nativo gera inteiro
+uniforme0..9999 e testa draw <= MixingProbability, inclusive essa fronteira.
+Uma tentativa por ação evita a regra especial de lotes com item não countable.
+Falhas também consomem custo e materiais. Itens transformados que exigem UID,
+rare/enchant/shape/effect/timer ainda ficam bloqueados para preservar atributos.
+
+Filtros por posse dos ingredientes, saldo, classe e nível são locais. Não são
+uma lista de 304 receitas imediatamente disponíveis. O RNG e contador das
+operações são persistidos. Um erro transacional restaura o estado RNG, não
+consome ingredientes e não avança o contador. Evento de sucesso inclui origem,
+recipe_id e event_id para integração das missões; posse final vem do inventário.
+
+Refinaria
+
+O custo nativo por ponto inteiro é HP5, DP3, EP1, SP200 SPI, com imposto local
+zero. Pedidos são limitados ao recurso faltante; estados inválidos, NaN, recurso
+completo e saldo insuficiente não cobram. O chamador fornece o estado real e
+aplica o efeito retornado imediatamente após a transação bem-sucedida.
+
+Munição usa o item BULLET do calibre da arma realmente equipada no slot pedido.
+O pacote é arredondado para cima por MinTradeQuantity e cobra Price por pacote.
+O efeito é limitado ao espaço do magazine; por exemplo, falta1 de calibre100:
+cobra7 SPI pelo pacote100 e aplica1. Não há recebimento extra de ITEM munição
+no inventário durante esse serviço, apenas magazine. Isso reproduz a refinaria.
+
+Paginação e persistência
+
+shop_catalog e recipe_catalog devolvem no máximo8 linhas por página. Os filtros
+são cacheados com assinatura do inventário/classe/nível/saldo/equipados; o
+catálogo39.230 não é recompilado a cada frame. As descrições e ícones vêm do
+ITEM original. Configuração e quantidade do estoque não mudam ao salvar.
+ServiceModel.export_state registra o RNG signed64 como string decimal para não
+perder bits no JSON e valida importação sem conversão numérica fora do limite.
+
+Fontes verificáveis
+
+EP3.5 commit7c3e47ac47844e5c415d356a94d6201a0b9a38c4:
+- Server/GameServer/CommonGameServer/AtumSJ.cpp899..906: taxa de venda0.2f.
+- Server/GameServer/FieldServer/Main/FieldIOCPSocket2.cpp103..418: compra,
+  MinTradeQuantity, flags, preços SHOP_ITEM e tributos.
+- mesmo arquivo754..785: venda por Kind/lote e conversão de preço.
+- mesmo arquivo790..974: refinaria, recurso ausente e pagamento.
+- Server/GameServer/CommonGameServer/AtumParam.h1973..1976: custos de reparo.
+- Server/GameServer/CommonGameServer/AtumSJ.cpp2069..2111: pacotes de munição.
+- Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp25380..25590:
+  RNG, resultado e consumo tanto no sucesso quanto na falha.
+- Server/Common/DefineGlobal.h56: MAX_RAND10K_VALUE9999.
+
+EP4.3 commitf880284fafa3af9b4b1a4bb2938efef1b328bb8e:
+- Common/AtumParam.h3911..3918: ITEM_MIXING_INFO com BYTE Visible.
+  SHA256b7bde04448c0b7ef1e44c2d8c7c641dacc385c30cfcb5b2a001ed53bd05fc8c9.
+  URL:https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/Common/AtumParam.h#L3911
+
+OMI atual SHA2564831431a42bd37ac3ecffc067989330f6304ce214c0a77e8062d28f1fffb5f48:
+- assets/original_library/catalogs/items.json, mixing_recipes.json,
+  npc_services.json preservados; hashes registrados no derivado economy.json.
+
+Validação
+
+Godot: tests/test_services.gd,49 verificações de preço, taxa/float32, saldo,
+lotes, classe/nível, equipamento, transações atômicas, sucesso/falha, RNG e save.
+Python: tools/test_build_services.py,4 testes incluindo todos39.230 registros,
+hashes/ingredientes nativos, rejeição de desconhecidos e reprodução do derivado.
+Comandos: Godot --headless --path client --script res://tests/test_services.gd
+          cd tools && python3 -m unittest test_build_services -v

@@ -1,0 +1,18 @@
+{
+  "purpose": "Optional offline conversion tools; native binaries are not redistributed in this source package.",
+  "assimp": {
+    "library_version": "5.4.3+ds-2",
+    "source_project": "https://github.com/assimp/assimp",
+    "verified_cli_package": "https://deb.debian.org/debian/pool/main/a/assimp/assimp-utils_5.4.3+ds-2_amd64.deb",
+    "package_bytes": 149348,
+    "package_sha256": "5ef4bc28e699f94d4ba79a09b8144008a8dac8e9ec603afe67a3efb44ef555f9",
+    "verification": "Package SHA256 matched the official Debian trixie/main/binary-amd64/Packages index before extraction. Models converted through the installed libassimp with pyassimp bindings."
+  },
+  "python_packages": {
+    "numpy": "2.3.5",
+    "Pillow": "12.3.0",
+    "pyassimp": "5.2.5"
+  },
+  "independent_model_validation": "Blender 4.3.2 and bounded GLB binary/accessor/pixel checks",
+  "original_game_assets": "Tool licenses do not grant rights or an open source license to original game resources. Asset provenance is documented separately."
+}

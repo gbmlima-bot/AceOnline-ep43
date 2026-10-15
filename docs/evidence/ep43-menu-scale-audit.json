@@ -1,0 +1,69 @@
+{
+  "source_repository": "bhsdp1/AceOnline-ep43",
+  "source_commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+  "scope": "auditoria somente leitura, texto de fonte; nenhum binario legado executado",
+  "downloaded_files": [
+    {
+      "path": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFImageBtn.cpp",
+      "url": "https://raw.githubusercontent.com/bhsdp1/AceOnline-ep43/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFImageBtn.cpp",
+      "sha256": "ef05ad6df600e6061825c4ddfa4b9ec4d5f037bd440673b1cff8070e1705ec76"
+    },
+    {
+      "path": "/workspace/analysis/ace-online-layout/ep43-source/ProjectAtum/InterfaceLib/main/INFImageBtn.h",
+      "url": "https://raw.githubusercontent.com/bhsdp1/AceOnline-ep43/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFImageBtn.h",
+      "sha256": "819124bacebdf0b97cfb822c3f0c4e1333af0c60596d694b178d936307e94240"
+    }
+  ],
+  "findings": [
+    {
+      "classification": "observacao",
+      "fact": "Os cinco menus e FAQ recebem SetAniScale(0.8,0.8) em todos os estados; a imagem em repouso usa esse vetor no Draw, portanto a escala idle e 80%.",
+      "refs": [
+        "INFGameMain.cpp:855-857",
+        "INFGameMain.cpp:886-888",
+        "INFImageBtn.cpp:689-694",
+        "INFImageEx.cpp:299-311"
+      ]
+    },
+    {
+      "classification": "observacao",
+      "fact": "A origem em repouso permanece a posicao passada pelo caller, sem deslocamento adicional. O centro de rotacao herdado e (0,0).",
+      "refs": [
+        "INFImageBtn.cpp:404-405",
+        "INFImageEx.cpp:311",
+        "INFImage.cpp:14-15"
+      ]
+    },
+    {
+      "classification": "observacao",
+      "fact": "Hover e estado separado: escala 0.8 cresce ate 1 em animacao de 1 segundo. Clique usa escala1 imediatamente. Ambos usam alinhamento CENTER_BOTTOM.",
+      "refs": [
+        "INFGameMain.cpp:855-856",
+        "INFGameMain.cpp:1308-1309",
+        "INFGameMain.cpp:1321-1324",
+        "INFImageEx.cpp:167-184",
+        "INFImageEx.cpp:267-282"
+      ]
+    },
+    {
+      "classification": "observacao",
+      "fact": "No hover CENTER_BOTTOM, a formula original desloca X por (escala-0.8)*largura/2 e Y por (escala-0.8)*largura; a formulaY usa largura, nao altura. Nao substituir silenciosamente por outra convencao ao alegar equivalencia.",
+      "refs": [
+        "INFImageEx.cpp:354-360"
+      ]
+    },
+    {
+      "classification": "observacao",
+      "fact": "Hitbox original tambem usa tamanho nativo multiplicado pelo AniScale persistente, inclusive enquanto a imagem animada cresce. Para textura55x51, repouso e hitbox tem44x40.8, mantendo intervalo55 entre origens dos menus.",
+      "refs": [
+        "INFImageBtn.cpp:408-428",
+        "INFImageEx.cpp:367-370",
+        "INFGameMain.cpp:1308"
+      ]
+    },
+    {
+      "classification": "lacuna",
+      "fact": "Nao foi executado cliente D3DX legado. Evidencia estabelece semantica do codigo, nao identidade pixel-a-pixel entre renderizadores."
+    }
+  ]
+}

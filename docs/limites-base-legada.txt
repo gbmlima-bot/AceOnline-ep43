@@ -1,0 +1,53 @@
+ACE Online EP3.5 — runtime readiness (static audit)
+Commit: 7c3e47ac47844e5c415d356a94d6201a0b9a38c4
+Resultado: NÃO pronto para jogar offline/local. Source recovery/build investigation is possible; checkout alone cannot deliver an offline/local playable client. Missing client assets, core server configs and unvalidated SQL/runtime dependencies remain blockers.
+
+Inventário: .exe=6, .dll=31, .lib=123, .tex=1, .obj=0, .eff=0, .dat=1, .res=0, .cfg=17, .ini=1, .bak=3
+
+client-binary — blocked
+Certeza: confirmed checkout inventory
+No ACEOnline.exe, Atum.exe or ProjectAtum.exe shipped. R_Wikigames_Eng build targets ACEOnline under Output/Client; existing FieldServer.exe is a server, not the game client.
+Evidências: Client/ProjectAtum/ProjectAtum.vcxproj:758; Client/ProjectAtum/ProjectAtum.vcxproj:763; Client/ProjectAtum/main/FieldServer.exe
+
+client-assets — blocked
+Certeza: confirmed
+Required runtime asset trees Res-Map, Res-Obj, Res-Tex, Res-Eff are absent. Single .tex is Server/GameSupport/AbuseFilterTest/AFList.tex; single .dat is Server/GameServer/AtumMonitor/object.dat. These do not constitute the game package.
+Evidências: Client/ProjectAtum/resource/ProjectAtum.rc:74; Client/ProjectAtum/resource/ProjectAtum.rc:75; Client/ProjectAtum/resource/ProjectAtum.rc:76; Client/ProjectAtum/resource/ProjectAtum.rc:77
+
+asset-loads — blocked
+Certeza: confirmed active code references
+Code loads Res-Map/%04d.tex and %04d.dat, Res-Tex/omi.tex, quest.tex, helptext.tex, AFList.tex, cinema.tex, Res-Obj/%08d.obj and numbered effects. Numeric indices depend on map/item/monster data; cannot derive complete asset inventory from filename patterns alone. No client runtime .res literal established; .res absence is inventory, not an independently proven runtime requirement.
+Evidências: Client/ProjectAtum/main/Background.cpp:230; Client/ProjectAtum/main/Background.cpp:325; Client/ProjectAtum/main/Background.cpp:333; Client/ProjectAtum/main/AtumDatabase.cpp:365; Client/DataRenderLib/main/QuestData.cpp:33; Client/ProjectAtum/main/AtumApplication.cpp:1384; Client/ProjectAtum/main/AtumApplication.cpp:1418; Client/ProjectAtum/main/SceneData.cpp:3960; Client/DataRenderLib/main/MonsterData.cpp:286; Client/InterfaceLib/main/INFInvenEquip.cpp:1542
+
+server-config — blocked
+Certeza: confirmed
+config_root.cfg stubs exist but point to absent Server/config; current working directory matters. Core normal configs global.cfg/pre.cfg/field.cfg/im.cfg/npc.cfg/log.cfg are absent. ARENA expects aglobal.cfg/afield.cfg/aim.cfg/anpc.cfg. QuestLoader points to config/quest and loads q_000000.cfg. Additional feature-specific configuration vocabulary is listed separately.
+Evidências: Server/GameServer/FieldServer/config_root.cfg:3; Server/GameServer/QuestLoader/QuestConfig_root.cfg:2; Server/GameServer/CommonGameServer/GlobalGameServer.cpp:529; Server/GameServer/CommonGameServer/GlobalGameServer.h:20; Server/GameServer/CommonGameServer/GlobalGameServer.h:29; Server/GameServer/PreServer/Main/PreGlobal.cpp:604; Server/GameServer/LogServer/Main/LogGlobal.cpp:92; Server/GameServer/QuestLoader/main.cpp:36
+
+database-platform — blocked until locally provisioned and validated
+Certeza: confirmed code; installed Windows prerequisites untested
+Default code uses SQL Server through ODBC3 and DRIVER={SQL Server}, explicit address/port/database/user/password. Win32 builds and PE32 binaries need a 32-bit ODBC driver (and 32-bit DSN only for legacy SQLConnect paths); SQL Server itself may be 64-bit. DB_SERVER_MYSQL is a conditional source alternative, not evidence supplied backups are MySQL-compatible. Driver 17/18 names are not automatic substitutes for the hardcoded SQL Server driver name.
+Evidências: Server/GameServer/CommonGameServer/ODBCStatement.cpp:24; Server/GameServer/CommonGameServer/ODBCStatement.cpp:49; Server/GameServer/CommonGameServer/ODBCStatement.cpp:54; Server/GameServer/CommonGameServer/ODBCStatement.cpp:59; Server/GameServer/CommonGameServer/ODBCStatement.cpp:64; Client/ProjectAtum/ProjectAtum.vcxproj:1490
+
+database-mapping — unknown
+Certeza: config keys confirmed; actual database names unknown
+Logical DB selection comes from DBServerDatabaseName (main DB per service), LOGDB_DBServerDatabaseName (field log DB), ExtAuthDBServerDatabaseName (pre external auth), BillingDBServerDatabaseName (field billing). Three backup filenames acc.bak/db_1.bak/arena.bak exist; no proof of actual logical DB names, compatible SQL version, contents, schema health, or mapping to these keys. Backups were not opened/restored.
+Evidências: Server/GameServer/CommonGameServer/GlobalGameServer.h:56; Server/GameServer/CommonGameServer/GlobalGameServer.h:59; Server/GameServer/CommonGameServer/GlobalGameServer.h:62; Server/GameServer/FieldServer/Main/FieldGlobal.cpp:1305; Database/acc.bak; Database/db_1.bak; Database/arena.bak
+
+directx — partial build prerequisites present; runtime unknown
+Certeza: confirmed inventory/source; no execution
+Repository bundles DX9bLink headers d3d9.h/d3dx9.h/dinput.h/dsound.h and import/static libraries d3d9/d3dx9/d3dx9dt/d3dx8/dinput8/dsound/dxerr9 plus AtumJpg and HShield. Client links legacy DirectX 9, DirectShow strmbase and D3DX9DT; FieldServer links D3dx8. Windows SDK/MFC/toolchain and matching legacy runtimes remain external. Presence of a .lib does not establish runtime DLL presence, ABI compatibility or successful linkage. Exact D3DX runtime DLL cannot be identified until a client is built and imports inspected.
+Evidências: Client/ProjectAtum/ProjectAtum.vcxproj:761; Client/ProjectAtum/ProjectAtum.vcxproj:762; Client/ProjectAtum/ProjectAtum.vcxproj:1533; Server/GameServer/FieldServer/FieldServer.vcxproj:214; Client/DirectXLib/main/d3dfile.h:12
+
+vendor-dlls — conditional gaps
+Certeza: references and absence confirmed; selected-build requirement unknown
+EhSvc.dll, gameShieldDll.dll, ApexProxy.dll, zwave_sdk_server_lib.dll are absent but referenced by security/region feature code; whether each is needed depends on compiled macros and config. No security/billing service compatibility validated. FieldServer.exe directly imports AntiCpXSvr.dll, present only at Server/Lib/AntiCpXSvr.dll rather than beside that executable. Default DLL search therefore needs deliberate local deployment. Do not assume regional dependencies can be bypassed or that bundled DLLs make runtime complete.
+Evidências: Client/ProjectAtum/main/AtumApplication.cpp:305; Client/ProjectAtum/main/AtumApplication.cpp:40842; Server/GameServer/CommonGameServer/Security/ApexProxy.cpp:56; Server/GameServer/CommonGameServer/Security/zwave_sdk_linker.cpp:79; Server/Lib/AntiCpXSvr.dll; Client/ProjectAtum/main/FieldServer.exe
+
+ep43-gap-review — reference only
+Certeza: confirmed local GitHub metadata, not a cloned/build-tested EP4.3 tree
+EP4.3 at f880284fafa3af9b4b1a4bb2938efef1b328bb8e supplies Config/{global,pre,field,im,npc,log,map,ArenaGlobal,ArenaMap,versions}.cfg and quest samples in tree metadata, useful as structural references. It has only four Resource PNG files and no .tex/.obj/.eff/.res package or playable client executable; release list is empty. Different arena names and VS2022/v143 requirements prove it is not a drop-in EP3.5 runtime/config package. No production config values copied or exposed.
+Evidências: /workspace/analysis/ace-online/pesquisa/bhsdp1__AceOnline-ep43-tree.json; /workspace/analysis/ace-online/pesquisa/bhsdp1__AceOnline-ep43-releases.json; /workspace/analysis/ace-online/pesquisa/bhsdp1__AceOnline-ep43-README.md:2
+
+Limites: read-only static inventory and source review; no artifact execution, installs, game connections or backup restoration
+Schema adicional: runtime-config-requirements.json (vocabulário parser; campos não equivalem automaticamente a requisitos de cada configuração).

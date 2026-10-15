@@ -1,0 +1,79 @@
+Mundo autoritativo sem renderização — mapa3002
+
+client/scripts/online/headless_world.gd é um RefCounted. Seu único preload é
+scripts/world_model.gd, que usa matemática, JSON e arrays numéricos. Nenhum Node,
+PhysicsServer, GLB, textura, fonte, áudio ou executável original é carregado.
+
+docs/headless-world-assets.json é a whitelist exata para o build do servidor:
+paths são relativos à raiz client e conservam seus caminhos res:// no staging.
+Ela contém15 arquivos, com tamanho e SHA256, e dois scripts. O build deve conferir
+os hashes e copiar somente os dados listados. Não é necessário copiar os GLBs
+referenciados textualmente dentro de placements.json: o adapter nunca os abre.
+
+Dados necessários:
+assets/original_world/3002_terrain.json
+assets/original_world/3002_heights.f32
+assets/original_world/3002_water_flags.u8
+assets/original_world/3002_landing_flags.u8
+assets/original_props/placements.json
+assets/original_props/03001700_collision.json
+assets/original_props/03001800_collision.json
+assets/original_props/03002000_collision.json
+assets/original_props/03002600_collision.json
+assets/original_props/03002700_collision.json
+assets/original_props/03002800_collision.json
+assets/original_props/03002900_collision.json
+assets/original_props/03003000_collision.json
+assets/original_props/03003500_collision.json
+assets/original_props/03003800_collision.json
+
+O layout original tem911 objetos visuais; somente31 poses dos10 modelos marcados
+MAPOBJECTINFO.Collision=1 entram no servidor. Cada malha de colisão é validada por
+SHA256 e vinculada ao hash do modelo que gerou suas faces. Os GLBs e suas imagens
+nunca fazem parte dessa dependência. O grid conserva a diagonal de colisão B-D,
+as alturas float32 e os flags por tile. O limite de voo mantém a margem nativa40
+e o teto ClientMaxAltitudeHeight+WaterHeight=2230.
+
+Interface para a sala PvE:
+configure(map_id:int=3002)->bool
+is_configured()->bool
+get_bounds()->Dictionary com min/max Vector3
+sample_ground_height(x:float,z:float,include_water:bool=true)->float
+resolve_motion(from:Vector3,to:Vector3,options:Dictionary={})->Dictionary
+    options: radius(float0..256, padrão4), grounded(bool, padrãofalse).
+    retorna collided, position/normal Vector3, kind, t e distance.
+resolve_npc_motion(from,to,radius=4)->Vector3
+sweep_projectile(from,to,radius=0,context={})->Dictionary
+trace_segment(from,to,radius=0)->Dictionary (alias do mesmo sweep)
+line_of_sight(from,to)->bool
+probe_landing(position,radius=4,max_distance=180,gear_id="12003100")->Dictionary
+ground_contact(position,radius=4)->Dictionary
+diagnostics()->Dictionary
+
+FlightModel continua recebendo controles e avançando no servidor. A sala aplica
+resolve_motion à posição anterior e à desejada, então chama resolve_collision
+somente se collided=true. CombatModel.obstacle_query recebe world.trace_segment;
+CombatModel.npc_motion_query recebe world.resolve_npc_motion. O callback de NPC
+tem retorno Vector3, enquanto os demais preservam o resultado detalhado do hit.
+O campo distance atende diretamente ao contrato de obstáculo do CombatModel.
+O contexto de projétil não permite excluir os obstáculos estáticos do mundo.
+
+Não há estado enviado pelo cliente capaz de trocar mapa, raio, geometria ou
+desativar colisão: esses parâmetros pertencem ao código da sala autoritativa.
+Configure recusa mapas diferentes de3002, dados faltantes ou hashes divergentes.
+O mundo só é substituído depois de validar todo o conjunto; falhas de consulta
+ou mundo ainda não configurado bloqueiam movimento/disparo e linha de visão.
+
+A fonte física/mapa é original; a sala PvE é nova. A allowlist de espécies e o
+agendamento/posição dos inimigos são política local explícita do módulo da sala.
+Este adapter não contém população de MMO nem deriva spawns de objetos decorativos.
+O banco de spawns do servidor original não foi recuperado; a entrada opcional
+DAT mon também está ausente nos221 DAT disponíveis. Estado persistente, sessão,
+identidade dos pilotos, HP dos NPCs e recompensas pertencem à sala, não ao mundo.
+
+Teste direto, sem editor/import:
+/path/to/godot --headless --path client --script res://tests/test_headless_world.gd
+
+O mesmo teste roda em staging mínimo apenas com os dois scripts,15 dados e o
+próprio arquivo de teste, sem cache .godot. Com -- --expect-missing-data, verifica
+que a retirada ou alteração de qualquer dado necessário recusa o startup.

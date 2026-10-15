@@ -1,0 +1,39 @@
+ACE Modern 0.7 — combustível, queda e modificadores de voo
+
+Dados e código de referência
+Repositório EP3.5: bhsdp1/AceOnline-ep35, commit 7c3e47ac47844e5c415d356a94d6201a0b9a38c4.
+As capacidades máximas de EP vêm dos atributos nativos do personagem/GEAR já interpretados pelo InventoryModel. O FlightModel não escolhe uma capacidade arbitrária quando essa informação não é fornecida.
+
+Consumo de combustível portado
+Server/GameServer/FieldServer/Main/FieldTimerManager.h:24-26 define valor5, distância30000 e tempo60000ms.
+Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp:16612-16645 acumula a distância percorrida; se a distância ultrapassa30000 OU o tempo ultrapassa60s, retira:
+  EP = 5 * (distância acumulada / 30000) * fator de peso * fator de booster.
+O fator de peso vale2 quando weight_ratio>0,7 (Client/Common/AtumParam.h:497); caso contrário vale1. O fator de booster vale2 quando o booster máximo está ativo no instante do débito. Os dois fatores se multiplicam. O débito zera os acumuladores de distância e tempo. Uma nave estacionária não consome EP só porque passaram60s: a distância da fórmula é zero.
+As exceções originais foram preservadas: CharacterMode, tutorial8001 e influência Infinity5000..5999. A influência vem do MAP_INFO nativo; não é escolhida por um arquivo de progresso.
+Adaptação do novo jogo: o relógio e a distância são amostrados nos ticks locais de120Hz, em vez de mensagens de movimento de um servidor Windows. Pausar o jogo local pausa o consumo. Trocar o contexto de mapa reinicia os acumuladores para não contar o deslocamento de um portal como voo.
+
+Quando acaba o combustível
+Client/DataRenderLib/main/ShuttleChild.cpp:7575-7578 inicia a queda ao atingir EP<=0. A trajetória original usa PATTERN_UNIT_FALLING e uma unidade cinematográfica, em7972-7990 e11388-11441. Esse interpretador cinematográfico ainda não foi portado.
+O novo jogo aplica uma ponte balística explícita: mantém parte da velocidade de avanço e acelera para baixo a98 unidades de mundo/s². Essa trajetória é uma adaptação local, identificada como local_ballistic_bridge no estado. Não é apresentada como a cinemática original.
+A colisão durante a queda por combustível deixa a nave sem combustível e pousada, sem criar uma morte de combate, XP ou recompensa. Esse destino corresponde ao ramo FUELALLIN emShuttleChild.cpp:8100-8106. O serviço local de reabastecimento fornece EP; a nave em contato sólido continua no chão até o jogador decolar. Reabastecer durante a queda recupera o voo local.
+
+Habilidades de movimento
+O efeito real HyperMoving7833011 possui descritores nativos e requisitos de classe/nível/SP/duração verificados pelo SkillModel. O FlightModel recebe somente os modificadores que já passaram por esses requisitos.
+- DES_SKILL_REACTIONSPEED154: SpeedPenalty*(1+fator), AtumSJ.cpp:994.
+- DES_SKILL_ENGINEANGLE155: RangeAngle*(1+fator), AtumSJ.cpp:1010.
+- DES_SKILL_ENGINEBOOSTERANGLE156: BoosterAngle*(1+fator), AtumSJ.cpp:1027.
+- DES_ENGINE_BOOSTER_SPEED_UP181: Range+adicional, mínimo50, ShuttleChild.cpp:14373-14379.
+Os efeitos recomputam os valores-base do motor, sem empilhar a mesma habilidade a cada atualização, alterar a posição ou reabastecer recursos. O SkillModel mantém SP, duração e recarga. Encerrar o efeito restaura os campos-base.
+DES_HYPER_BOOSTER166 é um efeito distinto: AtumGlobal.cpp:274/849 alterna seu estado, e TickBurn emShuttleChild.cpp:1483 evita o consumo normal da barra de booster enquanto ele está ativo. Não foi identificado um item ativo elegível que permita oferecê-lo nesta versão. Ele não recebe uma tecla gratuita nem é deduzido pelo nome de outra habilidade.
+
+Integração e progresso
+configure_resources({max_ep,current_ep?}) valida a capacidade; a primeira configuração preserva a fração de um save antigo. Mudar a capacidade preserva o EP absoluto, evitando combustível grátis por troca de equipamento.
+configure_fuel_context(map_index,map_influence,character_mode=false) aplica as exceções nativas.
+set_fuel_state(current,capacity) integra reabastecimento, consumo de outras fontes e restauração explícita.
+set_skill_modifiers({reaction_speed_factor,turn_angle_factor,boost_turn_angle_factor,booster_speed_add}) recalcula os quatro campos portados.
+snapshot().fuel inclui EP atual/máximo, acumuladores, consumo, velocidade de queda e estados falling/stranded.
+validate_fuel_progress(progress,is_airborne) é validação pura, utilizável antes de alterar a cena. restore_fuel_progress(progress) importa o estado completo de forma atômica; números não finitos, acumuladores fora dos limites e combinações incoerentes de EP/queda/pouso são rejeitados. Saves0.6 sem fuel continuam usando fuel_fraction pelo integrador principal.
+
+Verificação
+client/tests/test_flight.gd:143 verificações passaram, incluindo89 verificações de voo existentes e novos casos independentes para limiares, débitos proporcionais, multiplicadores, exceções, integração real, queda, reabastecimento, habilidades, restauração e rejeição atômica de estados inválidos.
+Registro: reports/flight-resources-v07.log.

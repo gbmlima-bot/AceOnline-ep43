@@ -1,0 +1,77 @@
+ACE Modern — interface Online PvE
+
+O painel M oferece a aba «Online PvE», mantendo a arte azul e o inventário
+originais. O objetivo é uma arena compartilhada em um servidor dedicado:
+mapa 3002, I-GEAR e progresso do piloto sob autoridade do servidor. Os
+mundos, missões e sistemas do modo local continuam separados dessa arena.
+A interface não apresenta esta etapa como o MMO original completo.
+
+Conexão
+
+Informe o endereço WSS fornecido pelo administrador, por exemplo no formato
+wss://seu-dominio/play, e a credencial do piloto. O campo de credencial é
+mascarado, não tem preenchimento automático e é apagado antes de emitir a
+solicitação de conexão; fechar o painel também limpa esse campo. O endereço
+público pode ser lembrado durante a sessão. Credenciais em parâmetros da URL,
+fragmentos ou user info não são aceitas nem lembradas. WebSocket sem TLS é
+admitido pela interface apenas para desenvolvimento em loopback.
+
+A solicitação usa o sinal local_action_requested com prefixo «online:» e JSON:
+{action:"connect",url:<endereço>,token:<credencial transitória>}
+{action:"disconnect"}
+{action:"chat",text:<texto>}
+
+O integrador e o cliente de rede são responsáveis pelo transporte, validação
+da credencial, sincronização e rejeição de comandos. A interface não conecta
+por conta própria e nunca anuncia sucesso antes do estado real do cliente.
+Nenhum salvamento, inventário ou progresso offline é enviado nessa solicitação.
+
+Estado e autoridade
+
+set_online_state recebe somente os campos públicos status, message, connected,
+server_url, pilot_id, player_count, revision e shared_combat. Campos desconhecidos,
+inclusive token, são descartados. A UI não inclui credenciais em snapshots,
+notas, logs ou metadados de captura. Mensagens do integrador também devem ser
+públicas e não podem conter a credencial.
+
+O estado mostra conexão/autenticação/erro, jogadores presentes, identificação
+pública do piloto e revisão do servidor. Conectar fica bloqueado quando faltam
+campos ou a conexão já está pendente/ativa; Desconectar permite cancelar uma
+conexão pendente. Atualizações de revisão não recriam os campos de entrada.
+
+Desde o início da conexão, a UI bloqueia salvar/carregar F5/F9, viagens,
+trocas cosméticas/classe, equipamento, atributos, habilidades locais, compras,
+vendas, crafting, manutenção, recompensas de missões e pausa do perfil local.
+A biblioteca de textos e dados permanece consultável. O bloqueio central do
+sinal evita emitir essas mutações mesmo quando um controle desativado recebe
+um evento programático. O integrador continua responsável por validar também
+atalhos, comandos de rede e todas as alterações sob autoridade do servidor.
+
+Após receber um snapshot válido da arena, a hotbar pode emitir skill_use para
+o servidor quando authoritative_online é verdadeiro. SP, disponibilidade e
+recarga são recebidos do servidor; pressionar o atalho não altera o modelo
+local. Aprender, atribuir atalhos ou alterar habilidades locais continua
+bloqueado. Durante a conexão pendente, a hotbar local também fica bloqueada.
+
+O inventário e os indicadores existentes recebem os snapshots traduzidos pelo
+integrador. Eles não conferem posse nem aplicam dano/recompensa por conta própria.
+O resumo de mapa em M agora reserva altura para suas duas linhas; em conexão
+online ele explica que a simulação continua no servidor, sem alegar uma pausa.
+
+Chat
+
+O chat usa o transporte online enquanto a arena está conectada; fora dela,
+continua usando a conexão LAN ativa ou notas pessoais desconectadas. O eco e
+a confirmação devem vir do transporte. append_online_chat(pilot_id,text) recebe
+mensagens públicas e conserva somente as 30 últimas durante a sessão. Nomes
+e mensagens são texto literal; BBCode remoto não é interpretado.
+
+Validação
+
+client/tests/test_online_ui.gd exercita os construtores reais dos controles,
+com um fixture sem imagens importadas para dispensar o cache gráfico. Cobre
+painel em 960x600, credencial mascarada e apagada antes do callback, whitelist
+sem token, URLs públicas, estados pendente/ativo/desconectado, bloqueio de
+mutações offline, chat literal e foco de teclado. Os testes não registram os
+payloads de credencial em arquivos ou relatórios; somente resultados agregados.
+A arte e os testes de renderização completos dependem da importação Godot.

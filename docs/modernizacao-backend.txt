@@ -1,0 +1,29 @@
+Modernização gradual do backend ACE Online EP3.5
+
+Conclusão: é viável modernizar por fronteiras, mantendo o contrato binário e as regras atuais durante a primeira etapa. A escolha de linguagem, plataforma cliente ou engine permanece em aberto. Esta análise veio somente de leitura estática; não houve execução do jogo, acesso a serviços ou edição do repositório alvo.
+
+Menor módulo técnico: extrair o enquadramento binário e a montagem/recomposição de mensagens para uma biblioteca independente de sockets, janela e banco. CRecvPacket recebe bytes e estado local e já expressa a fronteira entre fluxo de rede e mensagens. O componente novo deve receber fragmentos de bytes e devolver mensagens/erros, sem conhecer jogadores, serviços ou banco. Isso permite validar a compatibilidade em testes locais sem assets, cliente gráfico nem servidor em execução. Não se propõe um cliente de replay.
+
+Primeira fronteira de negócio: adaptador de contas atrás de QP_PRE_Login. Hoje a mesma função busca conta por ODBC/stored procedure, verifica credencial, atualiza último login e chama diretamente o socket. Separar busca, validação e persistência em uma interface permite manter no PreServer a máquina de estados, os códigos de erro e a resposta com endpoints de FieldServer/IMServer. Inicialmente, conservar SQL Server e procedimentos existentes evita mudar simultaneamente aplicação, banco e semântica de transação. Extrair para processo separado só depois de estabilizar a interface e avaliar atomicidade, tempo limite, idempotência e descarte de resposta para sessão já fechada.
+
+Acoplamentos observados: IOCP, overlapped I/O, TLS e criação de threads são APIs Windows. PreServer inclui MFC via afxwin.h; isso contamina o contexto de compilação, sem provar que toda regra de negócio precise de MFC. O gerenciador de banco possui conexões auto-commit/manual-commit/autenticação externa por worker, e seus callbacks apontam para sockets. Substituir IOCP isoladamente não torna o conjunto portável. A lógica de mundo, inventário e NPC cruza sessão, estado em memória, mapa e persistência e deve vir depois do contrato de transporte e da fronteira de contas.
+
+Riscos de compatibilidade: MSG_SIZE usa sizeof(struct), e os macros interpretam diretamente o buffer como estrutura C++. Migrar compilador, arquitetura 32/64 bits ou plataforma pode mudar padding, alinhamento, signedness, layout de bitfields e tamanhos de tipos Windows. Tipos wire, offsets, byte order e comprimentos precisam ser fixados explicitamente; não usar o layout nativo do destino como especificação. Os quatro bytes de cabeçalho, sequência, sinalização de codificação, checksum e preenchimento integram o contrato legado. A codificação XOR documentada é compatibilidade, não segurança moderna. Não trocar seu significado unilateralmente; segurança de transporte e migração de credenciais exigem uma fase própria e compatível. Não foram reproduzidas chaves, tabelas de codificação ou credenciais.
+
+Marcos verificáveis: primeiro, registrar o contrato dos 12 fluxos já mapeados, distinguindo declaração de estrutura, comportamento do handler e dependências de macros. Entrega: tamanhos/offsets esperados documentados para o ABI legado, com itens não confirmados explicitamente marcados. Segundo, criar testes offline de framing com dados sintéticos: cabeçalho fragmentado em cada fronteira, corpo fragmentado, frames concatenados, tamanho inválido, truncamento e equivalência de serialização/casos de erro. Entrega: biblioteca sem dependências de IOCP/MFC/banco e vetores determinísticos aprovados. A evidência de compatibilidade binária definitiva dependerá de confirmar o ABI legado, por compilação controlada de um verificador mínimo ou outra fonte autorizada; neste trabalho nada foi compilado. Terceiro, introduzir a interface de contas com repositório falso em memória. Entrega: cenários de conta ausente/bloqueada, credencial inválida, sucesso, login duplicado, sessão encerrada durante consulta e falha de persistência reproduzem os resultados definidos pelos handlers, sem banco real. Quarto, substituir apenas um adaptador de infraestrutura por vez, mantendo o backend antigo disponível como referência. Entrega: contrato e comportamento estáveis antes de expandir para seleção de personagem e, por último, mundo/NPC/inventário.
+
+Limite: testes offline podem demonstrar comportamento do componente e do contrato especificado; não demonstram jogabilidade completa, desempenho de produção, esquema realmente instalado ou integração cliente-servidor sem um ambiente legalmente disponível e reproduzível. Macros por distribuidor e autenticação externa devem ser inventariadas antes da extração de login.
+
+Fontes principais, caminhos relativos a /workspace/targets/ace-online-ep35 no commit 7c3e47ac47844e5c415d356a94d6201a0b9a38c4:
+
+Server/Common/SocketHeader.h:23-32,52-65,73-77. Define tipos, limites, MSG_SIZE e cabeçalho binário.
+
+Server/Common/WinPacket.h:113-127,244-346. Constrói cabeçalho/corpo e recompõe fragmentos sem precisar da operação de socket.
+
+Server/Common/IOCP.cpp:806-835,1161. Cria completion port, TLS/workers Windows e recebe conclusões de I/O.
+
+Server/GameServer/PreServer/StdAfx.h:20. Inclui afxwin.h, evidenciando MFC no contexto de compilação.
+
+Server/GameServer/CommonGameServer/AtumDBManager.cpp:155,175,308,557-575. TLS/threads, conexão ODBC e conexões por worker.
+
+Server/GameServer/PreServer/Main/AtumPreDBManager.cpp:207-208,235,256-269,374-379. Mistura persistência, verificação de login, atualização e callback direto para socket.

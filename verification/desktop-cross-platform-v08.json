@@ -1,0 +1,43 @@
+{
+  "release": "0.8.0",
+  "verified_at_utc": "2026-10-15T13:31:17Z",
+  "source_fingerprint_files": 28,
+  "source_fingerprints_identical": true,
+  "source_manifest_sha256": "230bcec7ecebf14382b54db659d1006caa6e30ae023c0618209a95c56d6cb674",
+  "required_scripts_md5_identical": true,
+  "required_scripts": {
+    "res://scripts/main.gd": "9fe739721f636288bb1c5f50c3392615",
+    "res://scripts/game_systems.gd": "3db25f30823d10ded1fa609abf8b1250",
+    "res://scripts/legacy_hud.gd": "302d9400848e86b49ea36a29a5c84789",
+    "res://scripts/online/online_client.gd": "d3aec0f796c39d345a8f21e74d46d33a",
+    "res://scripts/online/json_wire.gd": "41514fbac51189228dcdf998cd1b54cd",
+    "res://scripts/online/arena_model.gd": "b6506d16333ad50dd00593ca77392981",
+    "res://scripts/online/online_view.gd": "7f7d978fda9a882298f1ef27c8983629",
+    "res://scripts/combat_runtime.gd": "e1863dd3d6363ba5f426d7d7e9ad3a05"
+  },
+  "platforms": {
+    "macos": {
+      "architectures": [
+        "arm64",
+        "x86_64"
+      ],
+      "raw_bytes": 3982386204,
+      "raw_sha256": "88f9171f1fa7a5e178a5d614fc9fb8c5530c2d7fbf540226b9c47855f619838a",
+      "pck_version": 4,
+      "pck_file_count": 45635,
+      "code_md5_verified": 53,
+      "native_executed": false
+    },
+    "windows": {
+      "architectures": [
+        "x86_64"
+      ],
+      "raw_bytes": 3920239280,
+      "raw_sha256": "4af7b0504548340de68be2c81057075ddd6e624920fb229b0a91cfd2d0db771d",
+      "pck_version": 4,
+      "pck_file_count": 45635,
+      "code_md5_verified": 53,
+      "native_executed": false
+    }
+  }
+}

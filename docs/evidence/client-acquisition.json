@@ -1,0 +1,16 @@
+{
+  "source_url": "https://install.masangsoft.com/20250709/ACEonline.7z",
+  "path": "/workspace/downloads/ace-client/ACEonline-20250709.7z",
+  "bytes": 1923818595,
+  "sha256": "8395f1f33dda8165f70f30d2a6ad094c5f64e144403fce98337e5012be795841",
+  "headers": {
+    "content-type": "application/x-7z-compressed",
+    "content-length": "1923818595",
+    "accept-ranges": "bytes",
+    "last-modified": "Wed, 09 Jul 2025 06:09:37 GMT"
+  },
+  "seconds": 69.11,
+  "installer_declared_version": "0.4.5.158",
+  "game_executable_version_verified": false,
+  "executed": false
+}

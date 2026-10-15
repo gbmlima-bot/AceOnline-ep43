@@ -1,0 +1,9 @@
+{
+  "repository": "gbmlima-bot/AceOnline-ep43",
+  "branch": "ace-modern",
+  "release_tag": "ace-modern-v0.8.0",
+  "public": true,
+  "original_main_sha": "816c7050806af637d89ef1e93874cb489454dd6b",
+  "new_repository_creation": "blocked by configured GitHub integration: HTTP403 Resource not accessible by integration",
+  "publication_scope": "modern source checkout and complete v0.8 release artifacts; original main preserved"
+}

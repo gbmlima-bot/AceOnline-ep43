@@ -1,0 +1,51 @@
+{
+  "reviewed_file": "/workspace/ace-modern/client/scripts/legacy_group.gd",
+  "reviewed_sha256": "b3fdd8a00eb389c4eb5ad471bbe812f50e2b8330351bb2defdd7f9255321c08c",
+  "scope": "Read-only source comparison; no Godot edits or execution in this review. Other agents perform runtime validation.",
+  "source_resource_sha256": "5fd1f85960423dfd0f917abe873bf85b1e345eabab771f28a421979880d5e239",
+  "selected_group_count": 19,
+  "selected_image_records": 93,
+  "observed_constraints": {
+    "all_image_angles_zero": true,
+    "all_image_scale_percent_one": true,
+    "all_composed_image_bounds_origin_zero": true,
+    "all_image_scales_nonnegative": true
+  },
+  "findings": [
+    {
+      "status": "consistent_for_selected_groups",
+      "topic": "image crop and resource lookup",
+      "source": "INFGroupManager.cpp:92-102; Godot uses AtlasTexture source_rect with bounds check"
+    },
+    {
+      "status": "consistent_for_selected_groups",
+      "topic": "record draw order",
+      "source": "INFGroupImage.cpp:272-283; Godot adds TextureRect children in exported array order"
+    },
+    {
+      "status": "consistent_for_selected_groups",
+      "topic": "control anchors and full bounds",
+      "source": "CONTROL_TYPE=3 carries control_min/max; renderer merges controls into layout_bounds and does not draw them. JSON image_bounds_unrotated_local excludes controls by design."
+    },
+    {
+      "status": "consistent_for_selected_groups",
+      "topic": "caller origin",
+      "source": "Group metadata translation100,100 is not auto-applied; runtime callers supply origin. All selected group image bounds start0,0."
+    },
+    {
+      "status": "documented_future_limitation",
+      "topic": "minimum-bound translation",
+      "source": "INFGroupImage::Render adds groupMinPos to child translation; renderer does not. Selected groups have min0,0 so no current discrepancy."
+    },
+    {
+      "status": "documented_future_limitation",
+      "topic": "scale_percent",
+      "source": "CINFGroupImage::CalculateMinMax multiplies scale_percent; CINFImageEx::Render draws m_v2Scaling without multiplying m_fScalePercent. Renderer multiplies it for draw too. All selected IMAGE records have scale_percent1, so current output unaffected."
+    },
+    {
+      "status": "not_exercised_by_selected_data",
+      "topic": "rotation and reflection generality",
+      "source": "Selected IMAGE angles are0 and scales nonnegative; pivot/reflection mapping for future variants is not proved by this dataset."
+    }
+  ]
+}

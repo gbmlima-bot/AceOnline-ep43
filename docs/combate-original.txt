@@ -1,0 +1,234 @@
+COMBATE LOCAL COM REGRAS E RECURSOS DO LEGADO
+
+O módulo executa combate PvE local: mira, seleção, canhão, mísseis guiados,
+munição, cadência, aquecimento, acerto, defesa/perfuração, escudo, HP, morte e
+reaparecimento. Não se conecta ao servidor. As fórmulas abaixo foram portadas;
+o encontro/IA e os campos ausentes do banco cliente são adaptações declaradas.
+Não se afirma recuperação integral do combate ou compatibilidade de sessão.
+
+ORIGEM DAS REGRAS
+
+Fonte EP3.5: https://github.com/bhsdp1/AceOnline-ep35
+Commit 7c3e47ac47844e5c415d356a94d6201a0b9a38c4.
+Hashes dos arquivos e referências em combate-original.json.
+
+Server/GameServer/CommonGameServer/AtumSJ.cpp:
+488-493: HitRate + modificador da arma + bônus de acerto do stat.
+578-605: ataque aleatório entre AbilityMin/Max, ajustados por fatores de stat.
+720-747: defesa de monstro aleatória entre0 e Defense fora da arena.
+834-896: ShotNum/MultiNum, ReAttacktime, Range, Time e AttackTime.
+1041-1048: velocidade do míssil a partir de RepeatTime.
+1942-1946: HP básico do personagem600.
+2319-2330: penalidade de colisão por faixas de velocidade.
+
+Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp:
+3481-3542: chance = acerto − esquiva; em C2M, −5 pontos percentuais por nível
+superior do monstro; em M2C, +2 por nível superior do atacante.
+3547-3567: canhão conserva chance até Range; decai linearmente até30% dela em
+1,5×Range; fica em30% até2×Range e é zero além disso.
+3577-3584: compara a chance com uma amostra uniforme0..100.
+3673-3756: defense = clamp(defense − pierce,0,100); damage =
+attack×(100−defense)/100. PvE tem piso de10% do ataque máximo e teto desse
+máximo; C2C tem piso1. Habilidades especiais, PET e modificadores de equipe
+não integram este port.
+1718-1754: dano consome DP/escudo antes de HP; igualdade com HP+DP é letal.
+6315-6327: cada projétil secundário consome uma unidade de munição.
+14019: colisão usa (HPmáximo+DPmáximo)×GetPenaltyCollisionBYSpeed.
+
+O trecho antigo de crítico está comentado (2983-2988); CalcDamageOfAttackNew
+não aplica esse multiplicador. O port mantém critical=false.
+
+Client/EtcLib/main/WeaponItemInfo.cpp:181-223,300-329 consome Time/1000 de
+capacidade térmica ao manter fogo e recupera toda a capacidade em10 segundos.
+O módulo reproduz esse temporizador; munição esgotada impede o disparo.
+1254-1353 envia um ataque por projétil de MultiNum; não é um único míssil com
+um dano artificialmente multiplicado.
+
+DADOS NATIVOS SELECIONADOS
+
+client/assets/legacy_rules/combat.json e monsters.json preservam os registros
+OMI atuais com offsets, tamanhos e hashes. O pacote oficial tem SHA256
+8395f1f33dda8165f70f30d2a6ad094c5f64e144403fce98337e5012be795841.
+O OMI tem SHA2564831431a42bd37ac3ecffc067989330f6304ce214c0a77e8062d28f1fffb5f48.
+
+Primária7000040: dano5,54..7,45, acerto75%, Range460,650ms/3 disparos,
+MultiNum1 e capacidade térmica21s. Secundária7901000: dano33,02..43,21,
+acerto85%, Range2500,1800ms, MultiNum2, RepeatTime300 unidades originais/s.
+RangeAngle0,2 é em radianos. AttackTime0 significa ausência de espera nesse
+perfil; a preparação usa milissegundos convertidos para segundos.
+
+A seleção local de equipamento usa7000040/7901000 para B/M/I-Gear
+(ReqUnitKind61695); para A-Gear usa7000050/7900440 (ReqUnitKind3840).
+Todos exigem nível1 e ocupam Position2/4, respectivamente primária/secundária.
+O runtime verifica máscara, posição e nível no catálogo weapons.json.
+A primária A tem dano14,73..19,15, acerto85%, Range1100,450ms e calor28s.
+O secundário A é BUNDLE/Kind10: dano12,66..16,96, acerto90%, Range2500,
+2000ms/6 disparos, MultiNum1 e velocidade1000. WeaponItemInfo.cpp:1431-1457
+envia BUNDLE, MISSILE e ROCKET pela mesma rotina de lançamento; o runtime
+mantém a trajetória pursuit local, sem restaurar Cinema ou dano em área.
+
+Os recursos de monstro preservam espécie/nível/HP/apresentação:2000000 tem
+nível9 e HP303;2028100 tem nível3 e HP96;2028200 tem nível4 e HP112.
+O MEX cliente não fornece defesa, esquiva, velocidade, arma, escudo ou posições
+de spawn desses monstros. Nenhum desses campos foi tratado como recuperado.
+Unidades são as coordenadas do jogo; equivalência física em metros não foi
+estabelecida.
+
+ADAPTAÇÕES LOCAIS EXPLÍCITAS
+
+client/assets/local_encounter.json é separado da evidência OMI. Declara DP400,
+nível9 e modificadores zero do jogador, munição inicial1000/48, defesa/esquiva
+zero e velocidade25 dos inimigos. O HP600 vem do fonte. Atribui ao NPC o ITEM
+primário real7000040 como loadout local, pois a arma original do NPC não é
+conhecida. Não cria uma arma nativa fictícia nem preenche o OMI com esses dados.
+
+As posições relativas ao spawn são locais. No mapa3002 há três2000000; no3302
+há2028200×1 e2028100×3 para exercitar os objetivos da quest102. Identidades e
+quantidades podem vir de uma missão original; isso não comprova posições de
+spawn originais. O mundo controla a aceitação/progresso/recompensa da missão.
+
+IA de perseguição/órbita e orientação para o jogador são locais. Guiagem usa
+pursuit com ajuste exponencial; não reproduz o sistema Cinema/efeitos de
+WeaponMissileData. Volumes de acerto dos alvos são esferas derivadas do AABB.
+O mundo consulta terreno/objetos por trace_segment e resolve_motion; tiros,
+mísseis, lock e linha de visão inimiga respeitam essa oclusão. NPCs mantêm
+folga do solo. Colisão com contato contínuo tem debounce local de0,75s.
+
+Jogador reaparece em4s, inimigos em12s; esses tempos são locais. Uma morte
+real gera target_destroyed somente uma vez por vida, com monster_code e
+instance_id contendo mapa/época do encontro/id/vida. A época monotônica local
+distingue criaturas recriadas ao reiniciar ou retornar ao mapa. Recompensa usa reward_id
+idempotente. Reset/mapa conserva o saldo local; não existe banco de conta.
+Transferências de mapa conservam também HP, DP, munição, calor, cooldowns e
+morte/contagem de respawn; somente o encontro e seus projéteis são recriados.
+R/respawn_at continua sendo um reinício explícito com reabastecimento local.
+O RNG Park-Miller fixo permite repetir testes; não promete reproduzir a
+sequência rand() de uma sessão C++ original.
+
+RECURSOS VISUAIS
+
+client/assets/original_combat/manifest.json identifica todos os modelos e
+limites da conversão. O inimigo usa o modelo da própria espécie. O projétil
+secundário usa06502160; o brilho usa06374500; o disparo primário usa06303300.
+O vínculo vem de objectinfo.inf→BODY_BULLET→effectinfo.inf→Res-eff/*.obj,
+registrado em evidence/combat-effect-descriptors.json.07900000.obj não foi
+escolhido apenas por semelhança do número com SourceIndex7900000.
+
+Esses vínculos de efeitos correspondem às armas B/M/I. O loadout A usa os
+mesmos recursos originais como visualização compartilhada/adaptada; não se
+afirma que são os descritores exatos de7000050/7900440. O snapshot identifica
+esse limite em weapon_visual_scope.
+
+O runtime usa o corte/iluminação/blend/depth declarados para os efeitos
+selecionados. ONE/ONE usa shader aditivo com ALPHA1 para não multiplicar RGB
+pela textura alpha; os bytes/pixels originais permanecem preservados.
+A textura animada06374500 percorre seus três frames conforme o temporizador
+e loop do descritor (CObjectAni::Tick:90-104). Animações de malha, efeitos de
+impacto/partículas/trilha completos e a trajetória Cinema ainda não foram
+portados. O canhão aplica acerto instantâneo e mostra a arte do disparo em
+uma trajetória visual local de0,08s. Iluminação moderna não garante pixels
+iguais ao DirectX original.
+
+API E VERIFICAÇÃO
+
+combat_model.gd: configure, add_target, set_player_pose, advance, snapshot,
+drain_events; callbacks obstacle_query e npc_motion_query são opcionais.
+combat_runtime.gd: setup(world,ship), advance(delta,controls,flight), snapshot,
+drain_events, reset, respawn_at(position,map_index=-1),
+transfer_to_map(position,map_index=-1), configure_gear,
+receive_collision e apply_reward. O integrador bloqueia armas quando a UI
+toma foco. F2 seleciona os ITEMs nativos compatíveis da classe sem inventar
+bônus e conserva HP, DP, XP, saldo, munição, cooldowns e fração térmica.
+
+Testes com Godot headless:
+  Godot --headless --path client --script res://tests/test_combat.gd
+  Godot --headless --path client --script res://tests/test_combat_runtime.gd
+
+Os testes cobrem dados ITEM, fórmulas/limites, C2C/PvE, dano DP→HP, munição,
+cadência, aquecimento, lock, projéteis, morte única/reaparecimento, RNG/frame
+rates, oclusão incluindo um morro pelo WorldModel de produção, recursos
+visuais nativos, seleção3002/3302, equipamento compatível no F2, identidades
+novas após reset e recompensa idempotente. Não executam
+binários legados nem comprovam execução em macOS/Windows.
+
+
+AMPLIAÇÃO DE BIBLIOTECA, INVENTÁRIO E PERSISTÊNCIA (0.6)
+
+CombatRuntime também lê original_library/actors/actors.json. A seleção ocorre
+por MonsterUnitKind, SourceIndex, TextureIndex e AlphaBlending; ScaleValue do
+MEX é aplicado à instância da espécie. Só modelos convertidos e disponíveis
+entram no encontro. Uma falta gera encounter_gaps, nunca um inimigo substituto.
+HP e nível vêm do MEX inclusive para chefes/estruturas: o teste conserva os
+65.626.208 HP nativos da unidade2131100, sem criar uma curva de HP por nível.
+
+A biblioteca de ITEMs carrega os16.079 registros nativos quando presente,
+com fallback nos catálogos de armas/motores. A reserva inicial é explicitamente
+local: quatro motores de classe e quatro armas únicas. Catálogo completo não
+é propriedade da personagem. InventoryModel valida existência, quantidade,
+classe ReqUnitKind, nível mínimo/máximo e posição nativa ao equipar. Só há
+aplicação funcional de slots primária2, secundária4 e motor6; os demais tipos
+permanecem dados catalogados, sem efeitos fictícios.
+
+Ações/recompensas de missão podem entregar ITEMs nativos e bônus de stat,
+além de SPI e XP. O reward_id torna todos os componentes idempotentes. Um
+item desconhecido/inválido rejeita a transação inteira; não credita parte da
+recompensa. XP e pontos de stat são acumulados. A tabela de experiência foi recuperada
+do fonte; a distribuição de atributos continua sem simulação fictícia. A interface pode exibir o saldo real local.
+
+Objetivos ativos fornecem IDs de alvos ao encontro do mapa atual. Posições e
+IA continuam locais. Em mapas sem encontro explícito são selecionados três
+atores reais próximos do nível local, excluindo facções de guerra. Isso não
+reconstitui os spawns, a densidade ou o balanceamento do servidor. Objetivos
+no mesmo mapa acrescentam somente alvos novos, sem curar/reabastecer a
+personagem ou reiniciar HP/vidas/locks/projéteis dos inimigos existentes. A
+assinatura usa os objetivos da missão inteira, sem mudar ao completar um
+contador; concluir uma espécie não reinicia os demais alvos.
+
+Belligerence nativo é consultado conforme AtumParam.h:1116-1160:0 ataca,
+1 reage após agressão,4 não ataca,2 recua abaixo de30%HP. Unidades10..29 usam
+paridade de facção VCN/ANI para não atacar o mesmo lado. O scheduler, alcance
+de percepção e rotas continuam a adaptação de perseguição/órbita declarada.
+A guerra de facções/Infinity e suas regras especiais não foram restauradas.
+
+API adicional: CombatRuntime.equip_item(item_num,slot), refresh_encounter(),
+available_monsters(), export_state(), import_state(dict). O estado exportado
+é JSON válido/versionado; importação valida antes de alterar qualquer campo.
+Persiste HP/DP, munição, calor, cooldowns, morte/respawn, SPI/XP, equipamento,
+itens e ledger de recompensas. Criaturas e projéteis locais regeneram no load.
+A época monotônica do encontro avança também ao carregar um save, impedindo
+que uma vida nova reutilize a identidade de um kill anterior. O módulo não
+faz I/O de saves, login ou tráfego de rede.
+
+Verificação adicional:
+  Godot --headless --path client --script res://tests/test_inventory.gd
+Este teste usa ITEMs reais de classe/nível distintos, rejeita posição errada,
+recompensa inválida e save corrompido, e verifica atomicidade/idempotência.
+Combat runtime testa round-trip JSON, preservação de estado e nova identidade
+de kill após load. São testes do port local, sem execução do servidor C++.
+
+
+PROGRESSÃO NATIVA DE EXPERIÊNCIA
+
+original_library/catalogs/level_experience.json conserva126 linhas do array
+arrLevelExperienceNew (AtumSJ.cpp:4233). O máximo CHARACTER_LEVEL_110 é125
+no header atual (AtumParam.h:6362), apesar do nome histórico da macro.
+GetInitialExperienceOfLevel(level) usa Experience da linha(level−1).
+
+A personagem local começa no nível9 com origem8008XP; experience registra
+apenas o XP ganho para coincidir com o ledger de missões do mundo. O total
+aplicado em effective_experience é mantido separadamente: ChangeExperience
+(FieldIOCPSocket.cpp:887-947) avança no máximo um nível por recompensa e
+limita o restante a99% do nível seguinte. experience_discarded registra o
+excedente descartado, preservando a igualdade origem+ganho=efetivo+descartado.
+O máximo125 mantém o XP inicial desse nível; não inventa progressão além dele.
+
+O nível novo recupera HP até o máximo atual, sem alterar o escudo. Concede
+um ponto de bônus (BONUS_STAT_PER_A_LEVEL=1 na linha79), para níveis até110
+ou115/120/125, conforme a condição original da linha933. Pontos de bônus de
+missão são somados separadamente. Não inventa alocação automática, DP/fuel,
+modificadores de conta, penalidade de morte ou atributos iniciais ausentes.
+A tabela de stat disponível é preservada como catálogo para etapas futuras.
+
+Testes verificam o primeiro limiar91XP, a origem8008, a borda12699 para o
+nível10, o clamp99%, uma única subida por prêmio grande e o limite125, além
+de importar/rejeitar saves sem alterar a execução atual.

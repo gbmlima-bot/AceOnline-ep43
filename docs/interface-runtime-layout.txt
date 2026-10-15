@@ -1,0 +1,14 @@
+AUDITORIA DA IMPLEMENTAÇÃO AZUL 0.3
+Alvo: pacote oficial Masang 2025 (versão declarada0.4.5.158).
+Composição: dados originais Group.tex, não inferência por nomes de texturas.
+Inventário: grupo inven379×506; tc_inven não é usado.
+Primeira abertura: divisões inteiras separadas do caller EP4, W/2−width/2 e H/2−height/2. Reaberturas conservam arraste durante a sessão.
+Main.cpp4606–4611/5671–5676: ramoEP4 centraliza; origem0,241 está no ramo antigo e foi removida.
+Gage: posições reais do grupo; SP central em46,68, ene17,40, shield82,40, fuel82,31, boost8,30.
+HUD: chat inferior esquerdo; SYSTEM inferior direito; FAQ+5menus; minimapa local e altímetro à direita.
+Não há execução do cliente original nem comparação runtime1:1 comprovada.
+Dados de conta, combate e itens não são simulados. Indicadores sem modelo mostram—.
+A nave e o terreno são procedurais; chat e registro são locais. F1 contém controles.
+Mais fórmulas e fontes emblue-runtime-layout.json.
+Menus: escala idle0,8, imagem55×51→44×40,8 e hitbox correspondente; passo55 mantido. Hover cresce para1 em1s ancorado CENTER_BOTTOM, com fórmulaY do fonte baseada na largura.
+Fonte de confirmação: ep43-menu-scale-audit.json/.txt.

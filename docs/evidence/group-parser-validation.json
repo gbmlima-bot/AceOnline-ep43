@@ -1,0 +1,15 @@
+{
+  "source_sha256": "5fd1f85960423dfd0f917abe873bf85b1e345eabab771f28a421979880d5e239",
+  "parsed_named_groups": 19,
+  "validated_records": 122,
+  "checks": [
+    "Official inven record parsed:18records and379x506bounds",
+    "Rejected negativecount",
+    "Rejected excesscount",
+    "Rejected unknownversion",
+    "Rejected outoftexturecrop",
+    "Rejected invalidnodetype",
+    "Rejected truncatedpayload"
+  ],
+  "scope": "No game code executed. Parser grammar compared with immutable EP43 source; real shipped2025 payload length/header/rect bounds validated."
+}

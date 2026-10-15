@@ -1,0 +1,24 @@
+# Generated and private operator state
+**/.godot/
+**/.godot-editor/
+**/__pycache__/
+*.pyc
+**/export_credentials.cfg
+**/.env
+**/.env.*
+!**/.env.example
+build/
+reports/
+captures/
+userdata/
+backups/
+.online-update-backups/
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.log
+.DS_Store
+# Bulk client art is distributed in the complete-source Release ZIP.
+# Reviewed server numeric data already tracked in Git remains tracked.
+client/assets/

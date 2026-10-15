@@ -1,0 +1,461 @@
+{
+  "schema_version": 2,
+  "description": "Proveniência da interface reconstruída em Godot, com limites de evidência explícitos.",
+  "original_package": {
+    "source_url": "https://install.masangsoft.com/20250709/ACEonline.7z",
+    "package_name": "ACEonline-20250709.7z",
+    "bytes": 1923818595,
+    "sha256": "8395f1f33dda8165f70f30d2a6ad094c5f64e144403fce98337e5012be795841",
+    "last_modified": "Wed, 09 Jul 2025 06:09:37 GMT",
+    "installer_declared_version": "0.4.5.158",
+    "game_core_version_confirmed": false,
+    "original_client_executed": false,
+    "included_in_prototype": false
+  },
+  "version_scope": {
+    "0.4.5.158": "Declaração estática do instalador Masang; não é uma versão do core confirmada por execução ou por decodificação de seus recursos de versão.",
+    "package_date_20250709": "Identifica o caminho público do pacote e coincide com seu Last-Modified; não data todos os seus arquivos.",
+    "raw_evidence_labels": "Os relatórios de extração e o manifesto usam client0.4.5.158/client_version_reported como rótulo abreviado. Aqui o significado fica restrito à declaração do instalador; os originais foram preservados."
+  },
+  "layout_reference": {
+    "authority": "shipped-resource",
+    "package": "ACEonline-20250709.7z",
+    "resource": "Res-tex/Group.tex",
+    "resource_sha256": "5fd1f85960423dfd0f917abe873bf85b1e345eabab771f28a421979880d5e239",
+    "resource_bytes": 546476,
+    "archive_entry_count": 167,
+    "decoded_groups": [
+      "Gage",
+      "MainGB",
+      "inven",
+      "inven_0",
+      "inven_1",
+      "minimap",
+      "minimapZI",
+      "Mbtn_C",
+      "Mbtn_F",
+      "Mbtn_G",
+      "Mbtn_H",
+      "Mbtn_M",
+      "Mbtn_R",
+      "Mbtn_S",
+      "OP_menu",
+      "macro",
+      "macro_btn",
+      "voiceChat",
+      "voice_btn"
+    ],
+    "decoded_group_count": 19,
+    "validated_records": 122,
+    "decoded_layout": "client/assets/legacy_ui/group_layout.json",
+    "decoded_layout_sha256": "e86700174579181c40876b7ae0d1472af29cf67fbdab43e741f7fc90b282cb58",
+    "grammar_repository": "https://github.com/bhsdp1/AceOnline-ep43",
+    "grammar_commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+    "grammar_macro": "C_EPSODE4_UI_CHANGE_JSKIM",
+    "format_evidence": "docs/evidence/group-format.json",
+    "validation_evidence": "docs/evidence/group-parser-validation.json",
+    "coordinate_scope": "Coordenadas locais, retângulos, escala e ordem por grupo; translation 100,100 dos metadados não é automaticamente posição na tela. Anchoring de runtime deve ser reconciliado com os callers.",
+    "unparsed_scope": "Foram selecionados19 grupos entre 167 entradas; nenhuma completude geral do layout é alegada. voiceChat/macro não são o chat principal; sua posição requer regras do fonte.",
+    "independent_validation_evidence": "docs/evidence/group-independent-validation.json",
+    "renderer_review_evidence": "docs/evidence/group-renderer-review.json",
+    "inventory_caller_origin": {
+      "first_open_ep43": "Centralizada pelo caller: W/2 - width/2, H/2 - height/2, com divisões inteiras separadas.",
+      "source_references": [
+        "ProjectAtum/InterfaceLib/main/INFGameMain.cpp:4606-4611",
+        "ProjectAtum/InterfaceLib/main/INFGameMain.cpp:5671-5676",
+        "ProjectAtum/InterfaceLib/main/INFInvenExtend.cpp:3000-3009"
+      ],
+      "reopen_ep43": "ShowInven reutiliza a posição arrastada armazenada quando disponível.",
+      "historical_boundary": "A origem (0,241) pertence ao fallback legado #else; não é a origem inicial do inventário azul.",
+      "metadata_boundary": "Group metadata translation 100,100 permanece preservada, sem ser usada como posição automática na tela.",
+      "arithmetic_note": "W/2-width/2 não deve ser silenciosamente trocado por floor((W-width)/2); com W1280 e width379, a expressão inteira original produz451.",
+      "prototype": "Primeira abertura centralizada; posição arrastada preservada na sessão, com clamp na mudança de tamanho. Não é confirmação de execução do original."
+    }
+  },
+  "selected_assets": {
+    "manifest": "client/assets/legacy_ui/manifest.json",
+    "manifest_sha256": "4542e0dbddbb3c756a3f8049af814b80d7a4a95081e7e85dff1dd7803b2121e4",
+    "source_resource": "Res-tex/interface.tex",
+    "source_resource_bytes": 115930773,
+    "source_resource_sha256": "03c050159944267f9ab4374c3dd02a6de17d3f0cc2a275d8f60ab44e24939a51",
+    "source_entry_count": 2906,
+    "selected_count": 531,
+    "selected_bytes": 6991908,
+    "format": "TGA 32 bits, 8 bits alpha no descritor, origem inferior: 519 RLE (tipo 10) e 12 sem RLE (tipo 2).",
+    "pixel_transformation": "none; payloads originais preservados byte a byte",
+    "alpha": "Canal alpha e orientação permanecem nos bytes TGA; sem black-to-transparent, remoção de alpha, premultiplicação ou repintura. Tint/blend e composição são responsabilidades da reconstrução Godot.",
+    "legacy_loader": {
+      "color_key": 0,
+      "default_tint": "0xFFFFFFFF",
+      "image_loader": "D3DXCreateTextureFromFileInMemoryEx with D3DFMT_UNKNOWN; payload passed unmodified",
+      "source": "Client/InterfaceLib/main/INFImage.cpp:25,101-103,137"
+    },
+    "verification": {
+      "selected_files": 531,
+      "selected_bytes": 6991908,
+      "all_local_files_match_manifest_and_source_hashes": true,
+      "validation_evidence": "docs/evidence/selected-ui-current-validation.json",
+      "validation_method": "Leitura SHA-256/tamanho dos 531 arquivos e conferência de source_sha256; sem execução do cliente."
+    },
+    "group_layout": "client/assets/legacy_ui/group_layout.json",
+    "group_layout_sha256": "e86700174579181c40876b7ae0d1472af29cf67fbdab43e741f7fc90b282cb58",
+    "tc_inven_context": "Mantido como asset do Item Trade Center; não é frame ativo do inventário standalone. A variante azul usa grupo inven."
+  },
+  "extraction_scope": {
+    "files_selected_from_original_archive": [
+      {
+        "path": "ACEonline.exe",
+        "bytes": 2988312,
+        "sha256": "901c99927b5aa9003663b52bc563d6a9a958f489490ea0d40e3cad4620b79c93"
+      },
+      {
+        "path": "Res-tex/interface.tex",
+        "bytes": 115930773,
+        "sha256": "03c050159944267f9ab4374c3dd02a6de17d3f0cc2a275d8f60ab44e24939a51"
+      },
+      {
+        "path": "Res-tex/select.tex",
+        "bytes": 4444277,
+        "sha256": "b1d59845c5f4fbe648ed6a54e632bd695060e5745f3f2c063a207f166380c412"
+      }
+    ],
+    "additional_core_pe": {
+      "name": "ACEonline.atm",
+      "digest": {
+        "sha256": "a820b3c4a5dabeb1010aff3fe6ae17122db12ea67f123d5f2779257ba53f8e4c"
+      },
+      "local_path": "/workspace/targets/ace-client-extracted/ACEonline.atm",
+      "format": "pe",
+      "architecture": null
+    },
+    "zip_carrier_sha256": "985a09a3ae8c1776b192322592b72a8c3be325f172355fbed9c13f093f632183",
+    "zip_carrier_included_in_docs": false,
+    "zip_carrier_role": "Contêiner de evidência com ACEonline.exe, interface.tex e select.tex preservados; não é um instalador nem o cliente completo.",
+    "tex_decode_authority": "Extração e validação dos payloads .tex por utilitário externo; o grafo REA inventaria os arquivos opacos e seus digests, não decodifica os TGA internos.",
+    "group_layout": "Decodificação externa de Group.tex, guiada pela gramática EP43 e validada contra bytes do pacote 2025; não é decompilação nem resultado de parser de layout REA."
+  },
+  "rea_evidence": [
+    {
+      "evidence_file": "docs/evidence/rea-client-pe-resources.json",
+      "evidence_id": "ev_7c3741949839c1b1ea612767ffff2a40dd322ebc2077c462b570f17a75e3f00e",
+      "operation": "inspect_pe_resources",
+      "provider": {
+        "id": "rea-pe-resources",
+        "name": "REA PE resource parser",
+        "version": "1"
+      },
+      "subject": {
+        "name": "ACEonline.exe",
+        "digest": {
+          "sha256": "901c99927b5aa9003663b52bc563d6a9a958f489490ea0d40e3cad4620b79c93"
+        },
+        "local_path": "/workspace/targets/ace-client-extracted/ACEonline.exe",
+        "format": "pe",
+        "architecture": null
+      },
+      "coverage": {
+        "status": "complete",
+        "examined_entries": 19,
+        "resources": 7
+      },
+      "limitations": [
+        "Static PE32/PE32+ type/name/language resource inventory; payloads other than RT_GROUP_ICON remain opaque.",
+        "Icon candidates are resource-table relationships. Language fallback, image decoding and actual shell/window loading are not observed.",
+        "Exact shared byte ranges are retained; non-identical overlapping resource structures or payloads are rejected."
+      ],
+      "evidence_links": []
+    },
+    {
+      "evidence_file": "docs/evidence/rea-game-core-pe-resources.json",
+      "evidence_id": "ev_63c0e2af7be3fb270d510a81d3054c64c59c2ecbee9ef20c0b51e1740a7d719e",
+      "operation": "inspect_pe_resources",
+      "provider": {
+        "id": "rea-pe-resources",
+        "name": "REA PE resource parser",
+        "version": "1"
+      },
+      "subject": {
+        "name": "ACEonline.atm",
+        "digest": {
+          "sha256": "a820b3c4a5dabeb1010aff3fe6ae17122db12ea67f123d5f2779257ba53f8e4c"
+        },
+        "local_path": "/workspace/targets/ace-client-extracted/ACEonline.atm",
+        "format": "pe",
+        "architecture": null
+      },
+      "coverage": {
+        "status": "complete",
+        "examined_entries": 11,
+        "resources": 4
+      },
+      "limitations": [
+        "Static PE32/PE32+ type/name/language resource inventory; payloads other than RT_GROUP_ICON remain opaque.",
+        "Icon candidates are resource-table relationships. Language fallback, image decoding and actual shell/window loading are not observed.",
+        "Exact shared byte ranges are retained; non-identical overlapping resource structures or payloads are rejected."
+      ],
+      "evidence_links": []
+    },
+    {
+      "evidence_file": "docs/evidence/rea-client-ui-artifact.json",
+      "evidence_id": "ev_2fba7db8cd71d7d868e72690db7511d472be19cc7d657260dde79a10ab7cbe0f",
+      "operation": "inspect_artifact",
+      "provider": {
+        "id": "rea-artifact-graph",
+        "name": "REA safe artifact graph provider",
+        "version": "1"
+      },
+      "subject": {
+        "name": "client-ui-evidence.zip",
+        "digest": {
+          "sha256": "985a09a3ae8c1776b192322592b72a8c3be325f172355fbed9c13f093f632183"
+        },
+        "local_path": "/workspace/analysis/ace-online-ui/client-ui-evidence.zip",
+        "format": "zip",
+        "architecture": null
+      },
+      "coverage": {
+        "status": "complete-within-substeps",
+        "substeps_completed": 1,
+        "observations_retained": 1,
+        "observations_omitted": 0,
+        "hypotheses_retained": 0,
+        "hypotheses_omitted": 0,
+        "unexplored_branches_retained": 0,
+        "unexplored_branches_omitted": 0,
+        "next_probes_retained": 0,
+        "next_probes_omitted": 0
+      },
+      "limitations": [
+        "Inspection derives bounded static hypotheses and next probes; it does not execute the artifact or claim format-specific semantics.",
+        "ZIP inventory lists central-directory entries only. Non-entry bytes, including an APK Signing Block before the central directory or a ZIP comment after it, are not occurrences."
+      ],
+      "evidence_links": [
+        "ev_f1380ca4c83f7beb75dfdf34c8ce79ff022adf950cb59a8ba72c60ad73c698e7"
+      ]
+    }
+  ],
+  "retained_failed_attempt": {
+    "evidence_file": "docs/evidence/rea-client-artifact.json",
+    "code": "target_unavailable",
+    "constraint": "directory_requires_file",
+    "target": "/workspace/targets/ace-client-extracted",
+    "meaning": "A abertura do diretório retornou target_unavailable. O inventário posterior usa arquivo ZIP explícito; não transforma a tentativa anterior em análise bem-sucedida do diretório."
+  },
+  "reconstruction_boundaries": {
+    "godot_ui": "Reconstrução offline com dados de layout e arte do pacote 2025 e regras de integração do fonte EP43; o cliente original não foi executado.",
+    "gameplay_3d": "Provisório; não foi recuperado nem validado como gameplay original.",
+    "not_established": [
+      "Correspondência pixel a pixel e identidade de comportamento com o cliente 2025 em execução; as screenshots oficiais usadas não certificam esse build.",
+      "Versão do core ACEonline.atm.",
+      "Execução ou decompilação dos executáveis originais.",
+      "Lógica do servidor, protocolo completo ou interoperabilidade com servidores oficiais."
+    ],
+    "delivery_scope": "531 payloads UI selecionados (6.991.908 bytes), group_layout.json e documentação compacta; não redistribuir pacote completo de 1.923.818.595 bytes ou ZIP portador de 45.421.005 bytes.",
+    "prototype_0_3_limitations": [
+      "Nave/Gear 3D e mundo de treino são procedurais/provisórios, sem modelo original da nave.",
+      "Inventário unificado mostra grade de 60 células e prévia do Gear; não há itens, saldo ou persistência de inventário.",
+      "Energia, escudo, SP e combustível ficam sem valores simulados; boost, velocidade e altitude vêm do modelo local.",
+      "Radar, chat e mensagens SYSTEM usam somente estado/notas locais; não reproduzem servidores do jogo.",
+      "Menus expõem ações locais e tooltips; estados online, animações e comportamento integral do original não foram validados."
+    ]
+  },
+  "evidence_files": [
+    {
+      "path": "docs/evidence/client-acquisition.json",
+      "source_path": "/workspace/analysis/ace-online-ui/client-acquisition.json",
+      "bytes": 565,
+      "sha256": "d316cad6bef7ae81fe58c0d0381f7dfc5bf6ad2ef7bece36718ca33857afb1b0"
+    },
+    {
+      "path": "docs/evidence/extracted-files.json",
+      "source_path": "/workspace/analysis/ace-online-ui/extracted-files.json",
+      "bytes": 898,
+      "sha256": "be0dc31a67674a110b8912ef63cfe47e98c20a1c3c21d97caf82bf165b5a77bd"
+    },
+    {
+      "path": "docs/evidence/rea-client-pe-resources.json",
+      "source_path": "/workspace/analysis/ace-online-ui/rea-client-pe-resources.json",
+      "bytes": 7696,
+      "sha256": "6b6a20f96ccba367d3f76d240bb28f1ea71f49f610a54ef76d80425ab7908b9a"
+    },
+    {
+      "path": "docs/evidence/rea-game-core-pe-resources.json",
+      "source_path": "/workspace/analysis/ace-online-ui/rea-game-core-pe-resources.json",
+      "bytes": 5481,
+      "sha256": "bbe944560a814bb2c2613bef48b9df0d00b5b092a03a480d34d8e415c67ea3bc"
+    },
+    {
+      "path": "docs/evidence/rea-client-ui-artifact.json",
+      "source_path": "/workspace/analysis/ace-online-ui/rea-client-ui-artifact.json",
+      "bytes": 9023,
+      "sha256": "301ebd8591a219cf6a0efe1f1e65b6737f0b4c7e58ba770cf0ecf38b68b0067d"
+    },
+    {
+      "path": "docs/evidence/rea-client-artifact.json",
+      "source_path": "/workspace/analysis/ace-online-ui/rea-client-artifact.json",
+      "bytes": 694,
+      "sha256": "66d946d45248ee18b27258b9f9f6aeaa2e8ccfa0666fa951ce911b51f1edb6bd"
+    },
+    {
+      "path": "docs/evidence/ui-source-map.json",
+      "source_path": "/workspace/analysis/ace-online-ui/ui-source-map.json",
+      "bytes": 49098,
+      "sha256": "32aaec2988ccd1e7f7e1757ac4d018fa1ed7edff629a0141d45ea8e22e702161"
+    },
+    {
+      "path": "docs/evidence/selected-ui-extraction.txt",
+      "source_path": "/workspace/analysis/ace-online-ui/selected-ui-extraction.txt",
+      "bytes": 752,
+      "sha256": "ebe12d2177422e940882cb2a7fbb2261fbc26d5e78772c5ce27a63767d8bd985"
+    },
+    {
+      "path": "docs/evidence/selected-ui-alpha-notes.json",
+      "source_path": "/workspace/analysis/ace-online-ui/selected-ui-alpha-notes.json",
+      "bytes": 1106,
+      "sha256": "63c1802e5ae3b7b19c8e9c44bee3e9c797d202a906763e72d7cfe513a9c8e0e3"
+    },
+    {
+      "path": "docs/evidence/layout-references.json",
+      "bytes": 19856,
+      "sha256": "0e77807e7e8fc4d25585abe6d2465635a097a7d5efc4d5a9f588199fb4e8124d",
+      "source_path": "/workspace/analysis/ace-online-layout/references.json"
+    },
+    {
+      "path": "docs/evidence/layout-source-audit-initial.json",
+      "bytes": 41210,
+      "sha256": "5874089f4a8a541693954d33e29d1ffa050643ee8767b3c049d3ede18b707309",
+      "source_path": "/workspace/analysis/ace-online-layout/source-layout-audit.json"
+    },
+    {
+      "path": "docs/evidence/ep43-inventory-provenance.json",
+      "bytes": 3343,
+      "sha256": "b826d74464dde4de29e612bcd3843d690dbfadc18c39e04cb6c4d193006a9a94",
+      "source_path": "/workspace/analysis/ace-online-layout/ep43-source/inventory-provenance.json"
+    },
+    {
+      "path": "docs/evidence/group-format.json",
+      "bytes": 3609,
+      "sha256": "738ae398fd8e2d71f36fa39d5cf323bd32ad04191cff4d928fea32707c90ccc7",
+      "source_path": "/workspace/analysis/ace-online-layout/group-format.json"
+    },
+    {
+      "path": "docs/evidence/group-parser-validation.json",
+      "bytes": 566,
+      "sha256": "3c238e4396c250ee5bcd8ea3c2bae5bec543d3fc0bb39506ac76eb0a8b18b928",
+      "source_path": "/workspace/analysis/ace-online-layout/group-parser-validation.json"
+    },
+    {
+      "path": "docs/evidence/selected-ui-current-validation.json",
+      "bytes": 1182,
+      "sha256": "7f6363d61010a4fc95747723f5eb7912d3ef49a00dfd0d6aa9f1bcd4c48d17d8",
+      "source_path": "derivado local documentado"
+    },
+    {
+      "path": "docs/evidence/group-independent-validation.json",
+      "source_path": "/workspace/analysis/ace-online-layout/group-independent-validation.json",
+      "bytes": 2097,
+      "sha256": "079d7458c512fb45123aeda49f22f6f8d6414317b91cdb6c995b75841c8f942d"
+    },
+    {
+      "path": "docs/evidence/group-renderer-review.json",
+      "source_path": "/workspace/analysis/ace-online-layout/group-renderer-review.json",
+      "bytes": 2507,
+      "sha256": "9118a5eabccff2121f09a4e26f066baafe5a0dfe3d576176c295c63ff37c668d"
+    },
+    {
+      "path": "docs/evidence/blue-runtime-layout.json",
+      "source_path": "/workspace/analysis/ace-online-layout/blue-runtime-layout.json",
+      "bytes": 5898,
+      "sha256": "ee717310bd267dd1a2b704e827ff95a166afdd219aac6f23345bbf54ebf2678a"
+    },
+    {
+      "path": "docs/evidence/ep43-menu-scale-audit.json",
+      "source_path": "/workspace/analysis/ace-online-layout/ep43-menu-scale-audit.json",
+      "bytes": 3038,
+      "sha256": "f9c23627b642fdbe4e1e0ad0a8b6041a3b6fe3395857e966d91361426b6badeb"
+    },
+    {
+      "path": "docs/evidence/ep43-menu-scale-audit.txt",
+      "source_path": "/workspace/analysis/ace-online-layout/ep43-menu-scale-audit.txt",
+      "bytes": 1610,
+      "sha256": "4309424b5d67aff2940ebc379b800151c767d55510bfdf2fd488982b75ccc980"
+    }
+  ],
+  "evidence_status_notes": [
+    "Os JSON REA preservam Evidence IDs e suas limitações originais.",
+    "ui-source-map.json é evidência de análise do fonte e descreve a fase anterior à aquisição das imagens; suas pendências históricas não substituem a verificação posterior dos assets.",
+    "selected-ui-alpha-notes.json, acquisition, extração e a verificação SHA-256 local são evidência derivada externa; não recebem autoridade REA por estarem nesta pasta.",
+    "Totais 446 / 4.534.340 em selected-ui-extraction.txt e selected-ui-alpha-notes.json são históricos e foram preservados; o estado atual é 531 / 6.991.908 no manifesto e selected-ui-current-validation.json.",
+    "Group.tex 2025 é a autoridade dos dados de layout; o fonte EP43 fornece gramática e callsites, não substitui os bytes shipped.",
+    "As capturas de guias oficiais têm épocas/builds incertos e não são capturas de runtime criadas nesta investigação."
+  ],
+  "visual_target": {
+    "selection": "Confirmado pelo usuário: interface azul mais recente disponível no pacote Masang 20250709.",
+    "authority": "Dados shipped de Group.tex e interface.tex; EP43 descreve gramática/uso, EP35 serve como contraste histórico."
+  },
+  "historical_layout_reference_ep35": {
+    "repository": "https://github.com/bhsdp1/AceOnline-ep35",
+    "commit": "7c3e47ac47844e5c415d356a94d6201a0b9a38c4",
+    "commit_date": "2022-08-10T20:19:10+03:00",
+    "evidence": "docs/evidence/ui-source-map.json",
+    "method": "Análise de texto do fonte EP3.5 e coordenadas/formulas C++; não decompilação.",
+    "modules": [
+      {
+        "id": "main_gauges",
+        "name": "Energia / escudo / SP / boost / combustível"
+      },
+      {
+        "id": "radar",
+        "name": "Radar circular / minimapa"
+      },
+      {
+        "id": "target",
+        "name": "Mira, seleção e HP do alvo"
+      },
+      {
+        "id": "quick_slots",
+        "name": "Barra de atalhos e skills"
+      },
+      {
+        "id": "chat",
+        "name": "Chat e entrada de mensagens"
+      },
+      {
+        "id": "inventory",
+        "name": "Inventário EP3 ativo: itens e equipamentos"
+      }
+    ],
+    "reference_backbuffer": [
+      1024,
+      768
+    ],
+    "cross_version_boundary": "Posição/comportamento do fonte EP3.5 de 2022 combinados com arte do pacote oficial de 2025; não estabelece equivalência visual completa nem compatibilidade de protocolo.",
+    "current_role": "Contraste histórico e registro da etapa inicial; não é alvo do layout azul confirmado."
+  },
+  "visual_comparison": "docs/comparacao-layout.json; docs/comparacao-layout.txt; docs/visual-references.json",
+  "renderer_validation_boundary": {
+    "scope": "Revisão estática de crops, ordem de desenho, controles e origem para os 19 grupos / 93 IMAGE_TYPE selecionados. Não comprova fidelidade de render bit a bit.",
+    "observed_constraints": {
+      "all_image_angles_zero": true,
+      "all_image_scale_percent_one": true,
+      "all_composed_image_bounds_origin_zero": true,
+      "all_image_scales_nonnegative": true
+    },
+    "future_limitations": "Os grupos selecionados têm ângulo 0, scale_percent 1 e bounds de imagens com origem 0,0. Sem esses pressupostos, diferenças de min-position/scale_percent e rotação/reflexão precisam de validação adicional.",
+    "original_runtime_match_confirmed": false
+  },
+  "final_hud_elements": {
+    "bottom_row": "FAQ separado (op_faq3 em estado idle) mais cinco menus; não há controle BGM acrescentado como substituto.",
+    "altimeter": [
+      "altig",
+      "altip"
+    ],
+    "system_chat": [
+      "sysbar",
+      "close",
+      "w_wMin"
+    ],
+    "chat_options": "copticon0..3; aparência moderna com conteúdo/ações locais.",
+    "source_boundary": "Fonte EP43 fornece posições/callsites; recursos mantêm bytes do pacote2025. Não comprova comportamento online."
+  }
+}

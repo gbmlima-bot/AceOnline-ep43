@@ -1,0 +1,180 @@
+{
+  "release": "0.8.0",
+  "passed": true,
+  "verified_utc": "2026-10-15T13:37:23.941437+00:00",
+  "scope": "published_desktop_packages_dedicated_server_source_update_and_delivery_materials",
+  "approved_source_hashes_verified": 53,
+  "source_validation_suites": 23,
+  "both_desktop_source_fingerprints_identical": true,
+  "required_compiled_scripts_identical_between_platforms": true,
+  "exported_packs_executed_on_linux_headless_opengl_and_online": true,
+  "native_macos_execution_performed": false,
+  "native_windows_execution_performed": false,
+  "real_local_docker_and_caddy_tls_verified": true,
+  "full_base_updater_execution_performed": true,
+  "public_deployment_performed": false,
+  "online_scope": "one map 3002, I-GEAR, cooperative PvE, default two pilots",
+  "artifacts": [
+    {
+      "path": "/workspace/shared/ace-modern-online/ace-modern-online-macos-v0.8.zip",
+      "bytes": 3362117557,
+      "sha256": "5de3a098c210b78e3a10b8160fbf8f03bd18c630802c985765dd83d1a55d3db4",
+      "platform": "macos",
+      "release": "0.8.0",
+      "native_executed": false,
+      "verification_report": "reports/desktop-macos-v08.json",
+      "published_at_utc": "2026-10-15T13:15:51Z"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/ace-modern-online-windows-v0.8.zip",
+      "bytes": 3339332663,
+      "sha256": "739a5370d80f7a0e2fddf525101dbb1445bfe171cc17bcd44aedbdbd11c1dae3",
+      "platform": "windows",
+      "release": "0.8.0",
+      "native_executed": false,
+      "verification_report": "reports/desktop-windows-v08.json",
+      "published_at_utc": "2026-10-15T13:33:16Z"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/ace-online-kit-v0.8.zip",
+      "bytes": 93628840,
+      "sha256": "edeac3bf07e8a924a2c5ba497796a3fbc80be20406f88b256fc2978b8dcccd65",
+      "release": "0.8.0",
+      "artifact_kind": "dedicated_server_and_source_update",
+      "verification_report": "ace-online-kit-v0.8.verification.json"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/GUIA-ONLINE-PVE.md",
+      "bytes": 12670,
+      "sha256": "0e710a6c6a8310668627c1c6839afc58b1c3feb808193fa53eaed1ce5df6ba75",
+      "release": "0.8.0",
+      "artifact_kind": "documentation"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/preview-online-v0.8.png",
+      "bytes": 1193257,
+      "sha256": "780e5bb447f32fd84f9817577b5e32a1c4303184896fdb2089f042925076649a",
+      "release": "0.8.0",
+      "artifact_kind": "preview"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/README.txt",
+      "bytes": 2026,
+      "sha256": "acbe0e9a1aa23cb39d769cdefdcabd78b8266ccd6ff1c0b079886b0c59cf5ef5",
+      "release": "0.8.0",
+      "artifact_kind": "documentation"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/desktop-macos-published-v08.json",
+      "bytes": 10209,
+      "sha256": "dd5478dfad651696253e588b42d0bb50c86e1b7dde868ece9dfc08176717c4bd"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/desktop-macos-zip-v08.json",
+      "bytes": 2487,
+      "sha256": "114f8720f21d9a6834b04e1235241566bba158a0a5bc9f5881dca2536e2f4c52"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/macos-pack-runtime-v08.json",
+      "bytes": 586,
+      "sha256": "ae4ab89d0b32f22f25bb6a0f539b10404766d99a2a884fcbe2278a101b28e114"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/macos-pack-online-v08.json",
+      "bytes": 897,
+      "sha256": "1e6dd8eaac8fef58fd4f81cc36589f6a84dab10762616984ae143d581ed0b068"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/macos-pack-headless-v08.log",
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/macos-pack-rendered-v08.log",
+      "bytes": 368,
+      "sha256": "052211730d2e6bad1bb27d0ba1621ed54bb0ef792b898c4c8600ed8b3be20a67"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/macos-pack-online-v08.log",
+      "bytes": 804,
+      "sha256": "030cdb47bc958cb33d8c4c9341e9d563ad0f1097f0b7b83e39bcf64efa0b5fff"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/desktop-windows-published-v08.json",
+      "bytes": 8698,
+      "sha256": "556d384206ca3e099655fb228f4adeaeb69572b8140cb877327109b162154556"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/desktop-windows-zip-v08.json",
+      "bytes": 3309,
+      "sha256": "702362abd04d4ae8ba22e7e1ea33e4e4838195d8b5f68a5c701d039840ff6791"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/windows-pack-runtime-v08.json",
+      "bytes": 594,
+      "sha256": "5a634c8612230b6459683319059829528afbbaee746378ae4255beeced194953"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/windows-pack-online-v08.json",
+      "bytes": 899,
+      "sha256": "81c7a2e8b0f259e497b0a4215352930f5175c6e7d8049d3f7b041b0cdbfc5b1b"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/windows-pack-headless-v08.log",
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/windows-pack-rendered-v08.log",
+      "bytes": 368,
+      "sha256": "052211730d2e6bad1bb27d0ba1621ed54bb0ef792b898c4c8600ed8b3be20a67"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/windows-pack-online-v08.log",
+      "bytes": 806,
+      "sha256": "066a83e6578d380de72a27652a1781e0f1191978dad0f8ef2d46517ce2503151"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/online-validation-v08.json",
+      "bytes": 10349,
+      "sha256": "7ba71c36b0174ea6b42d0636a51482fbe0659bb88cbe1da65fc8231827096aa5"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/server-deploy-smoke.json",
+      "bytes": 1404,
+      "sha256": "b536a9e1de8c861236170000097a54175cea6f1d642d973d1690007b20c86b98"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/server-wss-proxy-smoke.json",
+      "bytes": 599,
+      "sha256": "8be0d79c946b2cbe53f28555f3d2210d0037f7d4c60dabc0ffeba434ecbac10f"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/online-update-real-v08.json",
+      "bytes": 3644,
+      "sha256": "83cfb35ad2ee72bcf374105aac167ec1957f5ee23f16f8780eaf14bd751e66cd"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/online-update-real-v08.log",
+      "bytes": 2997,
+      "sha256": "abc903e0e87a1bc40e40d741d348e5da11e8cc0e52f232c26f07ea24f494e26e"
+    },
+    {
+      "path": "/workspace/shared/ace-modern-online/verification/desktop-cross-platform-v08.json",
+      "bytes": 1569,
+      "sha256": "66fa165629c7c6d2d498d12365961b29625338a8276240871f363366f4fdc384"
+    }
+  ],
+  "kit_verification": {
+    "path": "/workspace/shared/ace-modern-online/ace-online-kit-v0.8.verification.json",
+    "bytes": 81569,
+    "sha256": "89d9931a5ada9d3d7c1503d1aa72a3971d9b2a57fb53cef610883a61f785b354"
+  },
+  "limits": [
+    "Native OS launch remains to be tested on macOS and Windows.",
+    "No VPS/domain is provisioned; no public deployment was performed.",
+    "Eight-player load was not benchmarked; this is not the complete original MMO."
+  ]
+}

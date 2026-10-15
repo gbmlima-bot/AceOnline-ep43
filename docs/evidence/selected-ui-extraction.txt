@@ -1,0 +1,8 @@
+Selected official ACE Online UI resources
+446 original TGA payloads, 4534340 bytes, from2906-entry interface.tex.
+Manifest: /workspace/ace-modern/client/assets/legacy_ui/manifest.json
+SHA256 payloads verified; original bytes preserved, no pixel conversion/repainting.
+Source resource SHA256: 03c050159944267f9ab4374c3dd02a6de17d3f0cc2a275d8f60ab44e24939a51
+Source package: ACEonline-20250709.7z / client0.4.5.158; layout references EP3.5 source. No full visual fidelity claim.
+CINFImage loader ColorKey=0, default tintFFFFFFFF. Godot should import original TGA alpha/orientation directly; no black-to-transparent or premultiply transform was applied.
+Includes entire tc_inven frame384x502 plus w_wi11/w_wi12 overlays, not interpreted as whole windows.

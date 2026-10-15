@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "scope": "server build from lean Git checkout without bulk visual assets",
+  "files": 47,
+  "bytes": 69284637,
+  "identical_to_approved_release_bundle": true
+}

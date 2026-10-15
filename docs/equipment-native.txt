@@ -1,0 +1,114 @@
+ACE Modern — equipamento e atributos locais v0.7
+
+Escopo implementado
+Armas primária/secundária e motor continuam nas posições 2/4/6.
+Novos slots: radar0, CPU1, armadura5, acessório permanente7. Não existe um
+slot de escudo independente entre os ITEMs recuperados: DP resulta do atributo
+ShieldPart e dos parâmetros da armadura/acessório. Marcas, pets e acessórios
+temporários ficam bloqueados, pois apresentação/ciclo de vida não foram portados.
+
+Cada troca valida posse, Kind, Position, máscara da classe, nível e ReqGearStat.
+O CPU não pode satisfazer sua própria exigência. Retirá-lo ou substituí-lo fica
+bloqueado se outro equipamento depender dos atributos que ele fornece.
+Armaduras equipadas usam o SourceIndex e o binding by_item_num do registro de
+GEARs; modelos ausentes ficam explicitamente indisponíveis, sem modelo inventado.
+O modo de teste cosmético da biblioteca permanece uma ação distinta da posse.
+
+Fonte e limites binários
+Catálogos originais permanecem intactos; native_equipment.gd interpreta em memória
+apenas o arquivo omi-native.bin com SHA256 fixado:
+4831431a42bd37ac3ecffc067989330f6304ce214c0a77e8062d28f1fffb5f48.
+ITEM atual: stride576, ReqGearStat seis uint16 em58..69, oito parâmetros uint16
+em120..135 e oito valores float32 em136..167. O campo ReAttacktime começa em168.
+Esta largura uint16 atual difere do BYTE histórico de EP3.5: ler oito bytes em120
+desalinharia os valores. Testes conferem CPU7009350: parâmetro1=4 e parâmetro6=3.
+Só registros com origem OMI, offset/stride corretos e ItemNum compatível são lidos.
+Nenhum ponteiro, código legado ou campo de invocação é executado.
+
+Efeitos comprovados
+CPU: parâmetros1..6 adicionam valores inteiros não negativos aos seis atributos.
+Equipamento: HP13, DP89, SP14, EP15; multiplicadores mínimo/máximo das armas
+18/71 e19/72, acerto20/21, defesa22/23, esquiva24/25 e recarga31/32.
+Parâmetros desconhecidos com valor ativo bloqueiam novos slots. Parâmetros nulos
+ou com valor0 não conferem efeito. Efeitos raros, encantamentos e invocações ficam
+fora do perfil derivado. Itens com duração, expiração, requisito de GM ou uso
+exclusivo em Infinity ficam bloqueados nesses novos slots.
+Radar expõe Range/AbilityMin/AbilityMax originais como alcance de varredura,
+arma primária e arma secundária. A integração do radar cabe ao controlador.
+Exemplos: armadura8013500 acrescenta HP25/DP33, e compartilha o modelo8013100;
+CPU7009350 acrescenta AttackPart4/DodgePart3; acessório7001190 acrescenta EP50.
+
+Atributos e progressão
+Modo local freestyle. Cada ponto de bonus_stats gasto usa a matriz nativa:
+                     ataque defesa combustível espírito escudo esquiva
+B-GEAR                  3      3       3          3       3      3
+M-GEAR                  2      4       3          4       3      2
+A-GEAR                  4      3       3          3       4      1
+I-GEAR                  4      2       3          3       2      4
+O valor inicial de cada atributo é a mesma entrada da matriz. allocate_stat
+consome pontos somente depois de validar integralmente o pedido; mantém o teste
+de limite ANTES do incremento da fonte. As fórmulas derivadas limitam o índice
+a300 até o nível100 e a340 a partir do101.
+HP base600; DP usa ShieldPart_DP da tabela com truncamento SHORT nativo;
+SP=SoulPart*8; EP=FuelPart*10; transporte=FuelPart*60+300.
+Ataque/acerto/pierce/defesa/esquiva vêm de level_stat_values.json. Defesa e esquiva
+são convertidas das taxas da tabela para pontos percentuais (multiplicar100).
+Os modificadores por arma ficam separados dos valores base para composição com
+habilidades. XP, ganho de bonus_stats e ledger de recompensas anterior continuam.
+Não há concessão retroativa de pontos dos níveis anteriores ao início local9.
+
+Save e compatibilidade
+schema_version1 é preservado. allocated_stats é opcional em saves v0.6 e assume
+vazio; novos saves guardam pontos alocados por atributo. Cargas inválidas não
+mutam o estado vivo. Equipamentos de v0.6 antes válidos mas sem ReqGearStat
+suficiente recebem grandfathered_equipment{slot:ItemNum} somente em
+primary/secondary/engine; posse, Kind, Position, classe e nível continuam
+obrigatórios. A exceção persiste até retirar/substituir o item e não concede
+atributos gratuitos. Novos equipamentos sempre respeitam os requisitos nativos.
+F2 é uma troca local de classe; o controlador deve remover equipamentos de
+classe incompatível e sua eventual exceção legada.
+can_change_gear valida previamente os quatro IDs e a matriz da classe de destino:
+base mais pontos alocados multiplicados pelo incremento deve caber no limite.
+O método é somente consulta, sem redistribuição, reset ou mutação de carteira.
+
+Peso e transporte
+weight_profile retorna weight/transport/ratio/scope usando SOMENTE os itens
+equipados. Cópias reservas, inventário das quatro classes e munição não equipada
+não alteram o voo. GetItemWeight(AtumSJ.cpp:331-350) usa Weight*(1+DesWeight)
+para não-contáveis e Count/MinTradeQuantity*Weight*(1+DesWeight) para contáveis.
+IS_COUNTABLE_ITEM é a lista Kind18/19/20/21/23/24/27/28/33/34 (AtumParam.h:1338),
+não uma flag ItemAttribute. Os sete slots portados usam itens não-contáveis.
+O inventário atual não implementa afixos/encantamentos de instância, portanto
+DesWeight é explicitamente0. Os descritores75/76 encontrados em afixos não são
+reinterpretados como bônus de um item base. Nenhum item utilizável desses slots
+tem DesWeight/Transport ativo no OMI recuperado. A capacidade deriva de FuelPart
+nativo, incluindo CPU, com FuelPart*60+300. Acessório EP não altera FuelPart.
+GetCurrentCarryingItemWeight(FieldItemManager.cpp:1711-1734) filtra Wear==ATTACHED.
+
+Transações locais
+exchange(removals, additions, credit_delta) valida todas as linhas conhecidas,
+quantidades inteiras positivas, somas duplicadas, carteira e overflow antes de
+alterar qualquer dado. Retirar o último exemplar equipado fica bloqueado.
+remove_item e apply_transaction são wrappers. apply_reward aceita removals junto
+de items/SPI/XP/bonus_stats/reward_id: entregas de missão também são atômicas e
+idempotentes. Nenhum desses métodos simula uma conta ou loja de um servidor.
+
+Proveniência histórica
+Repositorio https://github.com/bhsdp1/AceOnline-ep35
+Commit 7c3e47ac47844e5c415d356a94d6201a0b9a38c4
+Client/Common/AtumParam.h:1515-1554 slots;2372-2380 GEAR_STAT;
+2544-2584 ITEM;1590-1632 parâmetros;6361-6366 limites.
+SHA256 0bee3d02698d3c9e49c968c7a37db4f608de5fa004bf93c732021f89dcc7c897
+Client/Common/LocalizationDefineCommon.h:106-132 matriz de incrementos.
+SHA256 c102cea91d4102d1801e2ec0e5100630b92f3e6b9ca7cfc07d4dbbd0691f02aa
+Client/Common/AtumSJ.cpp:319 transporte;488 acerto;578-631 ataque/defesa;
+1619 matriz;1935-2066 HP/DP/SP/EP e atributos derivados.
+SHA256 cdaeb9585cc7a3d26c4d1e1807baca71d34a73d8c29c1189b1d67353528b854f
+Server/GameServer/FieldServer/Main/FieldIOCPSocket.cpp:1310-1446 recursos;
+1870-1945 CPU;21930-22015 limites;22725-22775 consumo de bonus_stats.
+SHA256 880804ac845f2b4af9fa9416cae7b04953dd2094c10feba553f4f458f021f709
+
+Verificação standalone
+Godot --headless --path client --script tests/test_inventory.gd
+Godot --headless --path client --script tests/test_inventory_equipment.gd
+Não requer editor, importador de GLB nem cliente original em execução.

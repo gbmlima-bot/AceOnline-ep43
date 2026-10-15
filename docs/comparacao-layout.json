@@ -1,0 +1,408 @@
+{
+  "schema_version": 1,
+  "status": "shipped_layout_and_assets_verified_original_runtime_match_unverified",
+  "updated_at_utc": "2026-10-14T23:13:13.467942+00:00",
+  "target": "Alvo confirmado pelo usuário: visual azul mais recente disponível no pacote Masang 20250709, com layout dirigido por Group.tex. EP35 cinza é contraste histórico, não o destino.",
+  "authorities": {
+    "official_visual_references": {
+      "evidence": "docs/evidence/layout-references.json",
+      "records": 14,
+      "description": "Imagens realmente publicadas em sites/guias oficiais; incluem capturas e diagramas de épocas diferentes.",
+      "date_boundary": "Não há screenshot aqui comprovada como build 0.4.5.158/2025. A data do pacote 7z não data as imagens dos guias.",
+      "prototype_is_original_reference": false,
+      "selected_portable_evidence": "docs/visual-references.json"
+    },
+    "official_2025_assets": {
+      "source_url": "https://install.masangsoft.com/20250709/ACEonline.7z",
+      "package_sha256": "8395f1f33dda8165f70f30d2a6ad094c5f64e144403fce98337e5012be795841",
+      "installer_declared_version": "0.4.5.158",
+      "core_version_confirmed": false,
+      "group_resource": {
+        "path": "Res-tex/Group.tex",
+        "bytes": 546476,
+        "sha256": "5fd1f85960423dfd0f917abe873bf85b1e345eabab771f28a421979880d5e239",
+        "entries": 167
+      },
+      "manifest_status": "Final confirmado e hashes locais verificados.",
+      "selected_assets": {
+        "count": 531,
+        "bytes": 6991908,
+        "manifest": "client/assets/legacy_ui/manifest.json",
+        "manifest_sha256": "4542e0dbddbb3c756a3f8049af814b80d7a4a95081e7e85dff1dd7803b2121e4",
+        "layout": "client/assets/legacy_ui/group_layout.json",
+        "layout_sha256": "e86700174579181c40876b7ae0d1472af29cf67fbdab43e741f7fc90b282cb58"
+      },
+      "decoded_group_scope": {
+        "selected_groups": 19,
+        "validated_records": 122,
+        "format_evidence": "docs/evidence/group-format.json",
+        "validation_evidence": "docs/evidence/group-parser-validation.json"
+      }
+    },
+    "source_ep35": {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep35",
+      "commit": "7c3e47ac47844e5c415d356a94d6201a0b9a38c4",
+      "role": "Contraste histórico/fallback cinza; não é referência de destino do layout azul confirmado."
+    },
+    "source_ep43": {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "macro": "C_EPSODE4_UI_CHANGE_JSKIM",
+      "role": "Ramo orientado por Group.tex, grupos Gage e inven, adequado para estruturar a variante azul; equivalência binária 2025 não demonstrada."
+    },
+    "original_runtime": {
+      "executed": false,
+      "original_runtime_screenshot_created": false,
+      "evidence": "/workspace/analysis/ace-online-layout/original-runtime-readiness.json",
+      "boundary": "Abrir launcher offline não estabelece acesso ao HUD; fonte normal depende de login/Field/IM/personagem/mapa."
+    }
+  },
+  "visual_findings": [
+    {
+      "element": "HUD",
+      "observation": "Guia Masang img3_01 e capturas Suba EP3.2/EP4.6 mostram gauge circular no canto superior esquerdo, radar superior direito e atalhos inferiores.",
+      "support": [
+        "reference-masang-img3_01.gif",
+        "reference-suba-ep46-2.jpg"
+      ],
+      "limit": "Valida família/organização visual; não igualdade de pixels, build ou todas as coordenadas."
+    },
+    {
+      "element": "SP/gauge",
+      "observation": "A página Masang mistura diagrama com pequeno SP separado e captura com setor SP no gauge principal.",
+      "support": [
+        "reference-masang-img3_02.gif",
+        "reference-masang-img3_01.gif"
+      ],
+      "limit": "O diagrama antigo não deve substituir Gage nem a variante selecionada."
+    },
+    {
+      "element": "Inventário azul",
+      "observation": "O ramo EP43 usa grupo inven e origem compartilhada para itens/equipamentos; não são duas janelas independentes nesta variante.",
+      "support": [
+        "EP43 INFInvenItem.cpp:288",
+        "EP43 INFInvenExtend.cpp:3007"
+      ],
+      "limit": "O screenshot oficial completo da janela standalone desse build ainda não foi localizado na busca registrada."
+    },
+    {
+      "element": "tc_inven",
+      "observation": "A captura oficial trd4 mostra INVENTORY embutido em ITEM TRADE CENTER. tc_inven não deve definir o frame do inventário standalone.",
+      "support": [
+        "reference-masang-trd4.png",
+        "docs/evidence/layout-source-audit-initial.json"
+      ],
+      "limit": "Aparência/nome de textura sozinhos não estabelecem seu contexto de uso."
+    },
+    {
+      "element": "EP35/loja histórica",
+      "observation": "O tutorial oficial histórico mostra painéis lado a lado no contexto de loja NPC; o fonte EP35 possui itens/equipamentos separados.",
+      "support": [
+        "reference-suba-tutorial-inventory-shop.jpg",
+        "docs/evidence/ui-source-map.json"
+      ],
+      "limit": "Não transportar esse arranjo para a variante azul com grupo inven."
+    }
+  ],
+  "comparison_method": [
+    "Preferir coordenadas, retângulos, escala e estados extraídos de Gage/inven para a variante azul.",
+    "Confrontar composição com referências oficiais reais mantendo contexto, recortes, resolução e época desconhecida explícitos.",
+    "Tratar screenshots Godot apenas como resultado da reconstrução; não usá-las como evidência do original.",
+    "Documentar divergências/estados não reproduzidos; não declarar match perfeito sem par de screenshots equivalentes do original e da reconstrução."
+  ],
+  "source_references": [
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "Common/Contents.h",
+      "line": 130,
+      "sha256": "a1bb0400b96b948f2a766cea921cbf901fe62d4a2c9f831661838600702dba79",
+      "fact": "Define C_EPSODE4_UI_CHANGE_JSKIM no snapshot EP43; não comprova flags do executável 2025.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/Common/Contents.h#L130"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFGroupManager.cpp",
+      "line": 28,
+      "sha256": "49f3622406b8b010f3f57af3b12f8874119f3ed418f3ae3eac7420ad044b34ec",
+      "fact": "Carrega Res-Tex/group.tex e decodifica grupos/controles.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFGroupManager.cpp#L28"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+      "line": 848,
+      "sha256": "4cfe8ccf780e8dc73ec2634242b4f91b1698d88c9dd5bceabacfe319954d3757",
+      "fact": "Obtém grupo Gage para o HUD.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFGameMainUnitInfoBar.cpp#L848"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFInvenItem.cpp",
+      "line": 288,
+      "sha256": "cb927d22fcd1c618e44696d597da2a1dbd267bf5583b7f1c45d9b2e1ae1ca08f",
+      "fact": "Obtém grupo inven sob a macro de UI EP4.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFInvenItem.cpp#L288"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFInvenExtend.cpp",
+      "line": 3007,
+      "sha256": "3557aca53c279ea5eddc3ea947b46c0d52d14bc73ec96b4336e664651e1ca06c",
+      "fact": "Exibe itens e equipamentos na mesma ptEqPos no ramo EP4.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFInvenExtend.cpp#L3007"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFInvenEquip.cpp",
+      "line": 282,
+      "sha256": "7944d78bd45f147206272bc515d65d0d168f0651c9bfa50043bbe059024b63ba",
+      "fact": "Frame antigo w_wi11 fica no ramo sem a macro EP4.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFInvenEquip.cpp#L282"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFGameMain.cpp",
+      "line": 125,
+      "sha256": "16d6636eb0713f7d758a55019652f32c87f13f72ab6b14aac97109817b938b7f",
+      "fact": "Origem/intervalo de cinco menus; FAQ tem origem separada na linha150.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFGameMain.cpp#L125"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFGameMain.cpp",
+      "line": 874,
+      "sha256": "16d6636eb0713f7d758a55019652f32c87f13f72ab6b14aac97109817b938b7f",
+      "fact": "FAQ usa op_faq3 como estado de repouso; não é BGM.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFGameMain.cpp#L874"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFGameMain.cpp",
+      "line": 1081,
+      "sha256": "16d6636eb0713f7d758a55019652f32c87f13f72ab6b14aac97109817b938b7f",
+      "fact": "Altímetro carrega altig e altip (linha1085).",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFGameMain.cpp#L1081"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFGameMainWisperChat.cpp",
+      "line": 2598,
+      "sha256": "39404d68217af4bf05640f9d73e7a8420498e6b09a518b9cfc92f54216444fbe",
+      "fact": "CINFGameMainSystemChat usa frame moderno c_c, w_wMin, close e sysbar.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFGameMainWisperChat.cpp#L2598"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFGameMainChat.cpp",
+      "line": 1170,
+      "sha256": "6874c878f0131fafc02a03171abd101b4238d22520d9b913ec47b9fee26f7299",
+      "fact": "Chat usa copticon como botão de opções.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFGameMainChat.cpp#L1170"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFGameMain.cpp",
+      "line": 4606,
+      "sha256": "16d6636eb0713f7d758a55019652f32c87f13f72ab6b14aac97109817b938b7f",
+      "fact": "O ramo EP4 centraliza a primeira abertura com W/2-width/2 e H/2-height/2; #else usa origem legada.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFGameMain.cpp#L4606"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFGameMain.cpp",
+      "line": 5671,
+      "sha256": "16d6636eb0713f7d758a55019652f32c87f13f72ab6b14aac97109817b938b7f",
+      "fact": "Posição padrão EP4 também centralizada; os macros antigos ficam no #else.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFGameMain.cpp#L5671"
+    },
+    {
+      "repository": "https://github.com/bhsdp1/AceOnline-ep43",
+      "commit": "f880284fafa3af9b4b1a4bb2938efef1b328bb8e",
+      "path": "ProjectAtum/InterfaceLib/main/INFInvenExtend.cpp",
+      "line": 3000,
+      "sha256": "3557aca53c279ea5eddc3ea947b46c0d52d14bc73ec96b4336e664651e1ca06c",
+      "fact": "ShowInven aplica a posição arrastada armazenada quando disponível antes de exibir itens/equipamentos juntos.",
+      "url": "https://github.com/bhsdp1/AceOnline-ep43/blob/f880284fafa3af9b4b1a4bb2938efef1b328bb8e/ProjectAtum/InterfaceLib/main/INFInvenExtend.cpp#L3000"
+    }
+  ],
+  "portable_reference_images": [
+    {
+      "path": "docs/reference-images/reference-masang-img3_01.png",
+      "sha256": "e827d4ff362138ebbac046c01a1350b4cfb5e4a6731a110092188c17c3f20d28",
+      "context_url": "https://ao.masanggames.co.kr/AO_SUB_guide",
+      "image_url": "https://ao.masanggames.co.kr/_AceOnline/_images/intro/img3_01.gif",
+      "date_limit": "Página não declara data de publicação nem episódio. Arte de guia disponível atualmente não prova que corresponda à versão atual do cliente."
+    },
+    {
+      "path": "docs/reference-images/reference-masang-trd4.png",
+      "sha256": "033f2dab40324fce60178af4c5e850909a5b40690c96b6eaf3cf97eed15fb886",
+      "context_url": "https://ao.masanggames.co.kr/AO_SUB_SYSTEM16",
+      "image_url": "https://ao.masanggames.co.kr/_AceOnline/_images/system/trd4.png",
+      "date_limit": "Página não declara data de publicação nem episódio. Arte de guia disponível atualmente não prova que corresponda à versão atual do cliente."
+    },
+    {
+      "path": "docs/reference-images/reference-suba-ep46-4.jpg",
+      "sha256": "8246e75e1f6b9ce8c57ae1c0f583e92fc3a754014540ab4f4337323108cd57c4",
+      "context_url": "https://ace.subagames.com/episode4.aspx",
+      "image_url": "https://static.subagames.com/ACE/images/episode4/page/tn/screenshot4.jpg",
+      "date_limit": "Page explicitly announces Episode4.6. Neither a 2025 screenshot date nor version0.4.5.158 is established."
+    },
+    {
+      "path": "docs/reference-images/reference-suba-tutorial-inventory-shop.jpg",
+      "sha256": "6901b94ba10941349aa4a6b689d5a9a4116047a44510471a6f87e674dd1238c9",
+      "context_url": "https://ace.subagames.com/guide.aspx",
+      "image_url": null,
+      "date_limit": "PDF metadata and visible screenshot timestamp are historical context; neither establishes exact EP3.5 build."
+    }
+  ],
+  "implementation_snapshot": {
+    "version": "0.3",
+    "basis": "Escopo funcional informado pela implementação; não equivale a ensaio do cliente original.",
+    "layout_source": "Group.tex/interface.tex do pacote Masang 20250709, integração guiada pelo fonte EP43.",
+    "limitations": [
+      "Nave/Gear 3D e mundo de treino são procedurais/provisórios, sem modelo original da nave.",
+      "Inventário unificado mostra grade de 60 células e prévia do Gear; não há itens, saldo ou persistência de inventário.",
+      "Energia, escudo, SP e combustível ficam sem valores simulados; boost, velocidade e altitude vêm do modelo local.",
+      "Radar, chat e mensagens SYSTEM usam somente estado/notas locais; não reproduzem servidores do jogo.",
+      "Menus expõem ações locais e tooltips; estados online, animações e comportamento integral do original não foram validados."
+    ],
+    "perfect_match_claimed": false,
+    "original_runtime_screenshot_pair_available": false
+  },
+  "limitations": [
+    "Do not use a prototype screenshot as original-client evidence.",
+    "Currently served official guide images may be old; HTTP Last-Modified dates (e.g.2024 storage migration) do not prove screenshot capture date or game version.",
+    "Screenshot dimensions are image dimensions, not a certified client viewport; guide/browser scaling or cropping can affect exact pixel correspondence.",
+    "A modern-vs-historical visual target must be selected before combining assets and placement rules.",
+    "No Godot files changed; no game/installer execution."
+  ],
+  "retained_prior_audit": "docs/evidence/layout-source-audit-initial.json registra a auditoria anterior aos ajustes; seus campos current, deltas e pending não descrevem necessariamente a implementação final.",
+  "interactive_comparison": {
+    "path": "docs/comparacao-layout.html",
+    "role": "Comparação das prévias Godot 0.2/0.3 com referências oficiais, zoom e sobreposição. É ferramenta de revisão, não demonstração automática de correspondência 1:1.",
+    "owner": "root"
+  },
+  "shipped_layout_facts": {
+    "Gage": {
+      "kind": "10 CONTROL_TYPE anchors",
+      "sp_min": [
+        46,
+        68
+      ],
+      "sp_max": [
+        119,
+        105
+      ],
+      "screen_origin": "Não inferida de metadata.translation; depende de caller."
+    },
+    "inven": {
+      "kind": "18IMAGE_TYPE nodes",
+      "local_bounds": [
+        0,
+        0,
+        379,
+        506
+      ],
+      "equipment_overlay_xy": [
+        19,
+        41
+      ],
+      "items_overlay_xy": [
+        19,
+        254
+      ],
+      "grid_xy_ep43": [
+        25,
+        254
+      ],
+      "standalone_tc_inven": false,
+      "caller_origin": {
+        "first_open_ep43": "Centralizada pelo caller: W/2 - width/2, H/2 - height/2, com divisões inteiras separadas.",
+        "source_references": [
+          "ProjectAtum/InterfaceLib/main/INFGameMain.cpp:4606-4611",
+          "ProjectAtum/InterfaceLib/main/INFGameMain.cpp:5671-5676",
+          "ProjectAtum/InterfaceLib/main/INFInvenExtend.cpp:3000-3009"
+        ],
+        "reopen_ep43": "ShowInven reutiliza a posição arrastada armazenada quando disponível.",
+        "historical_boundary": "A origem (0,241) pertence ao fallback legado #else; não é a origem inicial do inventário azul.",
+        "metadata_boundary": "Group metadata translation 100,100 permanece preservada, sem ser usada como posição automática na tela.",
+        "arithmetic_note": "W/2-width/2 não deve ser silenciosamente trocado por floor((W-width)/2); com W1280 e width379, a expressão inteira original produz451.",
+        "prototype": "Primeira abertura centralizada; posição arrastada preservada na sessão, com clamp na mudança de tamanho. Não é confirmação de execução do original."
+      }
+    },
+    "scope_limits": [
+      "19 grupos entre 167 entradas, não todos os grupos/estados.",
+      "Controles são âncoras; não texturas.",
+      "Bounds informados não incorporam rotação nem anchoring absoluto do caller.",
+      "voiceChat/macro não são o chat principal."
+    ]
+  },
+  "independent_validation": {
+    "parser": "docs/evidence/group-independent-validation.json",
+    "renderer": "docs/evidence/group-renderer-review.json",
+    "scope": "Gramática/bounds/recortes/ordem/âncoras comparados estaticamente; malformações e NaN rejeitados pelo parser. Não é prova pixel a pixel.",
+    "selected_image_records": 93,
+    "selected_constraints": {
+      "all_image_angles_zero": true,
+      "all_image_scale_percent_one": true,
+      "all_composed_image_bounds_origin_zero": true,
+      "all_image_scales_nonnegative": true
+    },
+    "future_scope": "Diferenças gerais de min-position/scale_percent e mapeamento de rotação/reflexão não são exercitadas pelos grupos selecionados; não afetam os casos atuais segundo a revisão."
+  },
+  "final_hud_elements": {
+    "bottom_row": "FAQ separado (op_faq3 em estado idle) mais cinco menus; não há controle BGM acrescentado como substituto.",
+    "altimeter": [
+      "altig",
+      "altip"
+    ],
+    "system_chat": [
+      "sysbar",
+      "close",
+      "w_wMin"
+    ],
+    "chat_options": "copticon0..3; aparência moderna com conteúdo/ações locais.",
+    "source_boundary": "Fonte EP43 fornece posições/callsites; recursos mantêm bytes do pacote2025. Não comprova comportamento online.",
+    "menu_scale": {
+      "count": 6,
+      "idle_scale": 0.8,
+      "native_image_size": [
+        55,
+        51
+      ],
+      "idle_image_and_hitbox_size": [
+        44,
+        40.8
+      ],
+      "origin_stride": 55,
+      "origin_y": "H-53",
+      "idle_bottom_y": "H-12.2",
+      "hover": "Imagem cresce de 0,8 até 1 em um segundo, alinhada por CENTER_BOTTOM; hitbox permanece baseada na escala persistente 0,8.",
+      "source_quirk": "O deslocamento vertical do hover usa largura, conforme INFImageEx.cpp:354-360.",
+      "references": [
+        "INFGameMain.cpp:855-857",
+        "INFGameMain.cpp:886-888",
+        "INFImageBtn.cpp:408-428",
+        "INFImageEx.cpp:354-370"
+      ],
+      "evidence": [
+        "docs/evidence/ep43-menu-scale-audit.json",
+        "docs/evidence/blue-runtime-layout.json"
+      ],
+      "boundary": "Sem execução do cliente/renderizador original; não comprova identidade pixel a pixel."
+    }
+  }
+}

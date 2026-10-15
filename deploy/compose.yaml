@@ -1,0 +1,79 @@
+name: ace-online
+services:
+  game:
+    image: ace-modern-server:0.8.0
+    platform: linux/amd64
+    build:
+      context: .
+      target: game
+    restart: unless-stopped
+    init: true
+    user: "10001:10001"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=128m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    stop_grace_period: 30s
+    pids_limit: 128
+    cpus: "1.75"
+    mem_limit: 3g
+    environment:
+      ACE_DATA_DIR: /data
+      ACE_BIND_ADDRESS: 0.0.0.0
+      ACE_PORT: "9080"
+      ACE_HEALTH_PORT: "9081"
+      ACE_MAX_PLAYERS: ${ACE_MAX_PLAYERS:-2}
+      ACE_SNAPSHOT_HZ: ${ACE_SNAPSHOT_HZ:-15}
+      ACE_MAP_ID: "3002"
+      ACE_LOG_LEVEL: ${ACE_LOG_LEVEL:-info}
+      ACE_SHUTDOWN_FILE: /tmp/ace-shutdown.request
+    expose: ["9080", "9081"]
+    volumes:
+      - game-data:/data
+    networks: [backend]
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
+  caddy:
+    image: ace-modern-proxy:2.10.2
+    platform: linux/amd64
+    build:
+      context: .
+      target: proxy
+    restart: unless-stopped
+    init: true
+    user: "10001:10001"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=32m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    stop_grace_period: 30s
+    pids_limit: 128
+    mem_limit: 192m
+    ports:
+      - "80:8080"
+      - "443:8443"
+    environment:
+      ACE_DOMAIN: ${ACE_DOMAIN:-game.example.com}
+      ACME_EMAIL: ${ACME_EMAIL:-operator@example.com}
+      NO_PROXY: game,localhost,127.0.0.1,::1,${NO_PROXY:-}
+    volumes:
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      game:
+        condition: service_healthy
+    networks: [backend, public]
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
+volumes:
+  game-data:
+  caddy-data:
+  caddy-config:
+networks:
+  backend:
+    internal: true
+  public:

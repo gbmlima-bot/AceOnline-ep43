@@ -1,0 +1,1816 @@
+{
+  "schema_version": 1,
+  "title": "Mapeamento fonte da interface AirRivals/ACE EP3.5",
+  "source_root": "/workspace/targets/ace-online-ep35",
+  "status": "source_evidence_only",
+  "read_only_analysis": true,
+  "coordinate_system": {
+    "origin": "top-left",
+    "units": "pixels do backbuffer DirectX",
+    "W": "backbuffer Width",
+    "H": "backbuffer Height",
+    "target_scale": "s=W/1024",
+    "note": "O fonte mistura âncoras em pixels fixos, regiões esticadas e escala própria da mira; não há evidência de escala global uniforme de todos os módulos.",
+    "integer_arithmetic_note": "Fórmulas C++ com Width/Height inteiros truncam divisões; por exemplo (1024-219)/2 = 402."
+  },
+  "resource_chain": [
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+      "lines": [
+        573,
+        574
+      ],
+      "note": "Carrega interface.tex pelo diretório de texturas"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+      "lines": [
+        4495,
+        4500
+      ],
+      "note": "SetResourceFile cria CGameData e abre arquivo"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFBase.cpp",
+      "lines": [
+        29,
+        41
+      ],
+      "note": "FindResource consulta a chave textual no pack compartilhado"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/Interface.cpp",
+      "lines": [
+        508,
+        509
+      ],
+      "note": "CINFTarget recebe o mesmo m_pGameData"
+    }
+  ],
+  "central_files": [
+    {
+      "module": "main_gauges",
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp"
+    },
+    {
+      "module": "radar",
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp"
+    },
+    {
+      "module": "target",
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.cpp"
+    },
+    {
+      "module": "quick_slots",
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp"
+    },
+    {
+      "module": "chat",
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp"
+    },
+    {
+      "module": "inventory",
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.cpp"
+    }
+  ],
+  "modules": [
+    {
+      "id": "main_gauges",
+      "name": "Energia / escudo / SP / boost / combustível",
+      "primary_file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+      "anchor": "top-left",
+      "resources": [
+        {
+          "key": "MainGB",
+          "role": "fundo do módulo principal",
+          "position_px": [
+            "0",
+            "0"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                448,
+                450,
+                882,
+                883
+              ]
+            }
+          ],
+          "natural_size": "A confirmar no recurso extraído; constantes antigas 179×48 não descrevem toda a arte atual."
+        },
+        {
+          "key_pattern": "ene%02d",
+          "range": [
+            0,
+            19
+          ],
+          "role": "HP / energia do Gear",
+          "position_px": [
+            "15",
+            "29"
+          ],
+          "frame_rule": "min(int(current_hp/max_hp*20),19); só desenha índice > 0",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                511,
+                514,
+                69,
+                70,
+                1390,
+                1398
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.h",
+              "lines": [
+                38
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "she%02d",
+          "range": [
+            0,
+            19
+          ],
+          "role": "DP / escudo",
+          "position_px": [
+            "83",
+            "29"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                516,
+                519,
+                71,
+                72,
+                1401,
+                1409
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.h",
+              "lines": [
+                39
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "skil%02d",
+          "range": [
+            0,
+            19
+          ],
+          "role": "SP / pontos de habilidade",
+          "position_px": [
+            "120",
+            "22"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                521,
+                524,
+                73,
+                74,
+                1412,
+                1420
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.h",
+              "lines": [
+                40
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "Bost%02d",
+          "range": [
+            0,
+            17
+          ],
+          "role": "boost",
+          "position_px": [
+            "9",
+            "21"
+          ],
+          "scale": [
+            1.125,
+            1.125
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                529,
+                532,
+                75,
+                76,
+                1423,
+                1429
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.h",
+              "lines": [
+                41
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "fue%02d",
+          "range": [
+            0,
+            16
+          ],
+          "role": "EP / combustível",
+          "position_px": [
+            "6",
+            "5"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                537,
+                540,
+                77,
+                78,
+                1431,
+                1436
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.h",
+              "lines": [
+                42
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "fuelG%02d",
+          "range": [
+            0,
+            1
+          ],
+          "role": "ícone combustível normal / aviso",
+          "position_px": [
+            "6",
+            "5"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                545,
+                548,
+                1438,
+                1446
+              ]
+            }
+          ]
+        },
+        {
+          "key": "speedm",
+          "role": "atlas horizontal dos dígitos da velocidade",
+          "atlas": {
+            "cell_px": [
+              19,
+              17
+            ],
+            "digit_rect": "[digit*19,0,(digit+1)*19,17]",
+            "draw_advance_px": 16
+          },
+          "position_px": [
+            "80 - digit_count*8 (+ ajustes de sinal)",
+            "90"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                460,
+                462,
+                86,
+                89,
+                1514,
+                1533
+              ]
+            }
+          ]
+        },
+        {
+          "key": "sMin",
+          "role": "sinal menos da velocidade",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                464,
+                466,
+                1517,
+                1523
+              ]
+            }
+          ]
+        },
+        {
+          "key": "warn",
+          "role": "aviso de HP abaixo de 35%",
+          "position_px": [
+            "17",
+            "29"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                468,
+                470,
+                1479,
+                1482
+              ]
+            }
+          ]
+        },
+        {
+          "key": "expbac",
+          "role": "fundo da experiência",
+          "position_px": [
+            "(W-234)/2",
+            "H-51"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                44,
+                45,
+                452,
+                454,
+                885,
+                887
+              ]
+            }
+          ]
+        },
+        {
+          "key": "expbar",
+          "role": "preenchimento experiência",
+          "position_px": [
+            "(W-219)/2",
+            "H-48"
+          ],
+          "crop_px": [
+            "219 * exp_rate",
+            "9"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                24,
+                38,
+                39,
+                456,
+                458,
+                1475,
+                1477
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mndnbkpx",
+          "role": "faixa inferior",
+          "position_px": [
+            "0",
+            "H-39"
+          ],
+          "draw_size_px": [
+            "W",
+            "39"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                35,
+                36,
+                417,
+                419,
+                866,
+                869
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mnMinibk",
+          "role": "faixa atrás do nome da região/radar",
+          "position_px": [
+            "W-145",
+            "0"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+              "lines": [
+                29,
+                32,
+                421,
+                423,
+                893,
+                895
+              ]
+            }
+          ]
+        }
+      ],
+      "text_positions": {
+        "hp_label": [
+          17,
+          80
+        ],
+        "hp_current": [
+          21,
+          92
+        ],
+        "hp_max": [
+          25,
+          104
+        ],
+        "shield_label": [
+          112,
+          80
+        ],
+        "shield_current": [
+          114,
+          92
+        ],
+        "shield_max": [
+          108,
+          104
+        ],
+        "sp_current": [
+          130,
+          50
+        ],
+        "sp_max": [
+          135,
+          62
+        ]
+      },
+      "notes": [
+        "Fonte do texto: GetFontStyle(), tamanho 8 no CD3DHanFont; cores/conteúdo localizados vêm das tabelas do cliente (linhas429-434).",
+        "Não confundir SP (habilidade) com EP (combustível) nem HP/energia com escudo (DP).",
+        "Os gauges são sequências de imagens nomeadas, não barras retangulares genéricas."
+      ]
+    },
+    {
+      "id": "radar",
+      "name": "Radar circular / minimapa",
+      "primary_file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+      "anchor": "top-right",
+      "resources": [
+        {
+          "key": "mmback",
+          "role": "moldura rotativa do radar",
+          "position_px": [
+            "W-140",
+            "34"
+          ],
+          "pivot_px": [
+            69,
+            69
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+              "lines": [
+                43,
+                44,
+                85,
+                212,
+                214,
+                657,
+                659
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mmsite",
+          "role": "cone de visão",
+          "position_px": [
+            "W-98",
+            "48"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+              "lines": [
+                54,
+                55,
+                215,
+                217,
+                661,
+                663
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mmaxis",
+          "role": "marcador central do jogador",
+          "position_px": [
+            "W-75",
+            "98"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+              "lines": [
+                56,
+                57,
+                218,
+                220,
+                665,
+                667
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "muser%d / mparty%d / mmon%d / iuser%d",
+          "range": [
+            1,
+            3
+          ],
+          "role": "contatos: jogadores, grupo, monstros, facção",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+              "lines": [
+                235,
+                254
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mwarning",
+          "role": "alerta míssil",
+          "position_px": [
+            "W-126",
+            "48"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+              "lines": [
+                52,
+                53,
+                224,
+                227
+              ]
+            }
+          ]
+        },
+        {
+          "key": "qtarget",
+          "role": "alvo de missão",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+              "lines": [
+                229,
+                233
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "mmzin%02d / mmzout%02d / mmzhide%02d",
+          "range": [
+            0,
+            3
+          ],
+          "role": "estados dos botões zoom",
+          "position_px": [
+            "W-33",
+            "50"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+              "lines": [
+                62,
+                65,
+                256,
+                269,
+                637,
+                650
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "minmap / gear1 / gear2 / gear3",
+          "pack": "Res-Tex/mini.tex",
+          "role": "moldura do mapa e ícones de nave/grupo/facção",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+              "lines": [
+                354,
+                381
+              ]
+            }
+          ]
+        }
+      ],
+      "generated_content": {
+        "role": "imagem circular do terreno",
+        "position_px": [
+          "W-129",
+          "44"
+        ],
+        "size_px": [
+          118,
+          118
+        ],
+        "evidence": [
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+            "lines": [
+              86,
+              88,
+              384,
+              387,
+              1920,
+              1921
+            ]
+          }
+        ]
+      },
+      "notes": [
+        "Centro operacional do radar em (W-75,98), raio de renderização de contatos55px; moldura138px.",
+        "Mapa grande:512×512 centralizado em (W/2-256,H/2-256). A visão radar usa terreno gerado do mapa, não apenas uma imagem decorativa fixa."
+      ]
+    },
+    {
+      "id": "target",
+      "name": "Mira, seleção e HP do alvo",
+      "primary_file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.cpp",
+      "anchor": "screen-space projected target / center",
+      "resources": [
+        {
+          "key": "t_center0 / t_center1",
+          "role": "mira central normal / lock-on (carregadas no módulo)",
+          "position_px": [
+            "W/2 - 15*s",
+            "H/2 - 15*s"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.cpp",
+              "lines": [
+                279,
+                289
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.h",
+              "lines": [
+                17,
+                19,
+                113
+              ]
+            }
+          ]
+        },
+        {
+          "key": "t_n_red / t_n_blue",
+          "role": "mira nova vermelha / azul",
+          "position_px": [
+            "mouse_x-25*s",
+            "mouse_y-25*s"
+          ],
+          "scale": "s = W/1024",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.cpp",
+              "lines": [
+                250,
+                265,
+                311,
+                326,
+                1410,
+                1416,
+                1431,
+                1437
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.h",
+              "lines": [
+                17,
+                22
+              ]
+            }
+          ]
+        },
+        {
+          "key": "t_o_red / t_o_blue",
+          "role": "alternativa mira antiga configurável",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.cpp",
+              "lines": [
+                254,
+                260,
+                315,
+                321
+              ]
+            }
+          ]
+        },
+        {
+          "key": "t_ototar / t_oto",
+          "role": "arte de alvo automático / fora de alcance",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.cpp",
+              "lines": [
+                358,
+                368
+              ]
+            }
+          ]
+        },
+        {
+          "key": "t_hpbox / t_hp",
+          "role": "moldura e preenchimento da vida do alvo",
+          "position_px": [
+            "target_x - 31*s",
+            "target_y - (43*s-2)"
+          ],
+          "crop_px": [
+            "61*hp_rate",
+            "5"
+          ],
+          "scale": "s = W/1024",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.cpp",
+              "lines": [
+                297,
+                307,
+                1793,
+                1802
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.h",
+              "lines": [
+                25,
+                29
+              ]
+            }
+          ]
+        },
+        {
+          "key": "t_2st_l / t_text_l / skTarget",
+          "role": "lock-on secundário / texto LOCKON / alvo de skill",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.cpp",
+              "lines": [
+                267,
+                271,
+                291,
+                295,
+                382,
+                386
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tgarrow1 / tgarrow2 / tgarrow3 / tgarrow4",
+          "role": "setas direcionais de alvo fora de tela",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.cpp",
+              "lines": [
+                215,
+                238
+              ]
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Usa escala própria s=W/1024, enquanto muitos outros módulos usam pixels fixos ancorados às bordas.",
+        "Os IDs carregados nem sempre significam que o caminho atual os desenha; alguns recursos de mira antiga são mantidos por compatibilidade. Confirmar aparência contra screenshots/cliente real."
+      ]
+    },
+    {
+      "id": "quick_slots",
+      "name": "Barra de atalhos e skills",
+      "primary_file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp",
+      "anchor": "bottom-center",
+      "resources": [
+        {
+          "key": "mnQSlot",
+          "role": "fundo da barra10slots",
+          "position_px": [
+            "(W-318)/2",
+            "H-34"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp",
+              "lines": [
+                34,
+                35,
+                125,
+                127,
+                167,
+                168,
+                338
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mnQSlotN",
+          "role": "sobreposição números das teclas",
+          "position_px": [
+            "(W-318)/2",
+            "H-34"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp",
+              "lines": [
+                129,
+                131,
+                419,
+                420
+              ]
+            }
+          ]
+        },
+        {
+          "key": "diskill",
+          "role": "sobreposição skill indisponível",
+          "position_px": [
+            "bar_x+32*i",
+            "bar_y"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp",
+              "lines": [
+                133,
+                135,
+                369,
+                373
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "mnQup%02d / mnQdn%02d",
+          "range": [
+            0,
+            3
+          ],
+          "role": "trocar página barra",
+          "position_px": [
+            "bar_x+322",
+            "bar_y / bar_y+23"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp",
+              "lines": [
+                137,
+                147,
+                320,
+                325,
+                449,
+                453
+              ]
+            }
+          ]
+        }
+      ],
+      "slot_layout": {
+        "count": 10,
+        "pages": 3,
+        "bar_size_px": [
+          318,
+          30
+        ],
+        "icon_size_px": [
+          28,
+          28
+        ],
+        "stride_px": 32,
+        "icon_position_px": [
+          "bar_x+32*i+1",
+          "bar_y+1"
+        ],
+        "evidence": [
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.h",
+            "lines": [
+              17,
+              18,
+              26,
+              34,
+              37
+            ]
+          },
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp",
+            "lines": [
+              364,
+              367
+            ]
+          }
+        ]
+      },
+      "notes": [
+        "Arte dos ícones é obtida de IconName/SourceIndex via CINFIcon, não faz parte do próprio fundo da barra.",
+        "Não atribuir skills MMO fictícias ao protótipo local. Espaços e ações implementadas precisam ser diferenciados."
+      ]
+    },
+    {
+      "id": "chat",
+      "name": "Chat e entrada de mensagens",
+      "primary_file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+      "anchor": "bottom-left",
+      "resources": [
+        {
+          "key_pattern": "c_c%d%d",
+          "ranges": [
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "role": "nove fatias da janela redimensionável",
+          "position_px": [
+            "0",
+            "H - 44 - chat_height (campo)"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+              "lines": [
+                788,
+                796,
+                1645,
+                2203,
+                2229
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "c_s%d",
+          "range": [
+            0,
+            2
+          ],
+          "role": "trilho scrollbar",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+              "lines": [
+                798,
+                803
+              ]
+            }
+          ]
+        },
+        {
+          "key": "c_scrlb",
+          "role": "botão scrollbar",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+              "lines": [
+                806,
+                808
+              ]
+            }
+          ]
+        },
+        {
+          "key": "Chatmage",
+          "role": "imagem mostrar janela de chat",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+              "lines": [
+                810,
+                812
+              ]
+            }
+          ]
+        },
+        {
+          "key": "c_nbar",
+          "role": "barra entrada",
+          "position_px": [
+            "3",
+            "H-20"
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+              "lines": [
+                56,
+                64,
+                873,
+                875
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+              "lines": [
+                1690,
+                1691,
+                3250
+              ]
+            }
+          ],
+          "input_hitbox_px": {
+            "origin": [
+              "53",
+              "H-20"
+            ],
+            "size": [
+              240,
+              20
+            ]
+          }
+        },
+        {
+          "key": "c_nchk",
+          "role": "marcador checkbox",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+              "lines": [
+                877,
+                879
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "c_hsbtn0%d / c_hsbtn1%d / chat_li%d / c_nme%d",
+          "role": "controles mostrar/ocultar e menu",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+              "lines": [
+                768,
+                776,
+                829,
+                831,
+                868,
+                870
+              ]
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "default_box_content_size_px": [
+          353,
+          120
+        ],
+        "field_origin_px": [
+          "0",
+          "H-164"
+        ],
+        "city_origin_px": [
+          "0",
+          "H-209"
+        ],
+        "min_size_px": [
+          253,
+          120
+        ],
+        "max_size_px": [
+          "W*2/3",
+          "H/2"
+        ],
+        "font_line_height_px": 15,
+        "input_text_origin_px": [
+          "55",
+          "H-23"
+        ],
+        "evidence": [
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+            "lines": [
+              231,
+              239,
+              1631,
+              1645
+            ]
+          },
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.h",
+            "lines": [
+              27,
+              31,
+              45,
+              52,
+              67,
+              69
+            ]
+          }
+        ]
+      },
+      "notes": [
+        "Dimensão padrão353×120 vem de253+100, mas pode ser restaurada de opções salvas.",
+        "c_cij é um esquema de nove imagens; preservar bordas/fatias em vez de esticar um screenshot completo.",
+        "Nesta fase só há mapeamento visual; o protótipo não ganha conexão/chat MMO."
+      ]
+    },
+    {
+      "id": "inventory",
+      "name": "Inventário EP3 ativo: itens e equipamentos",
+      "primary_file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.cpp",
+      "active_entry_point": {
+        "class": "CINFInvenExtend",
+        "evidence": [
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+            "lines": [
+              596,
+              601
+            ],
+            "note": "CINFInven antigo comentado; CINFInvenExtend ativo"
+          },
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.cpp",
+            "lines": [
+              230,
+              243
+            ],
+            "note": "Repassa pack aos painéis itens/equipamentos"
+          }
+        ]
+      },
+      "anchor": "duas janelas arrastáveis, coordenadas padrão fixas",
+      "resources": [
+        {
+          "key": "w_wi12",
+          "role": "painel itens",
+          "default_window_origin_px": [
+            0,
+            241
+          ],
+          "local_background_origin_px": [
+            0,
+            0
+          ],
+          "natural_size": "obtida do recurso GetImgSize(); não há tamanho total fixo confiável no layout C++",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+              "lines": [
+                113,
+                114,
+                1564,
+                1572
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFCityBase.h",
+              "lines": [
+                135,
+                136
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+              "lines": [
+                3943,
+                3949
+              ]
+            }
+          ]
+        },
+        {
+          "key": "w_wi11",
+          "role": "painel equipamentos",
+          "default_window_origin_px": [
+            429,
+            241
+          ],
+          "local_background_origin_px": [
+            0,
+            0
+          ],
+          "natural_size": "obtida do recurso GetImgSize()",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenEquip.cpp",
+              "lines": [
+                217,
+                218,
+                1352
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFCityBase.h",
+              "lines": [
+                138,
+                139
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+              "lines": [
+                3946,
+                3949
+              ]
+            }
+          ]
+        },
+        {
+          "key": "w_w11",
+          "role": "textura interna do preview de equipamento",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenEquip.cpp",
+              "lines": [
+                303,
+                314
+              ]
+            }
+          ]
+        },
+        {
+          "key": "iFocus",
+          "role": "destaque do slot equipado",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenEquip.cpp",
+              "lines": [
+                208,
+                212,
+                2184,
+                2190
+              ]
+            }
+          ]
+        },
+        {
+          "key": "itemsl",
+          "role": "imagem de slot do controller",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.cpp",
+              "lines": [
+                224,
+                228
+              ]
+            }
+          ]
+        },
+        {
+          "key": "selicon / LM_inven",
+          "role": "overlays seleção / item indisponível",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+              "lines": [
+                132,
+                143
+              ]
+            }
+          ]
+        },
+        {
+          "key": "c_scrlb",
+          "role": "scrollbar itens",
+          "local_position_px": [
+            376,
+            30
+          ],
+          "size_px": [
+            11,
+            155
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+              "lines": [
+                127,
+                130,
+                1619,
+                1624
+              ]
+            }
+          ]
+        },
+        {
+          "key": "ieg3 / ieg1 / ieg0 / ieg2",
+          "role": "botão mostrar equipamento: up/down/selected/disabled",
+          "local_position_px": [
+            50,
+            227
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+              "lines": [
+                148,
+                157,
+                1637,
+                1642
+              ]
+            }
+          ]
+        },
+        {
+          "key": "xclose",
+          "role": "fechar: mesmo recurso para todos estados",
+          "local_positions_px": {
+            "items": [
+              405,
+              5
+            ],
+            "equipment": [
+              267,
+              5
+            ]
+          },
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+              "lines": [
+                162,
+                172,
+                1643,
+                1648
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenEquip.cpp",
+              "lines": [
+                1363,
+                1370
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "ig%d",
+          "range": [
+            0,
+            10
+          ],
+          "role": "peso/capacidade equipado",
+          "local_position_px": [
+            11,
+            206
+          ],
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenEquip.cpp",
+              "lines": [
+                248,
+                259,
+                511,
+                526
+              ]
+            }
+          ]
+        },
+        {
+          "key_pattern": "%08d",
+          "pack": "Res-Tex/item.tex",
+          "role": "ícones de itens/equipamentos via SourceIndex; override por shape-item",
+          "evidence": [
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFIcon.cpp",
+              "lines": [
+                42,
+                58
+              ]
+            },
+            {
+              "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.cpp",
+              "lines": [
+                764,
+                778,
+                825,
+                847
+              ]
+            }
+          ]
+        }
+      ],
+      "item_grid": {
+        "columns": 10,
+        "rows": 6,
+        "cell_size_px": [
+          30,
+          30
+        ],
+        "stride_px": [
+          32,
+          32
+        ],
+        "local_slot_origin_px": [
+          51,
+          30
+        ],
+        "local_icon_origin_formula_px": [
+          "52+32*column",
+          "31+32*row"
+        ],
+        "default_first_slot_absolute_px": [
+          51,
+          271
+        ],
+        "default_first_icon_absolute_px": [
+          52,
+          272
+        ],
+        "step_extent_px": [
+          320,
+          192
+        ],
+        "evidence": [
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.h",
+            "lines": [
+              18,
+              29
+            ]
+          },
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+            "lines": [
+              41,
+              44,
+              415,
+              416
+            ]
+          }
+        ]
+      },
+      "equipment_preview": {
+        "local_offset_px": [
+          0,
+          19
+        ],
+        "size_px": [
+          290,
+          250
+        ],
+        "note": "Subárea de preview 3D; não é a dimensão da janela inteira.",
+        "evidence": [
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenEquip.cpp",
+            "lines": [
+              108,
+              111
+            ]
+          }
+        ]
+      },
+      "notes": [
+        "Não usar a origem global do antigo CINFInven nem seus offsets como se fossem o inventário EP3 ativo.",
+        "Itens, equipamento, contagens e SPI no jogo vêm de StoreData/servidor; reconstrução visual deve usar somente dados locais explicitamente identificados.",
+        "Mapa adicional com botões e slots equipados em inventory-source-notes.txt."
+      ],
+      "equipment_slots": {
+        "cell_size_px": [
+          30,
+          30
+        ],
+        "icon_inset_px": [
+          1,
+          1
+        ],
+        "slots": [
+          {
+            "enum": "POS_PROW",
+            "role": "radar",
+            "local_xy": [
+              11,
+              96
+            ]
+          },
+          {
+            "enum": "POS_PROWIN",
+            "role": "computador",
+            "local_xy": [
+              254,
+              96
+            ]
+          },
+          {
+            "enum": "POS_PROWOUT",
+            "role": "arma primária",
+            "local_xy": [
+              11,
+              61
+            ]
+          },
+          {
+            "enum": "POS_WINGIN",
+            "role": "marca / efeito",
+            "local_xy": [
+              219,
+              26
+            ]
+          },
+          {
+            "enum": "POS_WINGOUT",
+            "role": "arma secundária",
+            "local_xy": [
+              254,
+              61
+            ]
+          },
+          {
+            "enum": "POS_CENTER",
+            "role": "armadura",
+            "local_xy": [
+              11,
+              166
+            ]
+          },
+          {
+            "enum": "POS_REAR",
+            "role": "motor",
+            "local_xy": [
+              254,
+              131
+            ]
+          },
+          {
+            "enum": "POS_ACCESSORY_UNLIMITED",
+            "role": "acessório / tanque",
+            "local_xy": [
+              11,
+              131
+            ]
+          },
+          {
+            "enum": "POS_ACCESSORY_TIME_LIMIT",
+            "role": "acessório temporário",
+            "local_xy": [
+              254,
+              166
+            ]
+          },
+          {
+            "enum": "POS_PET",
+            "role": "pet",
+            "local_xy": [
+              46,
+              26
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenEquip.cpp",
+            "lines": [
+              57,
+              90,
+              2275,
+              2305,
+              2624,
+              2649
+            ]
+          },
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/Common/AtumParam.h",
+            "lines": [
+              1515,
+              1535
+            ]
+          }
+        ]
+      },
+      "text_layout": {
+        "spi_right_aligned_px": [
+          243,
+          244
+        ],
+        "war_points_right_aligned_px": [
+          367,
+          244
+        ],
+        "capacity_right_aligned_px": [
+          367,
+          225
+        ],
+        "evidence": [
+          {
+            "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+            "lines": [
+              54,
+              60,
+              300,
+              311,
+              324,
+              332
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Nenhum executável legado foi executado; análise de texto apenas.",
+    "IDs são chaves dos registros CGameData; extensão/formato real das imagens deve vir da extração. Não presumir que todo registro seja TGA ou atlas.",
+    "Imagens não estavam presentes no repositório de fonte; cores, transparência e dimensões naturais ainda precisam ser verificados nos recursos baixados.",
+    "Detalhes são do fonte EP3.5 local; cliente oficial moderno pode ter diferenças visuais ou novos registros.",
+    "Não houve alteração do cliente Godot nesta etapa."
+  ],
+  "open_questions": [
+    "Confrontar chaves case-sensitive e dimensões do interface.tex baixado contra este mapa.",
+    "Obter screenshot original em voo e com inventário aberto para validar aparência e estado.",
+    "Preservar separação entre dados locais de demonstração e serviços MMO reais."
+  ],
+  "reference_layout_1024x768": {
+    "hud_origin": [
+      0,
+      0
+    ],
+    "radar_background": [
+      884,
+      34
+    ],
+    "radar_player": [
+      949,
+      98
+    ],
+    "radar_terrain": [
+      895,
+      44
+    ],
+    "quick_slot_origin": [
+      353,
+      734
+    ],
+    "xp_background": [
+      395,
+      717
+    ],
+    "xp_fill": [
+      402,
+      720
+    ],
+    "chat_default_field": [
+      0,
+      604
+    ],
+    "chat_input_background": [
+      3,
+      748
+    ],
+    "inventory_items": [
+      0,
+      241
+    ],
+    "inventory_equipment": [
+      429,
+      241
+    ],
+    "note": "Coordenadas calculadas das fórmulas do fonte para referência 1024×768; isso não demonstra que todas as imagens usem essa resolução internamente."
+  },
+  "source_snapshot": [
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/Common/AtumParam.h",
+      "sha256": "0bee3d02698d3c9e49c968c7a37db4f608de5fa004bf93c732021f89dcc7c897",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFBase.cpp",
+      "sha256": "8e352a4c24cc10c35d3c29d253f9a77fe6c12da1764aa2b4bd740a26a77d3b5d",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFCityBase.h",
+      "sha256": "e607e4dafd9f0ad8cef7c42fdd68ab7ab9c8b46c1610b68d268bedc064a31c25",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMain.cpp",
+      "sha256": "721eb2efb8ea9ce6f6b31bc8cfa963b108420d1d1b2f7f44ec03859dae7d39d5",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.cpp",
+      "sha256": "9e0aea8d5475e99ff099ae55741068c5cee23c1d1412f6949ef1fbb2730a96be",
+      "role": "central"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainChat.h",
+      "sha256": "2a0aff1e479d7ca1eb86883848c3dd210534a0c97a4e338cfa9d3a2fbd540f4a",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainMiniMap.cpp",
+      "sha256": "03dfcf4fe378b466382b52f1a50641f6d28277f29f98eb14a9c81922faf4089c",
+      "role": "central"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.cpp",
+      "sha256": "d8ac953d9272ca5ef3e2fe71bd0e9047b47886991dd9fb42befbd36a43c5587f",
+      "role": "central"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainQSlot.h",
+      "sha256": "7de0364bffc3470c71a8b9542778c7797e60f0c9b19565fb0f647fe84ecb26ba",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.cpp",
+      "sha256": "1e4fbea34a57b0fde46514f63b335937eb3c6d64d826c200f3376f0b0aaa512b",
+      "role": "central"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFGameMainUnitInfoBar.h",
+      "sha256": "cfa09bdfbf58b77acb89c95e12166fc083506e78a4fee30c66ecea94b99f96f8",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFIcon.cpp",
+      "sha256": "f2ebf11ed1270602646cb3de51f15b1253e330cf361acb3f917aa3d9590d9c72",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenEquip.cpp",
+      "sha256": "91203d80d2db5e0f5f42aa8e67529cf6f558482bfff3867f4b4a180d213587d4",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.cpp",
+      "sha256": "9641ec88c42ce33675f3f4b1df35d88c93fcc94947a4f39db1f35babf7f0dd15",
+      "role": "central"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenExtend.h",
+      "sha256": "500cbac8d1507a19e056a7f35af3f42e983f6e1c5fec31d09eb42b5d6a16d24f",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFInvenItem.cpp",
+      "sha256": "dc26b6a2f2d39c9a05efe2ea249a15feab71e4739e7dbb211df335991e56bbd4",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.cpp",
+      "sha256": "79460d78b9851f9a3fff36ec9ebd3842e45b79d134b7eac5dd68f2bcaa08ab08",
+      "role": "central"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/INFTarget.h",
+      "sha256": "7409b69fa55f40863b919f57fb98fba521da67471f2bb4f2f2a7023645ef29a8",
+      "role": "supporting"
+    },
+    {
+      "file": "/workspace/targets/ace-online-ep35/Client/InterfaceLib/main/Interface.cpp",
+      "sha256": "2186d24a90895ec803de00ab9d00a46acf393d52e48fea1d4404e09599cbc7ec",
+      "role": "supporting"
+    }
+  ]
+}

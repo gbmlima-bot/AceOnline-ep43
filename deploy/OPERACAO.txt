@@ -1,0 +1,92 @@
+ACE Modern — servidor dedicado inicial (Linux x86_64)
+
+Pacote e escopo
+Um processo Godot4.7.2, SQLite/WAL e uma sala autoritativa no mapa3002.
+Comece com2 pilotos; o runtime limita a configuração a8. VPS sugerido inicial:
+2vCPU/4GBRAM, armazenamentoSSD, DockerEngine+pluginCompose. Esta configuração
+não prova capacidade para8 jogadores: monitore tempo de tick, RAM e latência.
+O pacote inclui regras e dados de colisão; não contém os GLBs, texturas, músicas,
+executáveis originais, perfis locais ou credenciais. Use o cliente compatível.
+
+Gerar a partir do projeto
+python3 tools/build_server_bundle.py --output build/server-bundle --godot /caminho/Godot_v4.7.2-stable_linux.x86_64
+O checksum oficial do engine é obrigatório. O bundle guarda manifestos de SHA256
+e uma whitelist de arquivos. Docker reconstrói o app a partir dessa mesma lista.
+Para distribuir: acrescente --archive /caminho/ace-server.tar.gz. Arquivo gzip/tar
+tem ordem, ownership e timestamps normalizados para repetibilidade.
+
+Teste local sem domínio/certificado
+Entre no diretório do bundle e execute:
+export COMPOSE_FILE=compose.yaml:compose.local.yaml
+docker compose build game
+docker compose up -d game
+docker compose ps
+curl --fail http://127.0.0.1:9081/readyz
+Endpoint do cliente: ws://127.0.0.1:9080/play (somente teste local).
+As portas9080/9081 ficam publicadas apenas em127.0.0.1. Os scripts operacionais
+herdam COMPOSE_FILE; mantenha essa variável enquanto operar o modo local.
+No ambiente gerenciado, buildsHTTPS podem precisar do CA fornecido:
+docker build --secret id=proxy_ca,src=/etc/ssl/certs/ca-certificates.crt --target game -t ace-modern-server:0.8.0 .
+Esse certificado é um segredo temporário de build, não entra nas camadas.
+
+VPS público com HTTPS
+No bundle, copie .env.example para .env e configure ACE_DOMAIN e ACME_EMAIL.
+Aponte o registroDNS A para o VPS; configure AAAA somente seIPv6 funcionar.
+Libere TCP80/443 no firewall. Não publique9080/9081 na Internet.
+unset COMPOSE_FILE
+docker compose build
+docker compose up -d
+curl --fail https://SEU-DOMINIO/readyz
+Endpoint do cliente: wss://SEU-DOMINIO/play.
+Caddy obtém/renova os certificados; seus volumes persistem chaves e estadoACME.
+A rota /metrics é interna ao jogo e não é exposta pelo proxy.
+Nenhuma implantação pública foi realizada como parte deste pacote.
+
+Pilotos e tokens
+./scripts/create-pilot.sh "Piloto1"
+Execute novamente para o segundo piloto. O token aparece apenas no terminal do
+operador nessa criação: entregue-o individualmente e mantenha-o fora de logs,
+prints públicos e arquivos de configuração compartilhados.
+Rotacionar um token revoga o anterior:
+docker compose exec -T game godot --headless --path /opt/ace/app --log-file /dev/null --script res://admin.gd -- --data-dir=/data rotate-token PILOT_ID
+Tokens não são argumentos de inicialização do servidor nem variáveis do Caddy.
+
+Backup consistente
+./scripts/backup.sh ./backups/ace-online-manual.sqlite
+O script usa a APIbackup SQLite enquanto a sala funciona, verifica integridade,
+salva um arquivo privado0600 e um SHA256. Não copie apenas o arquivoDB enquanto
+o servidor usaWAL: páginas confirmadas podem estar no arquivo-wal.
+Mantenha uma cópia externa aoVPS e aplique retenção conforme o uso. Os backups
+contêm dados dos pilotos e devem permanecer privados.
+
+Restaurar
+./scripts/restore.sh /caminho/absoluto/backup.sqlite
+Primeiro o script verifica/envia a cópia privada pelo stdin e cria um backup do
+estado atual. Depois para o jogo, faz checkpoint offline, restaura atomicamente
+e sobe o serviço. Se algum passo após a parada falhar, o script deixa o jogo parado
+para diagnóstico; não apagaWAL nem substitui dados sem validar o backup.
+Confirme /readyz antes de reconectar. Restauração volta todo o estado ao snapshot
+escolhido, incluindo progresso e ledger de requisições idempotentes.
+
+Operação
+docker compose logs --tail100 game
+docker compose logs --tail100 caddy
+docker compose stop --timeout30
+docker compose up -d
+O supervisor traduzSIGTERM em um pedido local privado; o jogo confirma o estado,
+fechaSQLite e termina. Após27s sem resposta há término forçado, dentro do prazo
+de30s doCompose. A sinalização não abre uma rotaHTTP administrativa pública.
+O jogo/Caddy rodam comoUID10001, filesystemraiz somenteleitura, /tmp emtmpfs,
+sem capabilities e com no-new-privileges. Só os volumes de dados são graváveis.
+Logs têm rotação10MB×3 por serviço. A imagem do jogo tem limite3GB e1,75vCPU;
+Caddy192MB, para reservar capacidade aoSO em umVPS4GB. Aumente limites apenas
+depois de observar uso real. Não execute docker compose down -v ao atualizar:
+isso remove os volumes persistentes.
+
+Atualizar
+Crie um backup; pare o jogo; carregue/construa o novo pacote; suba os containers
+usando o mesmo nome de projeto ace-online e seus volumes. A migração do schema
+é transacional. Uma versão antiga recusa banco com schema superior ao suportado;
+para rollback, use uma imagem compatível e o backup correspondente.
+As imagensbase e o frontendDockerfile estão fixados por digest emimages.lock.json.
+O binário Godot e a extensãoSQLite também têm proveniência no pacote.

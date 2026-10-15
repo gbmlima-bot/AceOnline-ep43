@@ -1,0 +1,104 @@
+Biblioteca original absorvida no ACE Modern
+
+Fonte: cliente oficial ACEonline-20250709.7z, SHA256
+8395f1f33dda8165f70f30d2a6ad094c5f64e144403fce98337e5012be795841.
+Todos os 10.798 arquivos e 25 diretórios foram inventariados. Os 4.767.808.277
+bytes de arquivos foram conferidos por tamanho, CRC32 do 7z e SHA256 calculado.
+Um registro de inventário comprova a origem dos bytes; não significa que um
+programa ou sistema original foi portado. Executáveis Windows, DLLs, navegador
+embarcado e anti-cheat não foram executados nem incorporados ao novo jogo.
+
+Dados disponíveis em client/assets/original_library/catalogs:
+- 16.079 definições ITEM do OMI atual, incluindo requisitos, preço, categorias,
+ atributos já validados de armas/motores, nomes e descrições nativos.
+- 557 definições de habilidades (Kind50..53), como metadados consultáveis.
+- 2.715 registros de prefixos/sufixos e 39.230 receitas de combinação.
+- 215 definições de edifícios/NPCs e seus tipos de serviço originais.
+- 1.340 apresentações de monstros e 2.462 definições de objetos de mapas.
+- 5 documentos nativos de ajuda/FAQ/tooltips.
+-O OMI completo, 14.486.036 bytes, preservado em omi-native.bin. Campos não
+ validados e seções posteriores permanecem dados opacos; não viram regras
+ presumidas. OMI1/OMI_O e outras definições ainda não interpretadas são
+ conservadas separadamente. Os scripts de missões recuperados continuam nos
+ catálogos legacy_rules, mantidos pelo importador específico de missões.
+
+Os catálogos de habilidades, receitas e serviços não implementam por si só
+conjuração, comércio, refinaria, leilões, pets, sorteios ou a economia online.
+A probabilidade bruta de afixos não é normalizada pela escala histórica:
+valores do cliente atual excedem 100.000 e a escala atual não foi comprovada.
+O registro atual de receita tem 60 bytes e conserva 4 bytes finais sem atribuir
+um comportamento a eles. Nomes CP949 mantêm bytes inválidos visíveis como
+sequências literais\\xNN; os bytes originais permanecem disponíveis na fonte.
+Os atributos de 64 bits também possuem representação hexadecimal para evitar
+perda de bits ao atravessar leitores JSON que usam números em ponto flutuante.
+
+Progressão recuperada do código público legado:
+-Tabela arrLevelExperienceNew de 126 linhas: 0..125; limite nativo 125.
+-Tabela g_arrLevelStatValue de 342 linhas, com os literais originais retidos.
+-GetInitialExperienceOfLevel(level) usa Experience da linha level-1.
+ Portanto o início do nível 9 corresponde a 8008 XP e o próximo limite a 12699 XP;
+ a primeira passagem de nível 1 para 2 ocorre em 91 XP.
+-A coluna cumulativa Experience é a referência. Inconsistências existentes na
+ coluna ExperienceIncreament dos níveis altos foram preservadas, sem correção
+ inventada. A fonte é o repositório público EP3.5 fixado no commit
+7c3e47ac47844e5c415d356a94d6201a0b9a38c4, e não uma exportação do servidor de 2025.
+
+Imagens disponíveis em client/assets/original_library/icons:
+- 10.127 imagens TGA originais convertidas para PNG, preservando os pixels RGBA.
+- 25 contêineres de imagens interpretados; 33 entradas de fontes inspecionadas.
+- 290 entradas que não são imagens conservadas como dados binários opacos,
+ com origem, offset, tamanho e hash. Entradas repetidas possuem arquivos
+ distintos: nenhum payload é sobrescrito por uma chave repetida.
+- 3.053 ícones pequenos e 2.603 ícones grandes nativos. 14.139 definições ITEM
+ têm um vínculo exato ao ícone; as demais usam explicitamente o ícone padrão
+ original 07900270, quando disponível.
+-O vínculo geral usa ITEM.SourceIndex com 8 dígitos. Habilidades usam
+ SKILL_BASE_NUM(SourceIndex). A alteração de aparência de uma instância
+ equipada exige seu ShapeItemNum; o catálogo de templates não inventa uma.
+-Cada PNG possui hash do arquivo e hash dos pixels RGBA decodificados. As 531
+ imagens da interface azul existente permanecem em seu diretório original.
+
+Áudio disponível em client/assets/original_library/audio:
+- 118 MP3 originais decodificáveis e 616 efeitos WAV PCM do sound.dat.
+- 72 identificadores numéricos de BGM e 18 eventos com vínculo comprovado
+ nos nomes/constantes e chamadas do código original.
+-Música de mapa usa MAP_INFO.Bgm -> BGM_<id>.mp3. Não pressupõe que o índice
+ do arquivo de música seja igual ao índice do mapa.
+-Eventos incluem menus, seleção, mira, pouso/decolagem, portais, boost,
+ alertas, movimento terrestre, recarga e obtenção de item.
+-Todos os MP3 foram examinados com ffprobe. WAVs têm parâmetros, contagem
+ de frames e hash do PCM. Disparos e impactos usam descritores específicos.
+
+Vínculos de combate comprovados:
+- 1.435 armas catalogadas: 1.420 com áudio de disparo e 1.434 com áudio de impacto.
+- O disparo usa o descritor da arma equipada: SourceIndex+100000 para primária,
+ SourceIndex-700000 para secundária. WEAPON_BODYCON_FIRE_1 é 4, deslocado por
+ 0/10/20/30 bits para B/M/A/I. A máscara FIRE do descritor de projétil é outra
+ entrada e não foi confundida com o disparo da arma equipada.
+- No equipamento inicial, B/M/I usam sons 260 (primária) e 174 (secundária).
+ A-GEAR usa 266 e 410901. Os impactos correspondentes são 302/6 e 1123/25.
+- 1.340 apresentações de monstros consultadas: 1.298 possuem áudio nativo de
+ explosão. Hornian usa 400500; os inimigos de treinamento usam 400516.
+- Os 4 GEARs iniciais possuem áudio de explosão 44. Nenhum som de dano ao
+ jogador foi inventado quando o descritor não informa esse som.
+- O registro distingue campos ausentes e descritores que não fecham no layout.
+- Os corpos nativos de 88 bytes estão preservados em
+ docs/evidence/weapon-audio-descriptors.json, com offset/hash e campo de som.
+ CharacterInfo.cpp despacha esse campo; AtumSound.cpp consulta os 8 primeiros
+ caracteres no sound.dat. A escolha de ataque de NPCs continua dependendo de
+ dados de servidor; não se infere um slot a partir do nome de um arquivo.
+
+Reprodução da importação, sem executar programas do cliente:
+python3 tools/import_original_library.py --source <cliente-descompactado>
+ --archive <ACEonline-20250709.7z> --inventory <archive-inventory.json>
+ --legacy-source <AceOnline-ep35>
+
+Dependências de conversão: Python 3, Pillow e ffprobe. As fases catalogs, images,
+audio e inventory podem ser executadas separadamente. A geração de JSON usa
+substituição atômica para que leitores nunca recebam arquivos incompletos.
+
+Verificação: python3 tools/test_import_original_library.py
+14 testes verificam limites dos leitores, rejeição de expressões executáveis,
+chaves duplicadas nativas, 16.079 registros ITEM e as seções adicionais contra
+os bytes originais, 10.127 PNGs e seus pixels, 734 áudios, 616 streams PCM,
+progressão contra os literais e a cobertura integral do inventário.

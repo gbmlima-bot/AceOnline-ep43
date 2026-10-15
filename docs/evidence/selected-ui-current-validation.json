@@ -1,0 +1,41 @@
+{
+  "manifest": "client/assets/legacy_ui/manifest.json",
+  "manifest_sha256": "4542e0dbddbb3c756a3f8049af814b80d7a4a95081e7e85dff1dd7803b2121e4",
+  "group_layout": "client/assets/legacy_ui/group_layout.json",
+  "group_layout_sha256": "e86700174579181c40876b7ae0d1472af29cf67fbdab43e741f7fc90b282cb58",
+  "selected_count": 531,
+  "selected_bytes": 6991908,
+  "all_payload_bytes_match_source_hashes": true,
+  "header_combinations": [
+    {
+      "image_type": 2,
+      "depth": 32,
+      "descriptor_alpha_bits": 8,
+      "top_origin": false,
+      "count": 12
+    },
+    {
+      "image_type": 10,
+      "depth": 32,
+      "descriptor_alpha_bits": 8,
+      "top_origin": false,
+      "count": 519
+    }
+  ],
+  "method": "Leitura SHA-256/tamanho dos 531 arquivos e conferência de source_sha256; sem execução do cliente.",
+  "context": "Snapshot final com extras FAQ/altímetro/SYSTEM/chat; substitui totais intermediários de 446 e 519 assets nas descrições atuais.",
+  "final_extra_assets": [
+    "altig",
+    "altip",
+    "op_faq0",
+    "op_faq1",
+    "op_faq2",
+    "op_faq3",
+    "sysbar",
+    "close",
+    "copticon0",
+    "copticon1",
+    "copticon2",
+    "copticon3"
+  ]
+}
