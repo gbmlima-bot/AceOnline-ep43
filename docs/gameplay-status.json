@@ -465,7 +465,7 @@
     }
   },
   "validation": {
-    "state": "desktop_exports_and_linux_runtime_passed",
+    "state": "release_verified_on_linux",
     "release_report_current": true,
     "all_reported_suites_pass": true,
     "reports": [
@@ -494,8 +494,9 @@
     "python_tests_passed": 132,
     "python_log": "verification/completion-python-tests-v09.log",
     "desktop_exports_verified": true,
-    "release_assets_remote_verified": false,
-    "exported_packs_runtime_on_linux_verified": true
+    "release_assets_remote_verified": true,
+    "exported_packs_runtime_on_linux_verified": true,
+    "publication_status": "published"
   },
   "deliverables": {
     "release_url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/tag/ace-modern-v0.9.0",

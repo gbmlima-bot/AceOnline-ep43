@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "release": "0.9.0",
+  "configured_base": "/workspace/ace-modern-v09-configured",
+  "command": [
+    "/workspace/tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/workspace/ace-modern-v09-configured/client",
+    "--audio-driver",
+    "Dummy",
+    "--quit-after",
+    "3"
+  ],
+  "isolated_xdg_data_home": "/tmp/ace-v09-configured-userdata-v4drpz7i",
+  "user_data_files": [
+    "godot/app_userdata/ACE Modern/progress-v09.json",
+    "godot/app_userdata/ACE Modern/logs/godot.log"
+  ],
+  "exit_code": 0,
+  "errors": [],
+  "log": "verification/configured-startup-v09.log",
+  "startup_frames": 3,
+  "headless": true,
+  "native_macos_windows_execution": false,
+  "cache": {
+    "copied_directories": [
+      "imported"
+    ],
+    "copied_root_files": [
+      "global_script_class_cache.cfg",
+      "uid_cache.bin",
+      ".gdignore"
+    ],
+    "file_count": 42459,
+    "bytes_shared": 3227993721,
+    "all_files_hardlinked": true,
+    "source_regular_files_verified": true,
+    "source_symlinks": 0,
+    "target_symlinks": 0,
+    "public_cache_sha256_unchanged": true,
+    "fingerprint_sha256": "863152259a88298679ff8376daf7e7ce2c4e79b31b2ccf264271565df0ec4ece"
+  },
+  "original_asset_metadata_unchanged": 45579,
+  "project_sha256": "4d22c7da491bfe3b400581135db414b9a779848ab6e2f6cf03629fcd304c34c5",
+  "seconds": 30.7,
+  "scope": "source game startup only; no editor/import/export/userdata cache copied"
+}

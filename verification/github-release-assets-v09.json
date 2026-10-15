@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "release": "0.9.0",
+  "repository": "gbmlima-bot/AceOnline-ep43",
+  "release_id": 414376062,
+  "tag": "ace-modern-v0.9.0",
+  "tag_target_commit": "bba1f587d65a6dbbc9b9f9db36b7bd560854bc4a",
+  "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/tag/ace-modern-v0.9.0",
+  "draft": false,
+  "published_at": "2026-10-15T23:47:28Z",
+  "verified_at": "2026-10-15T23:47:40.326318+00:00",
+  "verified_assets": 17,
+  "sha256_unavailable": [],
+  "all_planned_assets_remote_verified": true,
+  "all_digests_match": true,
+  "original_zips_preserved": true,
+  "assets": [
+    {
+      "name": "GUIA-DOWNLOAD-v0.9.md",
+      "size": 7901,
+      "digest": "sha256:eb5f40def21c1110197b1493f38a3b8677506565ef702a503bcdf83ebff378a7",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/GUIA-DOWNLOAD-v0.9.md"
+    },
+    {
+      "name": "GUIA-SERVIDOR-v0.9.md",
+      "size": 14845,
+      "digest": "sha256:2e49534922739edcf83b0b622e412d89120d86d4e7caf334e95866600e065b15",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/GUIA-SERVIDOR-v0.9.md"
+    },
+    {
+      "name": "ace-completion-source-kit-v0.9.zip",
+      "size": 91952148,
+      "digest": "sha256:885477ce347801f7fdc90c74b24be6a3215eb974f8d5d5490b60e472de37ebcf",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/ace-completion-source-kit-v0.9.zip"
+    },
+    {
+      "name": "ace-modern-online-macos-v0.9.zip.part-001",
+      "size": 1500000000,
+      "digest": "sha256:5f7d5279cdbfa90357382cd6161884a964ce7470d65783bd50cd33ffba99f0ca",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/ace-modern-online-macos-v0.9.zip.part-001"
+    },
+    {
+      "name": "ace-modern-online-macos-v0.9.zip.part-002",
+      "size": 1500000000,
+      "digest": "sha256:8db604c6c6807584b0520702c1129dad07f45a2195676bd443a5500cc8fa2e91",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/ace-modern-online-macos-v0.9.zip.part-002"
+    },
+    {
+      "name": "ace-modern-online-macos-v0.9.zip.part-003",
+      "size": 363736267,
+      "digest": "sha256:cc0df8c9a82867016ac220ad6d96f5f31f809ba209c20049ee3f47b8c4a5ca2b",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/ace-modern-online-macos-v0.9.zip.part-003"
+    },
+    {
+      "name": "ace-modern-online-macos-v0.9.zip.parts.json",
+      "size": 876,
+      "digest": "sha256:f231561514d2c30365770e7055b1a1950a16f60a31e7341dc0d3536debc1d742",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/ace-modern-online-macos-v0.9.zip.parts.json"
+    },
+    {
+      "name": "ace-modern-online-windows-v0.9.zip.part-001",
+      "size": 1500000000,
+      "digest": "sha256:21058ae20f9d64ed5c33d03bcfa748ef680b69d8bd93793d58b5efa922abb65c",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/ace-modern-online-windows-v0.9.zip.part-001"
+    },
+    {
+      "name": "ace-modern-online-windows-v0.9.zip.part-002",
+      "size": 1500000000,
+      "digest": "sha256:605bc32789b855b76b9d2d278a720e464f14a77775754c233b8811117b9d26c9",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/ace-modern-online-windows-v0.9.zip.part-002"
+    },
+    {
+      "name": "ace-modern-online-windows-v0.9.zip.part-003",
+      "size": 340991020,
+      "digest": "sha256:e2463a7d943f47f838602e7e062a0ae5229fababdd084d7369b4b0f7aabbdf96",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/ace-modern-online-windows-v0.9.zip.part-003"
+    },
+    {
+      "name": "ace-modern-online-windows-v0.9.zip.parts.json",
+      "size": 884,
+      "digest": "sha256:cb01da767f5f28cb07acb75539119fbfef0c116117a2f685b896e38d637cc3c0",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/ace-modern-online-windows-v0.9.zip.parts.json"
+    },
+    {
+      "name": "completion-validation-v09.json",
+      "size": 8289,
+      "digest": "sha256:a6fce186cc3ac957c8dc3e3ba175448dbd8e572c4aff7c889ba3f113cd66eb01",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/completion-validation-v09.json"
+    },
+    {
+      "name": "delivery-verification-v0.9.json",
+      "size": 1030,
+      "digest": "sha256:c62e3b14263023b688c28337d5071b840c9ce3f2facd378aef6f8b88a55ff0d7",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/delivery-verification-v0.9.json"
+    },
+    {
+      "name": "install_macos_v09.sh",
+      "size": 10156,
+      "digest": "sha256:63779b7853ea8acf1a1682759552df6b8127c03bec713d185fc59cbb3adcb898",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/install_macos_v09.sh"
+    },
+    {
+      "name": "preview-online-v0.9.png",
+      "size": 1173581,
+      "digest": "sha256:c7fddc7cb3c5de58c3d297f5fef4b574e468ff97800d112711b8553c0d629c61",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/preview-online-v0.9.png"
+    },
+    {
+      "name": "real-source-update-v09.json",
+      "size": 4683,
+      "digest": "sha256:bf35b67b41f44ef4e0d1d10ddd50f9d8fde07003538da2e7dfe23451432faa7c",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/real-source-update-v09.json"
+    },
+    {
+      "name": "release_parts.py",
+      "size": 11978,
+      "digest": "sha256:d414c10bd1dff18820f36822cd5ac54e1cd1320b537d85a49b61dd16c39e0756",
+      "state": "uploaded",
+      "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/release_parts.py"
+    }
+  ],
+  "installer_anonymous_download": {
+    "url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.9.0/install_macos_v09.sh",
+    "http_status": 200,
+    "bytes": 10156,
+    "sha256": "63779b7853ea8acf1a1682759552df6b8127c03bec713d185fc59cbb3adcb898",
+    "expected_sha256": "63779b7853ea8acf1a1682759552df6b8127c03bec713d185fc59cbb3adcb898",
+    "authorization_header_sent": false,
+    "cookies_sent": false,
+    "verified": true
+  },
+  "native_macos_windows_execution_tested": false,
+  "public_VPS_deployment_tested": false
+}

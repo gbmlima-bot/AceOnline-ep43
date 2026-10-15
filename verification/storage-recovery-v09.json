@@ -5,5 +5,28 @@
   "temporarily_paused_generated_cache_files": 3707,
   "temporarily_paused_bytes": 2650198879,
   "all_cache_bytes_restored_and_sha256_verified": true,
-  "original_archives_preserved": true
+  "original_archives_preserved": true,
+  "schema_version": 1,
+  "release": "0.9.0",
+  "legacy_conversion_cache_removed": true,
+  "final_game_assets_original_archives_preserved": true,
+  "public_godot_import_cache_preserved": true,
+  "configured_source_project_preserved": true,
+  "original_release_zip_files_preserved": true,
+  "release_parts_not_removed_by_recovery": true,
+  "removed_generated_cache": "/tmp/ace-completion-derived-cache",
+  "removed_temporary_kit_extractions": [
+    "/tmp/ace-v09-configure-test",
+    "/tmp/ace-v09-configure-final-test"
+  ],
+  "legacy_analysis_symlinks_requiring_cache_regeneration": [
+    "/workspace/analysis/ace-library/actor-unpacked",
+    "/workspace/analysis/ace-library/actor-conversion",
+    "/workspace/analysis/ace-library/gear-unpacked",
+    "/workspace/analysis/ace-library/gear-conversion"
+  ],
+  "regeneration_scope": "Temporary unpack/Assimp conversion cache only; final converted client assets and source archives remain available. Regenerate cache before reusing these analysis symlinks.",
+  "memory_oom_kill_observed": 1,
+  "new_oom_kills_during_resume": 0,
+  "no_gameplay_or_source_asset_changes": true
 }
