@@ -2,7 +2,7 @@
 
 Modernização de AirRivals/Ace Online para **macOS (Apple Silicon e Intel)** e **Windows x64**, com Godot **4.7.2**. A versão **0.8.0** acrescenta uma sala PvE com servidor autoritativo: dois pilotos compartilham inimigos, disparos, dano, habilidades e recompensas no mapa 3002, usando I-GEAR.
 
-[Baixar a versão 0.8.0](https://github.com/gbmlima-bot/AceOnline-ep43/releases/tag/ace-modern-v0.8.0) · [Instalar e operar o servidor](docs/ONLINE-PVE.md) · [Evidências dos testes](verification/)
+[Situação dos downloads](#downloads-e-fontes-completos) · [Instalar e operar o servidor](docs/ONLINE-PVE.md) · [Evidências dos testes](verification/)
 
 ![Cliente conectado a uma sala com dois pilotos](docs/preview-online-v0.8.png)
 
@@ -10,7 +10,9 @@ A captura acima mostra o conteúdo do pacote Mac executado pelo Godot em Linux, 
 
 ## Downloads e fontes completos
 
-A Release contém os clientes Mac e Windows, o kit independente do servidor Linux, os **fontes completos 0.8 com todos os assets**, documentação, manifestos e hashes SHA256. Cada arquivo grande foi dividido em partes de até 1,5 GB para respeitar o limite de 2 GB por arquivo do GitHub.
+**Publicação dos pacotes pendente.** O código desta branch já está público. Clientes Mac/Windows, kit do servidor e fontes completos com assets foram preparados e verificados localmente, mas o envio à Release está bloqueado pela autenticação da conexão atual em `uploads.github.com` (HTTP 401). A Release permanece em rascunho; estes downloads ainda não estão disponíveis no GitHub.
+
+As instruções abaixo descrevem os pacotes preparados para publicação, com manifestos e hashes SHA256. Cada arquivo grande será distribuído em partes de até 1,5 GB para respeitar o limite de 2 GB por arquivo do GitHub.
 
 Para um pacote dividido, baixe seu arquivo `.parts.json`, **todas** as partes `.part-001`, `.part-002` etc. e `release_parts.py` para a mesma pasta. Use Python 3.11 ou mais recente:
 
@@ -19,6 +21,12 @@ python3 release_parts.py restore ace-modern-online-macos-v0.8.zip.parts.json --o
 ```
 
 Troque o nome por `ace-modern-online-windows-v0.8.zip` ou `ace-modern-fontes-v0.8.zip`, conforme o pacote escolhido. A ferramenta verifica cada parte e o SHA256 do ZIP completo antes de disponibilizar o resultado. Depois extraia o ZIP normalmente. O kit `ace-online-kit-v0.8.zip` pode ser baixado e extraído diretamente.
+
+Para obter o código já publicado:
+
+```sh
+git clone --single-branch --branch ace-modern https://github.com/gbmlima-bot/AceOnline-ep43.git ace-modern
+```
 
 O histórico Git mantém os fontes, ferramentas, documentação e os dados numéricos necessários ao servidor. Os gigabytes de modelos, texturas e áudio ficam no ZIP completo da Release. Para editar o cliente gráfico, extraia **`ace-modern-fontes-v0.8.zip`** e abra `ace-modern/client/project.godot` no Godot 4.7.2. Essa extração já é a versão 0.8: não precisa aplicar o overlay 0.7 → 0.8 do kit. A primeira abertura importa os assets.
 
