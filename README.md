@@ -2,7 +2,7 @@
 
 Modernização de AirRivals/Ace Online para **macOS (Apple Silicon e Intel)** e **Windows x64**, com Godot **4.7.2**. A versão **0.8.0** acrescenta uma sala PvE com servidor autoritativo: dois pilotos compartilham inimigos, disparos, dano, habilidades e recompensas no mapa 3002, usando I-GEAR.
 
-[Situação dos downloads](#downloads-e-fontes-completos) · [Instalar e operar o servidor](docs/ONLINE-PVE.md) · [Evidências dos testes](verification/)
+[Baixar versão 0.8](https://github.com/gbmlima-bot/AceOnline-ep43/releases/tag/ace-modern-v0.8.0) · [Instalar e operar o servidor](docs/ONLINE-PVE.md) · [Evidências dos testes](verification/)
 
 ![Cliente conectado a uma sala com dois pilotos](docs/preview-online-v0.8.png)
 
@@ -10,9 +10,11 @@ A captura acima mostra o conteúdo do pacote Mac executado pelo Godot em Linux, 
 
 ## Downloads e fontes completos
 
-**Publicação dos pacotes pendente.** O código desta branch já está público. Clientes Mac/Windows, kit do servidor e fontes completos com assets foram preparados e verificados localmente, mas o envio à Release está bloqueado pela autenticação da conexão atual em `uploads.github.com` (HTTP 401). A Release permanece em rascunho; estes downloads ainda não estão disponíveis no GitHub.
+Os aplicativos macOS/Windows, o kit do servidor e os fontes completos com assets estão disponíveis na [Release ACE Modern 0.8.0](https://github.com/gbmlima-bot/AceOnline-ep43/releases/tag/ace-modern-v0.8.0). O código está na branch `ace-modern`; a branch `main` do código legado foi preservada.
 
-As instruções abaixo descrevem os pacotes preparados para publicação, com manifestos e hashes SHA256. Cada arquivo grande será distribuído em partes de até 1,5 GB para respeitar o limite de 2 GB por arquivo do GitHub.
+Baixe na Release o manifesto e todas as partes do pacote escolhido: [`macOS`](https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.8.0/ace-modern-online-macos-v0.8.zip.parts.json), [`Windows`](https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.8.0/ace-modern-online-windows-v0.8.zip.parts.json) ou [`fontes completos`](https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.8.0/ace-modern-fontes-v0.8.zip.parts.json). A ferramenta [`release_parts.py`](https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.8.0/release_parts.py) recompõe os arquivos grandes. O [`kit do servidor`](https://github.com/gbmlima-bot/AceOnline-ep43/releases/download/ace-modern-v0.8.0/ace-online-kit-v0.8.zip) é um ZIP único.
+
+Os pacotes grandes estão divididos em partes de até 1,5 GB para respeitar o limite de 2 GB por arquivo do GitHub. Os manifestos registram tamanhos e hashes SHA256 para conferir cada parte e o ZIP completo.
 
 Para um pacote dividido, baixe seu arquivo `.parts.json`, **todas** as partes `.part-001`, `.part-002` etc. e `release_parts.py` para a mesma pasta. Use Python 3.11 ou mais recente:
 

@@ -1,0 +1,53 @@
+{
+  "release": "0.8.0",
+  "passed": true,
+  "verified_utc": "2026-10-15T15:03:16.637036+00:00",
+  "repository": "https://github.com/gbmlima-bot/AceOnline-ep43",
+  "branch": "ace-modern",
+  "source_url": "https://github.com/gbmlima-bot/AceOnline-ep43/tree/ace-modern",
+  "release_url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/tag/ace-modern-v0.8.0",
+  "release_tag": "ace-modern-v0.8.0",
+  "release_id": 413872002,
+  "release_published_at": "2026-10-15T15:01:02Z",
+  "repository_public": true,
+  "release_draft": false,
+  "package_publication_complete": true,
+  "original_main_preserved": true,
+  "main_sha": "816c7050806af637d89ef1e93874cb489454dd6b",
+  "release_assets": 20,
+  "remote_sha256_assets_verified": 20,
+  "public_download_urls_verified": 20,
+  "public_small_download_sha256_verified": 5,
+  "large_original_packages": [
+    {
+      "name": "ace-modern-online-macos-v0.8.zip",
+      "bytes": 3362117557,
+      "sha256": "5de3a098c210b78e3a10b8160fbf8f03bd18c630802c985765dd83d1a55d3db4",
+      "parts": 3
+    },
+    {
+      "name": "ace-modern-online-windows-v0.8.zip",
+      "bytes": 3339332663,
+      "sha256": "739a5370d80f7a0e2fddf525101dbb1445bfe171cc17bcd44aedbdbd11c1dae3",
+      "parts": 3
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.zip",
+      "bytes": 4010952640,
+      "sha256": "1d8acfa14f0a9fa9c6782c5811cab72172fba83a4001527b8b042f603c696f1c",
+      "parts": 3
+    }
+  ],
+  "server_kit": {
+    "name": "ace-online-kit-v0.8.zip",
+    "bytes": 93628840,
+    "sha256": "edeac3bf07e8a924a2c5ba497796a3fbc80be20406f88b256fc2978b8dcccd65"
+  },
+  "native_macos_windows_execution_performed": false,
+  "public_game_server_deployment_performed": false,
+  "integrity_evidence": [
+    "github-release-assets.json",
+    "github-public-downloads.json",
+    "git-persisted-source-proof.json"
+  ]
+}

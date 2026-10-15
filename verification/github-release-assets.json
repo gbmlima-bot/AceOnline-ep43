@@ -1,0 +1,195 @@
+{
+  "read_only": true,
+  "repository": "gbmlima-bot/AceOnline-ep43",
+  "release_id": 413872002,
+  "tag": "ace-modern-v0.8.0",
+  "release_draft": true,
+  "expected_assets": 20,
+  "remote_assets": 20,
+  "verified_sha256_assets": 20,
+  "missing_local_manifests": [],
+  "extra_remote_assets": [],
+  "passed": true,
+  "assets": [
+    {
+      "name": "release_parts.py",
+      "expected_bytes": 11978,
+      "expected_sha256": "d414c10bd1dff18820f36822cd5ac54e1cd1320b537d85a49b61dd16c39e0756",
+      "asset_id": 644181414,
+      "remote_bytes": 11978,
+      "remote_digest": "sha256:d414c10bd1dff18820f36822cd5ac54e1cd1320b537d85a49b61dd16c39e0756",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "GUIA-ONLINE-PVE.md",
+      "expected_bytes": 12670,
+      "expected_sha256": "0e710a6c6a8310668627c1c6839afc58b1c3feb808193fa53eaed1ce5df6ba75",
+      "asset_id": 644185295,
+      "remote_bytes": 12670,
+      "remote_digest": "sha256:0e710a6c6a8310668627c1c6839afc58b1c3feb808193fa53eaed1ce5df6ba75",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.manifest.json",
+      "expected_bytes": 16237020,
+      "expected_sha256": "4eb5766a27c9eaa6c816c3fd92f6b973841731719101ff58fe2416c31d9f53ed",
+      "asset_id": 644185422,
+      "remote_bytes": 16237020,
+      "remote_digest": "sha256:4eb5766a27c9eaa6c816c3fd92f6b973841731719101ff58fe2416c31d9f53ed",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.verification.json",
+      "expected_bytes": 1346,
+      "expected_sha256": "4eaf7d1aa93dc2d3ccdb22f2549de5c97cbaf5aff5676cf8d634730c4d207396",
+      "asset_id": 644185549,
+      "remote_bytes": 1346,
+      "remote_digest": "sha256:4eaf7d1aa93dc2d3ccdb22f2549de5c97cbaf5aff5676cf8d634730c4d207396",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "delivery-verification.json",
+      "expected_bytes": 7431,
+      "expected_sha256": "2677b12f71dd0a0df2110cffebc37c13c017c0e23f464e394e2c715bad3d975b",
+      "asset_id": 644185629,
+      "remote_bytes": 7431,
+      "remote_digest": "sha256:2677b12f71dd0a0df2110cffebc37c13c017c0e23f464e394e2c715bad3d975b",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-online-kit-v0.8.verification.json",
+      "expected_bytes": 81569,
+      "expected_sha256": "89d9931a5ada9d3d7c1503d1aa72a3971d9b2a57fb53cef610883a61f785b354",
+      "asset_id": 644185699,
+      "remote_bytes": 81569,
+      "remote_digest": "sha256:89d9931a5ada9d3d7c1503d1aa72a3971d9b2a57fb53cef610883a61f785b354",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "preview-online-v0.8.png",
+      "expected_bytes": 1193257,
+      "expected_sha256": "780e5bb447f32fd84f9817577b5e32a1c4303184896fdb2089f042925076649a",
+      "asset_id": 644185886,
+      "remote_bytes": 1193257,
+      "remote_digest": "sha256:780e5bb447f32fd84f9817577b5e32a1c4303184896fdb2089f042925076649a",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-online-kit-v0.8.zip",
+      "expected_bytes": 93628840,
+      "expected_sha256": "edeac3bf07e8a924a2c5ba497796a3fbc80be20406f88b256fc2978b8dcccd65",
+      "asset_id": 644186045,
+      "remote_bytes": 93628840,
+      "remote_digest": "sha256:edeac3bf07e8a924a2c5ba497796a3fbc80be20406f88b256fc2978b8dcccd65",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-online-macos-v0.8.zip.part-001",
+      "expected_bytes": 1500000000,
+      "expected_sha256": "30f8255015bacf9652cb0a653c4613ed7a39bbe697537a3f045532153800a041",
+      "asset_id": 644186687,
+      "remote_bytes": 1500000000,
+      "remote_digest": "sha256:30f8255015bacf9652cb0a653c4613ed7a39bbe697537a3f045532153800a041",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-online-macos-v0.8.zip.part-002",
+      "expected_bytes": 1500000000,
+      "expected_sha256": "ea5c0cf61b0ddae372822f13c990abfa9efff438c5b76140bff81f4d4ce9ce2c",
+      "asset_id": 644190573,
+      "remote_bytes": 1500000000,
+      "remote_digest": "sha256:ea5c0cf61b0ddae372822f13c990abfa9efff438c5b76140bff81f4d4ce9ce2c",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-online-macos-v0.8.zip.part-003",
+      "expected_bytes": 362117557,
+      "expected_sha256": "145d599a8147c0bc5ee9bf323f10f7d5b62fa3e16f4dc50f102cdc9b610edeb6",
+      "asset_id": 644193103,
+      "remote_bytes": 362117557,
+      "remote_digest": "sha256:145d599a8147c0bc5ee9bf323f10f7d5b62fa3e16f4dc50f102cdc9b610edeb6",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-online-macos-v0.8.zip.parts.json",
+      "expected_bytes": 876,
+      "expected_sha256": "42b1fedea745d4b39e272e7c0bca64a7fb9cff2a410374030ebda72d5458a399",
+      "asset_id": 644193742,
+      "remote_bytes": 876,
+      "remote_digest": "sha256:42b1fedea745d4b39e272e7c0bca64a7fb9cff2a410374030ebda72d5458a399",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-online-windows-v0.8.zip.part-001",
+      "expected_bytes": 1500000000,
+      "expected_sha256": "d1ad49671d65f57a17c5856cd16e836320704dfd9d91e581a65a50d394592932",
+      "asset_id": 644198255,
+      "remote_bytes": 1500000000,
+      "remote_digest": "sha256:d1ad49671d65f57a17c5856cd16e836320704dfd9d91e581a65a50d394592932",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-online-windows-v0.8.zip.part-002",
+      "expected_bytes": 1500000000,
+      "expected_sha256": "ffb0402b492384f77aba97cf6b77bdb065d66b8fa8e3a01ac0e69bda0e95bd83",
+      "asset_id": 644200617,
+      "remote_bytes": 1500000000,
+      "remote_digest": "sha256:ffb0402b492384f77aba97cf6b77bdb065d66b8fa8e3a01ac0e69bda0e95bd83",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-online-windows-v0.8.zip.part-003",
+      "expected_bytes": 339332663,
+      "expected_sha256": "35a6c2079bf43595f4b9c1865ff579d42b4b83e7ef5c04498a6e727c2be175c0",
+      "asset_id": 644203031,
+      "remote_bytes": 339332663,
+      "remote_digest": "sha256:35a6c2079bf43595f4b9c1865ff579d42b4b83e7ef5c04498a6e727c2be175c0",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-online-windows-v0.8.zip.parts.json",
+      "expected_bytes": 884,
+      "expected_sha256": "9dcd491daf67d3c5684729cb7b24a291f74b4d058bb6bb1edec611ad442896ae",
+      "asset_id": 644204118,
+      "remote_bytes": 884,
+      "remote_digest": "sha256:9dcd491daf67d3c5684729cb7b24a291f74b4d058bb6bb1edec611ad442896ae",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.zip.part-001",
+      "expected_bytes": 1500000000,
+      "expected_sha256": "15cbce51d60165734a5eda1d3113f072061e7bf525f2e08af49e901760d207f9",
+      "asset_id": 644204844,
+      "remote_bytes": 1500000000,
+      "remote_digest": "sha256:15cbce51d60165734a5eda1d3113f072061e7bf525f2e08af49e901760d207f9",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.zip.part-002",
+      "expected_bytes": 1500000000,
+      "expected_sha256": "0351692fed15fea6c9ad3b39dad07b62d5de6e7555eac39a5a99a030701b06c2",
+      "asset_id": 644207940,
+      "remote_bytes": 1500000000,
+      "remote_digest": "sha256:0351692fed15fea6c9ad3b39dad07b62d5de6e7555eac39a5a99a030701b06c2",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.zip.part-003",
+      "expected_bytes": 1010952640,
+      "expected_sha256": "bb02a20ff62326b3e329708fcb972923e6b8a834c1b18cbba11b65b1293d0b17",
+      "asset_id": 644211885,
+      "remote_bytes": 1010952640,
+      "remote_digest": "sha256:bb02a20ff62326b3e329708fcb972923e6b8a834c1b18cbba11b65b1293d0b17",
+      "status": "verified_sha256"
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.zip.parts.json",
+      "expected_bytes": 853,
+      "expected_sha256": "9b1cbca77205d710a122277ad59e6333a9fecf19b36deca995cbbfec52094fc5",
+      "asset_id": 644214144,
+      "remote_bytes": 853,
+      "remote_digest": "sha256:9b1cbca77205d710a122277ad59e6333a9fecf19b36deca995cbbfec52094fc5",
+      "status": "verified_sha256"
+    }
+  ]
+}

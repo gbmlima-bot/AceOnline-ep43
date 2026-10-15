@@ -1,0 +1,136 @@
+{
+  "checked_utc": "2026-10-15T15:01:45.418543+00:00",
+  "passed": true,
+  "scope": "published release download URLs; HEAD size for every asset and actual bytes of small manifests/helper/guide",
+  "download_urls_verified": 20,
+  "small_download_sha256_verified": 5,
+  "large_packages_redownloaded": false,
+  "authorization_header_supplied": false,
+  "assets": [
+    {
+      "name": "release_parts.py",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 11978,
+      "downloaded_sha256": "d414c10bd1dff18820f36822cd5ac54e1cd1320b537d85a49b61dd16c39e0756"
+    },
+    {
+      "name": "GUIA-ONLINE-PVE.md",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 12670,
+      "downloaded_sha256": "0e710a6c6a8310668627c1c6839afc58b1c3feb808193fa53eaed1ce5df6ba75"
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.manifest.json",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 16237020
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.verification.json",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 1346
+    },
+    {
+      "name": "delivery-verification.json",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 7431
+    },
+    {
+      "name": "ace-online-kit-v0.8.verification.json",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 81569
+    },
+    {
+      "name": "preview-online-v0.8.png",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 1193257
+    },
+    {
+      "name": "ace-online-kit-v0.8.zip",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 93628840
+    },
+    {
+      "name": "ace-modern-online-macos-v0.8.zip.part-001",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 1500000000
+    },
+    {
+      "name": "ace-modern-online-macos-v0.8.zip.part-002",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 1500000000
+    },
+    {
+      "name": "ace-modern-online-macos-v0.8.zip.part-003",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 362117557
+    },
+    {
+      "name": "ace-modern-online-macos-v0.8.zip.parts.json",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 876,
+      "downloaded_sha256": "42b1fedea745d4b39e272e7c0bca64a7fb9cff2a410374030ebda72d5458a399"
+    },
+    {
+      "name": "ace-modern-online-windows-v0.8.zip.part-001",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 1500000000
+    },
+    {
+      "name": "ace-modern-online-windows-v0.8.zip.part-002",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 1500000000
+    },
+    {
+      "name": "ace-modern-online-windows-v0.8.zip.part-003",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 339332663
+    },
+    {
+      "name": "ace-modern-online-windows-v0.8.zip.parts.json",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 884,
+      "downloaded_sha256": "9dcd491daf67d3c5684729cb7b24a291f74b4d058bb6bb1edec611ad442896ae"
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.zip.part-001",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 1500000000
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.zip.part-002",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 1500000000
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.zip.part-003",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 1010952640
+    },
+    {
+      "name": "ace-modern-fontes-v0.8.zip.parts.json",
+      "passed": true,
+      "http_status": 200,
+      "bytes": 853,
+      "downloaded_sha256": "9b1cbca77205d710a122277ad59e6333a9fecf19b36deca995cbbfec52094fc5"
+    }
+  ]
+}
