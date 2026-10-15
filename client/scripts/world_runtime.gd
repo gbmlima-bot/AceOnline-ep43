@@ -15,7 +15,14 @@ const WORLD_CATALOG: String = "res://assets/original_worlds/catalog.json"
 const MISSION_SUPPORT: String = "res://assets/local_world/mission_support.json"
 const ACTOR_CATALOG: String = "res://assets/original_library/actors/actors.json"
 const SERVICE_CATALOG: String = "res://assets/original_library/catalogs/npc_services.json"
+const MAX_COMBAT_REWARDS: int = 100000
+const MAX_EARNED: int = 9000000000000000
+const MAX_BALANCE: int = 1000000000
 
+## Optional local integration: atomically accept inventory changes before the
+## mission ledger commits. Standalone rule tests may leave this unassigned.
+var reward_applicator: Callable = Callable()
+var reward_validator: Callable = Callable()
 var collision_model: RefCounted
 var current_map_id: int = 0
 var current_map: Dictionary = {}
@@ -28,6 +35,8 @@ var _progress: Dictionary = {}
 var _events: Array[Dictionary] = []
 var _seen_targets: Dictionary = {}
 var _wallet: Dictionary = {"credits": 0, "credits_earned": 0, "experience": 0}
+var _combat_rewards: Dictionary = {}
+var _combat_totals: Dictionary = {"credits_earned": 0, "experience": 0, "kills": 0}
 var _npcs: Array[Dictionary] = []
 var _portals: Array[Dictionary] = []
 var _current_events: Array[Dictionary] = []
@@ -162,7 +171,7 @@ func configure_player_profile(profile: Dictionary) -> void:
 		_revision += 1
 
 
-func load_map(map_id: int, spawn: Vector3 = Vector3.INF) -> Dictionary:
+func load_map(map_id: int, spawn: Vector3 = Vector3.INF, restore_position: bool = false) -> Dictionary:
 	if _maps.is_empty():
 		configure()
 	if not _maps.has(map_id):
@@ -205,7 +214,7 @@ func load_map(map_id: int, spawn: Vector3 = Vector3.INF) -> Dictionary:
 	current_map["metadata"] = metadata
 	current_map["collision_gaps"] = collider_result["gaps"] + definition.get("library_entry", {}).get("coverage_gaps", [])
 	var requested: Vector3 = spawn if spawn.is_finite() else _vector(definition.get("spawn_position", [0, 105, 170]))
-	var safe_spawn: Vector3 = _safe_spawn(requested)
+	var safe_spawn: Vector3 = _safe_spawn(requested, restore_position)
 	_player_position = safe_spawn
 	_transfer_cooldown = 2.0
 	_setup_interactions(safe_spawn)
@@ -307,6 +316,18 @@ func accept_mission(identifier: String) -> Dictionary:
 	var target_map: int = int(on_accept.get("warp_map_id", event_map))
 	if target_map > 0 and target_map != current_map_id and not _map_available(target_map):
 		return _failure("mission_map_unavailable", "Os recursos do mapa da missão ainda não estão disponíveis.")
+	var granted_items: Array = _gear_items(on_accept.get("items", []))
+	var accepted_event: Dictionary = {"type": "mission_accepted", "mission_id": identifier, "items": granted_items, "reward_id": "mission-start:" + identifier, "message": "Missão aceita: " + str(mission["title"])}
+	if not granted_items.is_empty() and reward_validator.is_valid():
+		var valid: Variant = reward_validator.call(accepted_event.duplicate(true))
+		if not valid is bool or not bool(valid):
+			return _failure("inventory_start_rejected", "Os itens iniciais não cabem no inventário; a missão ainda não foi aceita.")
+	var baseline: Dictionary = export_state() if not granted_items.is_empty() and reward_applicator.is_valid() else {}
+	var prior_events: Array[Dictionary] = []
+	if not baseline.is_empty():
+		prior_events = _events.duplicate(true)
+	var prior_cooldown: float = _transfer_cooldown
+	var prior_transfer: Dictionary = _last_transfer.duplicate(true)
 	_mission_return_maps[identifier] = current_map_id
 	var counters: Array[int] = []
 	for _objective: Variant in mission.get("objectives", []):
@@ -323,9 +344,19 @@ func accept_mission(identifier: String) -> Dictionary:
 	_record_objective("visit_map", current_map_id)
 	if not _nearby.is_empty() and str(_nearby.get("kind", "")) == "npc":
 		_record_objective("dialogue", int(_nearby.get("source_npc_index", 0)))
+	if not granted_items.is_empty() and reward_applicator.is_valid():
+		var applied: Variant = reward_applicator.call(accepted_event.duplicate(true))
+		if not applied is bool or not bool(applied):
+			var restored: Dictionary = import_state(baseline)
+			_events = prior_events
+			_transfer_cooldown = prior_cooldown
+			_last_transfer = prior_transfer
+			if not bool(restored.get("ok", false)):
+				return _failure("mission_start_rollback_failed", "A transação inicial foi recusada e o mapa anterior não pôde ser restaurado.")
+			return _failure("inventory_start_rejected", "A transação dos itens iniciais foi recusada; a missão e o mapa anterior foram preservados.")
+		accepted_event["inventory_applied"] = true
 	_revision += 1
-	var granted_items: Array = _gear_items(on_accept.get("items", []))
-	_emit({"type": "mission_accepted", "mission_id": identifier, "items": granted_items, "reward_id": "mission-start:" + identifier, "message": "Missão aceita: " + str(mission["title"])})
+	_emit(accepted_event)
 	if bool(mission.get("native", false)) and int(mission.get("end_type", -1)) == 0 and str(_mission_snapshot(mission)["status"]) == "ready":
 		claim_reward(identifier)
 	return {"ok": true, "mission": _mission_snapshot(mission)}
@@ -360,9 +391,51 @@ func set_inventory_counts(items: Array) -> Dictionary:
 	return {"ok": true}
 
 
+func record_combat_reward(event: Dictionary) -> bool:
+	# Trusted local integration only, after InventoryModel's atomic application.
+	# UI controls cannot create reward events or infer missing server amounts.
+	if event.get("type", "") != "native_pve_reward" or not event.get("inventory_applied", false) is bool or not bool(event.get("inventory_applied", false)):
+		return false
+	var entry: Dictionary = _combat_reward_entry(event)
+	if entry.is_empty() or _combat_rewards.has(entry["reward_id"]) or _combat_rewards.size() >= MAX_COMBAT_REWARDS:
+		return false
+	var credits: int = int(entry["credits"])
+	var experience: int = int(entry["experience"])
+	if int(_wallet["credits"]) > MAX_BALANCE - credits or int(_wallet["credits_earned"]) > MAX_EARNED - credits or int(_wallet["experience"]) > MAX_EARNED - experience:
+		return false
+	_combat_rewards[entry["reward_id"]] = entry
+	_combat_totals["credits_earned"] = int(_combat_totals["credits_earned"]) + credits
+	_combat_totals["experience"] = int(_combat_totals["experience"]) + experience
+	_combat_totals["kills"] = _combat_rewards.size()
+	_wallet["credits"] = int(_wallet["credits"]) + credits
+	_wallet["credits_earned"] = int(_wallet["credits_earned"]) + credits
+	_wallet["experience"] = int(_wallet["experience"]) + experience
+	_revision += 1
+	return true
+
+
+static func _combat_reward_entry(value: Dictionary) -> Dictionary:
+	var identifier: Variant = value.get("reward_id", "")
+	if not identifier is String or not identifier.begins_with("native-pve:") or identifier.length() <= 11 or identifier.length() > 256 or value.get("source_kind", "") != "monster":
+		return {}
+	if not _nonnegative_integer(value.get("monster_code", -1), 2147483647) or int(value.get("monster_code", 0)) == 0 or not _nonnegative_integer(value.get("credits", -1), MAX_BALANCE) or not _nonnegative_integer(value.get("experience", -1), MAX_EARNED):
+		return {}
+	return {"reward_id": identifier, "source_kind": "monster", "monster_code": int(value["monster_code"]), "credits": int(value["credits"]), "experience": int(value["experience"])}
+
+
+func _wallet_snapshot() -> Dictionary:
+	var result: Dictionary = _wallet.duplicate()
+	result["mission_credits_earned"] = int(_wallet["credits_earned"]) - int(_combat_totals["credits_earned"])
+	result["mission_experience"] = int(_wallet["experience"]) - int(_combat_totals["experience"])
+	result["combat_credits_earned"] = int(_combat_totals["credits_earned"])
+	result["combat_experience"] = int(_combat_totals["experience"])
+	result["combat_kills"] = int(_combat_totals["kills"])
+	return result
+
+
 func sync_inventory_wallet(credits: int, earned_experience: int) -> Dictionary:
-	# Balance may change through verified shop/craft transactions; earned XP is
-	# still the exact mission ledger and cannot be minted by an economic sync.
+	# Verified shop/craft transactions may change the balance, while raw XP must
+	# still match the independent mission and successful combat reward ledgers.
 	if credits < 0 or credits > 1000000000 or earned_experience != int(_wallet.get("experience", 0)):
 		return _failure("inventory_ledger_mismatch", "Saldo ou experiência não correspondem ao progresso local.")
 	if int(_wallet.get("credits", 0)) != credits:
@@ -437,6 +510,8 @@ func claim_reward(identifier: String) -> Dictionary:
 	if not _missions.has(identifier):
 		return _failure("unknown_mission", "Missão não encontrada.")
 	var mission: Dictionary = _missions[identifier]
+	if not mission.get("external_inventory_items", []).is_empty() and not _inventory_synchronized:
+		return _failure("inventory_snapshot_required", "Sincronize o inventário antes de resolver os itens opcionais da missão original.")
 	if str(_mission_snapshot(mission)["status"]) != "ready":
 		return _failure("mission_not_ready", "Os objetivos ainda não foram concluídos ou a recompensa já foi recebida.")
 	if not _mission_npc_in_range(mission, true):
@@ -450,23 +525,33 @@ func claim_reward(identifier: String) -> Dictionary:
 	if int(reward.get("credits", 0)) < 0 or int(_wallet.get("credits", 0)) + int(reward.get("credits", 0)) > 1000000000 or reward.get("items", []).any(func(item: Variant) -> bool: return not item is Dictionary or not _nonnegative_integer(item.get("count", 0), 1000000000)):
 		_rng_state = prior_rng
 		return _failure("local_reward_operation_limit", "Recompensa excede o limite de uma transação local.")
+	var credits: int = maxi(0, int(reward.get("credits", reward.get("SPI", 0))))
+	var experience: int = maxi(0, int(reward.get("experience", reward.get("XP", 0))))
+	if int(_wallet["credits_earned"]) > MAX_EARNED - credits or int(_wallet["experience"]) > MAX_EARNED - experience:
+		_rng_state = prior_rng
+		return _failure("local_reward_operation_limit", "Recompensa excede o limite do histórico local.")
+	var event: Dictionary = {"type": "mission_reward", "reward_id": "mission:" + identifier, "mission_id": identifier, "credits": credits, "experience": experience, "items": _gear_items(reward.get("items", [])), "removals": reward.get("removals", []), "bonus_stats": int(reward.get("bonus_stats", 0)), "message": "Recompensa recebida: " + str(mission["title"])}
+	if reward_applicator.is_valid():
+		var applied: Variant = reward_applicator.call(event.duplicate(true))
+		if not applied is bool or not bool(applied):
+			_rng_state = prior_rng
+			return _failure("inventory_reward_rejected", "A recompensa não coube no inventário ou a transação foi recusada; a missão e os itens foram preservados.")
+		event["inventory_applied"] = true
 	progress["status"] = "completed"
 	progress["claimed"] = true
 	progress["reward_credits"] = int(reward.get("credits", 0))
 	progress["reward_experience"] = int(reward.get("experience", 0))
 	progress["reward_items"] = reward.get("items", []).duplicate(true)
-	# Persist the current inventory objective before the transaction removes it.
+	# Persist native possession objectives before the transaction removes items.
+	# Existing inventory can satisfy a drop objective without new kill counters.
 	for index: int in range(mission.get("objectives", []).size()):
-		if str(mission.objectives[index].get("kind", "")) == "inventory":
+		if str(mission.objectives[index].get("kind", "")) == "inventory" or mission.objectives[index].has("quest_item_num"):
 			progress["counts"][index] = int(mission.objectives[index].get("required", 1))
 	_progress[identifier] = progress
 	_refresh_active_visit_events()
-	var credits: int = maxi(0, int(reward.get("credits", reward.get("SPI", 0))))
-	var experience: int = maxi(0, int(reward.get("experience", reward.get("XP", 0))))
 	_wallet["credits"] = int(_wallet["credits"]) + credits
 	_wallet["credits_earned"] = int(_wallet.get("credits_earned", 0)) + credits
 	_wallet["experience"] = int(_wallet["experience"]) + experience
-	var event: Dictionary = {"type": "mission_reward", "reward_id": "mission:" + identifier, "mission_id": identifier, "credits": credits, "experience": experience, "items": _gear_items(reward.get("items", [])), "removals": reward.get("removals", []), "bonus_stats": int(reward.get("bonus_stats", 0)), "message": "Recompensa recebida: " + str(mission["title"])}
 	_emit(event)
 	var on_complete: Dictionary = mission.get("on_complete", {})
 	var return_map: int = int(on_complete.get("warp_map_id", 0))
@@ -530,7 +615,7 @@ func get_state() -> Dictionary:
 	for state: Dictionary in active:
 		if not missions.any(func(candidate: Dictionary) -> bool: return candidate["id"] == state["id"]):
 			missions.append(state)
-	return {"map_id": current_map_id, "map_index": current_map_id, "map_title": str(current_map.get("map_title", "")), "nearby_interaction": _nearby.duplicate(true), "mission": primary, "missions": missions, "active_missions": active, "wallet": _wallet.duplicate(), "map_transfer": {"cooldown": _transfer_cooldown, "last": _last_transfer.duplicate()}, "map_catalog": map_catalog(), "npc_count": _npcs.size(), "portal_count": _portals.size(), "collision_object_count": collision_model.collider_count() if collision_model != null else 0, "collision_gaps": current_map.get("collision_gaps", []), "support_diagnostics": _mission_support_summary, "world_coverage": _library.get("coverage", {}), "revision": _revision, "scope": "local_session;original_rules_and_labeled_adaptations"}
+	return {"map_id": current_map_id, "map_index": current_map_id, "map_title": str(current_map.get("map_title", "")), "nearby_interaction": _nearby.duplicate(true), "mission": primary, "missions": missions, "active_missions": active, "wallet": _wallet_snapshot(), "map_transfer": {"cooldown": _transfer_cooldown, "last": _last_transfer.duplicate()}, "map_catalog": map_catalog(), "npc_count": _npcs.size(), "portal_count": _portals.size(), "collision_object_count": collision_model.collider_count() if collision_model != null else 0, "collision_gaps": current_map.get("collision_gaps", []), "support_diagnostics": _mission_support_summary, "world_coverage": _library.get("coverage", {}), "revision": _revision, "scope": "local_session;original_rules_and_labeled_adaptations"}
 
 
 func _mission_priority(status: String) -> int:
@@ -633,6 +718,8 @@ func reset_session() -> void:
 	_active_visit_events.clear()
 	_seen_targets.clear()
 	_wallet = {"credits": 0, "credits_earned": 0, "experience": 0}
+	_combat_rewards.clear()
+	_combat_totals = {"credits_earned": 0, "experience": 0, "kills": 0}
 	_rng_state = 1732541
 	_proof_serial = 0
 	_seen_local_events.clear()
@@ -643,7 +730,7 @@ func reset_session() -> void:
 
 
 func export_state() -> Dictionary:
-	return {"schema_version": 1, "map_id": current_map_id, "position": [_player_position.x, _player_position.y, _player_position.z], "profile": _player_profile.duplicate(), "progress": _progress.duplicate(true), "wallet": _wallet.duplicate(), "wallet_policy": "local_balance_with_separate_native_earned_ledger", "rng_state": _rng_state, "proof_serial": _proof_serial, "seen_local_events": _seen_local_events.keys(), "seen_targets": _seen_targets.keys(), "mission_return_maps": _mission_return_maps.duplicate(), "session_id": _session_id}
+	return {"schema_version": 1, "map_id": current_map_id, "position": [_player_position.x, _player_position.y, _player_position.z], "profile": _player_profile.duplicate(), "progress": _progress.duplicate(true), "wallet": _wallet.duplicate(), "combat_rewards": _combat_rewards.values().duplicate(true), "combat_totals": _combat_totals.duplicate(), "wallet_policy": "local_balance_with_separate_native_earned_ledger", "rng_state": _rng_state, "proof_serial": _proof_serial, "seen_local_events": _seen_local_events.keys(), "seen_targets": _seen_targets.keys(), "mission_return_maps": _mission_return_maps.duplicate(), "session_id": _session_id}
 
 
 func import_state(state: Dictionary) -> Dictionary:
@@ -712,10 +799,33 @@ func import_state(state: Dictionary) -> Dictionary:
 	var expected_experience: int = 0
 	for value: Dictionary in progress.values():
 		if str(value.get("status", "")) == "completed":
+			if expected_credits > MAX_EARNED - int(value.get("reward_credits", 0)) or expected_experience > MAX_EARNED - int(value.get("reward_experience", 0)):
+				return _failure("invalid_saved_reward_ledger", "Totais de missões excedem o limite do histórico local.")
 			expected_credits += int(value.get("reward_credits", 0))
 			expected_experience += int(value.get("reward_experience", 0))
-	if expected_credits != int(wallet.get("credits_earned", wallet.get("credits", 0))) or expected_experience != int(wallet.get("experience", 0)):
-		return _failure("invalid_saved_reward_ledger", "Saldo ganho não corresponde às missões concluídas.")
+	var combat_rows: Variant = state.get("combat_rewards", [])
+	var combat_totals: Variant = state.get("combat_totals", {"credits_earned": 0, "experience": 0, "kills": 0})
+	if not combat_rows is Array or combat_rows.size() > MAX_COMBAT_REWARDS or not combat_totals is Dictionary:
+		return _failure("invalid_saved_combat_ledger", "Histórico de recompensas de combate inválido.")
+	for key: String in ["credits_earned", "experience", "kills"]:
+		if not _nonnegative_integer(combat_totals.get(key, -1), MAX_COMBAT_REWARDS if key == "kills" else MAX_EARNED):
+			return _failure("invalid_saved_combat_ledger", "Totais de combate inválidos.")
+	var combat_rewards: Dictionary = {}
+	var combat_credits: int = 0
+	var combat_experience: int = 0
+	for value: Variant in combat_rows:
+		if not value is Dictionary:
+			return _failure("invalid_saved_combat_ledger", "Histórico de recompensas de combate inválido.")
+		var entry: Dictionary = _combat_reward_entry(value)
+		if entry.is_empty() or combat_rewards.has(entry["reward_id"]) or combat_credits > MAX_EARNED - int(entry["credits"]) or combat_experience > MAX_EARNED - int(entry["experience"]):
+			return _failure("invalid_saved_combat_ledger", "Histórico de recompensas de combate inválido ou repetido.")
+		combat_rewards[entry["reward_id"]] = entry
+		combat_credits += int(entry["credits"])
+		combat_experience += int(entry["experience"])
+	if combat_credits != int(combat_totals["credits_earned"]) or combat_experience != int(combat_totals["experience"]) or combat_rewards.size() != int(combat_totals["kills"]):
+		return _failure("invalid_saved_combat_ledger", "Totais de combate não correspondem às recompensas registradas.")
+	if expected_credits > MAX_EARNED - combat_credits or expected_experience > MAX_EARNED - combat_experience or expected_credits + combat_credits != int(wallet.get("credits_earned", wallet.get("credits", 0))) or expected_experience + combat_experience != int(wallet.get("experience", 0)):
+		return _failure("invalid_saved_reward_ledger", "Saldo ganho não corresponde às missões concluídas e aos combates registrados.")
 	var profile: Dictionary = state.get("profile", {})
 	for key: String in ["level", "influence", "unit_kind", "start_city_map_id"]:
 		var value: Variant = profile.get(key, _player_profile.get(key, 0))
@@ -741,6 +851,8 @@ func import_state(state: Dictionary) -> Dictionary:
 			return _failure("invalid_saved_returns", "Mapa de retorno salvo inválido.")
 	var previous: Dictionary = export_state()
 	_progress = progress
+	_combat_rewards = combat_rewards
+	_combat_totals = {"credits_earned": combat_credits, "experience": combat_experience, "kills": combat_rewards.size()}
 	_wallet = {"credits": int(wallet.get("credits", 0)), "credits_earned": int(wallet.get("credits_earned", wallet.get("credits", 0))), "experience": int(wallet.get("experience", 0))}
 	_rng_state = int(state.get("rng_state", 1732541))
 	_proof_serial = int(state.get("proof_serial", 0))
@@ -754,10 +866,14 @@ func import_state(state: Dictionary) -> Dictionary:
 		if value is String and value.length() <= 256:
 			_seen_targets[value] = true
 	_session_id = str(state.get("session_id", "local")).left(128)
-	var loaded: Dictionary = load_map(map_id, position)
+	var loaded: Dictionary = load_map(map_id, position, true)
 	if not bool(loaded.get("ok", false)):
 		_progress = previous["progress"]
 		_wallet = previous["wallet"]
+		_combat_rewards.clear()
+		for entry: Dictionary in previous["combat_rewards"]:
+			_combat_rewards[entry["reward_id"]] = entry
+		_combat_totals = previous["combat_totals"]
 		_player_profile = previous["profile"]
 		_mission_return_maps = previous["mission_return_maps"]
 		_session_id = str(previous.get("session_id", "local"))
@@ -860,13 +976,16 @@ func _map_available(identifier: int) -> bool:
 	return native_grid and ResourceLoader.exists(terrain_path)
 
 
-func _safe_spawn(requested: Vector3) -> Vector3:
+func _safe_spawn(requested: Vector3, restore_position: bool = false) -> Vector3:
 	var bounds: Dictionary = collision_model.get_bounds()
 	var minimum: Vector3 = bounds["min"]
 	var maximum: Vector3 = bounds["max"]
-	var position: Vector3 = requested.clamp(minimum + Vector3(8,0,8), maximum - Vector3(8,0,8))
+	# Restore an already validated pilot pose with native hull clearance;
+	# arrival safety offsets must not lift a saved grounded craft120 units.
+	var margin: Vector3 = Vector3.ZERO if restore_position else Vector3(8,0,8)
+	var position: Vector3 = requested.clamp(minimum + margin, maximum - margin)
 	var ground: float = collision_model.sample_ground_height(position.x, position.z)
-	position.y = minf(maxf(position.y, ground + 120.0), maximum.y - 20.0)
+	position.y = minf(maxf(position.y, ground + (4.0 if restore_position else 120.0)), maximum.y - (0.0 if restore_position else 20.0))
 	return position
 
 
@@ -1019,7 +1138,7 @@ func _quest_level_min(data: Dictionary) -> int:
 
 func _mission_snapshot(mission: Dictionary) -> Dictionary:
 	var result: Dictionary = {}
-	for key: String in ["id", "title", "provenance_label", "native", "reward", "giver_npc_id", "turn_in_npc_id", "npc_id", "event_map_id", "on_accept", "on_complete", "next_quest_id", "runtime_supported", "blocked_reasons", "required_level_min", "required_level_max", "required_influence", "required_gear_mask", "start_type", "end_type", "adaptations", "prerequisites", "time_limit_seconds", "per_item_rewards", "random_item_rewards", "inventory_objectives_override_drops"]:
+	for key: String in ["id", "title", "provenance_label", "native", "reward", "giver_npc_id", "turn_in_npc_id", "npc_id", "event_map_id", "on_accept", "on_complete", "next_quest_id", "runtime_supported", "blocked_reasons", "required_level_min", "required_level_max", "required_influence", "required_gear_mask", "start_type", "end_type", "adaptations", "prerequisites", "time_limit_seconds", "per_item_rewards", "random_item_rewards", "inventory_objectives_override_drops", "external_inventory_items"]:
 		if mission.has(key):
 			result[key] = mission[key].duplicate(true) if mission[key] is Dictionary or mission[key] is Array else mission[key]
 	var identifier: String = str(mission["id"])
@@ -1082,6 +1201,8 @@ func _refresh_active_visit_events() -> void:
 
 
 func _mission_asset_block(mission: Dictionary) -> String:
+	if not mission.get("external_inventory_items", []).is_empty() and not _inventory_synchronized:
+		return "Inventário local ainda não sincronizado para os itens opcionais desta missão original."
 	var map_id: int = int(mission.get("on_accept", {}).get("warp_map_id", mission.get("event_map_id", 0)))
 	if map_id > 0 and not _map_available(map_id):
 		return "Mapa da missão ainda sem recursos originais completos: %d" % map_id
@@ -1129,12 +1250,21 @@ func _record_objective(kind: String, target: int) -> void:
 					if amount <= 0:
 						continue
 					var item: int = int(objective["quest_item_num"])
+					var proof_event: Dictionary = {"type": "mission_item_collected", "mission_id": str(identifier), "reward_id": "mission-proof:%s:%d" % [str(identifier), _proof_serial + 1], "items": [{"item_num": item, "count": amount}], "message": "Item de missão recuperado: %d ×%d" % [item, amount], "native_drop_probability": probability, "scope": "native_drop_rule;local_persisted_rng;local_encounter"}
+					if reward_applicator.is_valid():
+						var applied: Variant = reward_applicator.call(proof_event.duplicate(true))
+						if not applied is bool or not bool(applied):
+							# The unique kill and random roll remain consumed. No proof,
+							# counter, receipt or physical item exists after refusal.
+							_emit({"type": "mission_item_rejected", "mission_id": str(identifier), "message": "Inventário cheio ou transação recusada; o item de missão não foi recolhido."})
+							continue
+						proof_event["inventory_applied"] = true
 					var proofs: Dictionary = progress.get("proof_counts", {})
 					proofs[str(item)] = int(proofs.get(str(item), 0)) + amount
 					progress["proof_counts"] = proofs
 					changed = true
 					_proof_serial += 1
-					_emit({"type": "mission_item_collected", "mission_id": str(identifier), "reward_id": "mission-proof:%s:%d" % [str(identifier), _proof_serial], "items": [{"item_num": item, "count": amount}], "message": "Item de missão recuperado: %d ×%d" % [item, amount], "native_drop_probability": probability, "scope": "native_drop_rule;local_persisted_rng;local_encounter"})
+					_emit(proof_event)
 				var next: int = mini(int(objective.get("required", 1)), int(counts[index]) + amount)
 				changed = changed or next != int(counts[index])
 				counts[index] = next

@@ -20,7 +20,7 @@ GODOT_SHA256 = "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e
 GODOT_VERSION = "4.7.2.stable.official.ed1daf0bf"
 CORE_SCRIPTS = (
     "flight_model.gd", "combat_model.gd", "inventory_model.gd",
-    "native_equipment.gd", "skill_model.gd", "service_model.gd", "world_model.gd",
+    "native_equipment.gd", "skill_model.gd", "service_model.gd", "world_model.gd", "native_server_data.gd",
 )
 ONLINE_SCRIPTS = ("json_wire.gd", "ws_server.gd", "headless_world.gd", "arena_model.gd")
 DATA_FILES = (
@@ -32,6 +32,8 @@ DATA_FILES = (
     "assets/original_library/catalogs/omi-native.bin",
     "assets/original_library/catalogs/level_experience.json",
     "assets/original_library/catalogs/level_stat_values.json",
+    "assets/native_server/manifest.json", "assets/native_server/ti_Monster.json",
+    "assets/native_server/ti_Item.json", "assets/legacy_rules/server_item_compatibility.json",
 )
 WORLD_MANIFEST = "docs/headless-world-assets.json"
 WORLD_FILES = (

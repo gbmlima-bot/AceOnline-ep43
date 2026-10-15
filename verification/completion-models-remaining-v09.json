@@ -1,0 +1,69 @@
+{
+  "release": "0.9.0",
+  "phase": "models",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "passed": true,
+  "complete": true,
+  "selected_suites": [
+    "world",
+    "world_expansion",
+    "world_mission_inventory",
+    "headless_world",
+    "local_save",
+    "native_spawn_data",
+    "item_use"
+  ],
+  "full_phase": false,
+  "native_mac_windows_execution": false,
+  "results": [
+    {
+      "name": "world",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 2.054,
+      "log": "world.log"
+    },
+    {
+      "name": "world_expansion",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 9.569,
+      "log": "world_expansion.log"
+    },
+    {
+      "name": "world_mission_inventory",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 1.475,
+      "log": "world_mission_inventory.log"
+    },
+    {
+      "name": "headless_world",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.258,
+      "log": "headless_world.log"
+    },
+    {
+      "name": "local_save",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.167,
+      "log": "local_save.log"
+    },
+    {
+      "name": "native_spawn_data",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.537,
+      "log": "native_spawn_data.log"
+    },
+    {
+      "name": "item_use",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 3.842,
+      "log": "item_use.log"
+    }
+  ]
+}

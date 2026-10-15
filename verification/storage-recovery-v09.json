@@ -1,0 +1,9 @@
+{
+  "initial_windows_online_pack_attempt": "environment_oom",
+  "retry_passed": true,
+  "game_client_changes_for_retry": false,
+  "temporarily_paused_generated_cache_files": 3707,
+  "temporarily_paused_bytes": 2650198879,
+  "all_cache_bytes_restored_and_sha256_verified": true,
+  "original_archives_preserved": true
+}

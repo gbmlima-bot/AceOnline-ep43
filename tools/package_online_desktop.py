@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bounded-storage desktop0.8 export, native/PCK verification and explicit retirement.
+"""Bounded-storage desktop export, native/PCK verification and optional retirement.
 
 Export does not publish or retire anything. Publishing needs a verified replacement
 and an explicit --retire-old authorization. Historic source archives are untouched.
@@ -29,11 +29,34 @@ OLD_DIRECTORY = Path('/workspace/shared/ace-modern-systems')
 REQUIRED_SCRIPTS = ['scripts/main.gd', 'scripts/game_systems.gd', 'scripts/legacy_hud.gd',
                     'scripts/online/online_client.gd', 'scripts/online/json_wire.gd',
                     'scripts/online/arena_model.gd','scripts/online/online_view.gd','scripts/combat_runtime.gd']
-README = '''ACE Modern0.8 — cliente desktop\n\nInclui o modo offline e o cliente da sala dedicada do novo jogo. A sala piloto\nonline exige URL WSS e token individual fornecidos pelo operador. Não se conecta\naos servidores do jogo legado. Tokens não devem ser compartilhados publicamente.\n\nOs executáveis foram exportados no Linux. macOS e Windows ainda exigem teste\nnativo. O aplicativo macOS é universal(Apple Silicon+Intel), com assinatura\nad-hoc e sem notarização. Windows é x86_64, sem assinatura Authenticode.\n\nOs materiais e fontes completos das versões anteriores continuam preservados.\nA reprodução integral do MMO original não está incluída nesta versão piloto.\n'''
+README_TEMPLATE = '''ACE Modern{version} — cliente desktop\n\nInclui o modo offline e o cliente da sala dedicada do novo jogo. A sala piloto\nonline exige URL WSS e token individual fornecidos pelo operador. Não se conecta\naos servidores do jogo legado. Tokens não devem ser compartilhados publicamente.\n\nOs executáveis foram exportados no Linux. macOS e Windows ainda exigem teste\nnativo. O aplicativo macOS é universal(Apple Silicon+Intel), com assinatura\nad-hoc e sem notarização. Windows é x86_64, sem assinatura Authenticode.\n\nOs materiais e fontes completos das versões anteriores continuam preservados.\nA reprodução integral do MMO original não está incluída nesta versão piloto.\n'''
+README = README_TEMPLATE.format(version='0.8')
 
 
 def require(condition, message):
     if not condition: raise RuntimeError(message)
+
+
+def release_version(release=None):
+    value = RELEASE if release is None else release
+    require(isinstance(value,str) and re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)',value),
+            'Release must be a numeric major.minor.patch version, for example 0.9.0')
+    return value
+
+
+def release_label(release=None):
+    version=release_version(release)
+    return version[:-2] if version.endswith('.0') else version
+
+
+def report_tag(release=None):
+    major,minor,patch=release_version(release).split('.')
+    return 'v0'+minor if major=='0' and patch=='0' else 'v'+'_'.join((major,minor,patch))
+
+
+def artifact_name(platform,release=None):
+    require(platform in PRESETS,'Unsupported desktop platform')
+    return 'ace-modern-online-'+platform+'-v'+release_label(release)+'.zip'
 
 
 def digest(path: Path) -> str:
@@ -123,7 +146,8 @@ def read_code_payloads(stream, entries):
     return payloads
 
 
-def verify_pck_code(index,entries,payloads,release=RELEASE,require_online=True):
+def verify_pck_code(index,entries,payloads,release=None,require_online=True):
+    release=release_version(release)
     require('res://project.binary' in payloads,'PCK project.binary missing')
     settings=binary_settings(payloads['res://project.binary'])
     require(settings.get('application/config/version')==release,'PCK application version mismatch')
@@ -174,7 +198,8 @@ def verify_macho(stream,total_size):
     return ['arm64','x86_64']
 
 
-def verify_mac_app(path: Path,release=RELEASE,require_online=True):
+def verify_mac_app(path: Path,release=None,require_online=True):
+    release=release_version(release)
     require(path.name.endswith('.app') and path.is_dir(),'Expected a macOS .app bundle directory')
     executables=[x for x in (path/'Contents/MacOS').iterdir() if x.is_file()]
     require(len(executables)==1,'Expected one .app executable')
@@ -193,7 +218,8 @@ def verify_mac_app(path: Path,release=RELEASE,require_online=True):
             'plist_version':release,'pck':report,**app_fingerprint(path)}
 
 
-def verify_mac(path: Path,release=RELEASE,require_online=True):
+def verify_mac(path: Path,release=None,require_online=True):
+    release=release_version(release)
     if path.is_dir(): return verify_mac_app(path,release,require_online)
     with zipfile.ZipFile(path) as archive:
         members=safe_members(archive)
@@ -221,7 +247,8 @@ def verify_mac(path: Path,release=RELEASE,require_online=True):
             'executable_permission':True,'plist_version':release,'pck':pck_report,'sha256':digest(path),'bytes':path.stat().st_size}
 
 
-def verify_windows(path: Path,release=RELEASE,require_online=True):
+def verify_windows(path: Path,release=None,require_online=True):
+    release=release_version(release)
     with path.open('rb') as stream:
         require(read_exact(stream,2)==b'MZ','Windows MZ signature missing');stream.seek(0x3c);pe=u32(stream)
         stream.seek(pe);require(read_exact(stream,4)==b'PE\0\0','Windows PE signature missing')
@@ -242,42 +269,45 @@ def source_fingerprint():
     return {str(path.relative_to(ROOT)):{'sha256':digest(path),'bytes':path.stat().st_size} for path in paths}
 
 
-def add_notices(archive):
-    archive.writestr('LEIA-ME-ONLINE.txt',README)
+def add_notices(archive,release=None):
+    archive.writestr('LEIA-ME-ONLINE.txt',README_TEMPLATE.format(version=release_label(release)))
     for path in sorted((ROOT/'third_party').glob('*')):
         if path.is_file(): archive.write(path,'third_party/'+path.name)
 
 
-def verify_artifact(platform,path):
-    return verify_mac(path) if platform=='macos' else verify_windows(path)
+def verify_artifact(platform,path,release=None):
+    return verify_mac(path,release) if platform=='macos' else verify_windows(path,release)
 
 
 def export(args):
+    release=release_version(getattr(args,'release',None));tag=report_tag(release)
     require(args.authorize_export,'Export needs --authorize-export after the root declares the client frozen')
-    require('config/version="'+RELEASE+'"' in (ROOT/'client/project.godot').read_text(),'Client release is not0.8.0')
+    require('config/version="'+release+'"' in (ROOT/'client/project.godot').read_text(),'Client release does not match '+release)
     before=source_fingerprint()
     stage=args.staging.resolve();stage.mkdir(parents=True,exist_ok=True)
     artifact=stage/('ACE Modern.app' if args.platform=='macos' else 'ACE-Modern.exe')
     require(not artifact.exists(),'Export target already exists; choose a fresh staging directory')
-    log=ROOT/'reports'/('export-'+args.platform+'-v08.log')
+    log=ROOT/'reports'/('export-'+args.platform+'-'+tag+'.log');log.parent.mkdir(parents=True,exist_ok=True)
+    cache_home=args.cache_home or Path('/tmp/ace-export-cache-'+tag)
     env=os.environ.copy();env['XDG_DATA_HOME']=str(args.data_home.resolve())
-    env['XDG_CACHE_HOME']=str(args.cache_home.resolve());env['TMPDIR']='/tmp'
-    args.cache_home.mkdir(parents=True,exist_ok=True)
+    env['XDG_CACHE_HOME']=str(cache_home.resolve());env.setdefault('TMPDIR','/tmp')
+    cache_home.mkdir(parents=True,exist_ok=True)
     with log.open('w') as stream:
         process=subprocess.run([args.godot,'--headless','--path',str(ROOT/'client'),'--export-release',PRESETS[args.platform],str(artifact)],env=env,stdout=stream,stderr=subprocess.STDOUT)
     text=log.read_text(errors='replace')
     require(process.returncode==0 and not any(marker in text for marker in ['ERROR:','SCRIPT ERROR:','Parse Error:']),'Godot export failed; see '+str(log))
     require(source_fingerprint()==before,'Client code changed during export; replacement is not frozen')
-    report=verify_artifact(args.platform,artifact)
-    report.update({'release':RELEASE,'artifact':str(artifact),'export_log':str(log),'source_fingerprint':before,'verified':True,'verified_at_utc':utc_now()})
-    output=args.report or ROOT/'reports'/('desktop-'+args.platform+'-v08.json')
+    report=verify_artifact(args.platform,artifact,release)
+    report.update({'release':release,'artifact':str(artifact),'export_log':str(log),'source_fingerprint':before,'verified':True,'verified_at_utc':utc_now()})
+    output=args.report or ROOT/'reports'/('desktop-'+args.platform+'-'+tag+'.json')
     write_json(output,report)
     print(json.dumps({'platform':args.platform,'verified':True,'artifact':str(artifact),'report':str(output),'native_executed':False}),flush=True)
 
 
 def verify(args):
-    report=verify_artifact(args.platform,args.artifact.resolve())
-    report.update({'release':RELEASE,'artifact':str(args.artifact.resolve()),'verified':True,'verified_at_utc':utc_now()})
+    release=release_version(getattr(args,'release',None))
+    report=verify_artifact(args.platform,args.artifact.resolve(),release)
+    report.update({'release':release,'artifact':str(args.artifact.resolve()),'verified':True,'verified_at_utc':utc_now()})
     write_json(args.report,report)
     print(json.dumps({'platform':args.platform,'verified':True,'report':str(args.report),'native_executed':False}))
 
@@ -317,25 +347,31 @@ def update_historical_index(directory,platform,delivery):
 
 
 def publish(args):
+    release=release_version(getattr(args,'release',None));tag=report_tag(release)
     report=json.loads(args.report.read_text());platform=report.get('platform')
-    require(platform in NAMES and report.get('release')==RELEASE and report.get('verified') is True,'Verified0.8 report required')
+    require(platform in PRESETS and report.get('release')==release and report.get('verified') is True,'Verified '+release+' report required')
+    retire_old=getattr(args,'retire_old',False)
+    require(not retire_old or release=='0.8.0','--retire-old is limited to the historical 0.8.0 replacement of 0.7.0; newer releases preserve previous packages')
     source=Path(report['artifact'])
     current=app_fingerprint(source) if source.is_dir() else {'sha256':digest(source),'bytes':source.stat().st_size}
     require(current['bytes']==report['bytes'] and current['sha256']==report['sha256'],'Verified replacement changed or disappeared')
-    output=args.output_dir.resolve();output.mkdir(parents=True,exist_ok=True);target=output/NAMES[platform]
+    output=args.output_dir.resolve();output.mkdir(parents=True,exist_ok=True);target=output/artifact_name(platform,release)
     require(not target.exists(),'Published target already exists')
-    old=OLD_DIRECTORY/OLD_NAMES[platform]
-    require(args.retire_old,'Publishing at current storage capacity requires explicit --retire-old authorization from root')
-    historical=ensure_historical_index(old.parent)
-    previous=old_metadata(old)
+    old=None;retirement=None;retirement_path=None
+    if retire_old:
+        old=OLD_DIRECTORY/OLD_NAMES[platform]
+        historical=ensure_historical_index(old.parent)
+        previous=old_metadata(old)
     # Leave the previous public download available throughout compression and
     # validation. A conservative raw-size bound includes ZIP overhead/notices.
     required_space=current['bytes']+max(64*1024*1024,current['bytes']//100)
     require(shutil.disk_usage(output).free>=required_space,'Not enough space to publish the new ZIP while retaining the previous public download')
-    retirement={'old':previous,'replacement':str(target),'replacement_raw_sha256':report['sha256'],'release':RELEASE,'reason':'Verified0.8 desktop replacement; historic full-source archives preserved','state':'replacement_verified_retirement_authorized','historical_index':{'path':str(historical),'sha256':digest(historical),'bytes':historical.stat().st_size}}
-    retirement_path=old.parent/('retirement-'+platform+'-v08.json')
-    write_json(retirement_path,retirement)
+    if retire_old:
+        retirement={'old':previous,'replacement':str(target),'replacement_raw_sha256':report['sha256'],'release':release,'reason':'Verified0.8 desktop replacement; historic full-source archives preserved','state':'replacement_verified_retirement_authorized','historical_index':{'path':str(historical),'sha256':digest(historical),'bytes':historical.stat().st_size}}
+        retirement_path=old.parent/('retirement-'+platform+'-'+tag+'.json')
+        write_json(retirement_path,retirement)
     temporary=target.with_name(target.name+'.part')
+    require(not temporary.exists(),'Partial publication target already exists; choose a fresh output directory or inspect that partial file')
     if platform=='macos':
         if source.is_dir():
             with zipfile.ZipFile(temporary,'w',zipfile.ZIP_DEFLATED,compresslevel=6,allowZip64=True) as archive:
@@ -346,16 +382,16 @@ def publish(args):
                         entry.external_attr=(0o120777)<<16
                         archive.writestr(entry,os.readlink(member).encode())
                     else:archive.write(member,name)
-                add_notices(archive)
-            zipped=verify_mac(temporary)
-            write_json(ROOT/'reports/desktop-macos-zip-v08.json',zipped)
+                add_notices(archive,release)
+            zipped=verify_mac(temporary,release)
+            write_json(ROOT/'reports'/('desktop-macos-zip-'+tag+'.json'),zipped)
             require(zipped['zip_crc_all_members'],'Final Mac ZIP CRC validation failed')
         else:
             shutil.copyfile(source,temporary)
             require(digest(temporary)==report['sha256'],'Published Mac copy differs from verified ZIP')
     else:
         with zipfile.ZipFile(temporary,'w',zipfile.ZIP_DEFLATED,compresslevel=6,allowZip64=True) as archive:
-            archive.write(source,'ACE-Modern.exe');add_notices(archive)
+            archive.write(source,'ACE-Modern.exe');add_notices(archive,release)
         with zipfile.ZipFile(temporary) as archive:
             members=safe_members(archive)
             with archive.open('ACE-Modern.exe') as stream:
@@ -366,27 +402,29 @@ def publish(args):
                     with archive.open(item) as stream:
                         while stream.read(CHUNK):pass
     os.replace(temporary,target)
-    delivery={'path':str(target),'bytes':target.stat().st_size,'sha256':digest(target),'platform':platform,'release':RELEASE,'native_executed':False,'verification_report':str(args.report),'published_at_utc':utc_now()}
-    retirement.update({'state':'replacement_published','replacement_sha256':delivery['sha256'],'replacement_bytes':delivery['bytes']})
-    write_json(retirement_path,retirement)
-    update_historical_index(old.parent,platform,delivery)
+    delivery={'path':str(target),'bytes':target.stat().st_size,'sha256':digest(target),'platform':platform,'release':release,'native_executed':False,'verification_report':str(args.report),'published_at_utc':utc_now()}
+    if retire_old:
+        retirement.update({'state':'replacement_published','replacement_sha256':delivery['sha256'],'replacement_bytes':delivery['bytes']})
+        write_json(retirement_path,retirement)
+        update_historical_index(old.parent,platform,delivery)
     index=output/'downloads.json';downloads=json.loads(index.read_text()) if index.is_file() else []
-    downloads=[row for row in downloads if row.get('platform')!=platform];downloads.append(delivery);write_json(index,downloads)
-    # Both public indexes now point to the complete, CRC/hash-verified new ZIP.
-    old.unlink()
-    retirement['state']='retired_replaced';write_json(retirement_path,retirement)
-    published=ROOT/'reports'/('desktop-'+platform+'-published-v08.json');write_json(published,{'delivery':delivery,'retirement':retirement,'raw_verification':report})
+    downloads=[row for row in downloads if not (row.get('platform')==platform and row.get('release')==release)];downloads.append(delivery);write_json(index,downloads)
+    if retire_old:
+        # Both indexes point to the verified replacement before explicit retirement.
+        old.unlink()
+        retirement['state']='retired_replaced';write_json(retirement_path,retirement)
+    published=ROOT/'reports'/('desktop-'+platform+'-published-'+tag+'.json');write_json(published,{'delivery':delivery,'retirement':retirement,'raw_verification':report})
     if args.clean_staging:
         if source.is_dir():shutil.rmtree(source)
         else:source.unlink()
-    print(json.dumps({'published':delivery,'retired':str(old),'historic_sources_preserved':True}),flush=True)
+    print(json.dumps({'published':delivery,'retired':str(old) if retire_old else None,'historic_sources_preserved':True}),flush=True)
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);sub=parser.add_subparsers(dest='command',required=True)
-    p=sub.add_parser('export');p.add_argument('--platform',choices=PRESETS,required=True);p.add_argument('--godot',required=True);p.add_argument('--staging',type=Path,required=True);p.add_argument('--data-home',type=Path,default=Path('/workspace/tools/godot-data'));p.add_argument('--cache-home',type=Path,default=Path('/tmp/ace-export-cache-v08'));p.add_argument('--authorize-export',action='store_true');p.add_argument('--report',type=Path);p.set_defaults(run=export)
-    p=sub.add_parser('verify');p.add_argument('--platform',choices=PRESETS,required=True);p.add_argument('--artifact',type=Path,required=True);p.add_argument('--report',type=Path,required=True);p.set_defaults(run=verify)
-    p=sub.add_parser('publish');p.add_argument('--report',type=Path,required=True);p.add_argument('--output-dir',type=Path,default=Path('/workspace/shared/ace-modern-online'));p.add_argument('--retire-old',action='store_true');p.add_argument('--clean-staging',action='store_true');p.set_defaults(run=publish)
+    p=sub.add_parser('export');p.add_argument('--release',default=RELEASE,type=release_version);p.add_argument('--platform',choices=PRESETS,required=True);p.add_argument('--godot',required=True);p.add_argument('--staging',type=Path,required=True);p.add_argument('--data-home',type=Path,default=Path('/workspace/tools/godot-data'));p.add_argument('--cache-home',type=Path);p.add_argument('--authorize-export',action='store_true');p.add_argument('--report',type=Path);p.set_defaults(run=export)
+    p=sub.add_parser('verify');p.add_argument('--release',default=RELEASE,type=release_version);p.add_argument('--platform',choices=PRESETS,required=True);p.add_argument('--artifact',type=Path,required=True);p.add_argument('--report',type=Path,required=True);p.set_defaults(run=verify)
+    p=sub.add_parser('publish');p.add_argument('--release',default=RELEASE,type=release_version);p.add_argument('--report',type=Path,required=True);p.add_argument('--output-dir',type=Path,default=Path('/workspace/shared/ace-modern-online'));p.add_argument('--retire-old',action='store_true',help='Historical 0.8.0 only: explicitly retire the verified 0.7.0 executable ZIP');p.add_argument('--clean-staging',action='store_true');p.set_defaults(run=publish)
     args=parser.parse_args();args.run(args)
 
 if __name__=='__main__': main()

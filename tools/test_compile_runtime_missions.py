@@ -17,7 +17,7 @@ class MissionCompilerTests(unittest.TestCase):
  def compile(self,identifier):return compile_one(self.by_id[identifier],self.values)
  def test_full_catalog_and_stable_original_rewards(self):
   result=compile_catalog(self.catalog,self.values)
-  self.assertEqual(result['summary'],{'total':597,'supported':537,'blocked':60})
+  self.assertEqual(result['summary'],{'total':597,'supported':541,'blocked':56})
   q=self.compile(102)
   self.assertTrue(q['runtime_supported']);self.assertEqual(q['event_map_id'],3302)
   self.assertEqual(q['reward']['credits'],320);self.assertEqual(q['reward']['experience'],91)
@@ -51,11 +51,28 @@ class MissionCompilerTests(unittest.TestCase):
   self.assertEqual(q['objectives'][0]['source_area'],{'map_id':3002,'x':61,'y':191,'radius':20000})
   self.assertFalse(self.compile(110)['runtime_supported'])
   self.assertTrue(any('C_REQ_USE_ITEM' in reason for reason in self.compile(110)['blocked_reasons']))
- def test_deleted_arbitrary_inventory_is_not_treated_as_proof(self):
+ def test_native_optional_inventory_removals_and_per_rewards(self):
+  # ProcessQuestResult reads real inventory, not just this mission's proofs.
   q=copy.deepcopy(self.by_id[102]);q['dsl_ast'][-1]['children'].append({'name':'C_DEL_ITEM','tokens':['7000000','(','ALL',')']})
   result=compile_one(q,self.values)
-  self.assertFalse(result['runtime_supported'])
-  self.assertIn('C_DEL_ITEM:not_an_all_mission_proof_item',result['blocked_reasons'])
+  self.assertTrue(result['runtime_supported'])
+  self.assertEqual(result['external_inventory_items'],[7000000])
+  self.assertIn({'item_num':7000000,'count':-1,'gear_mask':65535},result['delete_items'])
+  for identifier,item in [(153,7005370),(541,7005360),(914,7005580),(917,7005580)]:
+   result=self.compile(identifier)
+   self.assertTrue(result['runtime_supported'])
+   self.assertEqual(result['external_inventory_items'],[item])
+   self.assertFalse(any(o.get('quest_item_num')==item for o in result['objectives']))
+  # No reward-only item becomes an invented drop or a completion condition.
+  result=self.compile(153)
+  self.assertEqual([(o['target_code'],o['required']) for o in result['objectives']],[(2034500,4),(2034600,4),(2034700,4)])
+  self.assertEqual(result['per_item_rewards'][0]['credits'],80000)
+  self.assertEqual(self.compile(917)['random_item_rewards'][0]['source_item_num'],7005580)
+ def test_optional_inventory_never_weakens_unsupported_conditions(self):
+  for identifier in [143,336,2012]:
+   result=self.compile(identifier)
+   self.assertFalse(result['runtime_supported'])
+   self.assertTrue(result['blocked_reasons'])
  def test_timers_per_item_and_native_weighted_rewards(self):
   q=self.compile(109)
   self.assertTrue(q['runtime_supported']);self.assertEqual(q['time_limit_seconds'],300)

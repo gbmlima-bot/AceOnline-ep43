@@ -15,6 +15,7 @@ func _initialize() -> void:
 
 func _run() -> void:
 	root.size = Vector2i(960, 600)
+	root.content_scale_size = Vector2i(960, 600)
 	_hud = HUD.new()
 	root.add_child(_hud)
 	await process_frame
@@ -24,6 +25,8 @@ func _run() -> void:
 	_hud.toggle_world_panel()
 	await process_frame
 	_test_services()
+	await _test_native_shop_selector()
+	_test_consumables()
 	_test_skills()
 	_test_equipment()
 	await _test_network()
@@ -94,6 +97,78 @@ func _test_services() -> void:
 	_state.services.quotes[0].affordable = true
 	_hud.set_systems_state(_state)
 	_check(_hud._world_missions.get_child(0).get_child(1).disabled and _hud._world_missions.get_child(0).get_child(1).tooltip_text.contains("Contato adequado"), "city/contact access gate cannot be bypassed by an affordable quote")
+
+
+func _test_native_shop_selector() -> void:
+	_state.services = {"allowed":true,"shop":9001,"map_id":2001,"rows":[],"total":0,"offset":0,"shop_options":[{"building_index":9001,"map_id":2001,"name":"Armas","native_stock_count":14},{"building_index":9005,"map_id":2001,"name":"Peças","native_stock_count":20},{"building_index":9006,"map_id":2001,"name":"GEAR","native_stock_count":13}]}
+	_hud._select_service_mode("buy")
+	_hud.set_systems_state(_state)
+	_check(_hud._service_shop_toolbar.visible and _hud._service_shop.item_count==4 and int(_hud._service_shop.get_selected_metadata())==9001,"native shops appear separately instead of silently merging distinct BuildingIndex stocks")
+	await process_frame
+	await process_frame
+	_hud._layout()
+	_check(Rect2(Vector2.ZERO, Vector2(root.size)).encloses(_hud._world_panel.get_global_rect()),"native shop controls and eight-row scroll view remain inside a960x600window")
+	_hud._service_offset=8
+	var before:=_actions.size()
+	_hud._service_shop.select(2)
+	_hud._service_shop.item_selected.emit(2)
+	var query: Dictionary=JSON.parse_string(_actions.back().trim_prefix("systems_query:"))
+	_check(query.shop==9005 and query.offset==0 and _actions.size()==before+1 and _actions.back().begins_with("systems_query:"),"selecting the native parts shop requests its catalog at offset0 without buying anything")
+	_check(int(_hud._service_quantity.value)==4,"changing native shop preserves the selected transaction quantity")
+	_state.services.shop=9005
+	_state.services.shop_options=[_state.services.shop_options[1],_state.services.shop_options[2],_state.services.shop_options[0]]
+	_hud.set_systems_state(_state)
+	_check(_hud._service_shop.selected==1 and int(_hud._service_shop.get_selected_metadata())==9005 and _hud.systems_query().shop==9005,"shop selection follows BuildingIndex when native options are reordered")
+	_state.services.shop_options.remove_at(0)
+	_hud.set_systems_state(_state)
+	_check(_hud._service_shop_id==0 and _hud._service_shop.selected==0 and _hud.systems_query().shop==0,"a removed native shop clears the selection to the default contact")
+	_hud._select_service_shop(9006)
+	_state.services.map_id=2002
+	_state.services.shop=10001
+	_state.services.shop_options=[{"building_index":10001,"map_id":2002,"name":"Outra cidade","native_stock_count":3}]
+	_hud.set_systems_state(_state)
+	_check(_hud._service_shop_id==0 and _hud._service_offset==0,"travel to another city clears the previous native shop and page")
+	_state.services.shop_options=[]
+	_hud.set_systems_state(_state)
+	_check(_hud._service_shop.disabled,"a city with no recovered shop cannot offer a fake selectable stock")
+	_hud._select_service_mode("maintenance")
+	_check(not _hud._service_shop_toolbar.visible,"maintenance hides unrelated native stock selection")
+
+
+func _test_consumables() -> void:
+	var item := {"item_num":7002600,"name":"Kit HP original","kind":18,"count":3,"consumable":true,"usable":true,"use_reason":"","use_remaining":0.0,"use_effects":[{"resource":"hp","amount":42}],"use_quantity":1,"equippable_slots":[]}
+	var inventory := {"entries":[item],"equipped":{}}
+	_hud.set_inventory_state(inventory)
+	_hud._select_inventory_cell(0)
+	_check(_hud._inventory_use.visible and not _hud._inventory_use.disabled and _hud._inventory_hint.text.contains("×3") and _hud._inventory_use.tooltip_text.contains("HP +42"),"owned supported consumable exposes a native inventory use button with stack count and recovered effect")
+	_hud._inventory_use.pressed.emit()
+	_check(_actions.back()=="use_item:7002600" and int(_hud._inventory_state.entries[0].count)==3,"using a kit emits one item identity without client-side consumption or healing")
+	var before := _actions.size()
+	item.usable=false
+	item.use_reason="Efeito original 23900 ainda não implementado; item preservado."
+	item.use_effects=[]
+	_hud.set_inventory_state(inventory)
+	_hud._inventory_use.pressed.emit()
+	_check(_hud._inventory_use.disabled and _hud._inventory_use.tooltip_text.contains("23900") and _actions.size()==before,"unsupported native effects remain blocked and cannot emit even a forced button signal")
+	item.use_reason="Recuperação ainda em recarga."
+	item.use_remaining=2.8
+	_hud.set_inventory_state(inventory)
+	var cell: Node=_hud._inventory_icons.get_child(0)
+	_check(_hud._inventory_use.disabled and _hud._inventory_use.tooltip_text.contains("2.8 s"),"real cooldown availability is shown with the use rejection reason")
+	item.use_remaining=2.7
+	_hud.set_inventory_state(inventory)
+	_check(_hud._inventory_icons.get_child(0)==cell and float(_hud._inventory_state.entries[0].use_remaining)==2.7,"fractional cooldown updates preserve source state without rebuilding every inventory cell each frame")
+	item.usable=true
+	item.use_remaining=0.0
+	item.use_reason=""
+	_hud.set_inventory_state(inventory)
+	_check(not _hud._inventory_use.disabled,"model confirmation of cooldown expiry re-enables the selected owned kit")
+	_hud.set_online_state({"status":"connecting","connected":false})
+	_hud._inventory_use.pressed.emit()
+	_check(_hud._inventory_use.disabled and _hud._inventory_use.tooltip_text.contains("online") and _actions.size()==before,"pending online authority blocks consumables before authentication and never invents a server item-use command")
+	_hud.set_online_state({"status":"offline","connected":false})
+	_hud.set_inventory_state({"entries":[],"equipped":{}})
+	_check(not _hud._inventory_use.visible and _hud._inventory_use.disabled,"an absent owned stack removes the use action")
 
 
 func _test_skills() -> void:

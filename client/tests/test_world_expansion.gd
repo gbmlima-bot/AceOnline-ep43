@@ -13,9 +13,9 @@ func _run() -> void:
 	root.add_child(world)
 	var configured: Dictionary = world.configure()
 	_check(configured.map_count == 238 and configured.mission_count == 598, "all native map and quest rows remain catalogued")
-	_check(configured.supported_mission_count == 537, "bounded compiler enables537 original quests and exposes60blocked scripts")
+	_check(configured.supported_mission_count == 541, "bounded compiler enables541 original quests and exposes56blocked scripts")
 	var catalog: Dictionary = world.mission_catalog(0, 1000, true)
-	_check(catalog.records.size() == 598 and catalog.blocked_count == 60, "UI can request the complete compact mission catalog")
+	_check(catalog.records.size() == 598 and catalog.blocked_count == 56, "UI can request the complete compact mission catalog")
 	for row: Dictionary in catalog.records:
 		_check(not row.has("dsl_ast") and not row.has("description"), "mission catalog excludes heavy original AST and prose:%s" % row.id)
 	var detail: Dictionary = world.mission_details("102")
@@ -162,7 +162,7 @@ func _run() -> void:
 			await process_frame
 	world.free()
 	_test_new_mission_contracts()
-	print(JSON.stringify({"suite":"world-expansion", "status":"pass" if failures == 0 else "fail", "checks":checks, "failures":failures, "sampled_maps":imported_maps, "available_maps":available, "native_missions_supported":537, "native_missions_blocked":60}))
+	print(JSON.stringify({"suite":"world-expansion", "status":"pass" if failures == 0 else "fail", "checks":checks, "failures":failures, "sampled_maps":imported_maps, "available_maps":available, "native_missions_supported":541, "native_missions_blocked":56}))
 	quit(0 if failures == 0 else 1)
 
 func _mission(world: Node, identifier: String) -> Dictionary:

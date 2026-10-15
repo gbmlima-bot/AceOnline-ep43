@@ -1,17 +1,17 @@
 {
-  "schema_version": 2,
-  "release": "0.7.0",
+  "schema_version": 3,
+  "release": "0.9.0",
   "project": "ACE Modern",
-  "kind": "local_gameplay_with_optional_lan_presence",
-  "summary_pt": "Jogo local com presença e chat LAN opcionais: equipamentos, atributos, habilidades suportadas, economia e missões ampliados; o servidor original não foi reconstruído.",
+  "kind": "local_gameplay_and_authoritative_online_pve_room",
+  "summary_pt": "Reconstrução parcial com exploração e sistemas locais; sala PvE autoritativa3002 com quatro GEAR, equipamento, habilidades e XP legado. Não equivale ao MMO original completo e não há hospedagem pública.",
   "engine": {
     "version": "4.7.2",
     "variant": "standard_gdscript",
     "renderer": "gl_compatibility"
   },
   "original_client_executed": false,
-  "server_connection": false,
-  "account_authentication": false,
+  "server_connection": true,
+  "account_authentication": true,
   "lan_network": {
     "implemented": true,
     "max_participants": 8,
@@ -22,12 +22,17 @@
   },
   "persistence": {
     "implemented": true,
-    "scope": "local_profile_on_this_computer",
+    "scope": "Separate local profile and authoritative SQLite/WAL online pilots",
     "manual_save": "F5",
     "manual_load": "F9",
     "autosave_seconds": 30,
     "autosave_on_exit": true,
-    "checksum_and_backup": true
+    "checksum_and_backup": true,
+    "local_file": "user://progress-v09.json",
+    "legacy_local_file": "user://progress.json",
+    "legacy_local_policy": "Read only when no0.9 primary/backup exists; validate before migrating; preserve old file.",
+    "online_store": "SQLite/WAL with transactional commands and reward receipts",
+    "online_private_xp_fraction_persisted": true
   },
   "content": {
     "gear_count": 4,
@@ -275,40 +280,34 @@
     "native_portal_records": 364,
     "source_event_dats": 221,
     "native_missions": 597,
-    "semantically_supported_missions": 537,
-    "blocked_mission_scripts": 60,
+    "semantically_supported_missions": 541,
+    "blocked_mission_scripts": 56,
     "mission_availability": "Semantic support is not playability: map/actor availability and native level, faction, gear and prerequisite requirements still gate execution.",
-    "supported_skill_ranks": 245,
-    "blocked_skill_definitions": 312,
+    "supported_skill_ranks": 280,
+    "blocked_skill_definitions": 277,
     "native_items": 16079,
     "native_skill_definitions": 557,
-    "local_shop_stock_items": 2596,
+    "local_shop_stock_items": 47,
     "crafting_recipe_definitions": 39230,
     "supported_crafting_recipes": 304,
     "blocked_crafting_recipes": 38926,
     "skill_coverage": {
-      "blocked": 312,
+      "blocked": 277,
       "blocked_reasons": {
         "Ação especial sem parâmetros de atributo; movimento próprio ainda não portado.": 15,
         "Definição base; aprenda um nível efetivo desta habilidade.": 95,
         "Efeito de sistema, evento ou formação; concessão original não recuperada.": 30,
-        "Efeito nativo 121 ainda não portado; habilidade bloqueada por inteiro.": 18,
-        "Efeito nativo 122 ainda não portado; habilidade bloqueada por inteiro.": 1,
         "Efeito nativo 124 ainda não portado; habilidade bloqueada por inteiro.": 7,
         "Efeito nativo 130 ainda não portado; habilidade bloqueada por inteiro.": 2,
         "Efeito nativo 138 ainda não portado; habilidade bloqueada por inteiro.": 3,
-        "Efeito nativo 140 ainda não portado; habilidade bloqueada por inteiro.": 1,
-        "Efeito nativo 171 ainda não portado; habilidade bloqueada por inteiro.": 4,
-        "Efeito nativo 173 ainda não portado; habilidade bloqueada por inteiro.": 1,
         "Efeito nativo 218 ainda não portado; habilidade bloqueada por inteiro.": 1,
-        "Efeito nativo 61 ainda não portado; habilidade bloqueada por inteiro.": 3,
-        "Efeito nativo 81 ainda não portado; habilidade bloqueada por inteiro.": 7,
         "Exige formação ou múltiplos alvos; execução local não presume um grupo.": 56,
         "Modo alternável ou carregado ainda não portado.": 68
       },
       "catalogued": 557,
-      "supported": 245,
-      "supported_is_not_automatically_learned": true
+      "supported": 280,
+      "supported_is_not_automatically_learned": true,
+      "supported_counts_effective_ranks_not_distinct_mechanics": true
     },
     "progression": {
       "experience_rows": 126,
@@ -334,24 +333,73 @@
     "selected_ui_groups": 19,
     "official_inventory_files": 10798,
     "official_inventory_entries": 10823,
-    "converted_glb_files": 3641
+    "converted_glb_files": 3641,
+    "native_shop_count": 10,
+    "native_shop_memberships": 121,
+    "supported_consumable_effect_definitions": 71,
+    "consumable_effect_count_is_unconditional_use": false,
+    "native_spawn_coverage": {
+      "source_DAT_records": 3498,
+      "source_DAT_maps": 132,
+      "supported_DAT_records": 2255,
+      "supported_DAT_maps": 95,
+      "blocked_DAT_records": 1243,
+      "source_SMA_records": 5,
+      "source_SMA_files": 1,
+      "supported_SMA_records": 0,
+      "blocked_SMA_records": 5,
+      "definition": "Verified ordinary DAT type6 position/orientation and positive native respawn interval; gated special states remain blocked. Supported placements are not complete native monster populations.",
+      "runtime_scope": "offline local world; online room encounter positions remain local policy",
+      "source": "client/assets/legacy_rules/native_spawns.json"
+    },
+    "native_loot_coverage": {
+      "source_rows": 70406,
+      "supported_rows": 694,
+      "disabled_rows": 7,
+      "blocked_rows": 69705,
+      "disabled_definition": "Compatible rows with native Probability0; do not roll.",
+      "collection": "Local automatic collection; native ground-loot ownership/lifetime not ported.",
+      "source": "client/assets/native_server/ti_MonsterItem.json"
+    },
+    "recovered_server_database": {
+      "exported_static_tables": 44,
+      "exported_rows": 199751,
+      "source": "Database/acc.bak",
+      "logical_database": "atum2_db_account",
+      "source_sha256": "e5ae92ac1b2e89ee2ef480d85785aa95d3c2588d386092b988efac558b4a4674",
+      "source_commit": "7c3e47ac47844e5c415d356a94d6201a0b9a38c4",
+      "catalog_row_counts_verified": true,
+      "native_SQL_restore_tested": false,
+      "backup_timestamp_independently_decoded": false,
+      "accounts_credentials_characters_exported": false,
+      "withheld_count_mismatch": [
+        "ti_DissolutionItem"
+      ],
+      "withheld_operational_tables": [
+        "ti_Tender",
+        "ti_OutPostNextWarTime"
+      ],
+      "policy": "Legacy static data is retained with provenance. Current client HP/identity is preserved; runtime verifies compatible fields before combining versions.",
+      "manifest": "client/assets/native_server/manifest.json"
+    }
   },
   "implemented": {
-    "physics": "Selected native engine ITEMs and ported flight, boost/heat, brake, lateral thrust, inclination correction, landing and A-GEAR ground/siege branches. Advanced original state equivalence is unverified.",
-    "world": "Original terrain/flags, pooled scenery, native portal destinations and DAT event/NPC positions when available. Partial and unavailable resources remain explicit in the browser.",
+    "physics": "Selected native engine ITEMs, flight/boost/heat/brake/lateral branches, timed landing/takeoff, A-GEAR ground/siege and persisted transition state. Full original state equivalence remains unverified.",
+    "world": "Original terrain/flags/scenery and portals, with supported exact native DAT enemy positions and positive respawn intervals. Partial/unavailable art and gated spawn states remain explicit.",
     "missions": "Bounded allowlist compiler for recovered scripts, original requirement gates, kill/dialogue/navigation objectives and idempotent rewards; unsupported clauses fail closed.",
-    "combat": "Local PvE with native ITEM damage, cadence, ammo, heat, range and source formulas; native MEX identities/HP and selected Belligerence behaviors. World occlusion applies to weapons and visibility.",
+    "combat": "Native ITEM damage/cadence/ammo/heat/range/source formulas, unchanged current-client MEX HP and supported legacy NPC weapons. Bursts and hostile projectiles execute; pursuit/steering remain local bridges. World occlusion applies to weapons and visibility.",
     "inventory": "Owned local items and original icons; validated weapons, engine, armor, CPU, radar and supported accessories with native requirements and selected source modifiers. Catalog browsing does not grant ownership.",
     "equipment": "Source stat increments and caps, explicit bonus-point allocation, native armor/CPU/radar fields and fail-closed unsupported parameters. Equipped armor selects its recovered visual; cosmetic previews remain separate.",
-    "skills": "Explicit paid learning, class/level/prerequisite gates, eight shortcuts, SP, cooldowns, supported self effects and combat modifiers. Unsupported targets and unported parameters remain blocked.",
-    "economy": "Local shop stock with native ITEM prices/bundles and source sale percentage; conservative native mixing recipes with ingredient/SPI cost, success chance and persisted RNG. HP/DP/EP/SP and ammunition services use source cost rules. Stock, zero tax and city/contact access are explicit local policy.",
-    "network": "Optional LAN host/join/disconnect and plain-text chat, up to eight participants. Remote GEAR presence only; no shared combat, authority, mission rewards, trade or original server emulation.",
-    "progression": "Pinned native experience thresholds through level125 and source level-up limits; earned XP ledger, effective XP and discarded excess stay distinct. Native 2025 server progression is unverified.",
+    "skills": "280 effective ranks supported with class/level/prerequisite gates, eight shortcuts, SP/recasts, defensive modifiers, EP recovery, full resource recovery and timed shield first aid.277 definitions including prototypes remain blocked. Paid learning is local only; online uses owned supported skills and validated assignment.",
+    "economy": "10 source-bound NPC shops,121 memberships and47 cross-version compatible items with native matching prices/bundles and sale percentage. Supported mixing/maintenance remain local. Zero tax and unlimited stock quantity are explicit local policies.",
+    "network": "Authoritative WebSocket/WSS PvE room3002 for four classes; server validates flight, combat, equipment, stats, supported skill use/assignment and rewards. Separate ENet LAN presence/chat remains available.",
+    "progression": "Native level thresholds to125, recovered legacy monster XP and validated reward receipts. Online XP follows effective damage share with persisted private fractional carry; local combat/mission totals stay distinct. Current2025 full-server progression is unverified.",
     "appearance": "Class-compatible native armor models can be tested visually from M without granting armor or changing combat/engine statistics. Default appearance can be restored.",
     "audio": "Original audio registry and map BGM bindings; music toggle in M. Importing sounds does not mean every original audio event is implemented.",
     "camera": "Local chase camera avoids eligible Collision1 world geometry; other props and original camera behavior are not claimed.",
     "water": "Static original water patches use native map metadata and water/black texture pixels with preserved alpha; complete original DirectX distortion/reflection shader is not ported.",
-    "ui": "Original blue HUD and inventory artwork plus bounded searchable catalogs for missions/maps/items/appearances/services/skills, validated attribute controls and optional LAN connection. HP/DP/SP/ammo and eight skill shortcuts bind to actual local models."
+    "ui": "Original blue HUD/inventory art binds actual resources; searchable local catalogs and native-shop selector; online four-class selection, owned equipment, stats and supported learned-skill actions bind authoritative state. Local services are blocked while online.",
+    "consumables": "Self-use effects for71 HP/DP/SP/EP recovery definitions interpreted locally; ownership, native class/level/mode/resource restrictions and persisted shared resource recasts still gate actual use.3 definitions are Infinity-only and blocked in the ordinary local session. Online use is not ported."
   },
   "native_quest_102": {
     "objectives": [
@@ -375,21 +423,25 @@
     "reward_idempotent": true
   },
   "adaptations": [
-    "Fixed120Hz clock, keyboard/mouse control, radius4 contact body, continuous sweep, safe spawn, portal cooldown and instantaneous landing/takeoff bridges.",
-    "Initial level9 profile, local starter reserve, encounter positions, scheduling, movement/attack fallbacks and respawn; no server spawn database was supplied.",
-    "Initial local training enables compatible supported rank1 skills separately from native account ownership; subsequent learning is explicit and charged through the local school service.",
-    "Native NPC position/name/greeting when DAT event9 is present; nearby NPC3 fallback position and interaction markers/range are explicit local policy.",
-    "Quick map travel and armor appearance testing are exploration tools, not original routes or ownership.",
-    "Local missile pursuit, hit volumes, reproducible RNG, modern lighting/materials and static model poses.",
-    "3002 training quest and rings are new local content, separated from recovered missions."
+    "Fixed120Hz clock, keyboard/mouse controls, radius4 contact body, continuous sweep, safe spawning and portal cooldown. Native timed landing/takeoff branches are ported; advanced original flight states remain partial.",
+    "Initial level9 local profile and starter reserve are explicit training policy. Online room3002 encounter positions and10SPI per contributing pilot are explicit local rules.",
+    "Verified native DAT placements use one actor per placement and positive source respawn seconds. A persisted active-session clock replaces original monotonic OS uptime; exact native channel scheduling/capacity is not claimed.",
+    "Compatible legacy XP, ordinary drops and NPC weapons are recovered. Drop rates use solo base rates; collection is local and automatic. Native loot-on-ground lifetimes, rare instances and all special drop paths are not ported.",
+    "Initial local training enables compatible rank1 skills separately from native account ownership. Later local learning is paid; online learning has no native school and remains blocked.",
+    "NPC position/name/greeting is native when available. Explicit local contact markers/range, zero shop tax and unlimited stock quantities remain adaptations; stock membership is now native and version-checked.",
+    "Quick map travel and armor appearance previews are exploration tools; they do not grant items or reproduce original travel restrictions.",
+    "Local missile pursuit, NPC movement/terrain response, hit volumes, deterministic RNG, modern lighting/materials and static model poses remain adaptations.",
+    "3002 training quest and rings are new local content, separate from recovered missions."
   ],
   "not_implemented": [
-    "Original MMO server, authentication, accounts and shared multiplayer combat/economy/missions. Optional LAN only shares presence and chat.",
-    "Maps marked unavailable, incomplete scenery gaps, every recovered mission clause and all special/group/skill interactions.",
-    "Original spawn database, complete per-monster server attributes, native AI scheduler, mesh animations, Cinema missile paths and all original effects/shaders.",
-    "Hyperbooster, complete flight state machine, every skill/enchant/formation modifier and complete takeoff/landing patterns. Fuel-depletion trigger/consumption is ported; falling movement is a local ballistic bridge.",
-    "All original equipment/skill effects, instance enchantment, official shop stock/taxes and stateful crafting targets beyond the supported local subset.",
-    "Complete original water distortion/reflection shader, weather/day-night renderer and proven visual or functional equivalence against the original client."
+    "Complete original MMO or official protocol/account interoperability; hosted public service; campaign, economy and multi-map persistence online; PvP, guilds and full formations.",
+    "21 unavailable maps and remaining scenery gaps;56 unsupported mission scripts. Supported syntax still requires available maps, actors and native prerequisites.",
+    "1243 gated/unsupported DAT spawns and5 regional SMA spawns, native regional clearance algorithm, native war/Infinity/boss state machines and complete channel scheduler/capacity.",
+    "Rare/stateful/staged unsupported drops and instance effects; complete native NPC AI, original missile Cinema paths, mesh animations and all visual/audio effects.",
+    "277 blocked skill definitions including base prototypes; toggle/charged/group/debuff/special actions, full native overlap rules and every flight/enchant modifier.",
+    "Online skill learning and consumable use; complete cash/WP shops, faction taxes, finite stock and stateful instance crafting/enchantment targets beyond the supported local subset.",
+    "Complete original DirectX water distortion/reflections, weather/day-night renderer, and proven visual/functional equivalence against the original client.",
+    "Native macOS/Windows execution and production VPS validation; load capacity for eight simultaneous pilots."
   ],
   "platforms": {
     "macos": {
@@ -413,72 +465,112 @@
     }
   },
   "validation": {
+    "state": "desktop_exports_and_linux_runtime_passed",
     "release_report_current": true,
     "all_reported_suites_pass": true,
-    "reported_suites": 34,
     "reports": [
-      "reports/validation.json",
-      "reports/render-validation.json"
+      "verification/completion-validation-v09.json",
+      "verification/completion-models-core-final-v09.json",
+      "verification/completion-models-integration-final-v09.json",
+      "verification/completion-models-remaining-v09.json",
+      "verification/completion-scenes-v09.json",
+      "verification/online-scene-e2e-v09.json",
+      "verification/server-e2e-v09.json",
+      "verification/real-v08-migration-v09.json",
+      "verification/macos-pack-runtime-v09.json",
+      "verification/macos-pack-online-v09.json",
+      "verification/windows-pack-runtime-v09.json",
+      "verification/windows-pack-online-v09.json"
     ],
+    "public_evidence_directory": "verification/",
+    "runtime_environment": "Godot4.7.2 on Linux",
     "native_macos_windows_execution_tested": false,
-    "original_full_equivalence_verified": false
+    "public_VPS_deployment_tested": false,
+    "original_full_equivalence_verified": false,
+    "note": "Source suites, real network/migration and both exported desktop packs passed with Godot4.7.2/Linux. Native macOS/Windows execution and public VPS deployment remain untested.",
+    "reported_groups": 34,
+    "model_and_scene_groups": 31,
+    "real_network_and_migration_groups": 3,
+    "python_tests_passed": 132,
+    "python_log": "verification/completion-python-tests-v09.log",
+    "desktop_exports_verified": true,
+    "release_assets_remote_verified": false,
+    "exported_packs_runtime_on_linux_verified": true
   },
   "deliverables": {
-    "shared_folder": "ace-modern-systems",
-    "macos": "ace-modern-systems-macos-v0.7.zip",
-    "windows": "ace-modern-systems-windows-v0.7.zip",
-    "sources": "ace-modern-systems-fontes-v0.7.zip",
-    "html": "gameplay.html",
-    "text": "gameplay.txt"
+    "release_url": "https://github.com/gbmlima-bot/AceOnline-ep43/releases/tag/ace-modern-v0.9.0",
+    "publication_status": "validated_awaiting_upload",
+    "macos": "ace-modern-online-macos-v0.9.zip",
+    "windows": "ace-modern-online-windows-v0.9.zip",
+    "source_and_server_kit": "ace-completion-source-kit-v0.9.zip",
+    "source_kit_base": "ace-modern-fontes-v0.8.zip",
+    "source_kit_base_sha256": "1d8acfa14f0a9fa9c6782c5811cab72172fba83a4001527b8b042f603c696f1c",
+    "source_kit_updates_native_v08_apps": false,
+    "guide": "docs/README-entrega-v0.9.md",
+    "server_guide": "docs/ONLINE-PVE.md"
   },
   "screenshots": [
+    {
+      "path": "docs/preview-online-v0.9.png",
+      "title": "Sala Online PvE0.9, dois pilotos",
+      "origin": "Godot4.7.2 Linux; reconstruction, not original-client runtime",
+      "sha256": "c7fddc7cb3c5de58c3d297f5fef4b574e468ff97800d112711b8553c0d629c61"
+    },
     {
       "path": "reports/preview.png",
       "title": "Voo e interface original",
       "origin": "Godot reconstruction0.7, not original-client runtime",
-      "sha256": "e0e472e684669b7d7be74c328cf9a1992c7468558f9ccec199b42bbfea0e1a38"
+      "sha256": "e0e472e684669b7d7be74c328cf9a1992c7468558f9ccec199b42bbfea0e1a38",
+      "historical_release": "0.7.0"
     },
     {
       "path": "reports/inventory.png",
       "title": "Inventário e equipamentos possuídos",
       "origin": "Godot reconstruction0.7, not original-client runtime",
-      "sha256": "5feb84b24c3f7293b5b7d27d8397b3a34e900279a8eaae98d47e32340f86da60"
+      "sha256": "5feb84b24c3f7293b5b7d27d8397b3a34e900279a8eaae98d47e32340f86da60",
+      "historical_release": "0.7.0"
     },
     {
       "path": "reports/systems-skills.png",
       "title": "Habilidades, SP e atalhos",
       "origin": "Godot reconstruction0.7, not original-client runtime",
-      "sha256": "ea478a51ae1d1041d43117378ddb728ffea2e0397bd12a7a5faa6208cf7c832b"
+      "sha256": "ea478a51ae1d1041d43117378ddb728ffea2e0397bd12a7a5faa6208cf7c832b",
+      "historical_release": "0.7.0"
     },
     {
       "path": "reports/systems-equipment.png",
       "title": "Atributos e equipamentos",
       "origin": "Godot reconstruction0.7, not original-client runtime",
-      "sha256": "0111fcf91bebe7341910572eff4fb8fc9c9e8e984011dd600c1a4a6eeb0960af"
+      "sha256": "0111fcf91bebe7341910572eff4fb8fc9c9e8e984011dd600c1a4a6eeb0960af",
+      "historical_release": "0.7.0"
     },
     {
       "path": "reports/systems-services.png",
       "title": "Loja local e requisitos",
       "origin": "Godot reconstruction0.7, not original-client runtime",
-      "sha256": "b630e1b414c5a2ea1f79d8eeb58e0c85fa9131dfc249d6834b6c2ef2428b824c"
+      "sha256": "b630e1b414c5a2ea1f79d8eeb58e0c85fa9131dfc249d6834b6c2ef2428b824c",
+      "historical_release": "0.7.0"
     },
     {
       "path": "reports/systems-recipes.png",
       "title": "Receitas e ingredientes",
       "origin": "Godot reconstruction0.7, not original-client runtime",
-      "sha256": "13b15db5802868987dc26eadb193f6012b94d8426ab4b4c73266f44b4d2209b0"
+      "sha256": "13b15db5802868987dc26eadb193f6012b94d8426ab4b4c73266f44b4d2209b0",
+      "historical_release": "0.7.0"
     },
     {
       "path": "reports/systems-maintenance.png",
       "title": "Manutenção e reabastecimento",
       "origin": "Godot reconstruction0.7, not original-client runtime",
-      "sha256": "8c371b704c6e4bb2028eb78c58a5f1ff121f7c7fb4331b96c0aa6d68ce37377a"
+      "sha256": "8c371b704c6e4bb2028eb78c58a5f1ff121f7c7fb4331b96c0aa6d68ce37377a",
+      "historical_release": "0.7.0"
     },
     {
       "path": "reports/systems-network.png",
       "title": "Conexão e presença LAN",
       "origin": "Godot reconstruction0.7, not original-client runtime",
-      "sha256": "71b92498a732c22bbb6725ff0ee2113b5ed7ab9d73dff3333ccb99b1444988db"
+      "sha256": "71b92498a732c22bbb6725ff0ee2113b5ed7ab9d73dff3333ccb99b1444988db",
+      "historical_release": "0.7.0"
     }
   ],
   "provenance": {
@@ -499,12 +591,19 @@
       "docs/physics-original.json",
       "docs/combate-original.json",
       "docs/world-implementation.txt",
-      "docs/recursos-originais.json"
+      "docs/recursos-originais.json",
+      "client/assets/native_server/manifest.json",
+      "client/assets/legacy_rules/server_item_compatibility.json",
+      "client/assets/legacy_rules/native_spawns.json",
+      "client/assets/local_services/economy.json"
     ]
   },
   "historical_reports_preserved": [
     "docs/comparacao-layout.html",
-    "docs/comparacao-assets.html"
+    "docs/comparacao-assets.html",
+    "docs/README-entrega-local-v0.8.md",
+    "docs/gameplay.txt",
+    "docs/gameplay.html"
   ],
   "controls": [
     {
@@ -537,7 +636,7 @@
     },
     {
       "input": "M",
-      "action_pt": "Biblioteca, serviços, habilidades, atributos e rede LAN; pausa o jogo local"
+      "action_pt": "Mapas, serviços, habilidades, atributos, LAN e OnlinePvE; pausa apenas o jogo local"
     },
     {
       "input": "1–8",
@@ -549,7 +648,7 @@
     },
     {
       "input": "F2",
-      "action_pt": "Alternar B/M/A/I-GEAR, inclusive no inventário"
+      "action_pt": "Alternar B/M/A/I-GEAR no perfil local; classe online permanece vinculada ao piloto"
     },
     {
       "input": "F5 / F9",
@@ -567,5 +666,69 @@
       "input": "Enter / Esc",
       "action_pt": "Enviar chat LAN quando conectado ou nota local / liberar campos de texto"
     }
-  ]
+  ],
+  "authentication_scope": "Private per-pilot credentials for this reconstruction; not original publisher accounts or official authentication.",
+  "online_network": {
+    "implemented": true,
+    "protocol": "ace-pve/2",
+    "compatible_client_release": "0.9.0",
+    "compatible_server_release": "0.9.0",
+    "map_id": 3002,
+    "room_count": 1,
+    "gear_ids": [
+      "12000100",
+      "12001100",
+      "12002100",
+      "12003100"
+    ],
+    "gear_choice": "First character creation; persistent and immutable for that pilot.",
+    "transport": "WebSocket/WSS; non-TLS only on loopback",
+    "authoritative": [
+      "flight",
+      "timed_landing_takeoff",
+      "ground_and_siege",
+      "collision",
+      "weapons_and_ammo",
+      "hostile_npc_projectiles",
+      "supported_skills",
+      "owned_equipment",
+      "stat_allocation",
+      "skill_assignment",
+      "death_and_respawn",
+      "experience_and_local_SPI_rewards"
+    ],
+    "physics_hz": 120,
+    "snapshots_hz": 15,
+    "recommended_initial_pilots": 2,
+    "configured_max_pilots": 8,
+    "eight_pilot_load_capacity_verified": false,
+    "public_server_provisioned": false,
+    "offline_profile_imported": false,
+    "skill_learning": false,
+    "consumable_use": false,
+    "campaign": false,
+    "shared_economy": false,
+    "xp": {
+      "Hornian": 82,
+      "source": "legacy ti_Monster.Experience",
+      "distribution": "effective damage share, excluding overkill; private fractional carry persisted per pilot",
+      "level_and_bonus_stats_persist": true
+    },
+    "spi": {
+      "per_contributing_pilot_per_kill": 10,
+      "source": "explicit local room policy; not recovered original drop value"
+    },
+    "original_protocol_server": false
+  },
+  "historical_validation_v07": {
+    "release_report_current": true,
+    "all_reported_suites_pass": true,
+    "reported_suites": 34,
+    "reports": [
+      "reports/validation.json",
+      "reports/render-validation.json"
+    ],
+    "native_macos_windows_execution_tested": false,
+    "original_full_equivalence_verified": false
+  }
 }

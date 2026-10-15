@@ -11,10 +11,13 @@ func _initialize() -> void:
 	_test_native_buff_real_combat()
 	_test_native_heals_and_resources()
 	_test_native_berserker_and_movement_modifiers()
+	_test_native_damage_protection()
+	_test_native_first_aid()
+	_test_native_fuel_and_complete_recovery()
 	_test_lifecycle_save_and_atomic_rejection()
 	_test_stats_preserve_encounter()
 	if failures.is_empty():
-		print("PASS: skills — %d checks; native parameters, class/level/rank gates, real damage/defense/cadence, SP/cooldowns/heals, persistence and explicit blocked catalog" % checks)
+		print("PASS: skills — %d checks; native parameters, class/level/rank gates, real damage/protection/cadence, SP/cooldowns/HP/DP/EP recovery, persistence and explicit blocked catalog" % checks)
 		quit(0)
 	else:
 		for message: String in failures:
@@ -59,7 +62,7 @@ func _test_source_and_gates() -> void:
 	_check(not bool(skills.assign_slot(2, 7800021).ok), "Unlearned skill assigned")
 	_check(not bool(skills.learn(7800041).ok), "Unsupported toggle was silently activated")
 	var snapshot: Dictionary = skills.snapshot()
-	_check(snapshot.rows.size() == 557 and int(snapshot.supported_count) > 150 and int(snapshot.blocked_count) > 0, "Supported/blocked catalog scope not exposed")
+	_check(snapshot.rows.size() == 557 and int(snapshot.supported_count) == 280 and int(snapshot.blocked_count) == 277, "Supported/blocked catalog scope does not match validated native effects")
 	for row: Dictionary in snapshot.rows:
 		if not bool(row.supported):
 			_check(not str(row.reason).is_empty(), "Blocked skill has no explicit reason")
@@ -203,6 +206,113 @@ func _test_lifecycle_save_and_atomic_rejection() -> void:
 	_check(expiry.modifiers().is_empty() and combat.skill_modifiers.is_empty(), "Timed buff remained active after native180seconds")
 
 
+func _test_native_damage_protection() -> void:
+	var reducer = _skills()
+	var combat = _combat()
+	_check(bool(reducer.learn(7801031).ok) and bool(reducer.cast(7801031, combat).ok), "Native ReduceDamage was left blocked")
+	_check(is_equal_approx(float(reducer.modifiers().get("shield_damage_reduction", 0.0)), 0.1) and not reducer.modifiers().has("damage_reduction"), "DES121 must reduce shield expenditure, not every damage component")
+	combat.damage_player(100, "weapon")
+	_check(is_equal_approx(float(combat.player.shield), 910) and combat.player.hp == 1000, "Source10percentReduceDamage did not reach actual shield debit")
+	combat.player.shield = 50
+	combat.damage_player(100, "weapon")
+	_check(combat.player.shield == 0 and is_equal_approx(float(combat.player.hp), 955), "Shield break must preserve native damage-minus-DP*(1+reduction) remainder")
+	combat.damage_player(100, "weapon")
+	_check(is_equal_approx(float(combat.player.hp), 855), "Shield-only protection incorrectly reduced bareHP damage")
+	var invincible = _skills("12001100")
+	var immune = _combat()
+	_check(bool(invincible.learn(7811101).ok) and bool(invincible.cast(7811101, immune).ok), "Native Invincible did not cast")
+	_check(float(invincible.definitions[7811101].parameters[0].value) == 0.0 and float(invincible.modifiers().get("invincible", 0.0)) == 1.0, "Zero-valued DES122 is a present flag, not a zero-strength buff")
+	var blocked: Dictionary = immune.resolve_attack(immune.weapons.primary, {"level": 125}, immune.player, 100, true, "M2C")
+	_check(is_zero_approx(float(blocked.damage)), "Actual weapon resolution ignored native invincibility")
+	immune.damage_player(100, "collision")
+	_check(immune.player.hp == 1000 and immune.player.shield == 1000, "Native invincibility did not cover collision damage")
+	for step in range(16):
+		invincible.advance(0.5, immune)
+	_check(not invincible.modifiers().has("invincible") and not immune.skill_modifiers.has("invincible"), "Native8second immunity persisted after expiry")
+	_check(float(immune.resolve_attack(immune.weapons.primary, {"level": 125}, immune.player, 100, true, "M2C").damage) > 0, "Expired immunity still blocks actual attacks")
+	var armor = _skills("12002100")
+	var protected = _combat()
+	_check(bool(armor.learn(7821031).ok) and bool(armor.cast(7821031, protected).ok), "Native collision absorption was left blocked")
+	protected.damage_player(100, "collision")
+	_check(is_equal_approx(float(protected.player.shield), 950), "DES140 did not halve actual collision damage")
+	protected.damage_player(100, "weapon")
+	_check(is_equal_approx(float(protected.player.shield), 850), "DES140 incorrectly halved weapon damage")
+	_check(bool(armor.learn(7821061).ok), "Native Barrier did not learn")
+	var before: Dictionary = armor.export_state()
+	_check(not bool(armor.cast(7821061, protected).ok) and armor.export_state() == before, "Missing flight context let a ground-only skill cast or consume resources")
+	_check(not bool(armor.cast(7821061, protected, {"airborne": true}).ok) and armor.export_state() == before, "Airborne Barrier cast or rejection mutatedresources")
+	_check(not bool(armor.cast(7821061, protected, {"airborne": 0}).ok) and armor.export_state() == before, "Malformed flight context authorized a grounded-only skill")
+	_check(bool(armor.cast(7821061, protected, {"airborne": false}).ok) and float(armor.modifiers().get("missile_barrier", 0.0)) == 1.0, "Grounded native Barrier did not activate its zero-valued presenceflag")
+	_check(is_zero_approx(float(protected.resolve_attack(protected.weapons.secondary, {"level": 125}, protected.player, 100, true, "M2C").damage)), "Barrier failed to block secondary weapon damage")
+	_check(float(protected.resolve_attack(protected.weapons.primary, {"level": 125}, protected.player, 100, true, "M2C").damage) > 0, "Secondary-only Barrier also blocked primary weapon")
+	protected.player.dead = true
+	armor.advance(0.5, protected)
+	_check(armor.modifiers().is_empty() and protected.skill_modifiers.is_empty(), "Death retained newly supported native protectioneffects")
+
+
+func _test_native_first_aid() -> void:
+	var skills = _skills("12002100")
+	var combat = _combat()
+	combat.player.shield = 100
+	combat.player.hp = 200
+	_check(bool(skills.learn(7821051).ok) and bool(skills.cast(7821051, combat).ok), "FirstAid native rank did not cast")
+	_check(combat.player.shield == 100 and combat.player.hp == 200, "FirstAid must not heal before its first1second timer")
+	skills.advance(0.5, combat)
+	_check(combat.player.shield == 100, "FirstAid applied continuous or half-second recovery")
+	skills.advance(0.5, combat)
+	_check(is_equal_approx(float(combat.player.shield), 100.0 + 800.0 / 9.0) and combat.player.hp == 200, "FirstAid must restore DP800/9 per native1second tick, notHP")
+	skills.advance(0.5, combat)
+	var state: Dictionary = skills.export_state()
+	var restored = _skills("12002100")
+	_check(restored.import_state(JSON.parse_string(JSON.stringify(state))), "Partially elapsedFirstAid checkpoint did not restore")
+	var other = _combat()
+	other.player.shield = combat.player.shield
+	for step in range(15):
+		skills.advance(0.5, combat)
+		restored.advance(0.5, other)
+	_check(is_equal_approx(float(combat.player.shield), 900) and is_equal_approx(float(other.player.shield), 900) and skills.snapshot(false).active_count == 0, "FirstAid must finish9ticks(total800DP) including expiry tick, with identical restorebehavior")
+	var full = _skills("12002100")
+	var full_combat = _combat()
+	full.learn(7821051)
+	full.cast(7821051, full_combat)
+	full.advance(0.5, full_combat)
+	full.advance(0.5, full_combat)
+	var stopped: Dictionary = full.export_state()
+	_check(bool(stopped.active[7821050].gradual_complete), "Full DP failed to stop native gradual recoverytimer")
+	var stopped_restore = _skills("12002100")
+	_check(stopped_restore.import_state(JSON.parse_string(JSON.stringify(stopped))), "Stopped gradualDP timer was not preserved throughsave/load")
+	full_combat.player.shield = 300
+	for step in range(4):
+		stopped_restore.advance(0.5, full_combat)
+	_check(full_combat.player.shield == 300, "Damage after full DP restarted a native timer alreadycancelled")
+	var forged := stopped.duplicate(true)
+	forged.active[7821050].gradual_complete = "false"
+	var checkpoint: Dictionary = stopped_restore.export_state()
+	_check(not stopped_restore.import_state(forged) and stopped_restore.export_state() == checkpoint, "Forged gradual completion state bypassed atomic importvalidation")
+
+
+func _test_native_fuel_and_complete_recovery() -> void:
+	var skills = _skills("12001100")
+	var combat = _combat()
+	_check(bool(skills.learn(7813011).ok) and bool(skills.learn(7813071).ok), "NativeRefuel/FullRecovery definitions remainedblocked")
+	var before: Dictionary = skills.export_state()
+	_check(not bool(skills.cast(7813011, combat).ok) and skills.export_state() == before, "Refuel without synchronized EP consumedSP/recast")
+	combat.player.ep = 50.0
+	combat.player.max_ep = 200.0
+	var fuel: Dictionary = skills.cast(7813011, combat)
+	_check(bool(fuel.ok) and combat.player.ep == 80 and float(fuel.ep_current) == 80 and float(fuel.ep_max) == 200, "NativeRefuel must add30EP and emit authoritative flight resourceupdate")
+	combat.player.hp = 123
+	combat.player.shield = 234
+	combat.player.ep = 1.0
+	skills.sp = 1.0
+	var complete: Dictionary = skills.cast(7813071, combat)
+	_check(bool(complete.ok) and combat.player.hp == 1000 and combat.player.shield == 1000 and skills.sp == 1000 and combat.player.sp == 1000 and combat.player.ep == 200 and float(complete.ep_current) == 200, "NativeFullRecovery must refill HP/DP/SP/EP together despitezero parametervalue")
+	var saved: Dictionary = skills.export_state()
+	_check(not bool(skills.cast(7813071, combat).ok) and skills.export_state() == saved, "FullRecovery native30minute recast was bypassed")
+	var source_events: Array[Dictionary] = skills.drain_events()
+	_check(source_events.size() == 2 and source_events[1].base_item_num == 7813070 and float(source_events[1].ep_current) == 200, "Recovery lost original quest identity or finalfuel transaction")
+
+
 func _test_stats_preserve_encounter() -> void:
 	var combat = _combat()
 	combat.player.hp = 600
@@ -226,4 +336,6 @@ func _test_stats_preserve_encounter() -> void:
 	incoming.add_target({"HP": 500, "Level": 125, "MoveSpeed": 0, "hostile": true, "weapon": weapon}, Vector3(0, 0, -100))
 	incoming.targets[0].attack_cooldown = 0
 	incoming.advance(0.1)
+	_check(is_equal_approx(float(incoming.player.shield), 1000) and incoming.projectiles.size() == 1, "Secondary NPC weapon must travel before applying native defense and DP damage")
+	incoming.advance(0.3)
 	_check(is_equal_approx(float(incoming.player.shield), 950), "Secondary NPC weapon used primary defense instead of native secondary defense modifiers")

@@ -1,0 +1,1 @@
+{"schema_version":1,"table":"ti_BurningMap","source_sha256":"e5ae92ac1b2e89ee2ef480d85785aa95d3c2588d386092b988efac558b4a4674","columns":["BuringMapUID","MapIndex","ReqUnitKind","ReqMinLv","ReqMaxLv"],"rows":[[1,3080,65535,58,72],[2,3081,65535,73,86],[3,3084,65535,58,72],[4,3085,65535,73,86],[5,3088,65535,87,100],[6,3089,65535,87,100]]}

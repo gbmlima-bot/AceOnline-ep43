@@ -50,9 +50,12 @@ func _run() -> void:
 	var ready:Dictionary=await _http("/readyz")
 	_check(health.get("code")==200 and ready.get("code")==200 and bool(ready.get("body",{}).get("ready",false)),"production health and readiness returnHTTP200")
 	var first:=await _open_client(pilots[0].token)
-	var second:=await _open_client(pilots[1].token)
+	var invalid_class:=await _open_client(pilots[1].token,"not-a-class")
+	_check(not bool(invalid_class.authenticated),"unknown native class is rejected at authentication before character creation")
+	var second:=await _open_client(pilots[1].token,"12002100")
 	_check(bool(first.get("authenticated",false)) and first.get("pilot_id")==pilots[0].id,"first real WebSocket authenticates persistent pilot")
 	_check(bool(second.get("authenticated",false)) and second.get("pilot_id")==pilots[1].id,"second real WebSocket authenticates persistent pilot")
+	_check(str(_pilot(second,pilots[1].id).get("gear_id",""))=="12002100" and str(second.latest.get("self",{}).get("inventory",{}).get("gear_id",""))=="12002100","auth-selected A-GEAR is authoritative in public and private snapshots")
 	await _pump(0.3)
 	_check(_shared_target_snapshot(first,second),"both independent sockets receive identical shared NPCs at the same server tick")
 	_check(int(first.latest.get("player_count",0))==2 and int(second.latest.get("player_count",0))==2,"two players occupy the same authoritative room")
@@ -99,6 +102,8 @@ func _run() -> void:
 	_check(await _wait_event(second,"chat"),"real session chat crosses the dedicated server to the second player")
 	_close(first)
 	await _pump(0.15)
+	var wrong_class:=await _open_client(pilots[0].token,"12000100")
+	_check(not bool(wrong_class.authenticated),"reconnect cannot replace an existing persistent character class")
 	var returning:=await _open_client(pilots[0].token)
 	_check(bool(returning.authenticated) and _skill_at(returning.latest,2)==native_skill,"reconnection restores committed character instead of a local checkpoint")
 	_check(int(returning.latest.get("self",{}).get("input_seq",-1))==3,"reconnection preserves server input sequence")
@@ -116,6 +121,7 @@ func _run() -> void:
 	var restarted:=await _open_client(pilots[0].token)
 	var restarted_two:=await _open_client(pilots[1].token)
 	_check(bool(restarted.authenticated) and bool(restarted_two.authenticated),"both stored pilots authenticate after a real process restart")
+	_check(str(_pilot(restarted_two,pilots[1].id).get("gear_id",""))=="12002100","real SQLite process restart preserves chosen A-GEAR without repeating auth selection")
 	_check(_skill_at(restarted.latest,2)==native_skill and int(restarted.latest.get("self",{}).get("input_seq",-1))==3,"restart preserves native skill assignment and input progress")
 	var replay_restart:Dictionary=await _command(restarted,"e2e-skill-assign","skill_assign",{"slot":2,"item_num":native_skill})
 	_check(replay_restart==assigned,"receipt survives server restart without reapplying operation")
@@ -189,7 +195,7 @@ func _stop_server() -> void:
 		_check(false,"graceful production shutdown finishes without forced kill")
 
 
-func _open_client(token:String) -> Dictionary:
+func _open_client(token:String, gear_id:String="") -> Dictionary:
 	var peer:=WebSocketPeer.new()
 	peer.inbound_buffer_size=32768
 	peer.outbound_buffer_size=32768
@@ -200,7 +206,9 @@ func _open_client(token:String) -> Dictionary:
 	while Time.get_ticks_msec()<deadline and peer.get_ready_state()!=WebSocketPeer.STATE_CLOSED:
 		await _pump(0.01)
 		if bool(connection.get("hello",false)) and not connection.auth_sent:
-			_send(connection,{"op":"auth","protocol":Wire.PROTOCOL,"token":token})
+			var auth:Dictionary={"op":"auth","protocol":Wire.PROTOCOL,"token":token}
+			if not gear_id.is_empty():auth["gear_id"]=gear_id
+			_send(connection,auth)
 			connection.auth_sent=true
 		if connection.authenticated and not connection.latest.is_empty():return connection
 	return connection

@@ -1,0 +1,33 @@
+{
+  "release": "0.9.0",
+  "build_validation_passed": true,
+  "artifacts": [
+    {
+      "name": "ace-modern-online-macos-v0.9.zip",
+      "bytes": 3363736267,
+      "sha256": "d438afebc4de0748b61c381846769a16e5f64690f8ae55a42c166bbb2c684e8d",
+      "kind": "macos"
+    },
+    {
+      "name": "ace-modern-online-windows-v0.9.zip",
+      "bytes": 3340991020,
+      "sha256": "212d0401095d1a295273df5cb2bf117d5eaf963a27a68dcfb02bbc0cb5d45617",
+      "kind": "windows"
+    },
+    {
+      "name": "ace-completion-source-kit-v0.9.zip",
+      "bytes": 91952148,
+      "sha256": "885477ce347801f7fdc90c74b24be6a3215eb974f8d5d5490b60e472de37ebcf",
+      "kind": "source_and_linux_server"
+    }
+  ],
+  "source_engine_and_e2e_groups": 34,
+  "python_tests": 132,
+  "installer_offline_checks": 9,
+  "exported_mac_and_windows_packs_run_on_linux": true,
+  "native_macos_windows_execution": false,
+  "public_game_server_provisioned": false,
+  "full_original_game_equivalence": false,
+  "protocol": "ace-pve/2",
+  "base_sources_preserved": true
+}

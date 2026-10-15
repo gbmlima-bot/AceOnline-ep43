@@ -1,0 +1,20 @@
+{
+  "release": "0.9.0",
+  "passed": true,
+  "artifact_platform": "windows",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "exported_pack_executed_on_linux": true,
+  "native_macos_windows_execution": false,
+  "fresh_userdata": true,
+  "headless_passed": true,
+  "opengl_passed": true,
+  "logs": [
+    "windows-pack-runtime-v09-headless.log",
+    "windows-pack-runtime-v09-rendered.log"
+  ],
+  "pack_bytes": 3936408290,
+  "capture": {
+    "file": "windows-pack-runtime-v09.png",
+    "sha256": "4ebc4699440460a14b6fd9ad08e24f1e0e473c052b9b477abc941f862d5e9d1d"
+  }
+}

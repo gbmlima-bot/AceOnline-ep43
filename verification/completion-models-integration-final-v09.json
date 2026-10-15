@@ -1,0 +1,69 @@
+{
+  "release": "0.9.0",
+  "phase": "models",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "passed": true,
+  "complete": true,
+  "selected_suites": [
+    "skills",
+    "services",
+    "native_server_data",
+    "native_spawn_data",
+    "online_arena",
+    "online_classes",
+    "online_progression"
+  ],
+  "full_phase": false,
+  "native_mac_windows_execution": false,
+  "results": [
+    {
+      "name": "skills",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.354,
+      "log": "skills.log"
+    },
+    {
+      "name": "services",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 7.93,
+      "log": "services.log"
+    },
+    {
+      "name": "native_server_data",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 4.505,
+      "log": "native_server_data.log"
+    },
+    {
+      "name": "native_spawn_data",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.639,
+      "log": "native_spawn_data.log"
+    },
+    {
+      "name": "online_arena",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 24.129,
+      "log": "online_arena.log"
+    },
+    {
+      "name": "online_classes",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 12.856,
+      "log": "online_classes.log"
+    },
+    {
+      "name": "online_progression",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 31.64,
+      "log": "online_progression.log"
+    }
+  ]
+}

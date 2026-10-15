@@ -1,0 +1,1 @@
+{"schema_version":1,"table":"ti_InfluenceRate","source_sha256":"e5ae92ac1b2e89ee2ef480d85785aa95d3c2588d386092b988efac558b4a4674","columns":["StartLevel","EndLevel"],"rows":[[1,11],[12,21],[22,31],[32,41],[42,51],[52,61],[62,71],[72,81],[82,91],[92,101],[102,110]]}

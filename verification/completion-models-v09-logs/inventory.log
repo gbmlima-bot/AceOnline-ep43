@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: inventory — 45 checks; native ITEMs, class/level/slot requirements, item rewards, atomic JSON save and replay ledger
+

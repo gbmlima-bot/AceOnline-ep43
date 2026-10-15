@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"native_server_coverage":{"blocked_drop_rows":69705,"blocked_reasons":{"legacy_current_item_semantics_differ":165,"native_infinity_drop_type_not_implemented":214,"native_item_kind_not_implemented":8715,"native_item_lifecycle_or_authority_not_implemented":46738,"native_rare_instances_not_implemented":13872,"native_timed_item_not_implemented":1},"disabled_drop_rows":7,"item_identity_filter_enforced":true,"matched_monsters":1269,"ok":true,"scope":"native_database_drop_rules;solo_base_rates;local_automatic_collection;current_client_items;unchanged_client_HP","source_commit":"7c3e47ac47844e5c415d356a94d6201a0b9a38c4","source_drop_rows":70406,"source_monsters":1300,"source_sha256":"e5ae92ac1b2e89ee2ef480d85785aa95d3c2588d386092b988efac558b4a4674","supported_drop_rows":694}}
+{"checks":50,"failures":0,"scope":"native_backup_rules_solo_base_rates;no_native_spawns_or_HP_override","suite":"native-server-data"}
+

@@ -1,0 +1,202 @@
+{
+  "historical_commit": "c7a18413cf13383876a00db77ad724ffb02158f8",
+  "historical_scripts": [
+    {
+      "path": "client/project.godot",
+      "sha256": "7c7b09cdf23f4a32efc68215ee71e3b7f8822885a0e284da62d22f074dab8970"
+    },
+    {
+      "path": "client/scripts/flight_model.gd",
+      "sha256": "f99f4fc5841ce6d85739ad9609eb377f1766b4d7770d1e483e626efb92631f9e"
+    },
+    {
+      "path": "client/scripts/combat_model.gd",
+      "sha256": "866c5433b0f0b31fa166a283b8d90b2bf64701de0b309ad915697ab49bac8cbe"
+    },
+    {
+      "path": "client/scripts/inventory_model.gd",
+      "sha256": "b3d51d98ec56507f0a69382dc7de9c6662eb8cc612b815708e1a016d0b5cd20e"
+    },
+    {
+      "path": "client/scripts/native_equipment.gd",
+      "sha256": "112d1504357617eee9f4f1a3d0273d5bc16afb50e93eded092d93d8229ba77fd"
+    },
+    {
+      "path": "client/scripts/skill_model.gd",
+      "sha256": "ad508564aafaa8d2cdf69f4a121f1685767781c4bd467d1349f14ba2bc8ecfab"
+    },
+    {
+      "path": "client/scripts/service_model.gd",
+      "sha256": "8290b5221c258eefe3299a461155aea5ca12ea90f8fbda88420cfd7e28a06600"
+    },
+    {
+      "path": "client/scripts/world_model.gd",
+      "sha256": "bc425f4e338287ced8c3345b1a9a0801216341a40349de247e2694d0cc2bc8f8"
+    },
+    {
+      "path": "client/scripts/online/json_wire.gd",
+      "sha256": "1cdb6a4019edf736ba43824ede229a520f5598a89f573af8387bfffa6f453741"
+    },
+    {
+      "path": "client/scripts/online/ws_server.gd",
+      "sha256": "0aaf3dc066a00e088deb42da7745c19b569526e7da97e2b7290907627fa5d7da"
+    },
+    {
+      "path": "client/scripts/online/headless_world.gd",
+      "sha256": "a878e11e4be138aa180cda708985e8a8b07baba6f3f8c159e55e44b1ac601974"
+    },
+    {
+      "path": "client/scripts/online/arena_model.gd",
+      "sha256": "eb2d089766a53f95e05934c98a13cbc967feac636f63d8932d7120708ff373d3"
+    }
+  ],
+  "numeric_assets": [
+    {
+      "path": "client/assets/legacy_rules/engines.json",
+      "sha256": "34b5e4bb7b77532ac60c106a580f7cfd5af310131df50eb325409bec6aab401e",
+      "bytes": 760219
+    },
+    {
+      "path": "client/assets/legacy_rules/weapons.json",
+      "sha256": "b6086b23299ef8c318c79b9e7b4b04a5ce46d54453829405a029b9359621906b",
+      "bytes": 2309838
+    },
+    {
+      "path": "client/assets/legacy_rules/monsters.json",
+      "sha256": "077f2b88c9c18b34c04628013ad410ed4177a9b7e67f28e20292c6429136b666",
+      "bytes": 1011592
+    },
+    {
+      "path": "client/assets/legacy_rules/combat.json",
+      "sha256": "3888ebec541cc8944a77f26b8de5db621e0267210e7e4c0fa6bb95c8e85fe04d",
+      "bytes": 4397
+    },
+    {
+      "path": "client/assets/local_encounter.json",
+      "sha256": "603e6ecbf34d2ee8ac675b430fbab999142b4e3d62ef84450a382447317f5f42",
+      "bytes": 6902
+    },
+    {
+      "path": "client/assets/local_services/economy.json",
+      "sha256": "487c7862059edf0215d51b638d8b2cce837904bd82f1d25b4d6e8a341ec24060",
+      "bytes": 18362544
+    },
+    {
+      "path": "client/assets/original_library/catalogs/items.json",
+      "sha256": "7b983721f9da9d19747aa9709f9d9ed8138f97f28159de616595e85ae8c33446",
+      "bytes": 21202057
+    },
+    {
+      "path": "client/assets/original_library/catalogs/skills.json",
+      "sha256": "8599730080517654d473163aface8e19bd5055c55b798791f5ec2ba23e001fa0",
+      "bytes": 719564
+    },
+    {
+      "path": "client/assets/original_library/catalogs/omi-native.bin",
+      "sha256": "4831431a42bd37ac3ecffc067989330f6304ce214c0a77e8062d28f1fffb5f48",
+      "bytes": 14486036
+    },
+    {
+      "path": "client/assets/original_library/catalogs/level_experience.json",
+      "sha256": "f7967986a5b4427aef482bf920b73c43a9a40e6cbc4eb698e3ad6204748d944d",
+      "bytes": 42458
+    },
+    {
+      "path": "client/assets/original_library/catalogs/level_stat_values.json",
+      "sha256": "5dc0e6e2f2f8957f610a2350ccaa3af4c7f7a769fb74d3fb860252ec592c99bc",
+      "bytes": 140497
+    },
+    {
+      "path": "client/assets/original_world/3002_terrain.json",
+      "sha256": "715204dee6ff9aed2d51c55708964621651de21ad1d83d14567b64f3f3b3c8b3",
+      "bytes": 82763
+    },
+    {
+      "path": "client/assets/original_world/3002_heights.f32",
+      "sha256": "6e0771f46c38d7809740ae3aba21a983b4a1e50001563ea09d6ce2442aca850d",
+      "bytes": 264196
+    },
+    {
+      "path": "client/assets/original_world/3002_water_flags.u8",
+      "sha256": "ba5138c5d888f58e573b64318b1cd0028d0bed814fd5a54ffb6a4740aa08fc46",
+      "bytes": 65536
+    },
+    {
+      "path": "client/assets/original_world/3002_landing_flags.u8",
+      "sha256": "1453de317826cc40dbf33816bae50a3f94f8fd3ee414f74d3d581c1e38ea72ae",
+      "bytes": 65536
+    },
+    {
+      "path": "client/assets/original_props/placements.json",
+      "sha256": "483ef21478f0f1f4c2a164d8e6f186b27d3b27fb1c807d8d6064b6916680cb29",
+      "bytes": 1018217
+    },
+    {
+      "path": "client/assets/original_props/03001700_collision.json",
+      "sha256": "ae672213954ce03e659e9081606e37945c678112b40e82b2505fa29c40bb2cbf",
+      "bytes": 84615
+    },
+    {
+      "path": "client/assets/original_props/03001800_collision.json",
+      "sha256": "c152faf4d92d76c9e7b34788a89389de675e2498b8aef47579613e320cd196e0",
+      "bytes": 43233
+    },
+    {
+      "path": "client/assets/original_props/03002000_collision.json",
+      "sha256": "2492e2e140393fe7e516af15738405316d2b4a5b28c7bca49b6f9cef0a8d77c1",
+      "bytes": 86318
+    },
+    {
+      "path": "client/assets/original_props/03002600_collision.json",
+      "sha256": "c286be0eb22c5be4bcf101fa8b2f7182068aa694d7e27410313365dd94d9a37b",
+      "bytes": 139913
+    },
+    {
+      "path": "client/assets/original_props/03002700_collision.json",
+      "sha256": "50a3fb2fe14a0d1012921b3a40ba9d2b1ffc59e541c9bdb028f05b15ecc73494",
+      "bytes": 17283
+    },
+    {
+      "path": "client/assets/original_props/03002800_collision.json",
+      "sha256": "dec78fee4bacbbae07e592fda452810eb03aae48bb6d9740625b92aaf2f7d34c",
+      "bytes": 23162
+    },
+    {
+      "path": "client/assets/original_props/03002900_collision.json",
+      "sha256": "76b3421ba3bf6994821cc8a9db71cbfef2a303fcce7b91cc8bfb33294d735203",
+      "bytes": 15878
+    },
+    {
+      "path": "client/assets/original_props/03003000_collision.json",
+      "sha256": "1a0e70f6d76e37e6b64d16b11c553dc9e993f61b3b47b95d26cce9d3696b5cf1",
+      "bytes": 87325
+    },
+    {
+      "path": "client/assets/original_props/03003500_collision.json",
+      "sha256": "d0306f15723e27d30ae6869ef8961c94cf702e97616c276fd15e317c8dfb659e",
+      "bytes": 99314
+    },
+    {
+      "path": "client/assets/original_props/03003800_collision.json",
+      "sha256": "8b0825b6d58dab686374758a952fad8d93e22617ac39ce2b6fe64f248fd711ec",
+      "bytes": 5825
+    }
+  ],
+  "historical_fixture": {
+    "contributions": 1,
+    "pilots": 2,
+    "projectiles": 10,
+    "rewarded": 1,
+    "tick": 660
+  },
+  "fixture_sha256": "a2d9f87458385f08372b8633f511090519d8b4b3788ae0796b0907b5c8a65394",
+  "current_test_returncode": 0,
+  "current_test_output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nARENA_MIGRATION_TEST={\"checks\":175,\"failures\":[],\"historical_commit\":\"c7a18413cf13383876a00db77ad724ffb02158f8\",\"hostile_rounds_and_burst_restart\":true,\"native_hornian_weapon\":7500020}\n",
+  "current_test_result": {
+    "checks": 175,
+    "failures": [],
+    "historical_commit": "c7a18413cf13383876a00db77ad724ffb02158f8",
+    "hostile_rounds_and_burst_restart": true,
+    "native_hornian_weapon": 7500020
+  }
+}

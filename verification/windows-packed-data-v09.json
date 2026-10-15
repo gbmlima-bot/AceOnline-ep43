@@ -1,0 +1,253 @@
+{
+  "release": "0.9.0",
+  "platform": "windows",
+  "passed": true,
+  "numeric_data_files_verified": 49,
+  "files": [
+    {
+      "path": "res://assets/native_server/manifest.json",
+      "bytes": 177402,
+      "sha256": "29ca6f722e716f2809b46c538ff1bdf2a9afe8f912dc9398687157ab64edcdb1"
+    },
+    {
+      "path": "res://assets/native_server/ti_ActionByLevel.json",
+      "bytes": 955,
+      "sha256": "16cf17bea4a273f0771d1483f4c4d40ab8b3ba3d0a220cb2bb5b59b32f5a6b81"
+    },
+    {
+      "path": "res://assets/native_server/ti_ArenaInfo.json",
+      "bytes": 344,
+      "sha256": "3ad2395aef9511ba9cb172b576eee999dc65e934a851392fbb0bc8ea05ee2c02"
+    },
+    {
+      "path": "res://assets/native_server/ti_ArenaMapinfo.json",
+      "bytes": 622,
+      "sha256": "0a07d43d12d8c1f0b3518126a96a9b45675f6870a3c3baa5feca2e126c310286"
+    },
+    {
+      "path": "res://assets/native_server/ti_BuildingNPC.json",
+      "bytes": 26180,
+      "sha256": "c61e9fe0d3f8725821d3cf87f63a5415ce1c4e7d3de2b0861509ecc0a4c2ef30"
+    },
+    {
+      "path": "res://assets/native_server/ti_BurningMap.json",
+      "bytes": 339,
+      "sha256": "2c901068288e069f256345b038aff959f79f34189869e2d69c2a9aa18be4d3c5"
+    },
+    {
+      "path": "res://assets/native_server/ti_Cinema.json",
+      "bytes": 20714,
+      "sha256": "fbccb1e719f98b5d9f18c696c8e4b19565df5421e48e22d8f19b4ceabf54e581"
+    },
+    {
+      "path": "res://assets/native_server/ti_CityTargetWarpMap.json",
+      "bytes": 5410,
+      "sha256": "849d50afcbb61d87e237839db5081d0e742b99f81774e56c61d73ec3956a60e3"
+    },
+    {
+      "path": "res://assets/native_server/ti_CityTargetWarpMap1.json",
+      "bytes": 6291,
+      "sha256": "05818e48be1d5f8ace6c60ba8f6713db59347c54021dc48554f4cc1e534c3739"
+    },
+    {
+      "path": "res://assets/native_server/ti_EnchantInfo.json",
+      "bytes": 12537,
+      "sha256": "58c3cc2b747b01eba448414c7d1a5387908dce545835199e3a52a55eaa1cda95"
+    },
+    {
+      "path": "res://assets/native_server/ti_EventMonster.json",
+      "bytes": 381,
+      "sha256": "15f0c0efcb94a0b074655ecf971c5525983928c8420332fa116984f2bb9e99ef"
+    },
+    {
+      "path": "res://assets/native_server/ti_HPAction.json",
+      "bytes": 4489,
+      "sha256": "2d8782c6aad37262baa089b0633823301040866b14d1e3dbfb09abf24e81a644"
+    },
+    {
+      "path": "res://assets/native_server/ti_HappyHourEvent.json",
+      "bytes": 1117,
+      "sha256": "e56fe5aa9116f89ddb78b2f0e178fad31a66d79d270f43568dd63a55e8d00a7a"
+    },
+    {
+      "path": "res://assets/native_server/ti_InfinityMode.json",
+      "bytes": 485,
+      "sha256": "a8b78aaa94223c33d0ea00cffcabae242f08b954fb343bc2d4b359ae6c77c4df"
+    },
+    {
+      "path": "res://assets/native_server/ti_InfinityMonster.json",
+      "bytes": 272,
+      "sha256": "fa29547fab725908952793f0e302538f4aaf08d0a023fed1412fa20401d65369"
+    },
+    {
+      "path": "res://assets/native_server/ti_InfinityShop.json",
+      "bytes": 2957,
+      "sha256": "0495653e41ec0ba44211cbf027e0dd132b96b2af236a7d464379410665854a67"
+    },
+    {
+      "path": "res://assets/native_server/ti_InfluenceRate.json",
+      "bytes": 266,
+      "sha256": "7eb41a5b943b4030fb69e76dc90c2eb621fc69a5e70050cb4ca29dbd19b3a04d"
+    },
+    {
+      "path": "res://assets/native_server/ti_InfluenceWar.json",
+      "bytes": 5984,
+      "sha256": "9941a7ce4227d02089b620fa5aa570fd7b98981e2371927ddba141726f496c5c"
+    },
+    {
+      "path": "res://assets/native_server/ti_InvokingWearItemDPNum.json",
+      "bytes": 386,
+      "sha256": "33adc923e8a107339cb9bcbfe2242e9c10e0fe422d76114468e374a59b79adc7"
+    },
+    {
+      "path": "res://assets/native_server/ti_InvokingWearItemDPNumByUse.json",
+      "bytes": 415,
+      "sha256": "ba96d9315389f6c94672c77dfa371f42dc645014e5760da866b22ba7b68ea9cb"
+    },
+    {
+      "path": "res://assets/native_server/ti_Item.json",
+      "bytes": 5473632,
+      "sha256": "ed70cbe01ef3cdce6cb88479baf3d059f9ea033239d8c68a4adedfa820455a46"
+    },
+    {
+      "path": "res://assets/native_server/ti_ItemEvent.json",
+      "bytes": 16389,
+      "sha256": "83213fac6ffbd4959bf19a652ac5a7142f1694b0d7a01ece9e67c821a59018be"
+    },
+    {
+      "path": "res://assets/native_server/ti_ItemMatching.json",
+      "bytes": 705,
+      "sha256": "9b36cb6ff34775daae24710805932d360b35f7999b0588addace28ea8dd502b8"
+    },
+    {
+      "path": "res://assets/native_server/ti_ItemMixingInfo.json",
+      "bytes": 4406713,
+      "sha256": "bd31cd39080afab6f5cf6bb47ee2e5ab66504a4e14e5077a535e34e48f0bea22"
+    },
+    {
+      "path": "res://assets/native_server/ti_ItemParamOverlap.json",
+      "bytes": 7841,
+      "sha256": "087b2efcec1de8bdb61af3c7bbe5a3703e437bba25b44f153993b7de49f5d503"
+    },
+    {
+      "path": "res://assets/native_server/ti_LevelAdjustment.json",
+      "bytes": 1366,
+      "sha256": "6e68cd907440a727fe4fa2d7bf606f4cde94d198635f74f96c8e89bef0803afa"
+    },
+    {
+      "path": "res://assets/native_server/ti_LevelAdjustmentReward.json",
+      "bytes": 1023,
+      "sha256": "bedebfaee66913c659bb6fa39a5f09174436db01618200072f2f97eade9a35f8"
+    },
+    {
+      "path": "res://assets/native_server/ti_LuckyMachine.json",
+      "bytes": 2265,
+      "sha256": "d309ce01a99bb8499979847d02558788892856534990e4ab9201261429dad216"
+    },
+    {
+      "path": "res://assets/native_server/ti_MapInfo.json",
+      "bytes": 50316,
+      "sha256": "45fe400d8e29642d77a04eea25c142b82b9ee5f0cc7559194b1edd2e12d0f1a3"
+    },
+    {
+      "path": "res://assets/native_server/ti_MapObject.json",
+      "bytes": 336513,
+      "sha256": "28d4f324b1cf3fb895208c60a2b7b8e30eb57fc5e50f5db53e09a4e3b336cd29"
+    },
+    {
+      "path": "res://assets/native_server/ti_Monster.json",
+      "bytes": 256093,
+      "sha256": "5519971034f0c9604d578cf78cf19ed89467424d9ec7afc266631de993443c15"
+    },
+    {
+      "path": "res://assets/native_server/ti_MonsterItem.json",
+      "bytes": 2376282,
+      "sha256": "06fa411e0a4a0753238bc367df48b510ec3c2fe8da4106fbc648937fa7564ecf"
+    },
+    {
+      "path": "res://assets/native_server/ti_MonsterMultiTarget.json",
+      "bytes": 824,
+      "sha256": "621b01da382c122d45a29bf6e50b5af9482d427a5eae4e35c0b7b4a465e7c3f9"
+    },
+    {
+      "path": "res://assets/native_server/ti_MysteryItemDrop.json",
+      "bytes": 475218,
+      "sha256": "1916f612d1ea739296227d8495acf95101a7b34d9db9ec5be2913c365891cad1"
+    },
+    {
+      "path": "res://assets/native_server/ti_OperatorAction.json",
+      "bytes": 792,
+      "sha256": "8a9331e4ec441725a048e3f065bac45f0415c1d856577385b1afdfd93b7a616d"
+    },
+    {
+      "path": "res://assets/native_server/ti_PetLevel.json",
+      "bytes": 866,
+      "sha256": "d11fe7cf98f0fba0e8921b5b4db5c3de9e4cd12c1a75ea7ef3abfb1b4166114e"
+    },
+    {
+      "path": "res://assets/native_server/ti_QuestMatching.json",
+      "bytes": 2428,
+      "sha256": "bfc84624d32e07e2fad23dd82cc4b2ba1234cbad94ce8375d1c3bf479b627f9a"
+    },
+    {
+      "path": "res://assets/native_server/ti_RareItemInfo.json",
+      "bytes": 215796,
+      "sha256": "ee3541db4545fd1607f28b2a761cc0f06f5de7737f0338226ad489af7d214d04"
+    },
+    {
+      "path": "res://assets/native_server/ti_Revision.json",
+      "bytes": 378,
+      "sha256": "da7bb861c9a301f76c7cf7bdceccfd519054b80d4588d80e22f97f1c5903a16c"
+    },
+    {
+      "path": "res://assets/native_server/ti_Shop.json",
+      "bytes": 32813,
+      "sha256": "5c31306bd61d18566d6051aa755210e55bf02d454ba6e055ff5ac7c65eb3968a"
+    },
+    {
+      "path": "res://assets/native_server/ti_StrategyPointSummonMapIndex.json",
+      "bytes": 566,
+      "sha256": "7294aa3167d4f389b2bbfe329f52830a0b21b565038c0e8e0cac19df965f499a"
+    },
+    {
+      "path": "res://assets/native_server/ti_TutorialInfo.json",
+      "bytes": 485,
+      "sha256": "215bd933e94f0a6078f11dc6c5ff68e35f66346f6bafb523abcd8955f9190a9a"
+    },
+    {
+      "path": "res://assets/native_server/ti_WayPoint.json",
+      "bytes": 236,
+      "sha256": "d84793dc9d968c9d56ca95193dd45904a62c026ff2b77d5d7b7815b395f2153a"
+    },
+    {
+      "path": "res://assets/native_server/ti_WayPointMove.json",
+      "bytes": 179,
+      "sha256": "c495105ef716c178a555fcf3e12e8f350664319a5cb33207553def7428deba53"
+    },
+    {
+      "path": "res://assets/native_server/ti_pet.json",
+      "bytes": 245,
+      "sha256": "f355df8bd14481eae8034137a668cb46196ecf193e683d0139dd2ffff0e093e6"
+    },
+    {
+      "path": "res://assets/legacy_rules/native_spawns.json",
+      "bytes": 2032807,
+      "sha256": "2ebbc60416a1ebcdc3f20824f967dd3d917fccd6a7e506b9dd42df8e54039aa4"
+    },
+    {
+      "path": "res://assets/legacy_rules/server_item_compatibility.json",
+      "bytes": 103646,
+      "sha256": "774c85fae7a3a8503111a2bd49a4a6fa177913363ce18541023909254fc5e652"
+    },
+    {
+      "path": "res://assets/local_world/mission_support.json",
+      "bytes": 1419826,
+      "sha256": "77ee38273d5f5563f4e5f174d23c3d5d49ba49822d41d8c659f9e038e579b3d8"
+    },
+    {
+      "path": "res://assets/local_services/economy.json",
+      "bytes": 18362544,
+      "sha256": "487c7862059edf0215d51b638d8b2cce837904bd82f1d25b4d6e8a341ec24060"
+    }
+  ]
+}

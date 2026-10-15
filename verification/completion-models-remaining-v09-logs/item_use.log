@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: native consumables — 93 checks; 71 supported current OMI kits, exact HP/DP/SP/EP effects, shared recasts, atomic ownership, unsupported effects and JSON cooldown state
+

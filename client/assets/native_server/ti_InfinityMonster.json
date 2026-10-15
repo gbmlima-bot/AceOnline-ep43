@@ -1,0 +1,1 @@
+{"schema_version":1,"table":"ti_InfinityMonster","source_sha256":"e5ae92ac1b2e89ee2ef480d85785aa95d3c2588d386092b988efac558b4a4674","columns":["InfinityMonsterUID","InfinityMonsterIdx","MonsterIdx","TargetType","TargetCount"],"rows":[[1,1,2091200,1,1],[2,2,2091800,0,0]]}

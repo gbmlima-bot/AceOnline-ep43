@@ -6,6 +6,8 @@ var scene: Node
 var checks := 0
 var failures: Array[String] = []
 var kill_evidence: Array[Dictionary] = []
+var pve_evidence: Array[Dictionary] = []
+var earned_after_mission: Dictionary = {}
 var transfers: Array[int] = []
 
 
@@ -183,6 +185,8 @@ func _test_native_quest_combat_reward() -> void:
 			for event: Dictionary in runtime._events:
 				if str(event.get("type", "")) == "target_destroyed":
 					kill_evidence.append(event.duplicate(true))
+				elif str(event.get("type", "")) == "native_pve_reward":
+					pve_evidence.append(event.duplicate(true))
 			scene._drain_simulation_events()
 			iterations += 1
 		_check(bool(target.dead), "native weapons kill quest species" + str(target.monster_code))
@@ -191,6 +195,7 @@ func _test_native_quest_combat_reward() -> void:
 			target.respawn_remaining = 10000.0
 			target.spawn_position = Vector3(2000, 1800, -2000)
 	var before_reward: Dictionary = runtime.snapshot()
+	_check(int(before_reward.credits) == _pve_total("credits") and int(before_reward.experience) == _pve_total("experience"), "pre-mission wallet reconciles only genuine native PvE receipts from weapon kills")
 	_check(int(before_reward.primary_ammo) < start_ammo and int(before_reward.secondary_ammo) < start_secondary, "positive combat path consumes real primary and missile ammunition")
 	_check(kill_evidence.size() == 4, "four production target_destroyed events emerge from actual weapon resolution")
 	for event: Dictionary in kill_evidence:
@@ -201,8 +206,11 @@ func _test_native_quest_combat_reward() -> void:
 	await process_frame
 	var after: Dictionary = runtime.snapshot()
 	var wallet: Dictionary = world.get_state().wallet
-	_check(_mission("102").status == "completed" and wallet.credits == 320 and wallet.experience == 91, "native102 grants exactly320SPI/91XP to world wallet")
-	_check(int(after.credits) == 320 and int(after.experience) == 91, "main forwards original mission reward once to combat/session ledger")
+	_check(_mission("102").status == "completed" and wallet.credits == int(before_reward.credits) + 320 and wallet.experience == int(before_reward.experience) + 91, "native102 adds exactly320SPI/91XP to previously earned PvE wallet")
+	_check(int(after.credits) == int(wallet.credits) and int(after.experience) == int(wallet.experience), "main reconciles native mission and PvE rewards across world/combat/inventory")
+	earned_after_mission = wallet.duplicate(true)
+	for reward: Dictionary in pve_evidence:
+		_check(reward.get("source_sha256", "") == preload("res://scripts/native_server_data.gd").SOURCE_SHA and runtime.inventory.reward_ids.has(str(reward.reward_id)), "genuine PvE receipt retains source hash and unique applied ledger identity")
 	_check(scene.current_map_id == 2001 and world.current_map_id == 2001 and after.map_index == 2001, "original9999faction-city sentinel returns to real converted city2001 across all runtimes")
 	_check(int(after.primary_ammo) == int(before_reward.primary_ammo) and int(after.secondary_ammo) == int(before_reward.secondary_ammo), "mission return does not refill spent ammunition")
 	transfers.append(2001)
@@ -215,7 +223,7 @@ func _test_native_quest_combat_reward() -> void:
 	_render_hud()
 	scene.legacy_hud.local_action_requested.emit("claim_reward:102")
 	scene._drain_simulation_events()
-	_check(world.get_state().wallet.credits == 320 and runtime.snapshot().credits == 320 and runtime.snapshot().experience == 91, "repeating claim and event drain cannot pay native reward again")
+	_check(world.get_state().wallet == earned_after_mission and runtime.snapshot().credits == earned_after_mission.credits and runtime.snapshot().experience == earned_after_mission.experience, "repeating claim and event drain cannot pay mission or native PvE reward twice")
 	_check(not runtime.apply_reward({"reward_id": "mission:102", "credits": 320, "experience": 91}), "duplicate reward identity is rejected independently by session ledger")
 
 
@@ -241,7 +249,7 @@ func _test_portal_transfers_preserve_state() -> void:
 	await _use_portal("portal:3003:300", 3002)
 	after = scene.combat_runtime.snapshot()
 	_check(_same_resources(before, after), "return portal preserves session resources too")
-	_check(world.get_state().wallet.credits == 320 and int(after.experience) == 91, "portals preserve quest rewards and completed progress")
+	_check(world.get_state().wallet == earned_after_mission and int(after.experience) == int(earned_after_mission.experience), "portals preserve reconciled native mission/PvE rewards and completed progress")
 	_check(_mission("102").status == "completed", "native quest completion survives portal round trip")
 
 
@@ -260,7 +268,7 @@ func _test_death_and_respawn() -> void:
 	_check(not after.dead and after.hp == after.max_hp and after.shield == after.max_shield, "native local respawn timer restores player vitals")
 	_check(scene.model.movement_enabled and scene.model.position.distance_to(scene.map_spawn) < 50.0, "respawn event re-enables flight at active map entry")
 	_check(scene.ship.position.is_equal_approx(scene.model.position), "respawn synchronizes model and rendered GEAR")
-	_check(int(after.credits) == 320 and int(after.experience) == 91, "death/respawn preserves awarded session progress")
+	_check(int(after.credits) == int(earned_after_mission.credits) and int(after.experience) == int(earned_after_mission.experience), "death/respawn preserves genuine mission and native PvE session progress")
 	_render_hud()
 
 
@@ -308,6 +316,13 @@ func _quiet_ai() -> void:
 	for target: Dictionary in scene.combat_runtime.model.targets:
 		target.hostile = false
 		target.speed = 0.0
+
+
+func _pve_total(key: String) -> int:
+	var total := 0
+	for reward: Dictionary in pve_evidence:
+		total += int(reward.get(key, 0))
+	return total
 
 
 func _mission(identifier: String) -> Dictionary:
@@ -362,7 +377,7 @@ func _check(condition: bool, message: String) -> void:
 func _finish() -> void:
 	for action: StringName in InputMap.get_actions():
 		Input.action_release(action)
-	print(JSON.stringify({"suite": "gameplay_e2e", "checks": checks, "failures": failures.size(), "display": DisplayServer.get_name(), "visited_maps": transfers, "real_weapon_kills": kill_evidence, "fixture_scope": "main callbacks scheduled manually; poses/AI controlled, native weapons and target HP unchanged; no positive kill/objective event injected"}))
+	print(JSON.stringify({"suite": "gameplay_e2e", "checks": checks, "failures": failures.size(), "display": DisplayServer.get_name(), "visited_maps": transfers, "real_weapon_kills": kill_evidence, "native_pve_receipts":pve_evidence,"earned_after_mission":earned_after_mission, "fixture_scope": "main callbacks scheduled manually; poses/AI controlled, native weapons and target HP unchanged; no positive kill/objective event injected"}))
 	if is_instance_valid(scene):
 		scene.queue_free()
 	await process_frame

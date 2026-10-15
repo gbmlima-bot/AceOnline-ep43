@@ -4,7 +4,7 @@ const Store = preload("res://sqlite_store.gd")
 const World = preload("res://scripts/online/headless_world.gd")
 const Arena = preload("res://scripts/online/arena_model.gd")
 const Transport = preload("res://scripts/online/ws_server.gd")
-const PROTOCOL := "ace-pve/1"
+const PROTOCOL := "ace-pve/2"
 const CHECKPOINT_SECONDS := 1.0
 const MAX_COMMAND_ID := 128
 
@@ -186,17 +186,24 @@ func _authenticate(connection_id: int, message: Dictionary) -> void:
 		transport.send_to(connection_id, {"op": "error", "code": "room_full", "message": "A sala está cheia."})
 		transport.disconnect_peer(connection_id, "room_full")
 		return
+	var requested_gear: Variant = message.get("gear_id", "")
+	if not requested_gear is String or (not requested_gear.is_empty() and requested_gear not in Arena.GEAR_IDS):
+		transport.send_to(connection_id, {"op": "error", "code": "invalid_gear_class", "message": "Selecione uma das quatro classes GEAR."})
+		transport.disconnect_peer(connection_id, "invalid_gear_class")
+		return
 	var before: Dictionary = room.export_state()
-	var result: Dictionary = room.add_player(str(pilot.id))
+	var result: Dictionary = room.add_player(str(pilot.id), {}, requested_gear)
 	if not bool(result.get("ok", false)):
-		transport.disconnect_peer(connection_id, "character_unavailable")
+		var code := str(result.get("error", "character_unavailable"))
+		transport.send_to(connection_id, {"op": "error", "code": code, "message": "A classe do personagem existente não pode ser alterada." if code == "character_gear_locked" else "Personagem indisponível."})
+		transport.disconnect_peer(connection_id, code)
 		return
 	if not _commit():
 		room.import_state(before)
 		return
 	_sessions[connection_id] = {"pilot_id": str(pilot.id), "label": str(pilot.label), "token_hash": token.sha256_text()}
 	transport.mark_authenticated(connection_id)
-	transport.send_to(connection_id, {"op": "auth_ok", "pilot_id": str(pilot.id), "label": str(pilot.label), "protocol": PROTOCOL, "revision": _revision, "shared_combat": true, "map_index": 3002})
+	transport.send_to(connection_id, {"op": "auth_ok", "pilot_id": str(pilot.id), "label": str(pilot.label), "protocol": PROTOCOL, "revision": _revision, "shared_combat": true, "map_index": 3002, "gear_id": str(room.pilots[str(pilot.id)].inventory.gear_id)})
 	_send_snapshot(connection_id)
 	_log("pilot_joined", {"pilot_id": str(pilot.id), "connected": _sessions.size()})
 
@@ -318,7 +325,7 @@ func _poll_http() -> void:
 			var route := request.get_slice("\r\n", 0).split(" ")
 			var path := str(route[1]) if route.size() == 3 and route[0] == "GET" else ""
 			var code := 200 if _initialized and not _stopping else 503
-			var response: Dictionary = {"ready": code == 200, "release": "0.8.0", "protocol": PROTOCOL}
+			var response: Dictionary = {"ready": code == 200, "release": "0.9.0", "protocol": PROTOCOL}
 			if path == "/metrics":
 				response.merge(_metrics, true)
 				response.merge({"revision": _revision, "players": _sessions.size(), "uptime_seconds": (Time.get_ticks_msec() - _started_msec) / 1000.0, "last_commit_age_seconds": (Time.get_ticks_msec() - _last_commit_msec) / 1000.0}, true)
@@ -351,7 +358,7 @@ func _fail_start(reason: String) -> void:
 
 
 func _log(event: String, fields: Dictionary = {}) -> void:
-	var line := {"event": event, "release": "0.8.0", "time": int(Time.get_unix_time_from_system())}
+	var line := {"event": event, "release": "0.9.0", "time": int(Time.get_unix_time_from_system())}
 	line.merge(fields)
 	print(JSON.stringify(line))
 

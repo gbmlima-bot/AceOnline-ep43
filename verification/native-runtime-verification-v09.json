@@ -1,0 +1,67 @@
+{
+  "source_backup_sha256": "e5ae92ac1b2e89ee2ef480d85785aa95d3c2588d386092b988efac558b4a4674",
+  "source_commit": "7c3e47ac47844e5c415d356a94d6201a0b9a38c4",
+  "native_spawn_sha256": "2ebbc60416a1ebcdc3f20824f967dd3d917fccd6a7e506b9dd42df8e54039aa4",
+  "results": [
+    {
+      "suite": "native_server_data",
+      "exit_code": 0,
+      "stats": [
+        {
+          "checks": 50,
+          "failures": 0,
+          "scope": "native_backup_rules_solo_base_rates;no_native_spawns_or_HP_override",
+          "suite": "native-server-data"
+        }
+      ],
+      "log": "/workspace/analysis/ace-native-server-runtime/native_server_data.log"
+    },
+    {
+      "suite": "native_spawn_data",
+      "exit_code": 0,
+      "stats": [
+        {
+          "checks": 2370,
+          "failures": 0,
+          "scope": "verified_DAT_type6_positions;SMA_regions_blocked;explicit_local_channel_adapter_required",
+          "suite": "native-spawn-data"
+        }
+      ],
+      "log": "/workspace/analysis/ace-native-server-runtime/native_spawn_data.log"
+    },
+    {
+      "suite": "native_spawn_runtime",
+      "exit_code": 0,
+      "stats": [
+        {
+          "checks": 39,
+          "failures": 0,
+          "scope": "native_position_identity_and_timers;persisted_offline_channel_clock;data_only_population",
+          "suite": "native-spawn-runtime"
+        }
+      ],
+      "log": "/workspace/analysis/ace-native-server-runtime/native_spawn_runtime.log",
+      "note": "post-freeze regression: native DAT profile bypasses training overrides; production profile builder used by data-only population test"
+    }
+  ],
+  "loot_coverage": {
+    "supported": 694,
+    "disabled": 7,
+    "blocked": 69705,
+    "source_rows": 70406
+  },
+  "spawn_coverage": {
+    "supported": 2255,
+    "supported_maps": 95,
+    "blocked_objects": 1243,
+    "blocked_regions": 5
+  },
+  "adaptations": [
+    "offline active-session clock substitutes original OS monotonic uptime",
+    "automatic local ground-loot collection",
+    "local NPC movement, terrain clearance and projectile steering",
+    "native regions, boss timers, war/Infinity/channel capacity remain gated",
+    "2025 MEX HP and identities preserved; legacy SQL XP/linked compatible weapons used"
+  ],
+  "native_profile_policy": "Native DAT actors retain current MEX fields and Belligerence; local-only overrides preserved for explicit encounters. Unknown SQL stats stay unconverted."
+}

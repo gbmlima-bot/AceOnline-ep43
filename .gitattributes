@@ -11,3 +11,5 @@
 *.png binary
 *.jpg binary
 *.zip binary
+# Preserve the engine output verbatim in verification logs.
+verification/**/*.log whitespace=-blank-at-eof

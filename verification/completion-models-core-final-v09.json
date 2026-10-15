@@ -1,0 +1,61 @@
+{
+  "release": "0.9.0",
+  "phase": "models",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "passed": true,
+  "complete": true,
+  "selected_suites": [
+    "flight",
+    "combat",
+    "inventory",
+    "inventory_equipment",
+    "native_server_data",
+    "combat_ledger"
+  ],
+  "full_phase": false,
+  "native_mac_windows_execution": false,
+  "results": [
+    {
+      "name": "flight",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 2.072,
+      "log": "flight.log"
+    },
+    {
+      "name": "combat",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 3.825,
+      "log": "combat.log"
+    },
+    {
+      "name": "inventory",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 13.192,
+      "log": "inventory.log"
+    },
+    {
+      "name": "inventory_equipment",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 21.352,
+      "log": "inventory_equipment.log"
+    },
+    {
+      "name": "native_server_data",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 4.672,
+      "log": "native_server_data.log"
+    },
+    {
+      "name": "combat_ledger",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 11.458,
+      "log": "combat_ledger.log"
+    }
+  ]
+}

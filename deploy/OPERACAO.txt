@@ -26,7 +26,7 @@ Endpoint do cliente: ws://127.0.0.1:9080/play (somente teste local).
 As portas9080/9081 ficam publicadas apenas em127.0.0.1. Os scripts operacionais
 herdam COMPOSE_FILE; mantenha essa variável enquanto operar o modo local.
 No ambiente gerenciado, buildsHTTPS podem precisar do CA fornecido:
-docker build --secret id=proxy_ca,src=/etc/ssl/certs/ca-certificates.crt --target game -t ace-modern-server:0.8.0 .
+docker build --secret id=proxy_ca,src=/etc/ssl/certs/ca-certificates.crt --target game -t ace-modern-server:0.9.0 .
 Esse certificado é um segredo temporário de build, não entra nas camadas.
 
 VPS público com HTTPS

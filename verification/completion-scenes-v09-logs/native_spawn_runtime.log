@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"checks":39,"failures":0,"scope":"native_position_identity_and_timers;persisted_offline_channel_clock;data_only_population","suite":"native-spawn-runtime"}
+

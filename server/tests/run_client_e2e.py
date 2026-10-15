@@ -101,6 +101,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--source", type=Path, default=Path(__file__).resolve().parents[2])
+    parser.add_argument("--client-pack", type=Path, help="Test the exported PCK using the Linux engine")
     parser.add_argument("--display", help="Optional real X11 display, for example:91")
     parser.add_argument("--capture", type=Path)
     parser.add_argument("--report", type=Path)
@@ -109,6 +110,8 @@ def main() -> int:
     executable = args.godot.resolve()
     if not executable.is_file() or not (source / "client/.godot/imported").is_dir():
         raise ValueError("A valid Godot executable and previously imported client assets are required")
+    if args.client_pack and not args.client_pack.is_file():
+        raise ValueError("An existing exported pack is required")
     if args.capture and not args.display:
         raise ValueError("Viewport capture requires --display with an actual OpenGL display")
     with tempfile.TemporaryDirectory(prefix="ace-client-e2e-") as temporary:
@@ -158,13 +161,20 @@ def main() -> int:
                 # engine starts, independently of any later test save-path guard.
                 client_environment.update(XDG_DATA_HOME=str(workspace / "client-user-data"),
                                           XDG_CACHE_HOME=str(workspace / "client-cache"))
-                command = [str(executable), "--path", str(source / "client"), "--audio-driver", "Dummy", "--max-fps", "60"]
+                client_path = source / "client"
+                if args.client_pack:
+                    client_path = workspace / "packed-client"
+                    client_path.mkdir()
+                command = [str(executable), "--path", str(client_path), "--audio-driver", "Dummy", "--max-fps", "60"]
+                if args.client_pack:
+                    command += ["--main-pack", str(args.client_pack.resolve())]
                 if args.display:
                     client_environment.update(DISPLAY=args.display, LIBGL_ALWAYS_SOFTWARE="1")
                     command += ["--rendering-method", "gl_compatibility", "--rendering-driver", "opengl3"]
                 else:
                     command += ["--headless"]
-                command += ["--script", "res://tests/test_online_scene.gd", "--", "--fixture=" + str(credential_file)]
+                test_script = str(source / "client/tests/test_online_scene.gd") if args.client_pack else "res://tests/test_online_scene.gd"
+                command += ["--script", test_script, "--", "--fixture=" + str(credential_file)]
                 if args.capture:
                     args.capture.parent.mkdir(parents=True, exist_ok=True)
                     command += ["--capture=" + str(args.capture.resolve())]
@@ -181,8 +191,10 @@ def main() -> int:
                            if line.startswith("ONLINE_SCENE_E2E=")]
                 if len(results) != 1:
                     print_client_diagnostics(client_log)
-                    raise RuntimeError("Expected one production online-scene E2E result")
+                    raise RuntimeError("Expected one production online-scene E2E result (client exit " + str(client.returncode) + ")")
                 result = results[0]
+                result["exported_pack_executed_on_linux"] = args.client_pack is not None
+                result["native_macos_windows_execution"] = False
                 passed = (client.returncode == 0 and not result.get("failures") and result.get("checks", 0) > 0
                           and result.get("real_server") is True and result.get("production_main") is True
                           and result.get("online_state_not_injected") is True

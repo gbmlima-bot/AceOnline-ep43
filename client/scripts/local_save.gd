@@ -3,7 +3,8 @@ extends RefCounted
 ## Offline progress only. Native account credentials and original server data
 ## are never part of this format. Writes keep the previous valid file as backup.
 
-const DEFAULT_PATH := "user://progress.json"
+const DEFAULT_PATH := "user://progress-v09.json"
+const LEGACY_PATH := "user://progress.json"
 const FORMAT := "ace-modern-local-save"
 const MAX_BYTES := 16 * 1024 * 1024
 
@@ -70,6 +71,21 @@ static func read_game(path: String = DEFAULT_PATH) -> Dictionary:
 	return primary
 
 
+static func read_current_game(path: String = DEFAULT_PATH, legacy_path: String = LEGACY_PATH) -> Dictionary:
+	# Coexisting 0.8 executables must not overwrite the richer 0.9 save. Import
+	# their profile only when neither a new primary nor its backup exists.
+	if not _valid_path(path) or not _valid_path(legacy_path):
+		return _error("invalid_path", "Caminho de progresso inválido.")
+	if exists(path):
+		return read_game(path)
+	var legacy := read_game(legacy_path)
+	if not bool(legacy.get("ok", false)):
+		return read_game(path)
+	legacy["migrated_from"] = legacy_path
+	legacy["message"] = "Progresso anterior carregado; a versão 0.9 mantém um arquivo separado."
+	return legacy
+
+
 static func _read_one(path: String) -> Dictionary:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
@@ -79,13 +95,18 @@ static func _read_one(path: String) -> Dictionary:
 		return _error("invalid_size", "O arquivo de progresso tem um tamanho inválido.")
 	var raw := file.get_as_text()
 	file.close()
-	var document: Variant = JSON.parse_string(raw)
+	var parser := JSON.new()
+	if parser.parse(raw) != OK:
+		return _error("invalid_format", "O arquivo de progresso não é compatível.")
+	var document: Variant = parser.data
 	if not document is Dictionary or document.get("format") != FORMAT or int(document.get("schema_version", 0)) != 1:
 		return _error("invalid_format", "O arquivo de progresso não é compatível.")
 	var payload: Variant = document.get("payload")
 	if not payload is String or str(document.get("sha256", "")) != payload.sha256_text():
 		return _error("checksum_mismatch", "O arquivo de progresso está danificado.")
-	var snapshot: Variant = JSON.parse_string(payload)
+	if parser.parse(payload) != OK:
+		return _error("invalid_snapshot", "O arquivo de progresso está incompleto.")
+	var snapshot: Variant = parser.data
 	if not snapshot is Dictionary or not _valid_snapshot(snapshot):
 		return _error("invalid_snapshot", "O arquivo de progresso está incompleto.")
 	return {"ok": true, "snapshot": snapshot, "path": path, "message": "Progresso carregado deste dispositivo."}

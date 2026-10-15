@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SYSTEMS_E2E={"checks":132,"earned_checkpoint":{"credits":1289,"experience":398},"failures":[],"map_transfers":[3302,2001,3303,2001],"native_mission_spi":770,"native_mission_xp":232,"native_missions":[102,103],"native_pve_spi":519,"native_pve_xp":166,"positive_kills":11,"scope":"production_scene_native_weapons_and_rewards; poses/damage/AI scheduling fixtures only; no positive quest/ITEM/wallet grants","transactions":[{"items":[7000790,7002710],"operation":"foreign_stock_rejected","shop":9005},{"amount":601,"billed_amount":700,"cost":49,"operation":"ammunition"},{"item_num":7900440,"operation":"owned_zero_price_spare_rejected"},{"item_num":7009210,"operation":"native_shop_insufficient_spi","price":2000,"wallet":1188}],"weapons":[7000040,7901000]}
+PASS: systems integration — 132 checks; real native combat missions/PvE ledgers, original shop stock and owned sales, maintenance, denied unaffordable/unowned crafting, skills and persistence
+

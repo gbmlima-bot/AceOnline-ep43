@@ -1,9 +1,9 @@
-# Online PvE 0.8
+# Online PvE 0.9
 
-A versão 0.8 permite que dois pilotos joguem no mesmo mapa, enfrentem os mesmos inimigos e recebam resultados confirmados por um servidor dedicado. A sala usa o mapa 3002 e I-GEAR. O cliente envia comandos; o servidor calcula voo, colisões, disparos, dano, consumo de munição, habilidades e recompensas. O antigo modo de visita/chat em LAN continua sendo uma função separada.
+A versão 0.9 permite que pilotos joguem no mesmo mapa, enfrentem os mesmos inimigos e recebam resultados confirmados por um servidor dedicado. A sala usa o mapa 3002 e aceita B/M/A/I-GEAR, escolhido na criação do piloto. O cliente envia comandos; o servidor calcula voo, pouso/decolagem, colisões, disparos, dano, consumo de munição, habilidades e recompensas. O antigo modo de visita/chat em LAN continua sendo uma função separada. Ainda não há servidor público hospedado.
 
 ```text
-Cliente macOS/Windows 0.8 ── WSS /play ── Caddy :443
+Cliente macOS/Windows 0.9 ── WSS /play ── Caddy :443
                                           │
                               Godot 4.7.2 / sala 3002
                               física 120 Hz; snapshots 15 Hz
@@ -11,40 +11,44 @@ Cliente macOS/Windows 0.8 ── WSS /play ── Caddy :443
                                     SQLite / WAL
 ```
 
-O servidor lê os dados numéricos nativos de terreno e colisão, sem carregar cenas GLB, texturas, áudio ou executáveis do jogo original. Há um único processo e uma única sala. O encontro de três inimigos, suas posições e a recompensa de **10 SPI por inimigo para cada piloto que contribuiu**, sem XP, são uma política local explícita. Esses valores não foram recuperados de um banco de servidor original.
+O servidor lê dados numéricos de terreno, colisão, itens e monstros, sem carregar cenas GLB, texturas, áudio ou executáveis do jogo original. Há um único processo e uma única sala. O encontro de três inimigos e suas posições continuam sendo uma configuração local. O Hornian usa a arma nativa compatível recuperada e concede **82 XP**, divididos entre os pilotos pelo dano efetivo causado, sem contar dano excedente após a morte. Cada piloto mantém uma fração privada de XP entre mortes e reinícios; o saldo inteiro alimenta nível e pontos de atributo. A recompensa de **10 SPI por inimigo para cada contribuinte** continua sendo uma política local explícita.
+
+O XP e os campos compatíveis foram recuperados de um backup SQL legado. Isso não transforma a sala em reprodução de toda a economia ou população original. O cliente atual e o backup pertencem a versões diferentes: HP e identidade atuais são preservados, e armas ou atributos sem compatibilidade comprovada são bloqueados. Trajetórias e movimentação de NPC usam adaptações locais identificadas.
 
 Comece com **2 pilotos**. A configuração aceita até 8, mas isso é um limite de software, sem benchmark comprovando oito jogadores. Monitore latência, memória e tempo de tick antes de aumentar a população.
 
 ## Pacotes e cliente compatível
 
-O kit `ace-online-kit-v0.8.zip` contém o servidor independente e um pequeno overlay de fontes do cliente e servidor. Não repete os gigabytes de arte da base 0.7. Os aplicativos gráficos 0.8 para macOS e Windows são distribuídos separadamente; o aplicativo antigo 0.7 não possui conexão com este PvE.
+Na [Release 0.9](https://github.com/gbmlima-bot/AceOnline-ep43/releases/tag/ace-modern-v0.9.0), o kit `ace-completion-source-kit-v0.9.zip` contém o servidor independente em `server-bundle/` e um overlay de fontes sobre a base completa 0.8. Os aplicativos gráficos 0.9 para macOS e Windows são distribuídos separadamente. Para jogar sozinho, baixe apenas o pacote do seu sistema; para criar uma sala, acrescente o kit. Veja [quais arquivos baixar](README-entrega-v0.9.md).
+
+Cliente e servidor 0.9 usam **`ace-pve/2`**. O cliente 0.8 (`ace-pve/1`), os aplicativos anteriores e o cliente oficial não conectam a este servidor. O overlay atualiza fontes de um projeto Godot; ele não altera um aplicativo 0.8 já exportado.
 
 O cliente macOS é universal, com arm64 para M4 e x86_64; sua assinatura é local ad-hoc, sem notarização Apple. Confira o hash publicado do arquivo. Se o Gatekeeper bloquear a abertura, use **Ajustes do Sistema → Privacidade e Segurança → Abrir Mesmo Assim** para o aplicativo que verificou. O cliente Windows é x64. A inspeção dos cabeçalhos e a integridade dos ZIPs são verificadas em Linux; isso não substitui executar os aplicativos em macOS e Windows. O servidor do kit é Linux amd64/x86_64. Docker em um Mac M4 pode precisar emular amd64 no teste local.
 
-No cliente 0.8, abra **M → Online PvE**, preencha a URL `wss://SEU-DOMINIO/play` e a credencial privada do piloto, e pressione **Conectar ao servidor**. Use **Desconectar** para sair. O campo de credencial é limpo ao conectar e não é salvo neste computador. O cliente verifica o certificado e o nome do servidor. `ws://` sem TLS só é aceito em loopback para desenvolvimento.
+No cliente 0.9, abra **M → Online PvE**, preencha a URL `wss://SEU-DOMINIO/play`, a credencial privada do piloto e a classe desejada para o primeiro acesso, e pressione **Conectar ao servidor**. A classe fica vinculada ao perfil online e não pode ser trocada por uma nova conexão. Use **Desconectar** para sair. O campo de credencial é limpo ao conectar e não é salvo neste computador. O cliente verifica o certificado e o nome do servidor. `ws://` sem TLS só é aceito em loopback para desenvolvimento.
 
-O progresso online pertence ao servidor e não é importado do perfil offline. Durante a conexão, a viagem local, troca local de classe/perfil e atalhos de salvar/carregar offline ficam bloqueados. Isso evita que um perfil local substitua o estado confirmado pelo servidor.
+O progresso online pertence ao servidor e não é importado do perfil offline. Equipar itens possuídos, distribuir pontos de atributo e atribuir/usar habilidades suportadas são comandos validados pelo servidor. Aprender novas habilidades depende de escola nativa e ainda fica bloqueado nesta sala; consumíveis online também não foram portados. Durante a conexão e sua preparação, viagem local, comércio local, missões locais, troca de classe/perfil e salvar/carregar offline ficam bloqueados.
 
 ## Atualizar as fontes preservando os assets
 
-Preserve o ZIP original `ace-modern-systems-fontes-v0.7.zip`:
+Preserve o ZIP original **`ace-modern-fontes-v0.8.zip`**, disponível na Release 0.8:
 
 ```text
-SHA256 bc5d9a6755e14f44a59bb307d7b75a1b881a60be5334a425314f7c48667705e8
+SHA256 1d8acfa14f0a9fa9c6782c5811cab72172fba83a4001527b8b042f603c696f1c
 ```
 
-Extraia uma cópia nova da base 0.7 e extraia o kit em **outra pasta**. Feche o editor e use Python 3.11 ou mais recente. No terminal, dentro da pasta do kit:
+Extraia uma cópia nova dos fontes completos 0.8 e extraia o kit 0.9 em **outra pasta**. Feche o editor e use Python 3.11 ou mais recente. No terminal, dentro da pasta do kit:
 
 ```sh
 python3 apply-update.py --base /caminho/ace-modern --dry-run
 python3 apply-update.py --base /caminho/ace-modern
 ```
 
-Opcionalmente, acrescente `--base-source-zip /caminho/ace-modern-systems-fontes-v0.7.zip` para conferir também o ZIP original completo. A verificação normal já confere nome/versão do projeto e hashes dos arquivos listados no manifesto da base inteira, incluindo os assets. Pode levar alguns minutos para ler esses arquivos.
+Opcionalmente, acrescente `--base-source-zip /caminho/ace-modern-fontes-v0.8.zip` para conferir também o hash do ZIP original completo. A verificação normal confere a versão do projeto, hashes dos arquivos substituídos e dos manifestos nativos, além da presença e do tamanho dos assets preservados. Ela não recalcula o hash individual de cada arquivo de arte.
 
-O atualizador recusa arquivos da base modificados, destinos novos em conflito, caminhos fora da pasta e links simbólicos. Use uma extração nova caso tenha alterado a base. Ele verifica os manifestos antes de escrever, guarda as fontes substituídas em `.online-update-backups`, escreve cada arquivo atomicamente e deixa `client/project.godot` por último. Se uma escrita falhar durante a execução, tenta restaurar os arquivos escritos. Não apaga assets, perfis ou userdata. Uma interrupção externa ainda exige conferir o resultado ou restaurar o backup das fontes. Uma segunda aplicação completa apenas verifica o resultado.
+O atualizador recusa arquivos da base modificados, destinos novos em conflito, caminhos fora da pasta e links simbólicos. Use uma extração nova caso tenha alterado a base. Ele verifica os manifestos antes de escrever, guarda as fontes substituídas em `.online-update-backups/v0.9-*/`, escreve cada arquivo atomicamente e deixa `client/project.godot` por último. Se uma escrita falhar durante a execução, tenta restaurar os arquivos escritos. Não apaga perfis ou userdata nem substitui arte, texturas ou áudio. Uma interrupção externa ainda exige conferir o resultado ou restaurar o backup das fontes. Uma segunda aplicação completa apenas verifica o resultado.
 
-Abra `client/project.godot` da base atualizada com **Godot 4.7.2**; a primeira abertura pode reimportar os assets preservados. O overlay inclui todos os arquivos textuais do cliente (`.gd`, `.godot`, cenas, recursos, shaders, configurações e UIDs), `server/`, configurações/scripts de `deploy/`, README, documentação em Markdown/texto/JSON e ferramentas Python. Inclui também a extensão SQLite Linux x86_64, seus arquivos de plugin/licença e o manifesto `third_party/GODOT-SQLITE.json`. As duas bibliotecas `.so` são os únicos binários adicionados pelo overlay: seus tamanhos e hashes devem corresponder à proveniência. Arquivos `.env` reais, backups, logs, caches e userdata ficam fora da atualização. Prévias HTML históricas e imagens da documentação permanecem na base.
+Abra `client/project.godot` da base atualizada com **Godot 4.7.2**; a primeira abertura pode reimportar os assets preservados. O overlay inclui fontes do cliente/servidor, implantação, documentação e ferramentas, além da extensão SQLite Linux x86_64 verificada. Entre os assets, só atualiza `local_world/mission_support.json`, `local_services/economy.json` e os novos JSONs estáticos revisados de `native_server/` e `legacy_rules/`. Arquivos `.env` reais, bancos de pilotos, backups, caches e userdata ficam fora da atualização. Prévias HTML históricas e imagens da documentação permanecem na base.
 
 As fontes atualizadas permitem reconstruir o servidor, incluindo seus dados numéricos preservados da base e scripts de implantação:
 
@@ -55,7 +59,7 @@ python3 tools/build_server_bundle.py --output build/server-bundle --godot /camin
 
 Use uma pasta de saída nova; o binário Godot precisa corresponder ao SHA256 oficial exigido pelo gerador. O `server-bundle/` já pronto no kit continua independente dessa extração do cliente.
 
-Os manifestos detectam corrupção; não são uma assinatura digital. Confira também o SHA256 do kit por um canal de distribuição confiável. O atualizador não baixa dados antigos nem apaga os pacotes 0.7 preservados.
+Os manifestos detectam corrupção; não são uma assinatura digital. Confira também o SHA256 do kit por um canal de distribuição confiável. O atualizador não baixa os fontes antigos nem apaga os pacotes anteriores preservados.
 
 ## VPS e domínio
 
@@ -153,14 +157,16 @@ O supervisor transforma SIGTERM em pedido privado de encerramento e permite fech
 
 ## Alcance desta versão
 
-O combate e o mundo da sala são compartilhados e autoritativos. Ainda faltam os sistemas de um MMO completo: campanha online, economia compartilhada, PvP, guildas, facções, múltiplas salas/mapas persistentes e os serviços/protocolos originais. Dados do cliente não recuperam o banco original de spawns, drops e contas. A versão 0.8 usa regras locais identificadas onde esse banco está ausente.
+O combate da sala é compartilhado e autoritativo. Ainda faltam campanha online, economia compartilhada, PvP, guildas, formações completas, múltiplas salas/mapas persistentes e os serviços/protocolos oficiais. O mundo local tem cobertura maior que essa sala; seus mapas, missões, lojas e consumíveis não se tornam online automaticamente.
 
-O relatório `validation.json` do kit registra os testes aprovados no congelamento da versão. Os logs e relatórios JSON explicitamente citados nele também ficam no kit, em seus caminhos relativos, com hashes conferidos; não são aplicados sobre os relatórios da base pelo updater. Ele inclui os resultados de testes headless, persistência, integração e Docker indicados no relatório de origem. Isso não comprova carga de oito pilotos, execução nativa em Mac/Windows ou operação em um VPS público.
+Foram recuperadas **44 tabelas estáticas e 199.751 linhas** do backup SQL legado, além de spawns DAT/SMA do cliente. Isso corrige a limitação registrada nas entregas antigas que tratavam esses dados como ausentes. Contas, credenciais, personagens e tabelas operacionais não são publicados. Apenas definições e regras verificadas são utilizadas; estados de guerra/Infinity, regiões SMA e combinações incompatíveis continuam bloqueados. O [estado atual](gameplay-status.json) distingue dados recuperados, adaptações e comportamentos implementados.
 
-Para gerar o kit após congelar os fontes, reconstruir `build/server-bundle` e concluir o relatório `reports/online-validation-v08.json`:
+O relatório `validation.json` do kit registra os testes aprovados no congelamento da versão. Os logs e relatórios JSON explicitamente citados nele também ficam no kit, em seus caminhos relativos, com hashes conferidos; não são aplicados sobre os relatórios da base pelo updater. Somente as verificações listadas nesse relatório pertencem à validação 0.9; evidências antigas de Docker/TLS ou pacotes 0.8 permanecem identificadas como históricas. Isso não comprova carga de oito pilotos, execução nativa em Mac/Windows ou operação em uma VPS pública.
+
+Para gerar o kit após congelar os fontes, reconstruir o bundle e concluir o relatório `reports/completion-validation-v09.json`:
 
 ```sh
-python3 tools/package_online_kit.py --output /caminho/ace-online-kit-v0.8.zip
+python3 tools/package_completion_kit.py --source . --server-bundle build/server-bundle --validation-report reports/completion-validation-v09.json --output /caminho/ace-completion-source-kit-v0.9.zip
 ```
 
 O gerador exige resultados aprovados e logs referenciados sem erros de script/engine, confere o SHA256 do ZIP-base, os dados/engine do servidor e a correspondência do bundle com os fontes atuais. Depois verifica CRC, tamanhos e hashes do ZIP gerado. Não inclui credenciais, perfis ou uma segunda cópia dos assets gráficos.

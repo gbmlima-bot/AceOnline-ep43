@@ -136,7 +136,7 @@ func _test_real_runtime_session() -> void:
 	var runtime: Node3D = Runtime.new()
 	root.add_child(runtime)
 	var configured: Dictionary = runtime.configure()
-	_check(configured.ok and configured.map_count == 238 and configured.mission_count == 598 and configured.supported_mission_count == 537, "all238maps and597quests catalogued;537native missions compiled with explicit unsupported diagnostics")
+	_check(configured.ok and configured.map_count == 238 and configured.mission_count == 598 and configured.supported_mission_count == 541, "all238maps and597quests catalogued;541native missions compiled with explicit unsupported diagnostics")
 	_check(int(configured.source_mission_count) == 597, "all597native quest records remain source data without claiming script support")
 	var loaded: Dictionary = runtime.load_map(3002)
 	_check(loaded.get("ok",false), "original3002terrain and collision geometry load atomically")

@@ -1,6 +1,6 @@
 class_name ServiceModel
 extends RefCounted
-## Explicit local stock; original prices, bundles, mixing costs and refinery formulas.
+## Verified native shop membership when available; original compatible ITEM prices.
 ## The caller must authorize an appropriate nearby NPC before a mutating action.
 const ECONOMY_PATH := "res://assets/local_services/economy.json"
 const MAX_COUNT := 1000000000
@@ -9,6 +9,8 @@ const GEAR_KINDS := {"12000100":1, "12001100":16, "12002100":256, "12003100":409
 const REASONS := {
 	"not_configured":"Serviços indisponíveis", "unknown_item":"Item original indisponível",
 	"not_in_local_stock":"Item fora do estoque local", "native_gear_requirement":"Incompatível com este GEAR",
+	"native_shop_contact_required":"Selecione uma loja original compatível", "native_shop_unavailable":"Estoque desta loja não recuperado ou incompatível",
+	"native_shop_contact_mismatch":"Contato da loja incompatível com os dados recuperados", "not_in_native_shop":"Item não vendido por esta loja original",
 	"native_level_requirement":"Nível incompatível", "invalid_count":"Quantidade inválida",
 	"native_bundle_quantity":"Use um múltiplo do lote original", "native_no_transfer":"Item sem transferência",
 	"native_sale_single_unit":"Venda uma unidade deste equipamento por vez", "invalid_price":"Preço indisponível",
@@ -26,6 +28,10 @@ const REASONS := {
 var inventory: RefCounted
 var _data: Dictionary = {}
 var _stock: Dictionary = {}
+var _native_shops: Dictionary = {}
+var _active_stock: Dictionary = {}
+var _active_shop := 0
+var _native_shop_mode := false
 var _recipes: Dictionary = {}
 var _recipe_ids: Array[String] = []
 var _countable: Array = []
@@ -43,11 +49,17 @@ func configure(character_inventory: RefCounted, economy: Dictionary = {}) -> boo
 		if parsed is Dictionary:
 			_data = parsed
 	_stock.clear(); _recipes.clear(); _recipe_ids.clear(); _ammo.clear(); _cache.clear()
+	_native_shops.clear(); _active_stock.clear(); _active_shop = 0
+	_native_shop_mode = _data.get("native_shops") is Dictionary
 	if inventory == null or not inventory.has_method("exchange") or int(_data.get("schema_version", 0)) != 1:
 		return false
 	for number: Variant in _data.get("stock_item_nums", []):
 		if inventory.catalog.has(int(number)):
 			_stock[int(number)] = true
+	if _native_shop_mode:
+		for value: Variant in _data.native_shops.get("shops", []):
+			if value is Dictionary and int(value.get("building_index", 0)) > 0:
+				_native_shops[int(value.building_index)] = value
 	for value: Variant in _data.get("recipes", []):
 		if value is Dictionary and not str(value.get("recipe_id", "")).is_empty():
 			var identifier := str(value.recipe_id)
@@ -60,14 +72,63 @@ func configure(character_inventory: RefCounted, economy: Dictionary = {}) -> boo
 	_rng.randomize()
 	return true
 
+func bind_shop_contact(contact: Dictionary, current_map_id: int) -> Dictionary:
+	# Caller still authorizes death/proximity/city access. Binding checks the
+	# recovered BuildingIndex/NPC identity and never grants access by item alone.
+	if not _native_shop_mode:
+		return {"ok":true, "scope":"explicit_local_stock"}
+	var building := int(contact.get("source_building_index", contact.get("building_index", contact.get("BuildingIndex", 0))))
+	var error := _shop_contact_error(contact, current_map_id)
+	if not error.is_empty():
+		_active_shop = 0; _active_stock.clear(); _cache.clear()
+		return _fail(error)
+	if _active_shop != building:
+		_active_shop = building
+		_active_stock.clear(); _cache.clear()
+		for entry: Dictionary in _native_shops[building].get("entries", []):
+			var number := int(entry.get("item_num", 0))
+			if _stock.has(number): _active_stock[number] = true
+	return {"ok":true, "building_index":building, "stock_count":_active_stock.size(), "scope":"native_shop_membership_compatible_ITEM_price"}
+
+func shop_options(contacts: Array, current_map_id: int) -> Array[Dictionary]:
+	var options: Array[Dictionary] = []
+	if not _native_shop_mode: return options
+	var seen: Dictionary = {}
+	for value: Variant in contacts:
+		if not value is Dictionary or not _shop_contact_error(value, current_map_id).is_empty(): continue
+		var building := int(value.get("source_building_index", value.get("building_index", value.get("BuildingIndex", 0))))
+		if seen.has(building): continue
+		var shop: Dictionary = _native_shops[building]
+		var row: Dictionary = value.duplicate(true)
+		row.building_index = building
+		row.source_building_index = building
+		row.map_id = current_map_id
+		row.name = str(value.get("title", value.get("NPCName", value.get("source_service", {}).get("NPCName", "Loja #%s" % building))))
+		row.native_stock_count = shop.get("entries", []).size()
+		options.append(row)
+		seen[building] = true
+	return options
+
+func _shop_contact_error(contact: Dictionary, current_map_id: int) -> String:
+	var building := int(contact.get("source_building_index", contact.get("building_index", contact.get("BuildingIndex", 0))))
+	if not _native_shops.has(building): return "native_shop_unavailable"
+	var shop: Dictionary = _native_shops[building]
+	var kind := int(contact.get("building_kind", contact.get("BuildingKind", -1)))
+	var npc := int(contact.get("source_npc_index", contact.get("NPCIndex", -1)))
+	var map_id := int(contact.get("map_id", current_map_id))
+	if current_map_id <= 0 or kind != int(shop.building_kind) or npc != int(shop.npc_index) or map_id != current_map_id or (int(shop.map_id) != 0 and int(shop.map_id) != current_map_id):
+		return "native_shop_contact_mismatch"
+	return ""
+
 func shop_catalog(query: String = "", offset: int = 0, limit: int = PAGE_LIMIT, compatible_only: bool = true, mode: String = "buy") -> Dictionary:
 	if inventory == null:
 		return {"rows":[], "total":0, "offset":0, "limit":PAGE_LIMIT}
-	var cache_key := "shop|%s|%s|%s|%s" % [query.to_lower(), compatible_only, mode, _inventory_key()]
+	var cache_key := "shop|%s|%s|%s|%s|%s" % [query.to_lower(), compatible_only, mode, _active_shop, _inventory_key()]
 	if not _cache.has(cache_key):
 		var ids: Array[int] = []
-		var candidates: Array = inventory.quantities.keys() if mode == "sell" else _stock.keys()
-		candidates.sort()
+		var candidates: Array = inventory.quantities.keys() if mode == "sell" else (_active_stock.keys() if _native_shop_mode else _stock.keys())
+		# Dictionary insertion order preserves the native ShopOrder for purchases.
+		if mode == "sell" or not _native_shop_mode: candidates.sort()
 		for number: int in candidates:
 			var item: Dictionary = inventory.catalog.get(number, {})
 			if item.is_empty() or not _matches(item, query) or (compatible_only and not _compatible(item).is_empty()):
@@ -89,7 +150,8 @@ func shop_catalog(query: String = "", offset: int = 0, limit: int = PAGE_LIMIT, 
 		row.reason_code = reason
 		rows.append(row)
 	return {"rows":rows, "total":filtered.size(), "offset":start, "limit":size, "mode":mode,
-		"scope":"Estoque local ilimitado; preços e lotes ITEM originais; imposto local zero"}
+		"building_index":_active_shop,
+		"scope":"Itens confirmados desta loja; preços e lotes originais compatíveis; estoque ilimitado e imposto zero locais" if _native_shop_mode else "Estoque local ilimitado; preços e lotes ITEM originais; imposto local zero"}
 
 func recipe_catalog(query: String = "", offset: int = 0, limit: int = PAGE_LIMIT, craftable_only: bool = false, compatible_only: bool = true) -> Dictionary:
 	if inventory == null:
@@ -124,7 +186,8 @@ func buy(item_num: int, count: int = 1) -> Dictionary:
 	var result: Dictionary = inventory.exchange([], [{"item_num":item_num, "count":count}], -price)
 	if bool(result.get("ok", false)):
 		_changed()
-		return {"ok":true, "cost":price, "item_num":item_num, "count":count, "scope":"local_stock_native_ITEM_price"}
+		return {"ok":true, "cost":price, "item_num":item_num, "count":count, "building_index":_active_shop,
+			"scope":"native_shop_membership_compatible_ITEM_price" if _native_shop_mode else "local_stock_native_ITEM_price"}
 	return _transaction_result(result)
 
 func sell(item_num: int, count: int = 1) -> Dictionary:
@@ -215,6 +278,7 @@ func snapshot() -> Dictionary:
 	return {"configured":inventory != null and not _data.is_empty(), "stock_count":_stock.size(), "recipe_count":_recipes.size(),
 		"supported_recipes":int(_data.get("summary", {}).get("supported", 0)), "blocked_recipes":int(_data.get("summary", {}).get("blocked", 0)),
 		"credits":int(inventory.credits) if inventory != null else 0, "revision":_revision, "operations":_operation_serial,
+		"native_shop_mode":_native_shop_mode, "native_shop_count":_native_shops.size(), "active_shop":_active_shop, "active_stock_count":_active_stock.size(),
 		"scope":"local_NPC_services_native_ITEM_mixing_refinery_formulas", "policy":_data.get("policy", {})}
 
 func export_state() -> Dictionary:
@@ -244,6 +308,10 @@ func _trade_error(item_num: int, count: int, mode: String) -> String:
 	if int(item.get("Price", 0)) <= 0 or int(item.get("MinTradeQuantity", 0)) <= 0:
 		return "invalid_price"
 	if mode == "buy":
+		if _native_shop_mode and _active_shop == 0:
+			return "native_shop_contact_required"
+		if _native_shop_mode and not _active_stock.has(item_num):
+			return "not_in_native_shop"
 		if not _stock.has(item_num):
 			return "not_in_local_stock"
 		var compatible := _compatible(item)

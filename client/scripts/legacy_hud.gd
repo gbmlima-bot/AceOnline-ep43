@@ -25,6 +25,7 @@ const GEAR_UNIT_KINDS := {"12000100": 1, "12001100": 16, "12002100": 256, "12003
 const LIBRARY_PAGE_SIZE := 8
 const EQUIPPED_ROLES := {"Arma primária": "primary", "Arma secundária": "secondary", "Motor": "engine", "Armadura": "armor", "Computador": "cpu", "Radar": "radar", "Acessório": "accessory"}
 const STAT_LABELS := {"attack": "Ataque", "defense": "Defesa", "fuel": "Combustível", "soul": "Espírito", "shield": "Escudo", "dodge": "Esquiva"}
+const ONLINE_GEARS := [["12000100", "B-GEAR"], ["12001100", "M-GEAR"], ["12002100", "A-GEAR"], ["12003100", "I-GEAR"]]
 
 var root: Control
 var inventory_items: Control
@@ -85,6 +86,7 @@ var _local_notice: Label
 var _menu_root: Control
 var _xp_notice: Label
 var _help_panel: Control
+var _help_text: Label
 var _inventory_opened := false
 var _last_size := Vector2.ZERO
 var _last_speed := -1
@@ -133,6 +135,7 @@ var _inventory_icons: Control
 var _inventory_page := 0
 var _inventory_page_label: Label
 var _inventory_equip: Button
+var _inventory_use: Button
 var _inventory_previous: Button
 var _inventory_next: Button
 var _inventory_selected: Dictionary = {}
@@ -148,6 +151,13 @@ var _systems_notice: Label
 var _service_mode := "buy"
 var _service_modes: Dictionary = {}
 var _service_quantity: SpinBox
+var _service_shop_toolbar: HBoxContainer
+var _service_shop: OptionButton
+var _service_shop_id := 0
+var _service_shop_reported := -1
+var _service_shop_map := -1
+var _service_shop_signature := ""
+var _service_shop_options: Array[Dictionary] = []
 var _skill_slot: SpinBox
 var _skill_buttons: Array[Button] = []
 var _network_address: LineEdit
@@ -163,10 +173,12 @@ var _online_url: LineEdit
 var _online_token: LineEdit
 var _online_connect: Button
 var _online_disconnect: Button
+var _online_gear: OptionButton
+var _online_gear_draft := "12003100"
 var _online_status_label: Label
 var _online_notes: Array[String] = []
 var _world_heading: Label
-const ONLINE_OFFLINE_ONLY := ["save_game", "load_game", "travel_map", "preview_gear", "reset_appearance", "equip_item", "unequip_item", "allocate_stat", "skill_use", "skill_learn", "skill_assign", "shop_buy", "shop_sell", "craft_recipe", "service_repair", "service_ammo", "accept_mission", "claim_reward", "pause", "reset"]
+const ONLINE_OFFLINE_ONLY := ["save_game", "load_game", "travel_map", "preview_gear", "reset_appearance", "equip_item", "unequip_item", "allocate_stat", "use_item", "skill_use", "skill_learn", "skill_assign", "shop_buy", "shop_sell", "craft_recipe", "service_repair", "service_ammo", "accept_mission", "claim_reward", "pause", "reset"]
 const ONLINE_LOCK_REASON := "A sessão online é controlada pelo servidor. Esta ação pertence ao perfil offline."
 
 
@@ -698,6 +710,13 @@ func _create_inventory() -> void:
 	_inventory_equip = _transparent_button(inventory_items, "Equipar seleção", Vector2(25, 232), Vector2(154, 18), _equip_inventory_selection)
 	_inventory_equip.disabled = true
 	_inventory_equip.add_theme_font_size_override("font_size", 10)
+	_inventory_use = _transparent_button(inventory_items, "Usar 1", Vector2(181, 232), Vector2(58, 18), _use_inventory_selection)
+	_inventory_use.name = "UseOwnedConsumable"
+	_inventory_use.add_theme_font_size_override("font_size", 10)
+	_inventory_use.add_theme_stylebox_override("disabled", StyleBoxEmpty.new())
+	_inventory_use.add_theme_color_override("font_disabled_color", Color("889da9"))
+	_inventory_use.disabled = true
+	_inventory_use.hide()
 	_inventory_previous = _transparent_button(inventory_items, "‹", Vector2(241, 232), Vector2(21, 18), func() -> void: _change_inventory_page(-1))
 	_inventory_page_label = _text(inventory_items, "1 / 1", Vector2(264, 234), 9, CYAN)
 	_inventory_next = _transparent_button(inventory_items, "›", Vector2(322, 232), Vector2(21, 18), func() -> void: _change_inventory_page(1))
@@ -751,7 +770,14 @@ func set_gear_preview(visual: Node3D) -> void:
 
 func set_inventory_state(data: Dictionary) -> void:
 	_inventory_state = data
-	var signature := JSON.stringify([data.get("entries", []), data.get("equipped", {})])
+	var entries: Array = []
+	for row: Dictionary in data.get("entries", []):
+		if row.has("use_remaining"):
+			var compact := row.duplicate()
+			compact["use_remaining"] = ceili(maxf(0, float(row.use_remaining)))
+			entries.append(compact)
+		else: entries.append(row)
+	var signature := JSON.stringify([entries, data.get("equipped", {})])
 	if signature != _inventory_signature:
 		_inventory_signature = signature
 		_refresh_inventory()
@@ -764,6 +790,10 @@ func _refresh_inventory() -> void:
 		_inventory_icons.remove_child(child)
 		child.queue_free()
 	var entries: Array = _inventory_state.get("entries", [])
+	var selected_id := _item_id(_inventory_selected) if not _inventory_selected.is_empty() else ""
+	_inventory_selected = {}
+	_inventory_grid.selected = -1
+	_inventory_grid.queue_redraw()
 	var page_count := maxi(1, ceili(entries.size() / 60.0))
 	_inventory_page = clampi(_inventory_page, 0, page_count - 1)
 	_inventory_page_label.text = "%d / %d" % [_inventory_page + 1, page_count]
@@ -772,6 +802,9 @@ func _refresh_inventory() -> void:
 	for index: int in range(_inventory_page * 60, mini(entries.size(), (_inventory_page + 1) * 60)):
 		var item: Dictionary = entries[index]
 		var cell := index % 60
+		if not selected_id.is_empty() and _item_id(item) == selected_id:
+			_inventory_selected = item
+			_inventory_grid.selected = cell
 		var button := Button.new()
 		button.name = "OwnedItem_%s" % _item_id(item)
 		button.position = Vector2(cell % 10, cell / 10) * 32
@@ -805,6 +838,12 @@ func _refresh_inventory() -> void:
 			(_equipment_buttons[role] as Button).tooltip_text = _equipment_descriptions[role]
 	if _inventory_selected.is_empty():
 		_inventory_equip.disabled = true
+		_update_inventory_use()
+		if not selected_id.is_empty():
+			_inventory_hint.text = "ITEM NÃO DISPONÍVEL · PERFIL DESTA SESSÃO"
+			_inventory_hint.tooltip_text = ""
+	else:
+		_select_inventory_cell(_inventory_grid.selected)
 
 
 func _select_inventory_cell(cell: int) -> void:
@@ -816,13 +855,14 @@ func _select_inventory_cell(cell: int) -> void:
 	if _inventory_selected.is_empty():
 		_inventory_hint.text = "ESPAÇO %02d VAZIO · PERFIL LOCAL" % (cell + 1)
 		_inventory_equip.disabled = true
+		_update_inventory_use()
 		return
-	_inventory_hint.text = _item_name(_inventory_selected)
+	_inventory_hint.text = "%s · ×%d" % [_item_name(_inventory_selected), int(_inventory_selected.get("count", 0))]
 	_inventory_hint.tooltip_text = _item_tooltip(_inventory_selected, true)
 	var slots: Array = _inventory_selected.get("equippable_slots", [])
-	_inventory_equip.disabled = slots.is_empty() or is_online_connected()
+	_inventory_equip.disabled = slots.is_empty() or _online_blocks_action("equip_item:primary:0")
 	_inventory_equip.text = "Equipar seleção" if not slots.is_empty() else "Item sem encaixe"
-	_inventory_equip.tooltip_text = "Equipa apenas itens possuídos; classe, nível, atributos e encaixe são conferidos pelo perfil local."
+	_inventory_equip.tooltip_text = ONLINE_LOCK_REASON if _online_blocks_action("equip_item:primary:0") else ("Solicita ao servidor equipar este item possuído; a mudança é revalidada antes de alterar o equipamento." if is_online_active() else "Equipa apenas itens possuídos; classe, nível, atributos e encaixe são conferidos pelo perfil local.")
 	if slots.is_empty():
 		var errors: Dictionary = _inventory_selected.get("equip_errors", {})
 		var reasons := PackedStringArray()
@@ -831,10 +871,35 @@ func _select_inventory_cell(cell: int) -> void:
 			var descriptions := {"wrong_gear_class": "Item de outra classe de GEAR.", "insufficient_level": "Nível insuficiente.", "level_too_high": "Nível acima do limite do item.", "native_stat_requirement": "Atributos insuficientes para este equipamento.", "native_equipment_parameter_not_ported": "Um bônus deste equipamento ainda não é suportado.", "native_equipment_parameters_unavailable": "Parâmetros originais deste equipamento indisponíveis.", "other_equipment_stat_requirement": "A mudança invalidaria os requisitos de outro equipamento."}
 			reasons.append(str(value.get("reason", descriptions.get(code, "Os requisitos deste equipamento ainda não foram atendidos."))))
 		if not reasons.is_empty(): _inventory_equip.tooltip_text = "\n".join(reasons)
+	_update_inventory_use()
+
+
+func _update_inventory_use() -> void:
+	if not is_instance_valid(_inventory_use): return
+	var item := _inventory_selected
+	var consumable := bool(item.get("consumable", int(item.get("kind", item.get("Kind", -1))) == 18))
+	_inventory_use.visible = consumable
+	_inventory_use.disabled = not consumable or is_online_active() or not bool(item.get("usable", false)) or int(item.get("count", 0)) <= 0 or int(item.get("use_quantity", 1)) != 1
+	var reason := str(item.get("use_reason", "Uso deste item ainda indisponível."))
+	if is_online_active(): reason = "O uso de consumíveis ainda não está disponível nesta sessão online."
+	var lines := PackedStringArray(["Consome 1 unidade · possuído ×%d" % int(item.get("count", 0))])
+	var names := {"hp":"HP", "shield":"Escudo", "sp":"SP", "ep":"Combustível"}
+	for effect: Dictionary in item.get("use_effects", []):
+		lines.append("%s +%s" % [names.get(str(effect.get("resource", "")), "Recurso"), str(effect.get("amount", 0))])
+	var remaining := float(item.get("use_remaining", 0))
+	if remaining > 0: lines.append("Recarga: %.1f s" % remaining)
+	if not reason.is_empty(): lines.append(reason)
+	_inventory_use.tooltip_text = "\n".join(lines)
+
+
+func _use_inventory_selection() -> void:
+	_update_inventory_use()
+	if _inventory_use.disabled or not _inventory_use.visible: return
+	_emit_local_action("use_item:" + _item_id(_inventory_selected))
 
 
 func _equip_inventory_selection() -> void:
-	if is_online_connected(): return
+	if _online_blocks_action("equip_item:primary:0"): return
 	var slots: Array = _inventory_selected.get("equippable_slots", [])
 	if not slots.is_empty() and int(_inventory_selected.get("count", 0)) > 0:
 		_emit_local_action("equip_item:%s:%s" % [str(slots[0]), _item_id(_inventory_selected)])
@@ -935,8 +1000,18 @@ func _create_annotations() -> void:
 	background.content_margin_bottom = 16
 	_help_panel.add_theme_stylebox_override("panel", background)
 	root.add_child(_help_panel)
-	_text(_help_panel, "CONTROLES · SESSÃO LOCAL\n\nW / S       Inclinar; A-GEAR no solo: frente / ré\nA / D        Deslocamento lateral / inclinação visual\nQ / E        Virar; E próximo de contato: interagir\nShift         Boost      ·      Espaço   Frear\nMouse         Mirar · botões 1 / 2: armas\nTab           Selecionar alvo / travar míssil\nG               Pousar próximo do solo / decolar\nT                Cerco A-GEAR no solo\nM              Mundo e missões locais\nI                 Inventário     ·     F2   Alternar GEAR\nP               Pausar     ·     R   Reiniciar encontro\n\nF1 fecha a ajuda. Chat registra notas pessoais.\nSem servidor ou conta; cenário de combate adaptado.", Vector2.ZERO, 13)
+	_help_text = _text(_help_panel, "", Vector2.ZERO, 13)
+	_update_help_text()
 	_help_panel.hide()
+
+
+func _update_help_text() -> void:
+	if not is_instance_valid(_help_text): return
+	var common := "W / S       Inclinar; A-GEAR no solo: frente / ré\nA / D        Deslocamento lateral / inclinação visual\nQ / E        Virar\nShift         Boost      ·      Espaço   Frear\nMouse         Mirar · botões 1 / 2: armas\nTab           Selecionar alvo / travar míssil\nG               Pousar próximo do solo / decolar\nT                Cerco A-GEAR no solo\n"
+	if is_online_active():
+		_help_text.text = "CONTROLES · ONLINE PvE\n\n" + common + "M              Menus e conexão ao servidor\nI                 Inventário e equipamentos possuídos\n1–8           Habilidades atribuídas pelo servidor\n\nO servidor valida combate, recursos e atributos.\nF1 fecha a ajuda. Chat envia à sala conectada.\nSalvar, pausar e alternar classe pertencem ao modo local."
+	else:
+		_help_text.text = "CONTROLES · SESSÃO LOCAL\n\n" + common + "E               Interagir próximo de contato / portal\nM              Mundo e missões locais\nI                 Inventário     ·     F2   Alternar GEAR\nP               Pausar     ·     R   Reiniciar encontro\n\nF1 fecha a ajuda. Chat registra notas pessoais.\nPerfil local separado de uma sessão online."
 
 
 func _layout() -> void:
@@ -1104,6 +1179,7 @@ func _create_simulation_ui() -> void:
 	skin.border_color = Color("458cc1")
 	skin.set_border_width_all(1)
 	_world_panel.add_theme_stylebox_override("panel", skin)
+	_apply_library_theme(_world_panel)
 	root.add_child(_world_panel)
 	# A separate local panel preserves the source inventory and HUD geometry.
 	var content := VBoxContainer.new()
@@ -1201,6 +1277,10 @@ func _create_simulation_ui() -> void:
 	_systems_toolbar = HBoxContainer.new()
 	_systems_toolbar.name = "SystemsToolbar"
 	content.add_child(_systems_toolbar)
+	_service_shop_toolbar = HBoxContainer.new()
+	_service_shop_toolbar.name = "NativeShopToolbar"
+	_service_shop_toolbar.hide()
+	content.add_child(_service_shop_toolbar)
 	_systems_notice = Label.new()
 	_systems_notice.name = "SystemsResult"
 	_systems_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1385,7 +1465,7 @@ func update_simulation(flight: Dictionary, combat: Dictionary, world: Dictionary
 	_inventory_credits.text = str(wallet.get("credits", 0)) if wallet is Dictionary else str(wallet)
 	var nearby: Dictionary = world.get("nearby_interaction", {})
 	var mode := str(flight.get("mode", "airborne"))
-	var mode_label: String = {"airborne": "VOO", "ground": "SOLO", "landed": "POUSADO", "siege": "CERCO", "fuel_falling": "SEM COMBUSTÍVEL · QUEDA", "fuel_stranded": "SEM COMBUSTÍVEL · PARADO"}.get(mode, mode)
+	var mode_label: String = {"airborne": "VOO", "ground": "SOLO", "landed": "POUSADO", "landing": "POUSANDO", "taking_off": "DECOLANDO", "siege": "CERCO", "fuel_falling": "SEM COMBUSTÍVEL · QUEDA", "fuel_stranded": "SEM COMBUSTÍVEL · PARADO"}.get(mode, mode)
 	_interaction_prompt.text = "[E] %s · %s" % [nearby.get("title", "Interagir"), mode_label] if not nearby.is_empty() else "M: mundo / missões · %s" % mode_label
 	var dead := bool(combat.get("dead", false))
 	_death_notice.visible = dead
@@ -1422,6 +1502,7 @@ func _invalidate_library() -> void:
 
 func _select_library_tab(tab: String) -> void:
 	_library_tab = tab
+	if is_instance_valid(_service_shop_toolbar): _service_shop_toolbar.hide()
 	_library_page = 0
 	for key: String in _library_tabs:
 		(_library_tabs[key] as Button).button_pressed = key == tab
@@ -1643,8 +1724,8 @@ func _build_map_row(record: Dictionary) -> void:
 	travel.name = "TravelMap_" + _map_id(record)
 	travel.text = "Visitar" if available else "Indisponível"
 	travel.focus_mode = Control.FOCUS_NONE
-	travel.disabled = not available or is_online_connected()
-	travel.tooltip_text = ONLINE_LOCK_REASON if is_online_connected() else ("Viagem rápida local para explorar os recursos convertidos; não é uma rota original do jogo." if available else reason)
+	travel.disabled = not available or is_online_active()
+	travel.tooltip_text = ONLINE_LOCK_REASON if is_online_active() else ("Viagem rápida local para explorar os recursos convertidos; não é uma rota original do jogo." if available else reason)
 	var action := "travel_map:" + _map_id(record)
 	travel.pressed.connect(func() -> void: _emit_local_action(action))
 	row.add_child(travel)
@@ -1683,7 +1764,7 @@ func _build_gear_row(record: Dictionary) -> void:
 	preview.name = "PreviewGear_" + str(int(record.get("source_index", 0)))
 	preview.text = "Testar aparência"
 	preview.focus_mode = Control.FOCUS_NONE
-	preview.disabled = is_online_connected() or not compatible or not bool(record.get("available", false))
+	preview.disabled = is_online_active() or not compatible or not bool(record.get("available", false))
 	preview.tooltip_text = "Teste visual local da classe atual. Mantém equipamento, motor e atributos; não concede ou equipa a armadura. Use F2 para alternar a classe." if compatible else "Esta aparência pertence a outra classe de GEAR. Use F2 para alternar a classe."
 	var action := "preview_gear:" + str(int(record.get("source_index", 0)))
 	preview.pressed.connect(func() -> void: _emit_local_action(action))
@@ -1728,7 +1809,7 @@ func _build_mission_row(mission: Dictionary) -> void:
 		button.focus_mode = Control.FOCUS_NONE
 		var claim := status != "available"
 		button.text = "Entregar / receber recompensa" if claim else "Aceitar missão"
-		button.disabled = is_online_connected()
+		button.disabled = is_online_active()
 		if button.disabled: button.tooltip_text = ONLINE_LOCK_REASON
 		var action := ("claim_reward:" if claim else "accept_mission:") + str(mission.get("id", ""))
 		button.pressed.connect(func() -> void: _emit_local_action(action))
@@ -1761,6 +1842,7 @@ func set_systems_state(data: Dictionary) -> void:
 	_update_chat_placeholder()
 	set_chat_filter(chat_filter)
 	_update_skill_hud()
+	_update_online_locks()
 	var skills: Dictionary = data.get("skills", {})
 	var compact_skills: Array = []
 	for row: Dictionary in skills.get("rows", []):
@@ -1785,11 +1867,11 @@ func set_systems_state(data: Dictionary) -> void:
 
 
 func systems_query() -> Dictionary:
-	return {"tab": _library_tab, "mode": _service_mode, "query": _library_search.text.strip_edges(), "offset": _service_offset, "limit": LIBRARY_PAGE_SIZE, "available": _library_available.button_pressed}
+	return {"tab": _library_tab, "mode": _service_mode, "shop": _service_shop_id, "query": _library_search.text.strip_edges(), "offset": _service_offset, "limit": LIBRARY_PAGE_SIZE, "available": _library_available.button_pressed}
 
 
 func _request_systems_query() -> void:
-	if _library_tab == "services" and is_world_panel_open():
+	if _library_tab == "services" and is_world_panel_open() and not is_online_active():
 		_emit_local_action("systems_query:" + JSON.stringify(systems_query()))
 
 
@@ -1860,7 +1942,7 @@ func _build_systems_toolbar() -> void:
 		var clear_button := Button.new()
 		clear_button.text = "Limpar atalho"
 		clear_button.focus_mode = Control.FOCUS_NONE
-		clear_button.disabled = is_online_connected()
+		clear_button.disabled = _online_blocks_action("skill_assign:1:0")
 		if clear_button.disabled: clear_button.tooltip_text = ONLINE_LOCK_REASON
 		_systems_toolbar.add_child(clear_button)
 		clear_button.pressed.connect(func() -> void: _emit_local_action("skill_assign:%d:0" % int(_skill_slot.value)))
@@ -1879,6 +1961,7 @@ func _select_service_mode(mode: String) -> void:
 
 func _render_service_page() -> void:
 	var service: Dictionary = _systems_state.get("services", {})
+	_refresh_service_shops(service)
 	var total := int(service.get("total", 0))
 	var offset := int(service.get("offset", _service_offset))
 	var count := mini(LIBRARY_PAGE_SIZE, _library_filtered.size())
@@ -1901,6 +1984,68 @@ func _render_service_page() -> void:
 		if count == 0:
 			_new_library_label(_world_missions, str(service.get("reason", "Nenhum registro atende aos filtros e requisitos atuais.")), GOLD)
 	_world_maps.text = str(service.get("scope", "Economia local: preços/ingredientes recuperados; catálogo de loja e acesso usam política local explícita. Toda transação é revalidada antes de debitar SPI ou itens."))
+
+
+func _refresh_service_shops(service: Dictionary) -> void:
+	if not is_instance_valid(_service_shop_toolbar): return
+	_service_shop_toolbar.visible = _library_tab == "services" and _service_mode in ["buy", "sell"] and service.has("shop_options") and not is_online_active()
+	var options: Array[Dictionary] = []
+	var identities: Dictionary = {}
+	var raw_options: Variant = service.get("shop_options", [])
+	if raw_options is Array:
+		for raw: Variant in raw_options.slice(0, 512):
+			if not raw is Dictionary or not raw.get("building_index") is int or int(raw.building_index) <= 0 or not raw.get("map_id") is int or int(raw.map_id) <= 0 or not raw.get("name") is String or identities.has(int(raw.building_index)): continue
+			identities[int(raw.building_index)] = true
+			options.append({"building_index": int(raw.building_index), "map_id": int(raw.map_id), "name": str(raw.name).left(120), "native_stock_count": maxi(0, int(raw.get("native_stock_count", 0)))})
+	var map_id := int(service.get("map_id", options[0].map_id if not options.is_empty() else _world_state.get("map_id", 0)))
+	var reset := (_service_shop_map > 0 and _service_shop_map != map_id) or (_service_shop_id > 0 and not identities.has(_service_shop_id))
+	_service_shop_map = map_id
+	if reset:
+		_service_shop_id = 0
+		_service_offset = 0
+	var reported := int(service.get("shop", 0))
+	if reported != _service_shop_reported and not reset and (reported == 0 or identities.has(reported)):
+		_service_shop_id = reported
+	_service_shop_reported = reported
+	_service_shop_options = options
+	var signature := JSON.stringify([options, _service_shop_id, map_id])
+	if signature == _service_shop_signature: return
+	_service_shop_signature = signature
+	for child: Node in _service_shop_toolbar.get_children():
+		_service_shop_toolbar.remove_child(child)
+		child.queue_free()
+	var label := _new_library_label(_service_shop_toolbar, "Loja")
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_service_shop = OptionButton.new()
+	_service_shop.name = "NativeShopSelector"
+	_service_shop.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_service_shop.fit_to_longest_item = false
+	_service_shop.custom_minimum_size.x = 240
+	_service_shop.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_service_shop.add_item("Contato padrão / mais próximo")
+	_service_shop.set_item_metadata(0, 0)
+	_service_shop.tooltip_text = "Cada contato possui seu estoque original. A cidade ou a distância ao contato é validada antes da compra."
+	for option: Dictionary in options:
+		_service_shop.add_item("%d · %s · %d itens" % [option.building_index, option.name, option.native_stock_count])
+		var index := _service_shop.item_count - 1
+		_service_shop.set_item_metadata(index, option.building_index)
+		if int(option.building_index) == _service_shop_id: _service_shop.select(index)
+	_service_shop.disabled = options.is_empty()
+	_service_shop.item_selected.connect(func(index: int) -> void: _select_service_shop(int(_service_shop.get_item_metadata(index))))
+	_service_shop_toolbar.add_child(_service_shop)
+
+
+func _select_service_shop(building_index: int) -> void:
+	var valid := building_index == 0
+	for option: Dictionary in _service_shop_options:
+		if int(option.building_index) == building_index: valid = true
+	if not valid: return
+	_service_shop_id = building_index
+	_service_offset = 0
+	_library_page = 0
+	_invalidate_library()
+	_request_systems_query()
 
 
 func _add_system_icon(parent: Node, record: Dictionary) -> void:
@@ -1927,8 +2072,8 @@ func _build_shop_row(record: Dictionary) -> void:
 	button.name = "ShopAction_" + _item_id(record)
 	button.text = "Vender" if selling else "Comprar"
 	button.focus_mode = Control.FOCUS_NONE
-	button.disabled = is_online_connected() or not allowed or not bool(record.get("available", false))
-	button.tooltip_text = ONLINE_LOCK_REASON if is_online_connected() else (reason if button.disabled else "Solicita a transação. Saldo, quantidade e requisitos serão conferidos novamente.")
+	button.disabled = is_online_active() or not allowed or not bool(record.get("available", false))
+	button.tooltip_text = ONLINE_LOCK_REASON if is_online_active() else (reason if button.disabled else "Solicita a transação. Saldo, quantidade e requisitos serão conferidos novamente.")
 	var prefix := "shop_sell" if selling else "shop_buy"
 	button.pressed.connect(func() -> void: _emit_local_action("%s:%s:%d" % [prefix, _item_id(record), int(_service_quantity.value)]))
 	row.add_child(button)
@@ -1989,7 +2134,7 @@ func _build_skill_row(record: Dictionary) -> void:
 	assign.name = "AssignSkill_" + identifier
 	assign.text = "Atribuir"
 	assign.focus_mode = Control.FOCUS_NONE
-	assign.disabled = is_online_connected() or not learned or not bool(record.get("supported", false))
+	assign.disabled = _online_blocks_action("skill_assign:1:" + identifier) or not learned or not bool(record.get("supported", false))
 	assign.tooltip_text = "Vincula ao slot escolhido; não aprende nem ativa gratuitamente." if not assign.disabled else reason
 	assign.pressed.connect(func() -> void: _emit_local_action("skill_assign:%d:%s" % [int(_skill_slot.value), identifier]))
 	row.add_child(assign)
@@ -2072,7 +2217,7 @@ func _build_network_page() -> void:
 	form.add_child(_network_port)
 	var controls := HBoxContainer.new()
 	_world_missions.add_child(controls)
-	var offline := str(network.get("status", "offline")) in ["offline", "error"] and not is_online_connected()
+	var offline := str(network.get("status", "offline")) in ["offline", "error"] and not is_online_active()
 	var host := _system_button(controls, "Hospedar", "", offline)
 	for connection: Dictionary in host.pressed.get_connections(): host.pressed.disconnect(connection.callable)
 	host.name = "NetworkHost"
@@ -2081,7 +2226,7 @@ func _build_network_page() -> void:
 	for connection: Dictionary in join.pressed.get_connections(): join.pressed.disconnect(connection.callable)
 	join.name = "NetworkJoin"
 	join.pressed.connect(func() -> void: _request_network({"action": "join", "address": _network_address.text.strip_edges(), "port": int(_network_port.value)}))
-	var leave := _system_button(controls, "Desconectar", "", not offline)
+	var leave := _system_button(controls, "Desconectar", "", not offline and not is_online_active())
 	for connection: Dictionary in leave.pressed.get_connections(): leave.pressed.disconnect(connection.callable)
 	leave.name = "NetworkLeave"
 	leave.pressed.connect(func() -> void: _request_network({"action": "disconnect"}))
@@ -2101,6 +2246,11 @@ func is_online_active() -> bool:
 
 func _online_blocks_action(action: String) -> bool:
 	if action.begins_with("skill_use:") and bool(_systems_state.get("authoritative_online",false)): return false
+	if action.begins_with("skill_assign:") and bool(_systems_state.get("authoritative_online",false)) and bool((_systems_state.get("skills", {}) as Dictionary).get("assignment_available", false)): return false
+	if bool(_systems_state.get("authoritative_online", false)):
+		var equipment: Dictionary = _systems_state.get("equipment", {})
+		if action.begins_with("equip_item:") and bool(equipment.get("equip_available", false)): return false
+		if action.begins_with("allocate_stat:") and bool(equipment.get("allocate_stats_available", false)): return false
 	return is_online_active() and (action.get_slice(":", 0) in ONLINE_OFFLINE_ONLY or action.begins_with("network:"))
 
 
@@ -2136,7 +2286,7 @@ func set_online_state(data: Dictionary) -> void:
 	# A strict public-state whitelist prevents credentials from entering HUD state,
 	# logs, capture metadata or a locally persisted profile.
 	var state: Dictionary = {}
-	for key: String in ["status", "message", "server_url", "pilot_id"]:
+	for key: String in ["status", "message", "server_url", "pilot_id", "gear_id"]:
 		var value: Variant = data.get(key, "")
 		state[key] = str(value) if value is String or value is StringName else ""
 	if str(state.status).is_empty(): state.status = "offline"
@@ -2147,12 +2297,14 @@ func set_online_state(data: Dictionary) -> void:
 		var value: Variant = data.get(key, 0)
 		state[key] = maxi(0, int(value)) if value is int or value is float else 0
 	_online_state = state
+	if GEAR_UNIT_KINDS.has(str(state.gear_id)): _online_gear_draft = str(state.gear_id)
 	if is_instance_valid(_mode):
 		_mode.text = "PVE ONLINE · F1 AJUDA" if is_online_active() else "PRÉVIA LOCAL · F1 AJUDA"
 	if not str(state.server_url).is_empty(): _online_url_draft = str(state.server_url)
 	_update_chat_placeholder()
 	set_chat_filter(chat_filter)
 	_update_skill_hud()
+	_update_help_text()
 	_update_online_locks()
 	_update_online_status_label()
 	var signature := JSON.stringify([state.status, state.message, state.connected, state.server_url, state.pilot_id, state.player_count, state.shared_combat])
@@ -2182,13 +2334,15 @@ func _update_online_locks() -> void:
 		var button := _world_panel.find_child(name, true, false) as Button
 		if is_instance_valid(button):
 			button.disabled = is_online_active()
-			button.tooltip_text = ONLINE_LOCK_REASON if is_online_connected() else "Perfil local deste computador."
+			button.tooltip_text = ONLINE_LOCK_REASON if is_online_active() else "Perfil local deste computador."
 	if is_instance_valid(_pause_button):
 		_pause_button.disabled = is_online_active()
 		_pause_button.tooltip_text = "A simulação online continua no servidor." if is_online_connected() else "Pausar / continuar voo local [P]"
 	if is_instance_valid(_inventory_equip):
-		_inventory_equip.disabled = is_online_connected() or (_inventory_selected.get("equippable_slots", []) as Array).is_empty()
-		if is_online_connected(): _inventory_equip.tooltip_text = ONLINE_LOCK_REASON
+		_inventory_equip.disabled = _online_blocks_action("equip_item:primary:0") or (_inventory_selected.get("equippable_slots", []) as Array).is_empty()
+		if _online_blocks_action("equip_item:primary:0"): _inventory_equip.tooltip_text = ONLINE_LOCK_REASON
+		elif not _inventory_selected.is_empty(): _select_inventory_cell(_inventory_grid.selected)
+	_update_inventory_use()
 	if is_instance_valid(_world_heading):
 		_world_heading.text = "MUNDO E BIBLIOTECA · ONLINE PvE" if is_online_connected() else "MUNDO E BIBLIOTECA · SESSÃO LOCAL"
 
@@ -2207,6 +2361,10 @@ func _update_online_connect_controls() -> void:
 	_online_disconnect.disabled = not connected and not busy
 	_online_url.editable = not connected and not busy
 	_online_token.editable = not connected and not busy
+	if is_instance_valid(_online_gear):
+		_online_gear.disabled = connected or busy
+		for index: int in range(ONLINE_GEARS.size()):
+			if ONLINE_GEARS[index][0] == _online_gear_draft: _online_gear.select(index)
 
 
 func _update_online_status_label() -> void:
@@ -2227,14 +2385,27 @@ func _submit_online_connection() -> void:
 	_online_token.clear()
 	_online_token.release_focus()
 	_update_online_connect_controls()
-	_request_online({"action": "connect", "url": url, "token": credential})
+	_request_online({"action": "connect", "url": url, "token": credential, "gear_id": _online_gear_draft})
 
 
 func _build_online_page() -> void:
 	_online_status_label = _new_library_label(_world_missions, "", GOLD)
 	_online_status_label.name = "OnlineStatus"
 	_update_online_status_label()
-	_new_library_label(_world_missions, "Arena online PvE: mapa 3002 e I-GEAR. Os jogadores compartilham o combate; a simulação e o progresso deste piloto ficam no servidor.")
+	_new_library_label(_world_missions, "Arena online PvE: mapa 3002. B-GEAR, M-GEAR, A-GEAR e I-GEAR compartilham o combate; a simulação e o progresso ficam no servidor.")
+	var character := HBoxContainer.new()
+	character.name = "OnlineCharacterSelection"
+	_world_missions.add_child(character)
+	var gear_label := _new_library_label(character, "Classe inicial")
+	gear_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	gear_label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_online_gear = OptionButton.new()
+	_online_gear.name = "OnlineGearClass"
+	_online_gear.custom_minimum_size.x = 150
+	_online_gear.tooltip_text = "Escolha a classe ao criar o piloto. Um piloto salvo mantém a classe registrada pelo servidor."
+	for definition: Array in ONLINE_GEARS: _online_gear.add_item(str(definition[1]))
+	_online_gear.item_selected.connect(func(index: int) -> void: _online_gear_draft = str(ONLINE_GEARS[index][0]))
+	character.add_child(_online_gear)
 	var address := HBoxContainer.new()
 	_world_missions.add_child(address)
 	var url_label := _new_library_label(address, "Servidor")
@@ -2280,5 +2451,27 @@ func _build_online_page() -> void:
 	_online_disconnect.pressed.connect(func() -> void: _request_online({"action": "disconnect"}))
 	controls.add_child(_online_disconnect)
 	_new_library_label(_world_missions, "A credencial é apagada do campo ao conectar. Salvamentos, itens e progresso offline não são enviados para a arena.", CYAN)
-	_world_maps.text = "Online PvE usa um servidor dedicado e progresso separado. Nesta arena, viagens, classe e alterações do perfil offline ficam bloqueadas. O MMO completo e o protocolo do serviço original não são reproduzidos."
+	_world_maps.text = "Online PvE usa um servidor dedicado e progresso separado. A classe inicial é registrada no servidor; voltar a um piloto salvo preserva sua classe. Viagens e o perfil offline continuam separados."
 	_update_online_connect_controls()
+
+
+func _apply_library_theme(panel: Control) -> void:
+	# These extra controls use the same blue palette as the recovered 2025 HUD.
+	# Original Group.tex sprite coordinates and source inventory remain untouched.
+	var theme := Theme.new()
+	theme.default_font_size = 12
+	for state: String in ["normal", "hover", "pressed", "disabled", "focus"]:
+		var box := StyleBoxFlat.new()
+		box.bg_color = {"normal": Color("123047"), "hover": Color("215575"), "pressed": Color("28658a"), "disabled": Color("14252f"), "focus": Color(0, 0, 0, 0)}[state]
+		box.border_color = Color("67b4db") if state in ["hover", "pressed", "focus"] else Color("376b88")
+		box.set_border_width_all(1)
+		box.content_margin_left = 8
+		box.content_margin_right = 8
+		box.content_margin_top = 5
+		box.content_margin_bottom = 5
+		theme.set_stylebox(state, "Button", box)
+		theme.set_stylebox(state, "OptionButton", box)
+	for type: String in ["Button", "OptionButton", "Label", "CheckBox", "LineEdit"]:
+		theme.set_color("font_color", type, TEXT)
+		theme.set_color("font_disabled_color", type, Color("849aa5"))
+	panel.theme = theme

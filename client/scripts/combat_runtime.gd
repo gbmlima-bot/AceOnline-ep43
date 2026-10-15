@@ -5,6 +5,8 @@ extends Node3D
 
 const Combat = preload("res://scripts/combat_model.gd")
 const Inventory = preload("res://scripts/inventory_model.gd")
+const ServerData = preload("res://scripts/native_server_data.gd")
+const SpawnData = preload("res://scripts/native_spawn_data.gd")
 const ACTOR_REGISTRY := "res://assets/original_library/actors/actors.json"
 const Assets = preload("res://scripts/original_asset.gd")
 const RULES_PATH := "res://assets/legacy_rules/combat.json"
@@ -15,6 +17,14 @@ const STARTER_RADAR := {"12000100": 7000970, "12001100": 7000970, "12002100": 70
 
 var model = Combat.new()
 var inventory = Inventory.new()
+var native_server = ServerData.new()
+var native_spawns = SpawnData.new()
+var _native_spawn_cache: Dictionary = {}
+var _native_channel_clock := 0.0
+var _native_actor_states: Dictionary = {}
+var _restoring_native_state := false
+var _native_spawn_required := false
+var _pve_consumed: Dictionary = {}
 var _encounter_signature := ""
 var _refresh_timer := 0.0
 var _encounter_gaps: Array[String] = []
@@ -96,6 +106,13 @@ func setup(world_runtime: Node, player: Node3D) -> bool:
 	if not inventory.configure():
 		push_error("Native inventory item catalog missing")
 		return false
+	native_server.load_catalogs(inventory.catalog, _native_monsters)
+	var native_maps: Dictionary = {}
+	for definition: Dictionary in _read_json("res://assets/legacy_rules/world_rules.json").get("maps", []):
+		native_maps[int(definition.get("MapIndex", 0))] = definition
+	_native_spawn_required = true
+	native_spawns.load_catalog(native_maps, _native_monsters)
+	_native_spawn_cache.clear()
 	inventory.set_starting_level(int(_encounter.get("player", {}).get("level", 9)))
 	inventory.gear_id = _gear_id
 	# This small reserve is an explicit local starter kit, not recovered account data.
@@ -135,6 +152,8 @@ static func _asset_profile(entry: Dictionary) -> Dictionary:
 func reset() -> void:
 	if _profile.is_empty():
 		return
+	if not _restoring_native_state:
+		_capture_native_population()
 	var credits: int = inventory.credits
 	var experience: int = inventory.experience
 	for value: Variant in _target_nodes.values():
@@ -163,20 +182,59 @@ func reset() -> void:
 		profile.secondary = loadout.secondary
 	profile.primary_ammo = int(_encounter.get("primary_ammo", 1000))
 	profile.secondary_ammo = int(_encounter.get("secondary_ammo", 48))
-	if not model.configure(profile, 20251015):
+	var next_rng: int = model._rng_state if not model.player.is_empty() else 20251015
+	if not model.configure(profile, next_rng):
 		return
 	model.player["credits"] = credits
 	model.player["experience"] = experience
 	model.obstacle_query = Callable(self, "_trace_world")
 	model.npc_motion_query = Callable(self, "_resolve_npc_motion")
 	model.set_player_pose(player_node.global_position, -player_node.global_basis.z)
+	_encounter_gaps.clear()
 	var spawns := _encounter_spawns()
 	_encounter_signature = _objective_signature()
-	_encounter_gaps.clear()
 	for index in range(spawns.size()):
 		_create_target(spawns[index], index)
 	_collision_ready_at = 0.0
 	_ready_to_play = true # Missing artwork is reported and omitted, never substituted.
+
+
+func _monster_profile_for_spawn(spawn: Dictionary) -> Dictionary:
+	var monster_code := int(spawn.get("monster_code", 2000000))
+	if not _native_monsters.has(monster_code):return {}
+	var native_placement := bool(spawn.get("native_spawn", false))
+	var monster_profile: Dictionary = _native_monsters[monster_code].duplicate(true)
+	# Training conveniences do not replace data on verified DAT placements.
+	# Unknown server-only MEX fields stay unknown; CombatModel retains its
+	# documented local defaults and Belligerence aggression policy.
+	if not native_placement:
+		for key: String in _encounter.get("monster_overrides", {}):
+			monster_profile[key] = _encounter.monster_overrides[key]
+	# Original server slots are separate from client HP/appearance. Unsupported
+	# old/new weapon mismatches remain unarmed with a diagnostic.
+	var native_attack: Dictionary = native_server.npc_attack_profile(monster_code)
+	if bool(native_attack.get("ok", false)):
+		monster_profile.npc_weapon_options = native_attack.options.duplicate(true)
+		monster_profile.weapon = native_attack.options[0].item.duplicate(true) if not native_attack.options.is_empty() else {}
+		monster_profile.npc_weapon_source = native_attack.source_kind
+		monster_profile.npc_weapon_source_sha256 = native_attack.source_sha256
+	else:
+		monster_profile.weapon = {}
+		monster_profile.npc_weapon_options = []
+		monster_profile.npc_weapon_source = "native_weapon_execution_blocked"
+		monster_profile.npc_weapon_block = str(native_attack.get("error", "native_npc_loadout_unavailable"))
+		if not native_placement and bool(spawn.get("allow_training_weapon_bridge",false)) and str(_encounter.get("kind","")) == "explicit_local_encounter" and monster_profile.npc_weapon_block == "native_npc_loadout_unavailable":
+			monster_profile.weapon = _profile.primary
+			monster_profile.erase("npc_weapon_options")
+			monster_profile.npc_weapon_source = "explicit_training_player_weapon_bridge_without_native_loadout"
+		_encounter_gaps.append("native_npc_weapon_block:%s:%s" % [monster_code,monster_profile.npc_weapon_block])
+	if native_placement:
+		monster_profile.native_spawn = true
+		monster_profile.source_placement_id = str(spawn.source_placement_id)
+		monster_profile.source_map_id = int(spawn.map_id)
+		monster_profile.source_data = spawn.source_data.duplicate(true)
+		monster_profile.respawn_seconds = float(spawn.respawn_seconds)
+	return monster_profile
 
 
 func _create_target(spawn: Dictionary, identifier: int) -> bool:
@@ -184,17 +242,14 @@ func _create_target(spawn: Dictionary, identifier: int) -> bool:
 	if not _native_monsters.has(monster_code) or not _monster_assets.has(monster_code):
 		_encounter_gaps.append("original_actor_unavailable:" + str(monster_code))
 		return false
-	var monster_profile: Dictionary = _native_monsters[monster_code].duplicate(true)
-	for key: String in _encounter.get("monster_overrides", {}):
-		monster_profile[key] = _encounter.monster_overrides[key]
-	# MEX contains no NPC weapon. This local loadout uses an actual native ITEM.
-	monster_profile.weapon = _profile.primary
-	var position := _scene_spawn + _vector(spawn.get("offset", [0, 0, -250]))
-	if is_instance_valid(world) and world.has_method("get_bounds"):
+	var monster_profile := _monster_profile_for_spawn(spawn)
+	var native_placement := bool(spawn.get("native_spawn", false))
+	var position := _vector(spawn.position) if native_placement else _scene_spawn + _vector(spawn.get("offset", [0, 0, -250]))
+	if not native_placement and is_instance_valid(world) and world.has_method("get_bounds"):
 		var bounds: Dictionary = world.call("get_bounds")
 		if bounds.get("min") is Vector3 and bounds.get("max") is Vector3:
 			position = position.clamp(bounds.min + Vector3(30, 0, 30), bounds.max - Vector3(30, 30, 30))
-	if is_instance_valid(world) and world.has_method("sample_ground_height"):
+	if not native_placement and is_instance_valid(world) and world.has_method("sample_ground_height"):
 		var ground := float(world.call("sample_ground_height", position.x, position.z, true))
 		if is_finite(ground):
 			position.y = maxf(position.y, ground + 60.0)
@@ -204,12 +259,22 @@ func _create_target(spawn: Dictionary, identifier: int) -> bool:
 		return false
 	var node: Node3D = instance.node
 	node.name = "OriginalMonster_%s" % identifier
-	node.set_meta("local_spawn", true)
+	node.set_meta("local_spawn", not native_placement)
+	if native_placement:
+		node.set_meta("native_placement_id", str(spawn.source_placement_id))
 	add_child(node)
 	node.global_position = position
 	var bounds: AABB = instance.bounds
 	monster_profile.radius = maxf(4.0, bounds.size.length() * 0.32)
 	model.add_target(monster_profile, position, identifier)
+	_restore_native_target(model.targets[-1])
+	node.global_position = model.targets[-1].position
+	node.visible = not bool(model.targets[-1].dead)
+	if native_placement:
+		var direction: Vector3 = spawn.get("direction", Vector3.ZERO)
+		var up: Vector3 = spawn.get("up", Vector3.UP)
+		if not direction.is_zero_approx() and not up.is_zero_approx() and direction.cross(up).length_squared() > 0.000001:
+			node.look_at(node.global_position + direction, up)
 	_target_nodes[identifier] = node
 	return true
 
@@ -368,6 +433,23 @@ func _objective_signature() -> String:
 
 
 func _encounter_spawns() -> Array:
+	var source: Dictionary = _native_map_spawns(_map_index)
+	if _native_spawn_required and not bool(source.get("ok", false)):
+		if not _encounter_gaps.has("native_spawn_catalog_unavailable"):_encounter_gaps.append("native_spawn_catalog_unavailable")
+		return []
+	if int(source.get("source_object_count", 0)) + int(source.get("source_region_count", 0)) > 0:
+		var native_records: Array[Dictionary] = []
+		for record: Dictionary in source.get("records", []):
+			# The legacy channel checks once per second against a monotonic tick.
+			# Offline uses persisted active-session time; OS uptime is not portable.
+			if _native_actor_states.has(record.source_placement_id) or floorf(_native_channel_clock + 0.000001) >= float(record.respawn_seconds):
+				var spawn := record.duplicate(true)
+				spawn.native_spawn = true
+				native_records.append(spawn)
+		for reason: String in source.get("blocked_reasons", {}):
+			var diagnostic := "native_spawn_block:%s:%s" % [_map_index, reason]
+			if not _encounter_gaps.has(diagnostic):_encounter_gaps.append(diagnostic)
+		return native_records
 	# City service areas do not receive fabricated hostile spawns.
 	if _map_index in [2001, 2002]:
 		return []
@@ -403,6 +485,83 @@ func _encounter_spawns() -> Array:
 	return explicit
 
 
+func _native_map_spawns(map_id: int) -> Dictionary:
+	if not _native_spawn_cache.has(map_id):
+		_native_spawn_cache[map_id] = native_spawns.object_spawn_profiles(map_id)
+	return _native_spawn_cache[map_id]
+
+
+func _capture_native_population() -> void:
+	for target: Dictionary in model.targets:
+		var profile: Dictionary = target.get("profile", {})
+		var placement := str(profile.get("source_placement_id", ""))
+		if not bool(profile.get("native_spawn", false)) or placement.is_empty():continue
+		var position: Vector3 = target.position
+		_native_actor_states[placement] = {
+			"placement_id":placement,"map_id":int(profile.source_map_id),"monster_code":int(target.monster_code),
+			"hp":float(target.hp),"shield":float(target.shield),"dead":bool(target.dead),
+			"respawn_remaining":float(target.respawn_remaining),"life":int(target.life),
+			"position":[position.x,position.y,position.z],"saved_clock":_native_channel_clock}
+
+
+func _restore_native_target(target: Dictionary) -> void:
+	var profile: Dictionary = target.get("profile", {})
+	var placement := str(profile.get("source_placement_id", ""))
+	if not bool(profile.get("native_spawn", false)) or not _native_actor_states.has(placement):return
+	var saved: Dictionary = _native_actor_states[placement]
+	target.hp = minf(float(saved.hp), float(target.max_hp))
+	target.shield = minf(float(saved.shield), float(target.max_shield))
+	target.dead = bool(saved.dead)
+	target.life = int(saved.life)
+	target.position = _vector(saved.position)
+	target.velocity = Vector3.ZERO
+	target.respawn_remaining = maxf(0.0, float(saved.respawn_remaining) - maxf(0.0, _native_channel_clock - float(saved.saved_clock))) if target.dead else 0.0
+	if target.dead and float(target.respawn_remaining) <= 0.000001:
+		target.dead = false
+		target.hp = target.max_hp
+		target.shield = target.max_shield
+		target.position = target.spawn_position
+		target.life += 1
+
+
+func _validate_native_population(state: Dictionary) -> Dictionary:
+	var raw_clock: Variant = state.get("native_channel_clock", 0.0)
+	var raw_states: Variant = state.get("native_actor_states", [])
+	if not _bounded_native_number(raw_clock, 1000000000000.0) or not raw_states is Array or raw_states.size() > 3498:
+		return {"ok":false,"error":"combat_native_population_schema"}
+	var candidates: Dictionary = {}
+	for value: Variant in raw_states:
+		if not value is Dictionary:return {"ok":false,"error":"combat_native_population_row"}
+		var record: Dictionary = value
+		var placement: Variant = record.get("placement_id")
+		var map_id := Inventory._bounded_integer(record.get("map_id", -1))
+		if not placement is String or placement.is_empty() or placement.length() > 80 or candidates.has(placement) or map_id <= 0:
+			return {"ok":false,"error":"combat_native_population_identity"}
+		var source: Dictionary = {}
+		for row: Dictionary in _native_map_spawns(map_id).get("records", []):
+			if str(row.source_placement_id) == placement:source = row;break
+		if source.is_empty() or Inventory._bounded_integer(record.get("monster_code", -1)) != int(source.monster_code):
+			return {"ok":false,"error":"combat_native_population_source"}
+		var monster: Dictionary = _native_monsters.get(int(source.monster_code), {})
+		var max_hp := Combat._number_or(monster.get("HP"), 0.0)
+		var max_shield := Combat._number_or(monster.get("DP"), 0.0)
+		if not _bounded_native_number(record.get("hp"), max_hp) or not _bounded_native_number(record.get("shield"), max_shield) or not record.get("dead") is bool or bool(record.dead) != (float(record.hp) <= 0.0):
+			return {"ok":false,"error":"combat_native_population_vitals"}
+		if not _bounded_native_number(record.get("respawn_remaining"), float(source.respawn_seconds)) or not _bounded_native_number(record.get("saved_clock"), float(raw_clock)) or Inventory._bounded_integer(record.get("life", -1)) < 0:
+			return {"ok":false,"error":"combat_native_population_timing"}
+		if not bool(record.dead) and float(record.respawn_remaining) > 0.0:return {"ok":false,"error":"combat_native_population_timing"}
+		if not record.get("position") is Array or record.position.size() != 3:return {"ok":false,"error":"combat_native_population_position"}
+		for component: Variant in record.position:
+			if not (component is int or component is float) or not is_finite(float(component)) or absf(float(component)) > 10000000.0:
+				return {"ok":false,"error":"combat_native_population_position"}
+		candidates[placement] = record.duplicate(true)
+	return {"ok":true,"clock":float(raw_clock),"states":candidates}
+
+
+static func _bounded_native_number(value: Variant, maximum: float) -> bool:
+	return (value is int or value is float) and is_finite(float(value)) and float(value) >= 0.0 and float(value) <= maximum
+
+
 static func _local_spawn_offset(index: int) -> Array:
 	return [float((index % 3 - 1) * 80), 40.0 + float(index % 2) * 25.0, -220.0 - float(index / 3) * 100.0 - float(index % 3) * 90.0]
 
@@ -413,13 +572,21 @@ func refresh_encounter() -> void:
 	# A mission update adds actors only. Existing creatures retain their exact
 	# dictionaries/IDs, HP, life, cooldowns, projectiles and target locks.
 	var existing: Dictionary = {}
+	var placements: Dictionary = {}
 	var next_id := 0
 	for target: Dictionary in model.targets:
 		var code := int(target.monster_code)
+		var placement := str(target.get("profile", {}).get("source_placement_id", ""))
+		if not placement.is_empty():placements[placement] = true
 		existing[code] = int(existing.get(code, 0)) + 1
 		next_id = maxi(next_id, int(target.id) + 1)
 	var requested: Dictionary = {}
 	for spawn: Dictionary in _encounter_spawns():
+		if bool(spawn.get("native_spawn", false)):
+			if not placements.has(spawn.source_placement_id) and _create_target(spawn, next_id):
+				placements[spawn.source_placement_id] = true
+				next_id += 1
+			continue
 		var code := int(spawn.get("monster_code", 0))
 		requested[code] = int(requested.get(code, 0)) + 1
 		if int(requested[code]) > int(existing.get(code, 0)):
@@ -466,9 +633,16 @@ func advance(delta: float, controls: Dictionary, flight: Dictionary = {}) -> voi
 	var position: Vector3 = flight.get("position", player_node.global_position)
 	var forward: Vector3 = flight.get("forward", -player_node.global_basis.z)
 	model.set_player_pose(position, forward)
+	var previous_elapsed: float = model.elapsed
 	model.advance(delta, controls)
+	var previous_clock := _native_channel_clock
+	_native_channel_clock += maxf(0.0, model.elapsed - previous_elapsed)
+	if floorf(previous_clock) < floorf(_native_channel_clock + 0.000001):
+		refresh_encounter()
 	for event: Dictionary in model.drain_events():
 		_events.append(event)
+		if event.type == "target_destroyed":
+			_award_native_pve(event)
 		if event.type in ["fired", "enemy_fired"] and event.get("slot", "primary") == "primary":
 			_add_trace(event.get("position", position), event.get("endpoint", position), event.type == "enemy_fired")
 	_update_visuals(delta)
@@ -644,6 +818,58 @@ static func collision_damage_rate(speed: float) -> float:
 	return 0.5
 
 
+func _award_native_pve(event: Dictionary) -> Dictionary:
+	# Only a real death from this local combat model can create a reward. Remote
+	# snapshots and arbitrary stale event IDs never become a second authority.
+	if _remote_active or event.get("type", "") != "target_destroyed" or model.player.is_empty():
+		return {"ok":false,"error":"native_reward_requires_local_death"}
+	var instance: Variant = event.get("instance_id", "")
+	var code := ServerData._integer(event.get("monster_code", 0), 2147483647)
+	var target_id := ServerData._integer(event.get("id", -1), 2147483647)
+	if not instance is String or instance.is_empty() or instance.length() > 200 or code <= 0 or target_id < 0 or not _native_monsters.has(code):
+		return {"ok":false,"error":"invalid_native_death_identity"}
+	var matched := false
+	for target: Dictionary in model.targets:
+		if int(target.id) != target_id or int(target.monster_code) != code or not bool(target.dead):continue
+		var expected := "%s/%s:%s" % [model._initial_profile.get("encounter_id", "local"), target.id, target.life]
+		matched = expected == instance
+	if not matched:return {"ok":false,"error":"native_reward_requires_current_dead_target"}
+	var reward_id: String = "native-pve:" + instance
+	if _pve_consumed.has(instance) or inventory.reward_ids.has(reward_id):
+		return {"ok":false,"duplicate":true}
+	if _pve_consumed.size() >= 100000:return {"ok":false,"error":"native_death_history_limit"}
+	_pve_consumed[instance] = true
+	var resolved: Dictionary = native_server.roll_rewards(code, inventory.level, Callable(self,"_native_reward_random_int"))
+	if not bool(resolved.get("ok", false)):
+		_events.append({"type":"native_pve_reward_blocked","monster_code":code,"reason":str(resolved.get("error", "native_reward_unavailable")),"source_kind":"monster"})
+		return resolved
+	var reward: Dictionary = {"type":"native_pve_reward","source_kind":"monster","reward_id":reward_id,"monster_code":code,"credits":int(resolved.credits),"experience":int(resolved.experience),"items":resolved.items,"native_drop_blocks":resolved.blocked_rows,"source_sha256":ServerData.SOURCE_SHA,"scope":"native_database_solo_base_rates;local_automatic_collection;unchanged_client_HP"}
+	var applied := apply_reward(reward)
+	if not applied and (int(reward.credits) > 0 or not reward.items.is_empty()):
+		# Native EXPDivision precedes item pickup. A refused collection cannot
+		# erase earned XP; the same kill receipt consumes the attempted loot.
+		reward["credits"] = 0
+		reward["items"] = []
+		reward["loot_rejected"] = true
+		applied = apply_reward(reward)
+	if not applied:
+		_events.append({"type":"native_pve_reward_rejected","reward_id":reward_id,"monster_code":code,"source_kind":"monster","message":"A recompensa PvE foi recusada pelo inventário; o alvo não pode gerar outro sorteio."})
+		return {"ok":false,"error":"native_pve_inventory_rejected"}
+	reward["inventory_applied"] = true
+	reward["message"] = "PvE original: +%d XP · +%d SPI" % [int(reward.experience),int(reward.credits)]
+	if bool(reward.get("loot_rejected", false)):
+		reward.message += " · itens não recolhidos: inventário recusou a transação"
+	_events.append(reward.duplicate(true))
+	return {"ok":true,"reward":reward}
+
+
+func _native_reward_random_int(minimum: int, maximum: int) -> int:
+	# Share the existing explicit saved combat stream; no global random state.
+	# Native numeric ranges/comparators are exact, the local PRNG differs.
+	model._rng_state = (model._rng_state * 48271) % 2147483647
+	return minimum + model._rng_state % (maximum - minimum + 1)
+
+
 func apply_reward(event: Dictionary) -> bool:
 	var previous_level: int = inventory.level
 	if model.player.is_empty() or not inventory.apply_reward(event):
@@ -660,13 +886,16 @@ func apply_reward(event: Dictionary) -> bool:
 
 
 func export_state() -> Dictionary:
+	_capture_native_population()
 	var player_state: Dictionary = model.player.duplicate(true)
 	for key: String in ["position", "forward"]:
 		var vector: Vector3 = player_state.get(key, Vector3.ZERO)
 		player_state[key] = [vector.x, vector.y, vector.z]
 	return {"schema_version": 1, "stats_schema_version": 2, "inventory": inventory.export_state(), "player": player_state,
 		"encounter_serial": _encounter_serial, "elapsed": model.elapsed, "rng_state": model._rng_state,
-		"scope": "local_character_state_encounters_regenerate"}
+		"pve_consumed": _pve_consumed.keys(),
+		"native_channel_clock":_native_channel_clock,"native_actor_states":_native_actor_states.values(),
+		"scope": "local_character_and_native_DAT_population;unsupported_regions_gated"}
 
 
 func import_state(state: Dictionary) -> Dictionary:
@@ -730,7 +959,20 @@ func import_state(state: Dictionary) -> Dictionary:
 	var rng_value := int(rng_raw) if (rng_raw is int or rng_raw is float) and is_finite(float(rng_raw)) and float(rng_raw) == floorf(float(rng_raw)) and float(rng_raw) <= 2147483646.0 else -1
 	if not (elapsed_value is int or elapsed_value is float) or not is_finite(float(elapsed_value)) or float(elapsed_value) < 0.0 or serial_value < 0 or rng_value < 1:
 		return {"ok": false, "error": "combat_timing"}
+	var consumed: Variant = state.get("pve_consumed", [])
+	if not consumed is Array or consumed.size() > 100000:
+		return {"ok":false,"error":"combat_pve_history"}
+	var next_consumed: Dictionary = {}
+	for value: Variant in consumed:
+		if not value is String or value.is_empty() or value.length() > 200 or next_consumed.has(value):
+			return {"ok":false,"error":"combat_pve_history"}
+		next_consumed[value] = true
+	var native_state: Dictionary = _validate_native_population(state)
+	if not bool(native_state.get("ok", false)):return native_state
 	inventory = candidate
+	_pve_consumed = next_consumed
+	_native_channel_clock = float(native_state.clock)
+	_native_actor_states = native_state.states
 	_gear_id = inventory.gear_id
 	if int(state.get("stats_schema_version", 1)) == 1:
 		# Migrate the source-compatible zero-price starting appearance/radar that
@@ -739,7 +981,9 @@ func import_state(state: Dictionary) -> Dictionary:
 		configure_gear(_gear_id)
 	_reward_ids = inventory.reward_ids.duplicate()
 	_encounter_serial = maxi(_encounter_serial, serial_value) + 1
+	_restoring_native_state = true
 	reset()
+	_restoring_native_state = false
 	model.player = player_state
 	model.apply_player_stats(derived)
 	model.elapsed = float(elapsed_value)
@@ -758,13 +1002,21 @@ func snapshot() -> Dictionary:
 	state["map_index"] = _map_index
 	state["encounter_id"] = "%s:%s" % [_map_index, _encounter_serial]
 	state["weapon_visual_scope"] = "shared_BMI_effects_local_adaptation" if _gear_id == "12002100" else "descriptor_linked_BMI_effects"
-	state["encounter_label"] = "ENCONTRO LOCAL · DADOS ORIGINAIS"
+	var source_map: Dictionary = _native_map_spawns(_map_index)
+	var native_population := int(source_map.get("source_object_count", 0)) + int(source_map.get("source_region_count", 0)) > 0
+	state["encounter_label"] = "POSIÇÕES NATIVAS · SIMULAÇÃO LOCAL" if native_population else "ENCONTRO LOCAL · DADOS ORIGINAIS"
 	state["source_rules"] = RULES_PATH
 	state["local_encounter"] = ENCOUNTER_PATH
 	state["inventory"] = inventory.snapshot()
 	state["actor_catalog_count"] = _monster_assets.size()
+	state["native_server_rewards"] = native_server.diagnostics()
+	state["native_spawns"] = native_spawns.diagnostics()
+	state["native_channel_clock"] = _native_channel_clock
+	state["native_map_spawns"] = source_map.duplicate(true)
+	state.native_map_spawns.erase("records")
+	state.native_map_spawns.erase("blocked_records")
 	state["encounter_gaps"] = _encounter_gaps.duplicate()
-	state["encounter_scope"] = "native_MEX_HP_appearance_and_mission_identity_local_spawns_AI_weapon"
+	state["encounter_scope"] = "verified_native_DAT_positions_timers_and_SQL_weapons;local_channel_clock_AI_bridge;unsupported_states_blocked" if native_population else "explicit_local_positions;current_MEX_appearance_HP;verified_SQL_rewards_and_compatible_weapons"
 	state["sp"] = model.player.get("sp", null)
 	return state
 

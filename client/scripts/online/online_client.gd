@@ -17,6 +17,7 @@ var _status := "offline"
 var _message := "Modo offline."
 var _url := ""
 var _pending_token := ""
+var _requested_gear := ""
 var _pilot_id := ""
 var _started := 0
 var _auth_started := 0
@@ -32,9 +33,9 @@ func _enter_tree() -> void:
 	_exiting_tree = false
 
 
-func connect_to(url: String, token: String) -> Error:
+func connect_to(url: String, token: String, gear_id: String = "") -> Error:
 	var address := url.strip_edges()
-	if not valid_url(address) or not _valid_token(token) or address.contains(token):
+	if not valid_url(address) or not _valid_token(token) or address.contains(token) or (not gear_id.is_empty() and gear_id not in ["12000100", "12001100", "12002100", "12003100"]):
 		return ERR_INVALID_PARAMETER
 	disconnect_from_server()
 	var candidate := WebSocketPeer.new()
@@ -49,6 +50,7 @@ func connect_to(url: String, token: String) -> Error:
 	_peer = candidate
 	_url = address
 	_pending_token = token
+	_requested_gear = gear_id
 	_started = Time.get_ticks_msec()
 	_set_status("connecting", "Conectando ao servidor dedicado…")
 	set_process(true)
@@ -61,6 +63,7 @@ func disconnect_from_server(reason: String = "") -> void:
 			_peer.close(1000, "client_disconnect")
 		_peer = null
 	_pending_token = ""
+	_requested_gear = ""
 	_pilot_id = ""
 	_url = ""
 	_auth_sent = false
@@ -152,8 +155,12 @@ func _handle_message(value: Dictionary) -> void:
 			if _auth_sent or value.get("protocol") != Wire.PROTOCOL or _pending_token.is_empty():
 				_fail("Protocolo do servidor incompatível.")
 				return
-			_auth_sent = _send({"op": "auth", "protocol": Wire.PROTOCOL, "token": _pending_token})
+			var authentication := {"op": "auth", "protocol": Wire.PROTOCOL, "token": _pending_token}
+			if not _requested_gear.is_empty():
+				authentication["gear_id"] = _requested_gear
+			_auth_sent = _send(authentication)
 			_pending_token = ""
+			_requested_gear = ""
 			if not _auth_sent:
 				_fail("Não foi possível autenticar a sessão.")
 				return
@@ -183,7 +190,12 @@ func _handle_message(value: Dictionary) -> void:
 			command_result.emit(value)
 		"error":
 			# Never echo arbitrary server text: it could contain an invitation token.
-			_fail("O servidor recusou a sessão ou a mensagem recebida.")
+			var message := "O servidor recusou a sessão ou a mensagem recebida."
+			match str(value.get("code", "")):
+				"character_gear_locked": message = "Este piloto já possui outra classe. Selecione a classe registrada e conecte novamente."
+				"room_full": message = "A sala está cheia. Tente conectar novamente quando houver uma vaga."
+				"pilot_already_connected": message = "Este piloto já está conectado. Encerre a outra sessão antes de tentar novamente."
+			_fail(message)
 		_:
 			_metrics.invalid_frames += 1
 			_fail("Operação de protocolo desconhecida.")

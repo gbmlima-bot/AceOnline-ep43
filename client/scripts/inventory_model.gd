@@ -325,6 +325,21 @@ func _load_equipment_tables() -> void:
 		if data is Dictionary:
 			_armor_models = data.get("by_item_num", {})
 
+func can_apply_reward(event: Dictionary) -> bool:
+	# Validate through an isolated inventory with the same immutable native data.
+	# Mission admission must not grant items or consume a replay receipt.
+	var candidate: RefCounted = get_script().new()
+	candidate.catalog = catalog
+	candidate._experience_rows = _experience_rows
+	candidate._stat_rows = _stat_rows
+	candidate._armor_models = _armor_models
+	candidate._max_level = _max_level
+	candidate.starting_level = starting_level
+	if not bool(candidate.import_state(export_state()).get("ok", false)):
+		return false
+	return candidate.apply_reward(event)
+
+
 func apply_reward(event: Dictionary) -> bool:
 	var identifier := str(event.get("reward_id", ""))
 	if identifier.is_empty() or reward_ids.has(identifier):

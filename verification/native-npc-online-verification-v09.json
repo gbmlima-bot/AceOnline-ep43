@@ -1,0 +1,41 @@
+{
+  "scope": "native_npc_arena_integration_and_real_v08_persistence_migration",
+  "historical_commit": "c7a18413cf13383876a00db77ad724ffb02158f8",
+  "real_historical_fixture": {
+    "contributions": 1,
+    "pilots": 2,
+    "projectiles": 10,
+    "rewarded": 1,
+    "tick": 660
+  },
+  "fixture_sha256": "a2d9f87458385f08372b8633f511090519d8b4b3788ae0796b0907b5c8a65394",
+  "historical_script_count": 12,
+  "numeric_asset_count": 26,
+  "checks": {
+    "real_v08_and_hostile_restart": 175,
+    "production_websocket_sqlite": 55,
+    "arena_real_combat": 85,
+    "transport": 125
+  },
+  "failures": [],
+  "native_hornian_weapon": 7500020,
+  "current_client_hp_unchanged": 303,
+  "hostile_disconnected_policy": "pause known living victim missiles without TTL/travel until reconnect; discard invalid life/dead/absent victim",
+  "wire_bytes_8_pilots_96_rounds": 13447,
+  "wire_limit_bytes": 16384,
+  "server_source": "regular checkout files, unmodified build guard",
+  "files": [
+    {
+      "path": "client/scripts/online/arena_model.gd",
+      "sha256": "dc0e091bb04d165ce6646f6770d35e69ae6d15102a026d09fec4ea01836ad321"
+    },
+    {
+      "path": "server/tests/run_arena_migration.py",
+      "sha256": "5d7576557a0d14ab7cfc3075e3bb864ca8c90d02e6e1c91427a613c67ba11634"
+    },
+    {
+      "path": "server/tests/test_arena_migration.gd",
+      "sha256": "b85d599968c880fd9c6d9f574651f7d35f666a11d665e1f80322a83bd704c171"
+    }
+  ]
+}

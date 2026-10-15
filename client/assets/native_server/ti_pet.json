@@ -1,0 +1,1 @@
+{"schema_version":1,"table":"ti_pet","source_sha256":"e5ae92ac1b2e89ee2ef480d85785aa95d3c2588d386092b988efac558b4a4674","columns":["Uniquenumber","PetIndex","Petkind","DefaultPetName","EnableName","EnableLevel"],"rows":[[100000,1000,0,"",0,1]]}

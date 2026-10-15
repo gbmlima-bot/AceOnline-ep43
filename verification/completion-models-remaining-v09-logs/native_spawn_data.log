@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"blocked_object_records":1243,"blocked_reasons":{"current_map_unavailable":18,"current_monster_unavailable":5,"native_infinity_spawn_state_not_implemented":32,"native_map_influence_state_not_implemented":280,"native_object_boss_initial_timer_not_implemented":3,"native_outpost_automatic_spawn_disabled":56,"native_region_position_algorithm_not_implemented":5,"native_special_monster_spawn_state_not_implemented":170,"native_war_spawn_state_not_implemented":679},"blocked_region_records":5,"sha256":"2ebbc60416a1ebcdc3f20824f967dd3d917fccd6a7e506b9dd42df8e54039aa4","source_object_records":3498,"suite":"native-spawn-data-coverage","supported_object_maps":95,"supported_object_records":2255}
+{"checks":2370,"failures":0,"scope":"verified_DAT_type6_positions;SMA_regions_blocked;explicit_local_channel_adapter_required","suite":"native-spawn-data"}
+

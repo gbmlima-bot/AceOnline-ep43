@@ -104,6 +104,8 @@ func _ready() -> void:
 	add_child(combat_runtime)
 	_combat_ready = bool(combat_runtime.call("setup", world_runtime, ship))
 	combat_runtime.call("configure_gear", str(original_scene_profile.active_gear_id))
+	world_runtime.set("reward_applicator", Callable(self, "_apply_world_inventory_event"))
+	world_runtime.set("reward_validator", Callable(self, "_validate_world_inventory_event"))
 	if not _combat_ready:
 		legacy_hud.append_system_note("Encontro indisponível: faltam regras ou recursos originais.")
 	elif _create_ship(false):
@@ -115,7 +117,7 @@ func _ready() -> void:
 	if not systems.setup(self):
 		_asset_failure(PackedStringArray(["new_game_systems_unavailable"]))
 		return
-	if _progress_enabled and ProgressStore.exists(_save_path):
+	if _progress_enabled and (ProgressStore.exists(_save_path) or (_save_path == ProgressStore.DEFAULT_PATH and ProgressStore.exists(ProgressStore.LEGACY_PATH))):
 		_load_local_game()
 	online_view = OnlineView.new()
 	online_view.name = "OnlineArenaView"
@@ -258,12 +260,18 @@ func _physics_process(delta: float) -> void:
 		var world_state: Dictionary = world_runtime.call("get_state")
 		if not (world_state.get("nearby_interaction", {}) as Dictionary).is_empty() and Input.is_action_pressed("interact_world"):
 			yaw = 1.0 if Input.is_action_pressed("yaw_left") else 0.0
+		if model.landing:
+			var support: Dictionary = world_runtime.call("probe_landing", model.position, 4.0, 180.0, model.gear_id)
+			if not bool(support.get("ok", false)) or not model.update_landing_contact(support.get("position", Vector3.INF), support.get("normal", Vector3.UP)):
+				model.clear_surface_transition()
+				legacy_hud.append_system_note("Pouso cancelado: a superfície deixou de permitir contato.")
 		model.advance({
 			"pitch": 0.0 if typing else Input.get_axis("pitch_down", "pitch_up"),
 			"roll": 0.0 if typing else Input.get_axis("roll_right", "roll_left"),
 			"yaw": yaw,
 			"boost": not typing and Input.is_action_pressed("boost"),
 			"brake": not typing and Input.is_action_pressed("brake"),
+			"ground_throttle": 0.0 if typing else Input.get_axis("pitch_down", "pitch_up"),
 		}, delta)
 		var collision: Dictionary = world_runtime.call("resolve_motion" if model.airborne else "resolve_ground_motion", previous, model.position, 4.0)
 		if bool(collision.get("collided", false)):
@@ -299,6 +307,11 @@ func _drain_simulation_events() -> void:
 	if is_online_active(): return
 	for event: Dictionary in combat_runtime.call("drain_events"):
 		match str(event.get("type", "")):
+			"native_pve_reward":
+				if bool(world_runtime.call("record_combat_reward", event)):
+					legacy_hud.append_system_note("PvE · %d XP · %d SPI · dados originais do servidor." % [int(event.get("experience", 0)), int(event.get("credits", 0))])
+					if int(event.get("credits", 0)) > 0 or not event.get("items", []).is_empty(): original_audio.play_effect("get_item")
+				_sync_player_profile()
 			"fired":
 				original_audio.play_weapon(int(event.get("item_num", 0)), model.gear_id)
 			"hit":
@@ -322,8 +335,10 @@ func _drain_simulation_events() -> void:
 	for event: Dictionary in world_runtime.call("drain_events"):
 		var kind := str(event.get("type", ""))
 		if kind in ["reward", "mission_reward", "reward_claimed", "mission_item_collected"] or (kind == "mission_accepted" and event.has("reward_id")):
-			if bool(combat_runtime.call("apply_reward", event)):
+			if bool(event.get("inventory_applied", false)) or bool(combat_runtime.call("apply_reward", event)):
 				original_audio.play_effect("get_item")
+			else:
+				legacy_hud.append_system_note("O inventário recusou a transação da missão; a recompensa não foi entregue.")
 			_sync_player_profile()
 		var message := str(event.get("message", event.get("text", "")))
 		if not message.is_empty():
@@ -332,17 +347,25 @@ func _drain_simulation_events() -> void:
 		_refresh_library()
 
 
+func _apply_world_inventory_event(event: Dictionary) -> bool:
+	return is_instance_valid(combat_runtime) and bool(combat_runtime.call("apply_reward", event))
+
+
+func _validate_world_inventory_event(event: Dictionary) -> bool:
+	return is_instance_valid(combat_runtime) and bool(combat_runtime.inventory.can_apply_reward(event))
+
+
 func _toggle_landing() -> void:
 	if is_online_active(): return
 	if not is_instance_valid(world_runtime):
 		return
-	if not model.airborne:
+	if not model.airborne or model.landing:
 		if model.take_off(): legacy_hud.append_system_note("Decolagem local.")
 		original_audio.play_effect("takeoff")
 	elif world_runtime.has_method("probe_landing"):
 		var contact: Dictionary = world_runtime.call("probe_landing", model.position, 4.0, 180.0, model.gear_id)
-		if bool(contact.get("ok", false)) and model.land(contact.position, contact.get("normal", Vector3.UP)):
-			legacy_hud.append_system_note("Pouso local · T ativa cerco do A-GEAR.")
+		if bool(contact.get("ok", false)) and model.begin_landing(contact.position, contact.get("normal", Vector3.UP)):
+			legacy_hud.append_system_note("Aproximação de pouso iniciada · G cancela e decola; T ativa cerco do A-GEAR no solo.")
 			original_audio.play_effect("landing")
 		else:
 			legacy_hud.append_system_note(str(contact.get("reason", "Aproxime-se de uma superfície permitida para pousar.")))
@@ -848,12 +871,12 @@ func _capture_local_progress() -> Dictionary:
 	if is_online_active(): return online_view._checkpoint.duplicate(true)
 	if is_instance_valid(systems): systems.sync_resources()
 	world_runtime.call("advance", 0.0, model.position)
-	return {"schema_version": 1, "release": "0.8.0", "world": world_runtime.call("export_state"), "combat": combat_runtime.call("export_state"),
+	return {"schema_version": 1, "release": "0.9.0", "world": world_runtime.call("export_state"), "combat": combat_runtime.call("export_state"),
 		"flight": {"gear_id": model.gear_id, "position": [model.position.x, model.position.y, model.position.z],
 			"orientation": [model.orientation.x, model.orientation.y, model.orientation.z, model.orientation.w],
 			"speed": model.speed, "boost_energy": model.boost_energy, "overheated": model.overheated,
 			"fuel_fraction": model.fuel_fraction, "weight_ratio": model.weight_ratio,
-		"airborne": model.airborne, "siege": model.siege, "fuel": model.snapshot().get("fuel", {})}, "audio_muted": original_audio.muted, "appearances": _appearance_overrides.duplicate(), "systems": systems.export_state() if is_instance_valid(systems) else {}}
+		"airborne": model.airborne, "siege": model.siege, "fuel": model.snapshot().get("fuel", {}), "transition": model.transition_progress()}, "audio_muted": original_audio.muted, "appearances": _appearance_overrides.duplicate(), "systems": systems.export_state() if is_instance_valid(systems) else {}}
 
 
 func _save_local_game(show_message: bool = true) -> Dictionary:
@@ -870,13 +893,16 @@ func _load_local_game() -> Dictionary:
 	if is_online_active(): return {"ok": false, "error": "online_profile_separate", "message": "Desconecte da arena para carregar o perfil offline."}
 	if not _combat_ready or _loading_progress:
 		return {"ok": false, "error": "session_not_ready"}
-	var loaded: Dictionary = ProgressStore.read_game(_save_path)
+	var loaded: Dictionary = ProgressStore.read_current_game() if _save_path == ProgressStore.DEFAULT_PATH else ProgressStore.read_game(_save_path)
 	if not bool(loaded.get("ok", false)):
 		_show_world_error(loaded)
 		return loaded
 	var result: Dictionary = _restore_local_progress(loaded.snapshot)
 	if bool(result.get("ok", false)):
 		legacy_hud.append_system_note(str(loaded.get("message", "Progresso local carregado.")))
+		if loaded.has("migrated_from"):
+			var migrated: Dictionary = _save_local_game(false)
+			if not bool(migrated.get("ok", false)): _show_world_error(migrated)
 	else:
 		_show_world_error(result)
 	return result
@@ -887,7 +913,7 @@ func _restore_local_progress(snapshot: Dictionary) -> Dictionary:
 	if not flight is Dictionary or not snapshot.get("world") is Dictionary or not snapshot.get("combat") is Dictionary:
 		return {"ok": false, "message": "Progresso local incompleto."}
 	if not snapshot.get("systems", {}) is Dictionary:
-		return {"ok": false, "message": "Habilidades e serviços salvos inválidos."}
+		return {"ok": false, "message": "Habilidades, serviços ou consumíveis salvos inválidos."}
 	if not snapshot.combat.get("inventory") is Dictionary or not snapshot.world.get("wallet") is Dictionary:
 		return {"ok": false, "message": "Inventário ou saldo salvo inválido."}
 	var gear_id := str(flight.get("gear_id", ""))
@@ -920,11 +946,19 @@ func _restore_local_progress(snapshot: Dictionary) -> Dictionary:
 	var fuel_progress: Variant = flight.get("fuel", {})
 	if not fuel_progress is Dictionary or (not fuel_progress.is_empty() and not Model.validate_fuel_progress(fuel_progress, bool(flight.airborne))):
 		return {"ok": false, "message": "O estado de combustível salvo é inválido."}
+	if flight.has("transition") and not Model.validate_transition_progress(flight.transition, bool(flight.airborne), gear_id):
+		return {"ok": false, "message": "A transição de pouso ou decolagem salva é inválida."}
 	var rotation := Quaternion(float(flight.orientation[0]), float(flight.orientation[1]), float(flight.orientation[2]), float(flight.orientation[3]))
 	if rotation.length_squared() < 0.5 or rotation.length_squared() > 1.5:
 		return {"ok": false, "message": "Orientação salva inválida."}
 	if snapshot.world.get("wallet", {}).get("credits", -1) != snapshot.combat.get("inventory", {}).get("credits", -2) or snapshot.world.get("wallet", {}).get("experience", -1) != snapshot.combat.get("inventory", {}).get("experience", -2):
 		return {"ok": false, "message": "Os saldos salvos não conferem entre os sistemas."}
+	var inventory_receipts: Variant = snapshot.combat.inventory.get("reward_ids", [])
+	if not inventory_receipts is Array or not snapshot.world.get("combat_rewards", []) is Array:
+		return {"ok": false, "message": "O histórico de recompensas salvo é inválido."}
+	for entry: Variant in snapshot.world.get("combat_rewards", []):
+		if not entry is Dictionary or not inventory_receipts.has(entry.get("reward_id", "")):
+			return {"ok": false, "message": "Uma recompensa PvE salva não consta no inventário."}
 	var previous: Dictionary = _capture_local_progress()
 	_loading_progress = true
 	var world_result: Dictionary = world_runtime.call("import_state", snapshot.world)
@@ -942,6 +976,7 @@ func _restore_local_progress(snapshot: Dictionary) -> Dictionary:
 		world_runtime.call("import_state", previous.world)
 		combat_runtime.call("import_state", previous.combat)
 		_apply_flight_progress(previous.flight)
+		if is_instance_valid(systems): systems.sync_profile()
 		_loading_progress = false
 		return {"ok": false, "message": "O equipamento salvo é incompatível; a sessão atual foi preservada.", "error": combat_result.get("error", "")}
 	original_scene_profile.active_gear_id = gear_id
@@ -962,7 +997,7 @@ func _restore_local_progress(snapshot: Dictionary) -> Dictionary:
 		systems.import_state(previous.get("systems", {}))
 		_create_ship(false)
 		_loading_progress = false
-		return {"ok": false, "message": "O progresso de habilidades ou serviços é inválido; a sessão foi preservada."}
+		return {"ok": false, "message": "O progresso de habilidades, serviços ou consumíveis é inválido; a sessão foi preservada."}
 	if bool(snapshot.get("audio_muted", false)) != original_audio.muted:
 		original_audio.toggle_muted()
 	_sync_player_profile()
@@ -974,6 +1009,7 @@ func _restore_local_progress(snapshot: Dictionary) -> Dictionary:
 
 
 func _apply_flight_progress(flight: Dictionary) -> void:
+	model.clear_surface_transition()
 	var values: Array = flight.position
 	var position := Vector3(float(values[0]), float(values[1]), float(values[2]))
 	position = position.clamp(model.bounds_min + Vector3(4, 0, 4), model.bounds_max - Vector3(4, 0, 4))
@@ -991,6 +1027,8 @@ func _apply_flight_progress(flight: Dictionary) -> void:
 	model.weight_ratio = clampf(float(flight.weight_ratio), 0, 10)
 	model.airborne = bool(flight.airborne)
 	model.siege = bool(flight.siege) and not model.airborne and model.gear_id == "12002100"
+	if flight.has("transition"):
+		model.restore_transition_progress(flight.transition)
 	if flight.get("fuel", {}) is Dictionary and not flight.get("fuel", {}).is_empty() and model.has_method("restore_fuel_progress"):
 		model.restore_fuel_progress(flight.fuel)
 	model.movement_enabled = not bool(combat_runtime.call("snapshot").get("dead", false))
@@ -1028,6 +1066,7 @@ func _update_hud() -> void:
 		course_points = RING_POINTS
 	legacy_hud.update_flight(model, course_points, active_ring, is_paused, flash_time)
 	var combat: Dictionary = combat_runtime.call("snapshot") if is_instance_valid(combat_runtime) else {}
+	if is_instance_valid(systems): combat["inventory"] = systems.inventory_snapshot(combat.get("inventory", {}))
 	var world: Dictionary = world_runtime.call("get_state") if is_instance_valid(world_runtime) else {}
 	legacy_hud.update_simulation(model.snapshot(), combat, world, camera)
 
@@ -1045,12 +1084,16 @@ func _handle_online_input(event: InputEvent) -> void:
 				return
 	if event.is_action_pressed("toggle_inventory"): legacy_hud.toggle_inventory()
 	elif event.is_action_pressed("toggle_world"): legacy_hud.toggle_world_panel()
+	elif event.is_action_pressed("toggle_landing"):
+		online_view.toggle_landing()
+	elif event.is_action_pressed("toggle_siege"):
+		online_view.toggle_siege()
 	elif event is InputEventMouseButton and not legacy_hud.blocks_weapons():
 		_aim_screen = event.position
 		if event.button_index == MOUSE_BUTTON_LEFT: _primary_held = event.pressed
 		if event.button_index == MOUSE_BUTTON_RIGHT: _secondary_held = event.pressed
 	else:
-		for action: String in ["reset_flight","pause_flight","cycle_gear","save_local_game","load_local_game","interact_world","toggle_landing","toggle_siege"]:
+		for action: String in ["reset_flight","pause_flight","cycle_gear","save_local_game","load_local_game","interact_world"]:
 			if event.is_action_pressed(action):
 				legacy_hud.append_system_note("A arena online é controlada pelo servidor; o perfil offline permanece separado.")
 				get_viewport().set_input_as_handled()

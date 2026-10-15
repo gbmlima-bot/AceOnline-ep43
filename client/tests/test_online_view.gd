@@ -98,12 +98,43 @@ func run()->void:
 		check(parsed.data.targets[0].position is Vector3 and parsed.data.targets[0].velocity is Vector3,"NPC visual poses are typed without local simulation")
 		check(parsed.data.input_seq==123 and parsed.data.pilots.size()==2,"server sequence and peer list survive decoding")
 		check(parsed.data.skills.hotbar.size()==8 and parsed.data.inventory.credits==arena.pilots["pilot-a"].inventory.credits,"skill and inventory HUD follow server models")
+		check(not parsed.data.skills.rows.is_empty() and parsed.data.skills.assignment_available and parsed.data.skills.rows[0].learned and not parsed.data.skills.rows[0].learnable,"only server-owned native learned ranks populate the assignable online skills list")
+	var classes=Arena.new()
+	check(classes.configure({"map_index":3002,"max_players":4},world),"four-class presentation arena configures")
+	for gear_id: String in View.GEAR_IDS:
+		var pilot_id := "class-" + gear_id
+		check(classes.add_player(pilot_id, {}, gear_id).ok,"server creates selected class " + gear_id)
+		var class_wire: Dictionary = classes.snapshot(pilot_id)
+		var class_view: Dictionary = View.decode_snapshot(class_wire,pilot_id,native.catalog,native._icons)
+		check(class_view.ok and class_view.data.player.gear_id==gear_id and class_view.data.inventory.gear_id==gear_id and class_view.data.player.flight.gear_id==gear_id,"typed presentation preserves server class, flight and inventory " + gear_id)
+		if gear_id == "12002100":
+			for mode: String in ["landing", "taking_off", "ground", "siege"]:
+				for pilot: Dictionary in class_wire.pilots:
+					if pilot.pilot_id==pilot_id: pilot.flight.mode=mode
+				check(View.decode_snapshot(class_wire,pilot_id,native.catalog,native._icons).ok,"A-GEAR presentation accepts authoritative " + mode)
 	var bad:=raw.duplicate(true);bad.pilots[0].orientation=[0,0,0,0]
 	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"degenerate orientation fails closed")
 	bad=raw.duplicate(true);bad.map_index=2001
 	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"arena cannot inject another map")
 	bad=raw.duplicate(true);bad.pilots[0].gear_id="12000100"
-	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"unnegotiated GEAR class is rejected")
+	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"private inventory and pilot cannot disagree about the selected GEAR class")
+	bad=raw.duplicate(true);bad.pilots[0].gear_id="unrecognized-class"
+	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"unknown GEAR class is rejected")
+	bad=raw.duplicate(true);bad.self.skills.learned_rows[0].id=-1
+	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"unknown learned identities fail closed before exposing skill assignment")
+	bad=raw.duplicate(true);bad.self.skills.hotbar[0].cooldown=-1
+	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"negative remote skill timers fail closed")
+	var capability_wire := raw.duplicate(true)
+	capability_wire.self.inventory.equip_available=true
+	capability_wire.self.inventory.allocate_stats_available=true
+	var manageable: Dictionary = View.decode_snapshot(capability_wire,"pilot-a",native.catalog,native._icons)
+	check(manageable.ok and manageable.data.inventory.equip_available and manageable.data.inventory.allocate_stats_available,"explicit server capabilities survive the typed equipment boundary")
+	bad=capability_wire.duplicate(true);bad.self.inventory.entries[0].equippable_slots=["administrator"]
+	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"unknown remote equipment slots fail closed")
+	bad=capability_wire.duplicate(true);bad.self.inventory.entries[0].equippable_slots=["radar"]
+	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"a remote equipment slot cannot override immutable native item position")
+	bad=capability_wire.duplicate(true);bad.self.inventory.stat_cap=1000001
+	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"unbounded remote stat caps fail closed")
 	bad=raw.duplicate(true);bad.self.pilot_id="other"
 	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"private inventory is bound to authenticated pilot")
 	bad=raw.duplicate(true);bad.self.inventory.entries[0].icon_path="user://private-file"
@@ -113,6 +144,13 @@ func run()->void:
 	check(not View.decode_snapshot(bad,"pilot-a",native.catalog,native._icons).ok,"unknown item identities fail closed")
 	var neutral:Dictionary=View.input_controls(true,Vector3(0,0,-10),true,true,true)
 	check(neutral.pitch==0 and neutral.roll==0 and neutral.yaw==0 and not neutral.primary and not neutral.secondary and not neutral.target_next and not neutral.boost,"modal input neutralizes movement, weapons and target selection")
+	check(neutral.ground_throttle==0 and not neutral.has("unit_stop"),"modal input neutralizes ground movement without inventing a unit-stop key")
+	for action: String in ["pitch_up", "pitch_down", "roll_left", "roll_right", "yaw_left", "yaw_right", "boost", "brake"]:
+		if not InputMap.has_action(action): InputMap.add_action(action)
+	Input.action_press("pitch_up", 1.0)
+	var drive: Dictionary = View.input_controls(false, Vector3.FORWARD, false, false, false)
+	check(drive.ground_throttle==1.0 and drive.pitch==1.0,"W/S pitch axis also drives authoritative A-GEAR ground throttle")
+	Input.action_release("pitch_up")
 	check(neutral.aim_direction==[0.0,0.0,-1.0] and not neutral.has("position") and not neutral.has("aim_origin"),"input carries normalized direction only; server owns origin")
 	var runtime=CombatScene.new();root.add_child(runtime)
 	var elapsed:float=runtime.model.elapsed
@@ -160,6 +198,17 @@ func run()->void:
 	check(not counter.inputs.is_empty() and not counter.inputs[0].controls.primary and not counter.inputs[0].controls.secondary,"production input cadence stays neutral while a modal is open")
 	game.legacy_hud.masked=false
 	check(input_view.cast_skill(1) and counter.commands.back().action=="skill_use" and counter.commands.back().args.slot==1,"skill activation emits an authoritative command instead of changing the local model")
+	check(input_view.handle_action("skill_assign:8:7830011") and counter.commands.back().action=="skill_assign" and counter.commands.back().args=={"slot":8,"item_num":7830011},"assignment action is forwarded as an authoritative command")
+	check(input_view.toggle_landing() and counter.commands.back().action=="toggle_landing" and input_view.toggle_siege() and counter.commands.back().action=="toggle_siege","landing and siege request server validation without local flight changes")
+	input_view._inventory=manageable.data.inventory.duplicate(true)
+	var owned_item: Dictionary={}
+	for entry: Dictionary in input_view._inventory.entries:
+		if not entry.equippable_slots.is_empty(): owned_item=entry;break
+	check(not owned_item.is_empty() and input_view.handle_action("equip_item:%s:%s" % [owned_item.equippable_slots[0],owned_item.item_num]) and counter.commands.back().action=="equip" and counter.commands.back().args=={"slot":owned_item.equippable_slots[0],"item_num":owned_item.item_num},"owned-item selection routes an authoritative equip command with the native slot")
+	input_view._inventory.bonus_stats=2
+	check(input_view.handle_action("allocate_stat:attack:1") and counter.commands.back().action=="allocate_stat" and counter.commands.back().args=={"stat":"attack","count":1} and input_view._inventory.bonus_stats==2,"attribute action routes a server command without spending client points")
+	var before_commands: int=counter.commands.size()
+	check(not input_view.equip_item("radar",-1) and not input_view.equip_item("radar",2147483647) and not input_view.allocate_stat("attack",3) and counter.commands.size()==before_commands,"invalid identities and excessive point requests cannot emit a client command")
 	input_view.active=false
 	game.queue_free();await process_frame
 	for failure:String in failures: push_error(failure)

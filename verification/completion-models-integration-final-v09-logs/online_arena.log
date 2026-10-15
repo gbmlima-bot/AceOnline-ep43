@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Arena wire budget8pilots/96rounds: 13447bytes
+Arena wire budget22departed+2active: 7805bytes
+PASS: online arena — 85 checks; authoritative controls/flight, shared NPC HP/RNG/projectiles, cooperative native damage/rewards, replay rejection, reconnect and complete JSON persistence
+

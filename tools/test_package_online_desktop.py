@@ -5,6 +5,7 @@ import json
 import contextlib
 from pathlib import Path
 import plistlib
+import shutil
 import struct
 import tempfile
 from types import SimpleNamespace
@@ -122,13 +123,13 @@ class OnlineDesktopParserTests(unittest.TestCase):
             self.assertEqual(updated[2]['release'],'0.7.0');self.assertEqual(updated[2]['artifact_kind'],'full_source')
             self.assertTrue(source.is_file())
 
-    def _publication_fixture(self,directory):
+    def _publication_fixture(self,directory,release='0.8.0'):
         root=Path(directory);app=root/'staging/ACE Modern.app'
         (app/'Contents/MacOS').mkdir(parents=True);(app/'Contents/Resources').mkdir()
         exe=app/'Contents/MacOS/ACE Modern';exe.write_bytes(macho());exe.chmod(0o755)
-        (app/'Contents/Resources/ACE Modern.pck').write_bytes(pack(remap=True))
-        (app/'Contents/Info.plist').write_bytes(plistlib.dumps({'CFBundleShortVersionString':'0.8.0','CFBundleVersion':'0.8.0'}))
-        report=pkg.verify_mac(app);report.update({'release':'0.8.0','verified':True,'artifact':str(app)})
+        (app/'Contents/Resources/ACE Modern.pck').write_bytes(pack(version=release,remap=True))
+        (app/'Contents/Info.plist').write_bytes(plistlib.dumps({'CFBundleShortVersionString':release,'CFBundleVersion':release}))
+        report=pkg.verify_mac(app,release);report.update({'release':release,'verified':True,'artifact':str(app)})
         report_path=root/'verified.json';report_path.write_text(json.dumps(report))
         old_directory=root/'historical';old_directory.mkdir()
         old=old_directory/pkg.OLD_NAMES['macos'];old.write_bytes(b'old generated archive')
@@ -141,9 +142,9 @@ class OnlineDesktopParserTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root,old,source,args=self._publication_fixture(directory)
             verifier=pkg.verify_mac;verified=[]
-            def checking_verifier(path):
+            def checking_verifier(path,release=None):
                 self.assertTrue(old.exists())
-                result=verifier(path);verified.append(result['zip_crc_all_members']);return result
+                result=verifier(path,release);verified.append(result['zip_crc_all_members']);return result
             replace=pkg.os.replace
             def checking_replace(source_path,target_path):
                 if str(source_path).endswith('.part'):
@@ -164,5 +165,78 @@ class OnlineDesktopParserTests(unittest.TestCase):
             self.assertTrue(old.exists());self.assertTrue(source.exists())
             self.assertFalse((args.output_dir/pkg.NAMES['macos']).exists())
             self.assertEqual(json.loads((old.parent/'downloads.json').read_text())[0]['path'],str(old))
+
+    def test_requested_release_and_runtime_default_reject_stale_pck(self):
+        data=pack(version='0.9.0');stream=io.BytesIO(data)
+        index,entries=pkg.pck_index(stream,len(data));payloads=pkg.read_code_payloads(stream,entries)
+        self.assertEqual(pkg.verify_pck_code(index,entries,payloads,release='0.9.0')['application_version'],'0.9.0')
+        with self.assertRaisesRegex(RuntimeError,'version mismatch'):
+            pkg.verify_pck_code(index,entries,payloads)
+        with mock.patch.object(pkg,'RELEASE','0.9.0'):
+            self.assertEqual(pkg.verify_pck_code(index,entries,payloads)['application_version'],'0.9.0')
+
+    def test_release_names_and_archive_notices(self):
+        self.assertEqual(pkg.artifact_name('macos'),pkg.NAMES['macos'])
+        self.assertEqual(pkg.artifact_name('windows','0.9.0'),'ace-modern-online-windows-v0.9.zip')
+        self.assertEqual(pkg.artifact_name('macos','0.9.1'),'ace-modern-online-macos-v0.9.1.zip')
+        self.assertEqual(pkg.report_tag('0.9.0'),'v09')
+        with self.assertRaises(RuntimeError):pkg.release_version('../0.9.0')
+        with tempfile.TemporaryDirectory() as directory:
+            archive=io.BytesIO()
+            with mock.patch.object(pkg,'ROOT',Path(directory)),zipfile.ZipFile(archive,'w') as writer:
+                pkg.add_notices(writer,'0.9.0')
+            with zipfile.ZipFile(io.BytesIO(archive.getvalue())) as reader:
+                self.assertIn('ACE Modern0.9',reader.read('LEIA-ME-ONLINE.txt').decode())
+
+    def test_v09_publication_preserves_previous_packages_and_index(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root,old,source,args=self._publication_fixture(directory,'0.9.0')
+            args.release='0.9.0';args.retire_old=False
+            args.output_dir.mkdir();previous=args.output_dir/pkg.NAMES['macos'];previous.write_bytes(b'preserved 0.8 download')
+            delivery={'platform':'macos','release':'0.8.0','path':str(previous),'sha256':pkg.digest(previous),'bytes':previous.stat().st_size}
+            (args.output_dir/'downloads.json').write_text(json.dumps([delivery]))
+            old_index=(old.parent/'downloads.json').read_bytes()
+            with mock.patch.object(pkg,'ROOT',root),mock.patch.object(pkg,'OLD_DIRECTORY',old.parent),contextlib.redirect_stdout(io.StringIO()):
+                pkg.publish(args)
+            self.assertEqual(previous.read_bytes(),b'preserved 0.8 download')
+            self.assertEqual((old.parent/'downloads.json').read_bytes(),old_index)
+            self.assertTrue(old.exists());self.assertTrue(source.exists())
+            current=args.output_dir/'ace-modern-online-macos-v0.9.zip'
+            self.assertEqual(pkg.verify_mac(current,'0.9.0')['plist_version'],'0.9.0')
+            rows=json.loads((args.output_dir/'downloads.json').read_text())
+            self.assertEqual(rows[0],delivery);self.assertEqual(rows[1]['release'],'0.9.0')
+            report=json.loads((root/'reports/desktop-macos-published-v09.json').read_text())
+            self.assertIsNone(report['retirement']);self.assertFalse(report['delivery']['native_executed'])
+
+    def test_v09_cannot_retire_historical_downloads(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root,old,source,args=self._publication_fixture(directory,'0.9.0');args.release='0.9.0'
+            with mock.patch.object(pkg,'ROOT',root),mock.patch.object(pkg,'OLD_DIRECTORY',old.parent):
+                with self.assertRaisesRegex(RuntimeError,'newer releases preserve previous packages'):pkg.publish(args)
+            self.assertTrue(old.exists());self.assertTrue(source.exists());self.assertFalse(args.output_dir.exists())
+
+    def test_export_uses_requested_release_and_preserves_tmpdir(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root,old,source,args=self._publication_fixture(directory,'0.9.0')
+            (root/'client/scripts').mkdir(parents=True)
+            (root/'client/project.godot').write_text('[application]\nconfig/version="0.9.0"\n')
+            (root/'client/export_presets.cfg').write_text('# synthetic export fixture\n')
+            export_args=SimpleNamespace(release='0.9.0',authorize_export=True,platform='macos',staging=root/'exported',godot='mock-godot',data_home=root/'data',cache_home=root/'cache',report=None)
+            def fake_export(command,**kwargs):
+                self.assertEqual(kwargs['env']['TMPDIR'],str(root/'scratch'))
+                shutil.copytree(root/'staging/ACE Modern.app',Path(command[-1]))
+                return SimpleNamespace(returncode=0)
+            with mock.patch.object(pkg,'ROOT',root),mock.patch.object(pkg.subprocess,'run',side_effect=fake_export),mock.patch.dict(pkg.os.environ,{'TMPDIR':str(root/'scratch')}),contextlib.redirect_stdout(io.StringIO()):
+                pkg.export(export_args)
+            report=json.loads((root/'reports/desktop-macos-v09.json').read_text())
+            self.assertEqual(report['release'],'0.9.0');self.assertFalse(report['native_executed'])
+            self.assertTrue((root/'reports/export-macos-v09.log').exists())
+
+    def test_cli_release_defaults_and_explicit_version(self):
+        common=['package_online_desktop.py','export','--platform','macos','--godot','mock-godot','--staging','unused']
+        for options,expected in (([],'0.8.0'),(['--release','0.9.0'],'0.9.0')):
+            with self.subTest(options=options),mock.patch('sys.argv',common+options),mock.patch.object(pkg,'export') as handler:
+                pkg.main()
+                self.assertEqual(handler.call_args.args[0].release,expected)
 
 if __name__=='__main__':unittest.main()

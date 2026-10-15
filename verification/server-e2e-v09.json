@@ -1,0 +1,9 @@
+{
+  "checks": 55,
+  "failures": [],
+  "independent_websocket_clients": 2,
+  "real_server_process": true,
+  "real_sqlite": true,
+  "restart_tested": true,
+  "tokens_logged": false
+}

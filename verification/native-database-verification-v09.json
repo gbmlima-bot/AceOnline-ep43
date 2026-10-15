@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "status": "static_game_definitions_recovered",
+  "verified_at": "2026-10-15T22:39:23.894329+00:00",
+  "method": "Read-only 8192-byte SQL Server native-page extraction from uncompressed backup using sysschobjs/syscolpars/sysrowsets/sysallocunits/sysrscols; explicit static-table allowlist; primary leaf records only.",
+  "source": {
+    "repository": "https://github.com/bhsdp1/AceOnline-ep35",
+    "commit": "7c3e47ac47844e5c415d356a94d6201a0b9a38c4",
+    "path": "Database/acc.bak",
+    "sha256": "e5ae92ac1b2e89ee2ef480d85785aa95d3c2588d386092b988efac558b4a4674",
+    "bytes": 27459584,
+    "logical_database": "atum2_db_account",
+    "engine_family": "SQL Server 2017",
+    "backup_created_at": null,
+    "backup_date_note": "Backup header timestamp has not been independently decoded.",
+    "encodings": {
+      "0x3400d008": "Windows-1252 (SQL_Latin1_General_CP1_CI_AS)",
+      "0xd011": "Windows-949 (Korean_Wansung_CI_AS)"
+    },
+    "database_format_version": 869,
+    "creation_format_version": 611
+  },
+  "backup_catalog_audit": [
+    {
+      "path": "Database/acc.bak",
+      "logical_database": "atum2_db_account",
+      "bytes": 27459584,
+      "sha256": "e5ae92ac1b2e89ee2ef480d85785aa95d3c2588d386092b988efac558b4a4674",
+      "user_table_catalog_count": 74,
+      "allowlisted_static_tables_found": 47,
+      "account_player_rows_exported": 0
+    },
+    {
+      "path": "Database/db_1.bak",
+      "logical_database": "atum2_db_1",
+      "bytes": 11653120,
+      "sha256": "420d1052f104eb1057de2e01fae6d79bd15df02562f3965e09827cb49233497d",
+      "user_table_catalog_count": 54,
+      "allowlisted_static_tables_found": 0,
+      "account_player_rows_exported": 0
+    },
+    {
+      "path": "Database/arena.bak",
+      "logical_database": "atum2_db_arena",
+      "bytes": 9818112,
+      "sha256": "7d04dd50c696b8a5841b7eb16a39b4ea0035e75dd19f871ead7cd3a687d292fb",
+      "user_table_catalog_count": 54,
+      "allowlisted_static_tables_found": 0,
+      "account_player_rows_exported": 0
+    }
+  ],
+  "exported_tables": 44,
+  "exported_rows": 199751,
+  "exported_asset_files": 45,
+  "manifest_sha256": "29ca6f722e716f2809b46c538ff1bdf2a9afe8f912dc9398687157ab64edcdb1",
+  "privacy_review": {
+    "ti_InfluenceWar": "Static faction/stage enums, rates, item/monster definitions and summon coordinates; no account, character or ownership IDs.",
+    "ti_InfluenceRate": "Static StartLevel/EndLevel ranges only.",
+    "ti_OperatorAction": "Static action type, item/function/source IDs, numeric value and action description; no admin credentials.",
+    "ti_ItemEvent.CheckWithCharacterUID": "A BOOL validation-mode flag in AtumParam.h:2714, not a character identity. Observed values are 0/NULL."
+  },
+  "operational_tables_withheld": {
+    "ti_Tender": "TenderUID may refer to a live auction identity; not needed for static definitions.",
+    "ti_OutPostNextWarTime": "Live outpost war scheduling state, not a static game definition."
+  },
+  "row_count_mismatch_tables_withheld": [
+    {
+      "table": "ti_DissolutionItem",
+      "object_id": 235147883,
+      "columns": 13,
+      "catalog_rows": 6788,
+      "decoded_rows": 7308,
+      "leaf_pages": 59,
+      "excluded_ghost_rows": 0,
+      "errors": {
+        "row_count_mismatch": {
+          "expected": 6788,
+          "decoded": 7308
+        }
+      }
+    }
+  ],
+  "semantic_checks": {
+    "monster_distinct_ids": 1300,
+    "monsters_with_nonpositive_hp": 0,
+    "monsters_with_negative_experience": 0,
+    "drop_monster_ids_missing_from_native_catalog": 0,
+    "drop_item_ids_missing_from_native_catalog": 0,
+    "drop_invalid_count_ranges": 0,
+    "drop_probability_outside_0_to_1000000": 0,
+    "drop_type_counts": {
+      "0": 70192,
+      "1": 214
+    },
+    "anomalies": {
+      "item_rows_with_null_item_num": 1,
+      "prefix_probability_above_cpp_documented_100000_scale": 1401,
+      "suffix_probability_above_cpp_documented_100000_scale": 1401,
+      "rare_probability_note": "Raw backup values reach 600000; do not assume the documented 100000 rare-probability scale or normalize these values without further source reconciliation."
+    }
+  },
+  "cpp_schema_alignment": [
+    {
+      "table": "ti_Monster",
+      "catalog_rows": 1300,
+      "columns": [
+        "UniqueNumber",
+        "MonsterName",
+        "Level",
+        "Experience",
+        "HP",
+        "Race",
+        "Speed",
+        "MonsterItem01",
+        "MonsterItem02",
+        "MonsterItem03",
+        "MonsterItem04",
+        "MonsterItem05",
+        "MonsterItem06",
+        "MonsterItem07",
+        "MonsterItem08",
+        "MonsterItem09",
+        "MonsterItem10",
+        "MonsterItem11",
+        "MonsterItem12",
+        "MonsterItem13",
+        "MonsterItem14",
+        "MonsterItem15",
+        "ControlSkill",
+        "SizeForServer",
+        "SizeForClient",
+        "Faction",
+        "MonsterForm",
+        "AttackPattern",
+        "MovePattern",
+        "Belligerence",
+        "Defense",
+        "DefenceProbability",
+        "AlphaBlending",
+        "AttackObject",
+        "AttackRange",
+        "HPRecoveryTime",
+        "HPRecoveryValue",
+        "RenderIndex",
+        "ScaleValue",
+        "TextureIndex",
+        "SourceIndex",
+        "QuickTurnAngle",
+        "QuickSpeed",
+        "QuickTurnTerm",
+        "MPOption",
+        "MPOptionParam1",
+        "MPOptionParam2",
+        "Range",
+        "TurnAngle",
+        "MonsterHabit",
+        "ClickEvent",
+        "HPActionIdx",
+        "MonsterTarget",
+        "ChangeTarget",
+        "MonsterTarget2",
+        "PortraitFileName",
+        "ChangeTargetTime"
+      ],
+      "source_path": "Server/GameServer/AtumMonitor/LoadExcelFile.cpp",
+      "source_line": 45,
+      "source_column_order_exact": false,
+      "source_only_columns": [
+        "WayPointPattern"
+      ]
+    },
+    {
+      "table": "ti_MonsterItem",
+      "catalog_rows": 70406,
+      "columns": [
+        "MonsterUniqueNumber",
+        "ItemNum",
+        "MinCount",
+        "MaxCount",
+        "Probability",
+        "PrefixProbability",
+        "SuffixProbability",
+        "DropType"
+      ],
+      "source_path": "Server/GameServer/AtumMonitor/LoadExcelFile.cpp",
+      "source_line": 27,
+      "source_column_order_exact": true,
+      "source_only_columns": []
+    },
+    {
+      "table": "ti_Shop",
+      "catalog_rows": 1687,
+      "columns": [
+        "ShopOrder",
+        "UniqueNumber",
+        "ItemNum"
+      ],
+      "source_path": "Server/GameServer/AtumMonitor/LoadExcelFile.cpp",
+      "source_line": 30,
+      "source_column_order_exact": true,
+      "source_only_columns": []
+    },
+    {
+      "table": "ti_BuildingNPC",
+      "catalog_rows": 190,
+      "columns": [
+        "BuildingIndex",
+        "BuildingName",
+        "BuildingKind",
+        "MapIndex",
+        "NPCIndex",
+        "NPCName",
+        "GreetingTalk",
+        "OwnerCityMapIndex",
+        "OwnerOrderNumber"
+      ],
+      "source_path": "Server/GameServer/AtumMonitor/LoadExcelFile.cpp",
+      "source_line": 42,
+      "source_column_order_exact": true,
+      "source_only_columns": []
+    }
+  ],
+  "cpp_type_evidence": [
+    {
+      "path": "Server/GameServer/CommonGameServer/AtumParam.h",
+      "line": 2845,
+      "type": "MONSTER_INFO",
+      "note": "DB HP/int32, XP/int64, Level/BYTE, most monster fields map directly; some runtime fields use USHORT or f32 conversion and remain untransformed in JSON."
+    },
+    {
+      "path": "Server/GameServer/CommonGameServer/AtumParam.h",
+      "line": 3492,
+      "type": "MONSTER2ITEM",
+      "note": "Regular death DropType0 and infinity key death DropType1; drop probability documented1000000, rare probability documented100000 with preserved source discrepancies."
+    },
+    {
+      "path": "Server/GameServer/CommonGameServer/AtumParam.h",
+      "line": 2714,
+      "type": "ITEM_EVENT.CheckWithCharacterUID",
+      "note": "BOOL validation-mode flag, not a character identity."
+    }
+  ],
+  "current_client_catalog_comparison": {
+    "native_items_valid": 16872,
+    "current_items": 16079,
+    "item_ids_in_both": 14810,
+    "native_item_ids_absent_current": 2062,
+    "current_item_ids_absent_native": 1269,
+    "item_fields_differing": {
+      "Kind": 19,
+      "Price": 1266,
+      "CashPrice": 7505,
+      "AbilityMin": 2812,
+      "AbilityMax": 2781,
+      "ReqMinLevel": 405,
+      "ReqUnitKind": 96
+    },
+    "native_monsters": 1300,
+    "current_monsters": 1340,
+    "monster_ids_in_both": 1269,
+    "native_monster_ids_absent_current": 31,
+    "current_monster_ids_absent_native": 71,
+    "overlap_monsters_hp_differ": 171,
+    "overlap_monsters_level_differ": 93
+  },
+  "tests": {
+    "command": "python3 tools/test_extract_legacy_database.py",
+    "passed": 12,
+    "failed": 0,
+    "covers": [
+      "signed numeric physical offsets",
+      "null/empty distinction",
+      "hidden uniqueifier variable offsets",
+      "CP949 text",
+      "native datetime byte order",
+      "truncated/complex values rejected",
+      "zero heap slots",
+      "unreviewed backup refused",
+      "explicit export allowlist/privacy",
+      "all file SHA/size/row/column checks",
+      "all drop foreign keys and bounds",
+      "source anomalies preserved"
+    ]
+  },
+  "runtime_changes_made_by_extractor": false,
+  "normal_spawn_sources": {
+    "report": "reports/native-spawn-source-audit.json",
+    "artifact": "client/assets/legacy_rules/native_spawns.json",
+    "sha256": "2ebbc60416a1ebcdc3f20824f967dd3d917fccd6a7e506b9dd42df8e54039aa4",
+    "object_records": 3498,
+    "maps": 132,
+    "regional_records": 5,
+    "region_maps": [
+      4001
+    ],
+    "full_regional_coverage": false
+  },
+  "limits": [
+    "Read-only offline extraction, not a SQL Server RESTORE validation.",
+    "Only primary leaf rows from catalog-owned allocations are exported; ghost rows are excluded.",
+    "Each table must match its catalog row count exactly or its entire export is withheld.",
+    "Definitions retain legacy units and IDs; no current-client catalog is overwritten.",
+    "Map-object definitions are not monster spawn placements.",
+    "Native object/regional spawn placements are recovered separately in legacy_rules/native_spawns.json; they are not supplied by this static SQL table catalog.",
+    "Nullable and invalid legacy rows are preserved; consumers must validate usable IDs and fields."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "format": "ace-release-parts",
+  "version": 1,
+  "part_size_bytes": 1500000000,
+  "artifact": {
+    "name": "ace-modern-online-macos-v0.9.zip",
+    "bytes": 3363736267,
+    "sha256": "d438afebc4de0748b61c381846769a16e5f64690f8ae55a42c166bbb2c684e8d"
+  },
+  "parts": [
+    {
+      "index": 1,
+      "name": "ace-modern-online-macos-v0.9.zip.part-001",
+      "bytes": 1500000000,
+      "sha256": "5f7d5279cdbfa90357382cd6161884a964ce7470d65783bd50cd33ffba99f0ca"
+    },
+    {
+      "index": 2,
+      "name": "ace-modern-online-macos-v0.9.zip.part-002",
+      "bytes": 1500000000,
+      "sha256": "8db604c6c6807584b0520702c1129dad07f45a2195676bd443a5500cc8fa2e91"
+    },
+    {
+      "index": 3,
+      "name": "ace-modern-online-macos-v0.9.zip.part-003",
+      "bytes": 363736267,
+      "sha256": "cc0df8c9a82867016ac220ad6d96f5f31f809ba209c20049ee3f47b8c4a5ca2b"
+    }
+  ]
+}

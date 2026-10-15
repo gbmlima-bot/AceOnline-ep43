@@ -36,6 +36,7 @@ def compile_one(raw, values):
         'on_accept': {'warp_map_id':0,'items':[]}, 'on_complete': {'warp_map_id':0},
         'time_limit_seconds':0, 'delete_items':[], 'per_item_rewards':[],
         'random_item_rewards':[], 'inventory_objectives_override_drops':False,
+        'external_inventory_items':[],
         'required_level_min':1, 'required_level_max':2147483647, 'blocked_reasons':[],
         'provenance_label':'Missão original; encontros locais identificados',
         'adaptations':['Single-player local authority; original server spawns unavailable']})
@@ -227,14 +228,18 @@ def compile_one(raw, values):
     if not out['objectives'] and raw.get('end_type')==0:
         out['objectives']=[{'kind':'dialogue','npc_id':int(raw.get('npc_id',0)),'required':1}]
     if not out['objectives']:fail('COMPLETION_REQ','no_supported_objectives')
-    # Counters represent mission-only guaranteed proof items. Deleting arbitrary
-    # player inventory would require a separate transactional item objective.
-    for item in pending_deletes:
-        if item['item_num'] not in quest_items and not any(x['item_num']==item['item_num'] for x in out['on_accept']['items']) and not any(o.get('item_num')==item['item_num'] for o in out['objectives']):
-            fail('C_DEL_ITEM','not_an_all_mission_proof_item')
-        else:out['delete_items'].append(item)
-    for reward in out['per_item_rewards']+out['random_item_rewards']:
-        if reward['source_item_num'] and reward['source_item_num'] not in quest_items:fail('PER','source_is_not_mission_proof_item')
+    # FieldIOCPSocket.cpp:29179,29224,29397 reads PER/deletions from the
+    # existing inventory, independently of this quest's TargetMonsterItemVector.
+    # An absent item yields no variable reward/deletion; it is not an unmet
+    # completion requirement. Never synthesize a missing global monster drop.
+    local_items = quest_items | {item['item_num'] for item in out['on_accept']['items']}
+    local_items |= {objective['item_num'] for objective in out['objectives'] if 'item_num' in objective}
+    out['delete_items'] = pending_deletes
+    inventory_items = {item['item_num'] for item in pending_deletes}
+    inventory_items |= {reward['source_item_num'] for reward in out['per_item_rewards']+out['random_item_rewards'] if reward['source_item_num']}
+    out['external_inventory_items'] = sorted(inventory_items - local_items)
+    if out['external_inventory_items']:
+        out['adaptations'].append('Native optional PER rewards and C_DEL_ITEM read synchronized inventory; eligible recovered server drops are handled separately, and absent or unsupported drops are never invented')
     if any('source_area' in objective for objective in out['objectives']):
         out['adaptations'].append('Monster AREA is preserved as native tile-coordinate navigation hint; the pinned server validates code counts, not this marker radius')
     if any(objective.get('drop_probability',1000000)!=1000000 or objective.get('drop_min',1)!=1 or objective.get('drop_max',1)!=1 for objective in out['objectives']):
@@ -249,7 +254,7 @@ def compile_one(raw, values):
 
 def compile_catalog(catalog, values):
     records=[compile_one(record, values) for record in catalog['records']]
-    return {'schema_version':2,'compiler':'bounded_ast_clause_allowlist_v2',
+    return {'schema_version':2,'compiler':'bounded_ast_clause_allowlist_v3',
         'source_sha256':catalog['source']['sha256'],
         'source_catalog_sha256':None,
         'records':records,

@@ -3,7 +3,7 @@ config_version=5
 
 [application]
 config/name="ACE Modern Dedicated"
-config/version="0.8.0"
+config/version="0.9.0"
 run/main_scene="res://server.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 run/flush_stdout_on_print=true

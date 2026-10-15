@@ -1,0 +1,130 @@
+{
+  "release": "0.9.0",
+  "macos_and_windows_identical_client_source": true,
+  "files": {
+    "client/project.godot": {
+      "sha256": "4d22c7da491bfe3b400581135db414b9a779848ab6e2f6cf03629fcd304c34c5",
+      "bytes": 889
+    },
+    "client/export_presets.cfg": {
+      "sha256": "1715774fb8b23dd48647491c63cea535209cfa33488e2fa91ff7d19086f4715b",
+      "bytes": 1241
+    },
+    "client/scripts/combat_model.gd": {
+      "sha256": "e96065e2a5105abce57df041a52711eb145206851a8a5e0b532bd971cbf7d876",
+      "bytes": 41176
+    },
+    "client/scripts/combat_runtime.gd": {
+      "sha256": "39375260663b60a159196300a00181f137dc03eefac7b9dbe8f39714a1c544eb",
+      "bytes": 57248
+    },
+    "client/scripts/flight_model.gd": {
+      "sha256": "884a79b543ba11c63ecec97b5b9d01ce3858d55e6e378e1f65698d8a25d691dc",
+      "bytes": 33390
+    },
+    "client/scripts/game_systems.gd": {
+      "sha256": "e3199559190945d365c09556c95f6cec8cf29f93110900cc8334b10a6eda66a7",
+      "bytes": 21286
+    },
+    "client/scripts/inventory_model.gd": {
+      "sha256": "33fa71aa618a4c54f577b2ca2e40dea594dd69403d537ce4475eadf2b6e73603",
+      "bytes": 29424
+    },
+    "client/scripts/item_use_model.gd": {
+      "sha256": "e010dbd484234e98506100713899044142f27d156ab45dda8b84e9d1f8c6dc17",
+      "bytes": 9663
+    },
+    "client/scripts/legacy_group.gd": {
+      "sha256": "95d5bcd9ae87eab4e9c9fe839242051a0fc73ec8881f69774d104c36ceb88902",
+      "bytes": 6040
+    },
+    "client/scripts/legacy_hud.gd": {
+      "sha256": "fd83d29bc4e15c66b851f1ade9159cab6790f45665c330e14de98459d57357ee",
+      "bytes": 127599
+    },
+    "client/scripts/local_multiplayer.gd": {
+      "sha256": "c6a15ce382f3394a6f1b5257b3377bbf05f6968832d2e259e8f56e65ca4f4d78",
+      "bytes": 12968
+    },
+    "client/scripts/local_save.gd": {
+      "sha256": "bda301f10356920d7a1a246dc797dc333aee44d923601c5f7a7b22c8e07c74ea",
+      "bytes": 5807
+    },
+    "client/scripts/main.gd": {
+      "sha256": "ccd01d39af816b886073a9c179a98df49cc01027ce9c0570a6d9e77c0ed02484",
+      "bytes": 52316
+    },
+    "client/scripts/native_equipment.gd": {
+      "sha256": "112d1504357617eee9f4f1a3d0273d5bc16afb50e93eded092d93d8229ba77fd",
+      "bytes": 4281
+    },
+    "client/scripts/native_server_data.gd": {
+      "sha256": "2449146dae2923d8e8f4ab777ae0797129eac29756a448edf90c7d1512a121bc",
+      "bytes": 20441
+    },
+    "client/scripts/native_spawn_data.gd": {
+      "sha256": "04b3f40c639756b688ef1fe0ccb0b6def63c35f5fe949e286d099744631882cd",
+      "bytes": 14052
+    },
+    "client/scripts/online/arena_model.gd": {
+      "sha256": "dc0e091bb04d165ce6646f6770d35e69ae6d15102a026d09fec4ea01836ad321",
+      "bytes": 58025
+    },
+    "client/scripts/online/headless_world.gd": {
+      "sha256": "a878e11e4be138aa180cda708985e8a8b07baba6f3f8c159e55e44b1ac601974",
+      "bytes": 10471
+    },
+    "client/scripts/online/json_wire.gd": {
+      "sha256": "8dd79680db6fd1c2f2dbb523db2c1d20576b2fd87865902c503107494f5677fe",
+      "bytes": 2753
+    },
+    "client/scripts/online/online_client.gd": {
+      "sha256": "6a008dba9d96cf617ff65dffcf135bb60cbef49372c8d16edc7905b2f2ffa811",
+      "bytes": 11095
+    },
+    "client/scripts/online/online_view.gd": {
+      "sha256": "1d99034ae732acd28738b0e7e8f4b5f21f0defb7fba529655a95f3ab4b988ee6",
+      "bytes": 33283
+    },
+    "client/scripts/online/ws_server.gd": {
+      "sha256": "0aaf3dc066a00e088deb42da7745c19b569526e7da97e2b7290907627fa5d7da",
+      "bytes": 8197
+    },
+    "client/scripts/original_asset.gd": {
+      "sha256": "8f45bb753572e448e77a8d9ec9fc80ca5cba1e939c2f1a9449d1c38cdead8f0c",
+      "bytes": 4641
+    },
+    "client/scripts/original_audio.gd": {
+      "sha256": "66b7b9e7878835df0114b310d24268b2c3563e9a2a70f630463cc43f3035f034",
+      "bytes": 3270
+    },
+    "client/scripts/original_props.gd": {
+      "sha256": "165c6932a2a06dc3d8b2c699e9e98b2619aa31b1306a03fcff2244e4c05ccbce",
+      "bytes": 8045
+    },
+    "client/scripts/original_water.gd": {
+      "sha256": "df9133d0f540a0faf2248bb36354c0b6e923c242f43184c49d340d344450cdc8",
+      "bytes": 3167
+    },
+    "client/scripts/protocol/plain_framing.gd": {
+      "sha256": "1e9b198945fa10e997270faedb50578bc0613d2da4fb391a61149272a5a181c6",
+      "bytes": 3122
+    },
+    "client/scripts/service_model.gd": {
+      "sha256": "a5485620d88306d3d922443010d2dbb8dc86f40c5205aeac84d25b615a2f6583",
+      "bytes": 23009
+    },
+    "client/scripts/skill_model.gd": {
+      "sha256": "d2ba7fd763912c916c188d4d095d5447aded16f17fd9060bc95502c8ec77ace5",
+      "bytes": 24730
+    },
+    "client/scripts/world_model.gd": {
+      "sha256": "bc425f4e338287ced8c3345b1a9a0801216341a40349de247e2694d0cc2bc8f8",
+      "bytes": 24690
+    },
+    "client/scripts/world_runtime.gd": {
+      "sha256": "803586ddca13c4329ed33f1f664284a7f3461140c154369c54f8233d17fee446",
+      "bytes": 82896
+    }
+  }
+}

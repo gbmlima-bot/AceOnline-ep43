@@ -1,7 +1,7 @@
 extends RefCounted
 ## Bounded text JSON only. This protocol never serializes Godot objects.
 
-const PROTOCOL := "ace-pve/1"
+const PROTOCOL := "ace-pve/2"
 const MAX_FRAME_BYTES := 16 * 1024
 const MAX_DEPTH := 12
 const MAX_SAFE_INTEGER := 9007199254740991

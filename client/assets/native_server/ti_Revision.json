@@ -1,0 +1,1 @@
+{"schema_version":1,"table":"ti_Revision","source_sha256":"e5ae92ac1b2e89ee2ef480d85785aa95d3c2588d386092b988efac558b4a4674","columns":["RevisionNum","UnitKind","RevisionLevel","RevisionHP","RevisionDP","RevisionStandardWeapon","RevisionAdvancedWeapon"],"rows":[[1,61440,80,8000,4000,30,150],[1,3840,80,8000,4000,30,150],[1,240,80,8000,4000,30,150],[1,15,80,8000,4000,30,150]]}

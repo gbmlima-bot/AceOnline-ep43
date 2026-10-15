@@ -1,0 +1,117 @@
+{
+  "release": "0.9.0",
+  "phase": "scenes",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "passed": true,
+  "complete": true,
+  "selected_suites": [
+    "scene_controls",
+    "combat_runtime",
+    "legacy_ui",
+    "library_ui",
+    "systems_ui",
+    "online_ui",
+    "online_view",
+    "gameplay",
+    "systems_integration",
+    "expanded_game",
+    "completion_scene",
+    "native_spawn_runtime",
+    "item_use_integration"
+  ],
+  "full_phase": true,
+  "native_mac_windows_execution": false,
+  "results": [
+    {
+      "name": "scene_controls",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 10.765,
+      "log": "scene_controls.log"
+    },
+    {
+      "name": "combat_runtime",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 10.654,
+      "log": "combat_runtime.log"
+    },
+    {
+      "name": "legacy_ui",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 7.679,
+      "log": "legacy_ui.log"
+    },
+    {
+      "name": "library_ui",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 3.744,
+      "log": "library_ui.log"
+    },
+    {
+      "name": "systems_ui",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.542,
+      "log": "systems_ui.log"
+    },
+    {
+      "name": "online_ui",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 3.733,
+      "log": "online_ui.log"
+    },
+    {
+      "name": "online_view",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 7.08,
+      "log": "online_view.log"
+    },
+    {
+      "name": "gameplay",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 11.686,
+      "log": "gameplay.log"
+    },
+    {
+      "name": "systems_integration",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 24.86,
+      "log": "systems_integration.log"
+    },
+    {
+      "name": "expanded_game",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 12.391,
+      "log": "expanded_game.log"
+    },
+    {
+      "name": "completion_scene",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 15.522,
+      "log": "completion_scene.log"
+    },
+    {
+      "name": "native_spawn_runtime",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 11.753,
+      "log": "native_spawn_runtime.log"
+    },
+    {
+      "name": "item_use_integration",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 17.965,
+      "log": "item_use_integration.log"
+    }
+  ]
+}

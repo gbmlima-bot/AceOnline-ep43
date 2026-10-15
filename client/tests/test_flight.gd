@@ -12,6 +12,10 @@ func _initialize() -> void:
 	_test_gravity()
 	_test_thermal_and_limits()
 	_test_ground_and_landing()
+	_test_source_takeoff()
+	_test_source_landing_transition()
+	_test_source_landing_leveling()
+	_test_surface_transition_persistence()
 	_test_delta_and_invalid_inputs()
 	_test_collision_contract()
 	_test_native_fuel()
@@ -170,13 +174,160 @@ func _test_ground_and_landing() -> void:
 	a_gear.land(Vector3.ZERO, Vector3.UP)
 	_run_seconds(a_gear, {"roll": 1.0}, 1.0)
 	_check(a_gear.forward().distance_to(Vector3(-sin(1.0), 0, -cos(1.0))) < 0.0001, "A ground keyboard rotation uses original one radian per second")
-	_check(a_gear.take_off() and a_gear.airborne and a_gear.speed == a_gear.min_speed, "local takeoff bridge restores airborne engine minimum")
+	_check(a_gear.take_off() and a_gear.airborne and a_gear.taking_off and a_gear.speed == 0.0, "takeoff enters original timed state without instant normal-flight speed")
 	var i_gear = _new_gear()
 	i_gear.land(Vector3(0, 5, 0), Vector3.UP)
 	stopped = i_gear.position
 	_run_seconds(i_gear, {"ground_throttle": 1.0, "boost": true}, 1.0)
 	_check(i_gear.position == stopped and i_gear.speed == 0 and not i_gear.set_siege(true), "landed I-GEAR neither drives like an A-GEAR nor enables siege")
 	_check(not i_gear.land(Vector3(NAN, 0, 0)), "invalid landing contact is rejected")
+	a_gear.land(Vector3.ZERO, Vector3.UP)
+	_run_seconds(a_gear, {"ground_throttle": 1.0, "unit_stop": true}, 1.0)
+	_check(a_gear.position == Vector3.ZERO and a_gear.speed == 0.0, "source ground unit-stop prevents throttle translation")
+
+
+func _test_source_takeoff() -> void:
+	for gear: String in ["12000100", "12001100", "12002100", "12003100"]:
+		var state = _new_gear(gear)
+		state.land(Vector3(0, 5, 0), Vector3.UP)
+		var before: Vector3 = state.position
+		_check(state.take_off() and state.position == before, "takeoff begins without teleport for " + gear)
+		_check(state.snapshot().mode == "taking_off" and not state.take_off(), "takeoff state blocks duplicate starts")
+		var duration := 0.4 if gear == "12002100" else 1.0
+		var displacement := 24.0 if gear == "12002100" else 30.0
+		_run_seconds(state, {"pitch": 1.0, "roll": 1.0, "boost": true}, duration)
+		_check(state.position.distance_to(before + Vector3(0, displacement, -displacement)) < 0.0001, "original fixed takeoff trajectory and duration for " + gear)
+		_check(not state.taking_off and state.snapshot().mode == "airborne" and state.speed == state.min_speed, "source takeoff completion restores normal state")
+		_check(state.orientation == Quaternion.IDENTITY and not state.boosting, "takeoff motion ignores normal-flight steering and boost")
+	var stopped = _new_gear()
+	stopped.land(Vector3.ZERO)
+	stopped.set_fuel_state(0.0, 100.0)
+	_check(not stopped.take_off(), "empty fuel prevents native takeoff state")
+	stopped.set_fuel_state(100.0, 100.0)
+	stopped.take_off()
+	stopped.advance({}, Model.MAX_STEP)
+	stopped.reset()
+	_check(not stopped.taking_off and not stopped.landing and stopped.snapshot().takeoff_remaining == 0.0, "reset clears in-progress surface transitions")
+
+
+func _test_source_landing_transition() -> void:
+	for gear: String in ["12002100", "12003100"]:
+		var state = _new_gear(gear)
+		state.position = Vector3(0, 105, 0)
+		state.speed = 130.0
+		_check(state.begin_landing(Vector3(0, 5, 0)) and state.airborne and state.landing, "original landing enters airborne descent for " + gear)
+		_check(state.position == Vector3(0, 105, 0) and state.snapshot().mode == "landing", "landing begins without position snap")
+		_run_seconds(state, {"pitch": 1.0, "roll": 1.0}, 1.0)
+		var descent := 45.0 if gear == "12002100" else 15.0
+		# Independent arithmetic series of130-n*30/120, n=1..120.
+		_check(absf(state.position.y - (105.0 - descent)) < 0.0002 and absf(state.speed - 100.0) < 0.00001, "native descent and30-unit deceleration fixture for " + gear)
+		_check(absf(state.position.z + 114.875) < 0.0002 and state.position.x == 0.0, "landing keeps forward translation without lateral teleport")
+		state.update_landing_contact(Vector3(0, 5, state.position.z))
+		_run_seconds(state, {}, 7.0)
+		_check(not state.landing and not state.airborne and absf(state.position.y - 5.0) < 0.0001 and state.position.z < -114.0, "descent commits ground at current horizontal position")
+	var state = _new_gear()
+	state.position = Vector3(0, 100, 0)
+	_check(not state.begin_landing(Vector3(0, -80, 0)) and not state.begin_landing(Vector3(0, 101, 0)), "TryLandingState enforces strict180-height cap and rejects support above aircraft")
+	_check(not state.begin_landing(Vector3.ZERO, Vector3.ZERO) and not state.begin_landing(Vector3.ZERO, Vector3.RIGHT), "invalid or wall landing support is rejected")
+	state.begin_landing(Vector3.ZERO)
+	var before: Vector3 = state.position
+	state.advance({"boost": true}, Model.MAX_STEP)
+	_check(state.taking_off and not state.landing and state.position.y > before.y, "boost cancels landing through native takeoff state")
+	state.land(Vector3.ZERO)
+	state.take_off()
+	state.resolve_collision(Vector3(1, 2, 3), Vector3.BACK, "object")
+	_check(not state.taking_off, "blocked takeoff exits scripted motion so collision cannot be overwritten")
+	state.reset()
+	state.begin_landing(Vector3.ZERO)
+	var hit: Dictionary = state.resolve_collision(Vector3(0, 5, -10), Vector3.UP, "terrain")
+	_check(hit.get("landed", false) and hit.damage_scale == 0.0 and not state.airborne and not state.landing, "landing contact commits without combat collision damage")
+	state.reset()
+	state.begin_landing(Vector3.ZERO)
+	state.set_fuel_state(0.0, 100.0)
+	state.advance({}, Model.MAX_STEP)
+	_check(state.fuel_falling and not state.landing and not state.taking_off, "fuel exhaustion cancels landing and enters source falling state")
+
+
+func _test_source_landing_leveling() -> void:
+	# Independent closed-form pitch fixture: the native upright branch rotates
+	# twice, so theta(n)=theta(0)*(1-2/120)^n before horizon epsilon clamping.
+	for sign_value: float in [1.0, -1.0]:
+		var state = _new_gear()
+		state.position = Vector3(0, 105, 0)
+		state.orientation = Quaternion(Vector3.RIGHT, sign_value * PI / 4.0)
+		_check(state.begin_landing(Vector3(0, 5, 0)), "tilted upright landing begins")
+		_run_seconds(state, {"pitch": sign_value, "roll": 1.0}, 1.0)
+		var expected_pitch := sign_value * 0.10451562750703258
+		_check(absf(asin(state.forward().y) - expected_pitch) < 0.00001, "native landing double pitch relaxation matches closed-form fixture")
+		var expected_height := 128.44713608459907 if sign_value > 0.0 else 51.55286391540092
+		_check(absf(state.position.y - expected_height) < 0.0003 and absf(state.position.z + 106.02915648388205) < 0.0003, "landing levels pitch before source forward translation")
+		_check(absf(state.bank_angle) < 0.0001 and absf(state.orientation.length() - 1.0) < 0.00001, "pitch leveling preserves a normalized unbanked frame")
+		_run_seconds(state, {}, 12.0)
+		_check(not state.airborne and not state.landing and absf(state.position.y - 5.0) < 0.0001, "tilted up/down landing reaches the ground instead of holding initial pitch")
+	var inverted = _new_gear()
+	inverted.position = Vector3(0, 105, 0)
+	inverted.orientation = Quaternion(Vector3.FORWARD, PI)
+	inverted.begin_landing(Vector3(0, 5, 0))
+	_run_seconds(inverted, {}, 1.0)
+	# Pure bank has one transform: abs(bank)=PI*(1-1/120)^120.
+	var expected_bank := PI * pow(119.0 / 120.0, 120.0)
+	_check(absf(absf(inverted.bank_angle) - expected_bank) < 0.0001, "native inverted landing rolls toward world up at original gain one")
+	_check(inverted.forward().distance_to(Vector3.FORWARD) < 0.0001 and absf(inverted.position.y - 90.0) < 0.0002, "inverted roll recovery preserves heading and descent")
+	for pitch_sign: float in [1.0, -1.0]:
+		var state = _new_gear()
+		state.position = Vector3(0, 105, 0)
+		state.orientation = Quaternion(Vector3.FORWARD, PI) * Quaternion(Vector3.RIGHT, pitch_sign * PI / 4.0)
+		var initial_tilt := absf(state.forward().y)
+		state.begin_landing(Vector3(0, 5, 0))
+		state.advance({}, Model.MAX_STEP)
+		var expected_first_pitch := PI / 4.0 * (1.0 - Model.MAX_STEP)
+		_check(absf(absf(asin(state.forward().y)) - expected_first_pitch) < 0.00001, "inverted pitch receives the source single relaxation transform")
+		_run_seconds(state, {}, 1.0)
+		_check(absf(state.forward().y) < initial_tilt and state.orientation.is_finite() and absf(state.orientation.length() - 1.0) < 0.00001, "tilted inverted landing recovers without NaN or heading reversal")
+		_run_seconds(state, {}, 12.0)
+		_check(not state.airborne and state.position.y == 5.0 and Basis(state.orientation).y.dot(Vector3.UP) > 0.999, "tilted inverted landing completes with upright ground contact")
+
+
+func _test_surface_transition_persistence() -> void:
+	var state = _new_gear("12002100")
+	state.land(Vector3.ZERO)
+	state.take_off()
+	_run_seconds(state, {}, 0.2)
+	var saved: Dictionary = state.transition_progress()
+	var loaded = _new_gear("12002100")
+	loaded.position = state.position
+	loaded.speed = state.speed
+	_check(loaded.restore_transition_progress(saved) and loaded.taking_off, "mid-takeoff timer round-trips")
+	_run_seconds(loaded, {}, 0.2)
+	_check(not loaded.taking_off and loaded.position.distance_to(Vector3(0, 24, -24)) < 0.0001, "restored takeoff flies only the remaining native duration")
+	state.reset()
+	state.begin_landing(Vector3(0, 5, 0))
+	_run_seconds(state, {}, 0.5)
+	saved = state.transition_progress()
+	loaded.position = state.position
+	loaded.speed = state.speed
+	_check(loaded.restore_transition_progress(saved) and loaded.landing, "landing support plane round-trips")
+	_run_seconds(state, {}, 3.0)
+	_run_seconds(loaded, {}, 3.0)
+	_check(state.position.distance_to(loaded.position) < 0.0001 and state.airborne == loaded.airborne, "restored landing keeps the same descent and contact")
+	var invalid := saved.duplicate(true)
+	invalid.taking_off = true
+	var before: Dictionary = loaded.transition_progress()
+	_check(not loaded.restore_transition_progress(invalid) and loaded.transition_progress() == before, "mutually exclusive transitions are rejected atomically")
+	invalid = saved.duplicate(true)
+	invalid.normal = [0, NAN, 0]
+	_check(not Model.validate_transition_progress(invalid, true, "12002100"), "nonfinite restored support rejected")
+	invalid = saved.duplicate(true)
+	invalid.normal = [0, 0, 0]
+	_check(not Model.validate_transition_progress(invalid, true, "12002100"), "zero restored support normal rejected")
+	_check(not Model.validate_transition_progress(saved, false, "12002100"), "grounded save cannot claim active airborne transition")
+	state.land(Vector3.ZERO)
+	state.take_off()
+	saved = state.transition_progress()
+	saved.remaining = 0.5
+	_check(not Model.validate_transition_progress(saved, true, "12002100"), "A-GEAR takeoff restore cannot exceed recovered0.4-second duration")
+	loaded.clear_surface_transition()
+	_check(not loaded.landing and not loaded.taking_off, "legacy save can explicitly discard previous transition")
 
 
 func _simulate(rate: int) -> RefCounted:
@@ -297,7 +448,7 @@ func _test_fuel_fall_bridge() -> void:
 	state.set_fuel_state(100.0, 100.0)
 	_check(not state.fuel_falling and not state.fuel_stranded and state.take_off(), "explicit refuel service restores normal takeoff")
 	_run_seconds(state, {}, 0.2)
-	_check(state.snapshot().mode == "airborne" and state.position.y >= 7.0, "refueled craft leaves local grounded contact")
+	_check(state.snapshot().mode == "taking_off" and state.position.y >= 7.0, "refueled craft leaves grounded contact through timed native takeoff")
 
 
 func _test_native_flight_skill_modifiers() -> void:
@@ -321,6 +472,15 @@ func _test_native_flight_skill_modifiers() -> void:
 	_check(state.booster_speed == 240.0, "repeated engine load cannot stack the same skill")
 	state.reset()
 	_check(state.booster_speed == 220.0 and not state.hyper_booster, "reset removes skill effects and does not invent a free hyperbooster")
+	state.boost_energy = 0.4
+	_check(state.set_skill_modifiers({"hyper_booster": 1.0}), "validated DES166 activation is accepted")
+	_run_seconds(state, {"boost": true}, 1.0)
+	_check(state.boosting and absf(state.boost_energy - 0.5) < 0.00001 and state.booster_speed == 220.0, "native hyperbooster recovers thermal charge without granting speed")
+	_check(not state.set_skill_modifiers({"hyper_booster": 2.0}) and state.hyper_booster, "invalid hyperbooster flag is rejected atomically")
+	state.set_skill_modifiers({})
+	var energy: float = state.boost_energy
+	_run_seconds(state, {"boost": true}, 1.0)
+	_check(not state.hyper_booster and absf(state.boost_energy - (energy - 0.05)) < 0.00001, "DES166 expiration resumes original thermal consumption")
 
 
 func _test_fuel_persistence() -> void:

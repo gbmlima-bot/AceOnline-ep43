@@ -6,8 +6,13 @@ extends RefCounted
 const CATALOG_PATH := "res://assets/original_library/catalogs/skills.json"
 const BINARY_PATH := "res://assets/original_library/catalogs/omi-native.bin"
 const GEAR_MASKS := {"12000100": 1, "12001100": 16, "12002100": 256, "12003100": 4096}
-const PARAM_KEYS := {18: "primary_min_attack", 71: "primary_max_attack", 19: "secondary_min_attack", 72: "secondary_max_attack", 20: "primary_hit", 21: "secondary_hit", 22: "primary_defense", 23: "secondary_defense", 24: "primary_dodge", 25: "secondary_dodge", 31: "primary_reattack", 32: "secondary_reattack", 38: "secondary_range_angle", 69: "secondary_shot_num", 70: "secondary_multi_num", 148: "sp_reduction", 154: "reaction_speed_factor", 155: "turn_angle_factor", 156: "boost_turn_angle_factor", 181: "booster_speed_add"}
-const HEALS := {59: "hp", 83: "shield", 60: "sp"}
+const PARAM_KEYS := {18: "primary_min_attack", 71: "primary_max_attack", 19: "secondary_min_attack", 72: "secondary_max_attack", 20: "primary_hit", 21: "secondary_hit", 22: "primary_defense", 23: "secondary_defense", 24: "primary_dodge", 25: "secondary_dodge", 31: "primary_reattack", 32: "secondary_reattack", 38: "secondary_range_angle", 69: "secondary_shot_num", 70: "secondary_multi_num", 121: "shield_damage_reduction", 140: "collision_damage_reduction", 148: "sp_reduction", 154: "reaction_speed_factor", 155: "turn_angle_factor", 156: "boost_turn_angle_factor", 181: "booster_speed_add"}
+# SetParamFactor in FieldIOCPSocket2.cpp sets these flags on parameter presence,
+# including a native parameter value of zero. They are not attribute magnitudes.
+const FLAG_KEYS := {122: "invincible", 173: "missile_barrier"}
+const HEALS := {59: "hp", 83: "shield", 60: "sp", 61: "ep"}
+const FULL_RECOVERY := 171
+const GRADUAL_SHIELD := 81
 const SOURCE_NOOP_IDS := [23910, 23911, 23912, 23913]
 const MAX_TIMER := 90000.0
 static var _catalog_cache: Dictionary = {}
@@ -104,13 +109,15 @@ func _unsupported_reason(record: Dictionary) -> String:
 		return "Ação especial sem parâmetros de atributo; movimento próprio ainda não portado."
 	for parameter: Dictionary in record.parameters:
 		var destination := int(parameter.destination)
-		if skill_type == 2 and target_type == 0 and PARAM_KEYS.has(destination):
+		if skill_type == 2 and target_type == 0 and (PARAM_KEYS.has(destination) or FLAG_KEYS.has(destination) or destination == GRADUAL_SHIELD):
 			continue
-		if skill_type == 1 and HEALS.has(destination):
+		if skill_type == 1 and (HEALS.has(destination) or destination == FULL_RECOVERY):
 			continue
 		return "Efeito nativo %d ainda não portado; habilidade bloqueada por inteiro." % destination
 	if skill_type == 2 and int(record.get("Time", 0)) <= 0:
 		return "Duração original inválida para um efeito temporário."
+	if _has_parameter(record, GRADUAL_SHIELD) and int(record.get("Time", 0)) < 1000:
+		return "Duração original inválida para recuperação gradual em intervalos de um segundo."
 	return ""
 
 
@@ -223,12 +230,21 @@ func cast(item_num: int, combat: RefCounted, context: Dictionary = {}) -> Dictio
 	var record: Dictionary = definitions[item_num]
 	if not _weapon_requirement(record, combat):
 		return _failure("O equipamento atual não atende ReqItemKind desta habilidade.")
+	# CSkill::IsGroundSkill (Skill.cpp 2106) includes DES_SKILL_BARRIER.
+	# Absence of authoritative flight context must not grant a grounded skill.
+	if _has_parameter(record, 173) and (not context.get("airborne", null) is bool or bool(context.airborne)):
+		return _failure("A barreira exige o GEAR pousado.")
+	var changes_ep := _has_parameter(record, 61) or _has_parameter(record, FULL_RECOVERY)
+	if changes_ep and (not _number(combat.player.get("max_ep")) or float(combat.player.max_ep) <= 0.0 or not _number(combat.player.get("ep")) or float(combat.player.ep) < 0.0 or float(combat.player.ep) > float(combat.player.max_ep)):
+		return _failure("O combustível atual precisa estar sincronizado com o GEAR.")
 	var cost := _sp_cost(record)
 	sp -= cost
 	var family := int(record.family)
 	_cooldowns[family] = maxf(0.0, float(record.get("ReAttacktime", 0)) / 1000.0)
 	if int(record.SkillType) == 2:
 		_active[family] = {"item_num": item_num, "remaining": float(record.Time) / 1000.0}
+		if _has_parameter(record, GRADUAL_SHIELD):
+			_active[family]["gradual_complete"] = false
 	else:
 		for parameter: Dictionary in record.parameters:
 			var destination := int(parameter.destination)
@@ -239,8 +255,22 @@ func cast(item_num: int, combat: RefCounted, context: Dictionary = {}) -> Dictio
 				combat.player.hp = minf(float(combat.player.max_hp), float(combat.player.hp) + value)
 			elif destination == 83:
 				combat.player.shield = minf(float(combat.player.max_shield), float(combat.player.shield) + value)
+			elif destination == 61:
+				combat.player.ep = minf(float(combat.player.max_ep), float(combat.player.ep) + value)
+			elif destination == FULL_RECOVERY:
+				# FieldSkillManager::UseSkillTypeClick, lines 566–572: restores
+				# current HP, DP, SP and EP to their character capacities.
+				combat.player.hp = float(combat.player.max_hp)
+				combat.player.shield = float(combat.player.max_shield)
+				sp = max_sp
+				combat.player.ep = float(combat.player.max_ep)
 	_serial += 1
 	var result := {"ok": true, "type": "skill_used", "item_num": item_num, "base_item_num": family, "skill_type": int(record.SkillType), "count": 1, "event_id": "skill:%d" % _serial, "sp_used": cost}
+	if changes_ep:
+		# The flight owner applies this successful transaction with
+		# FlightModel.set_fuel_state before its next resource synchronization.
+		result["ep_current"] = float(combat.player.ep)
+		result["ep_max"] = float(combat.player.max_ep)
 	_events.append(result.duplicate(true))
 	status = "%s · %d SP" % [record.ItemName, int(cost)]
 	_sync_combat(combat)
@@ -295,7 +325,11 @@ func advance(delta: float, combat: RefCounted = null) -> void:
 		_regen_elapsed = 0.0
 	else:
 		for family: Variant in _active.keys():
-			_active[family].remaining = float(_active[family].remaining) - step
+			var active: Dictionary = _active[family]
+			var previous := float(active.remaining)
+			active.remaining = maxf(0.0, previous - step)
+			if combat != null and _has_parameter(definitions[int(active.item_num)], GRADUAL_SHIELD):
+				_advance_gradual_shield(active, previous, combat)
 			if float(_active[family].remaining) <= 0.000001:
 				_active.erase(family)
 		if sp < max_sp:
@@ -313,10 +347,40 @@ func modifiers() -> Dictionary:
 	var result: Dictionary = {}
 	for active: Dictionary in _active.values():
 		for parameter: Dictionary in definitions[int(active.item_num)].parameters:
+			var flag := str(FLAG_KEYS.get(int(parameter.destination), ""))
+			if not flag.is_empty():
+				result[flag] = 1.0
+				continue
 			var key := str(PARAM_KEYS.get(int(parameter.destination), ""))
 			if not key.is_empty():
 				result[key] = float(result.get(key, 0.0)) + float(parameter.value)
 	return result
+
+
+func _advance_gradual_shield(active: Dictionary, previous: float, combat: RefCounted) -> void:
+	# FieldSkillManager.cpp 705–713 and FieldTimerManager.cpp 287–318:
+	# first aid is gradual DP, not HP; each 1000 ms gives value / (Time/1000).
+	# Reaching full DP stops that recovery timer even if damage occurs later.
+	if bool(active.get("gradual_complete", false)):
+		return
+	var record: Dictionary = definitions[int(active.item_num)]
+	var duration := float(record.Time) / 1000.0
+	var previous_ticks := int(floorf(duration - previous + 0.000001))
+	var current_ticks := int(floorf(duration - float(active.remaining) + 0.000001))
+	for tick in range(previous_ticks, current_ticks):
+		if float(combat.player.shield) >= float(combat.player.max_shield):
+			active["gradual_complete"] = true
+			break
+		for parameter: Dictionary in record.parameters:
+			if int(parameter.destination) == GRADUAL_SHIELD:
+				combat.player.shield = minf(float(combat.player.max_shield), float(combat.player.shield) + float(parameter.value) / float(int(record.Time) / 1000))
+
+
+static func _has_parameter(record: Dictionary, destination: int) -> bool:
+	for parameter: Dictionary in record.get("parameters", []):
+		if int(parameter.destination) == destination:
+			return true
+	return false
 
 
 func _sync_combat(combat: RefCounted) -> void:
@@ -428,6 +492,10 @@ func import_state(state: Dictionary) -> bool:
 		if int(record.SkillType) != 2 or str(family).to_int() != int(record.family) or float(value.remaining) <= 0.0 or float(value.remaining) > float(record.Time) / 1000.0 or not _requirements(record).is_empty():
 			return false
 		new_active[int(record.family)] = {"item_num": int(value.item_num), "remaining": float(value.remaining)}
+		if _has_parameter(record, GRADUAL_SHIELD):
+			if value.has("gradual_complete") and not value.gradual_complete is bool:
+				return false
+			new_active[int(record.family)]["gradual_complete"] = bool(value.get("gradual_complete", false))
 	learned = new_learned
 	hotbar = new_hotbar
 	sp = float(new_sp)

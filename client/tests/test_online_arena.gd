@@ -122,25 +122,42 @@ func _test_cooperative_combat_and_shared_clock() -> void:
 		arena.combat.targets[index].hostile = false
 	var kills := 0
 	var rewards: Dictionary = {}
+	var damage_weights: Dictionary = {}
+	var native_rewards: Dictionary = {}
 	var first_life_key := ""
 	for frame in range(55):
 		arena.submit_input("alice", frame, {"primary": true, "secondary": true})
 		arena.submit_input("bob", frame, {"primary": true, "secondary": true})
 		arena.advance(0.1)
 		for event: Dictionary in arena.drain_events():
+			if event.type == "hit" and int(event.id) == 0 and int(event.get("target_life", -1)) == 0:
+				var id := str(event.get("pilot_id", ""))
+				damage_weights[id] = float(damage_weights.get(id, 0.0)) + float(event.hp_damage) + float(event.shield_damage)
 			if event.type == "target_destroyed" and int(event.id) == 0:
 				kills += 1
 				first_life_key = str(event.instance_id)
 			if event.type == "pilot_reward" and str(event.reward_id).contains("/0:0/"):
 				rewards[str(event.pilot_id)] = int(rewards.get(str(event.pilot_id), 0)) + 1
+				native_rewards[str(event.pilot_id)] = event.duplicate(true)
 	_check(kills == 1 and arena.combat.targets[0].dead and not first_life_key.is_empty(), "Two pilots did not destroy exactly one shared native303HP Hornian")
 	_check(int(rewards.get("alice", 0)) == 1 and int(rewards.get("bob", 0)) == 1, "Contributing pilots did not receive one idempotent reward for shared NPC life")
 	_check(int(arena.pilots.alice.inventory.credits) >= 10 and int(arena.pilots.bob.inventory.credits) >= 10, "Local pilot10SPI kill rewards were not persisted to both inventories")
+	var total_damage := float(damage_weights.get("alice", 0.0)) + float(damage_weights.get("bob", 0.0))
+	_check(is_equal_approx(total_damage, 303.0), "Authoritative hit contributions counted nominal overkill instead of source303HP")
+	var experience_sum := 0.0
+	for id: String in ["alice", "bob"]:
+		var reward: Dictionary = native_rewards.get(id, {})
+		var share := float(reward.get("experience_share", 0.0))
+		experience_sum += share
+		_check(share > 0.0 and share < 82.0 and is_equal_approx(share, 82.0 * float(damage_weights.get(id, 0.0)) / total_damage), "Real cooperative kill did not divide SQL82XP by actual contributor damage")
+	_check(is_equal_approx(experience_sum, 82.0), "Real cooperative kill duplicated or lost recovered native base XP")
 	_check(is_equal_approx(float(arena.combat.elapsed), 5.5) and arena.tick == 660, "Cooperative room clock advanced by player count")
 	var before_credits := int(arena.pilots.alice.inventory.credits)
+	var before_experience := int(arena.pilots.alice.inventory.experience)
+	var before_fraction := float(arena.pilots.alice.xp_fraction)
 	var duplicate := {"type": "target_destroyed", "id": 0, "monster_code": 2000000, "pilot_id": "alice"}
 	arena._process_event(duplicate)
-	_check(arena.pilots.alice.inventory.credits == before_credits, "Duplicate destruction replay minted a second reward")
+	_check(arena.pilots.alice.inventory.credits == before_credits and arena.pilots.alice.inventory.experience == before_experience and arena.pilots.alice.xp_fraction == before_fraction, "Duplicate destruction replay minted a second SPI/XP/fraction reward")
 	var saved: Dictionary = JSON.parse_string(JSON.stringify(arena.export_state()))
 	var restored = _arena()
 	_check(restored.import_state(saved), "Active missiles/dead NPC/contributions failed restart roundtrip")
@@ -148,7 +165,7 @@ func _test_cooperative_combat_and_shared_clock() -> void:
 	restored.add_player("alice")
 	restored.add_player("bob")
 	restored._process_event(duplicate)
-	_check(restored.pilots.alice.inventory.credits == before_credits, "Restart erased kill idempotency ledger")
+	_check(restored.pilots.alice.inventory.credits == before_credits and restored.pilots.alice.inventory.experience == before_experience and restored.pilots.alice.xp_fraction == before_fraction, "Restart erased SPI/XP/fraction kill idempotency ledger")
 	for frame in range(10):
 		for id: String in ["alice", "bob"]:
 			arena.submit_input(id, frame + 55, {"primary": true, "secondary": true})

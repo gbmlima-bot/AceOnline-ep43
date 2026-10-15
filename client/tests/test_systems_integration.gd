@@ -7,6 +7,8 @@ var systems: Node
 var checks := 0
 var failures: Array[String] = []
 var kill_evidence: Array[Dictionary] = []
+var pve_evidence: Array[Dictionary] = []
+var earned_checkpoint := {"credits":0,"experience":0}
 var transaction_evidence: Array[Dictionary] = []
 var transfers: Array[int] = []
 var saved_path := "user://systems-integration-v07.json"
@@ -50,17 +52,20 @@ func _run() -> void:
 	_check(scene.current_map_id == 3302 and _mission("102").get("status") == "active", "native102 accepts and warps to3302")
 	await _complete_native_combat_mission("102", {2028200:1, 2028100:3})
 	_check(scene.current_map_id == 2001, "102 returns to original city2001")
-	_check(scene.combat_runtime.inventory.credits == 320 and scene.combat_runtime.inventory.experience == 91, "102 pays native320SPI/91XP only once")
+	_check(scene.combat_runtime.inventory.credits == 320 + _pve_total("credits") and scene.combat_runtime.inventory.experience == 91 + _pve_total("experience"), "102 adds native320SPI/91XP once alongside separately earned native PvE receipts")
 	_interact_npc(3)
 	_action("accept_mission:103")
 	await process_frame
 	_check(scene.current_map_id == 3303 and _mission("103").get("status") == "active", "native103 accepts at original city contact and warps3303")
 	await _complete_native_combat_mission("103", {2002800:5, 2003000:2})
 	_check(scene.current_map_id == 2001, "103 returns to original city2001")
-	_check(scene.combat_runtime.inventory.credits == 770 and scene.combat_runtime.inventory.experience == 232, "two source missions earn exactly770SPI/232XP")
+	_check(scene.combat_runtime.inventory.credits == 770 + _pve_total("credits") and scene.combat_runtime.inventory.experience == 232 + _pve_total("experience"), "two source missions pay770SPI/232XP plus only actual native PvE receipts")
+	earned_checkpoint = {"credits":scene.combat_runtime.inventory.credits,"experience":scene.combat_runtime.inventory.experience}
 	_check(kill_evidence.size() == 11, "eleven production target_destroyed events were earned by actual weapons")
 	for event: Dictionary in kill_evidence:
 		_check(int(event.get("source_id", 0)) in [7000040,7901000] and not str(event.get("instance_id", "")).is_empty(), "quest evidence carries actual native weapon and target life")
+	for event: Dictionary in pve_evidence:
+		_check(event.get("source_sha256", "") == preload("res://scripts/native_server_data.gd").SOURCE_SHA and scene.combat_runtime.inventory.reward_ids.has(str(event.reward_id)), "PvE receipts retain verified source and unique applied inventory ledger identity")
 	_test_city_economy()
 	_test_skill_pipeline()
 	await _test_progress_roundtrip()
@@ -139,6 +144,8 @@ func _complete_native_combat_mission(identifier: String, expected: Dictionary) -
 				for event: Dictionary in runtime._events:
 					if str(event.get("type", "")) == "target_destroyed":
 						kill_evidence.append(event.duplicate(true))
+					elif str(event.get("type", "")) == "native_pve_reward":
+						pve_evidence.append(event.duplicate(true))
 				scene._drain_simulation_events()
 				steps += 1
 			_check(bool(target.dead), "native weapons kill mission%s source%d" % [identifier,int(target.monster_code)])
@@ -157,19 +164,24 @@ func _complete_native_combat_mission(identifier: String, expected: Dictionary) -
 	_check(int(runtime.inventory.credits) == wallet, "mission%s reward replay cannot mint SPI" % identifier)
 	transfers.append(scene.current_map_id)
 
+func _pve_total(key: String) -> int:
+	var total := 0
+	for event: Dictionary in pve_evidence:
+		total += int(event.get(key, 0))
+	return total
+
 func _test_city_economy() -> void:
 	var inventory = scene.combat_runtime.inventory
+	_action('systems_query:{"mode":"buy","shop":9005,"query":"","offset":0,"available":false}')
 	_check(bool(systems._access("buy").ok) and bool(systems._access("maintenance").ok) and bool(systems._access("recipes").ok), "city console is backed by original merchant/refinery/laboratory NPCs")
 	var money: int = inventory.credits
-	var owned := int(inventory.quantities.get(7000790,0))
-	_action("shop_buy:7000790:1")
-	_check(inventory.credits == money-60 and int(inventory.quantities.get(7000790,0)) == owned+1, "earned SPI buys a real original fuel ITEM at native60 price")
-	_action("shop_sell:7000790:1")
-	_check(inventory.credits == money-48 and int(inventory.quantities.get(7000790,0)) == owned, "same owned ITEM sells for native12SPI without duplication")
-	transaction_evidence.append({"operation":"buy_then_sell","item_num":7000790,"spent":60,"received":12})
-	var before: Dictionary = inventory.export_state()
-	_action("shop_sell:7000790:1")
-	_check(inventory.export_state() == before, "replayed sale cannot sell an absent item")
+	_check(int(systems.services.snapshot().active_shop) == 9005, "city2001 merchant binds recovered native building9005 stock")
+	for identifier: int in [7000790,7002710]:
+		var unchanged: Dictionary = inventory.export_state()
+		_check(systems.services._trade_error(identifier,1,"buy") == "not_in_native_shop", "foreign ITEM%d is outside this original merchant's stock" % identifier)
+		_action("shop_buy:%d:1" % identifier)
+		_check(inventory.export_state() == unchanged, "foreign stock purchase changes neither earned SPI nor inventory")
+	transaction_evidence.append({"operation":"foreign_stock_rejected","shop":9005,"items":[7000790,7002710]})
 	var player: Dictionary = scene.combat_runtime.model.player
 	player.hp = float(player.max_hp)-10.0 # Damage fixture, never a positive resource grant.
 	money = inventory.credits
@@ -186,19 +198,64 @@ func _test_city_economy() -> void:
 	_action("service_ammo:primary")
 	_check(bool(quote.ok) and int(player.primary_ammo) == int(resource.maximum) and inventory.credits == money-int(quote.cost), "native ammo bundle payment fills actual weapon magazine")
 	transaction_evidence.append({"operation":"ammunition","cost":quote.get("cost",0),"amount":quote.get("amount",0),"billed_amount":quote.get("billed_amount",0)})
-	money = inventory.credits
-	_action("shop_buy:7002710:5")
-	_check(inventory.credits == money-500 and int(inventory.quantities.get(7002710,0)) == 5, "remaining earned SPI buys all five native recipe0 ingredients")
-	var previous_result := int(inventory.quantities.get(7000800,0))
-	money = inventory.credits
-	_action("craft_recipe:0")
-	_check(int(inventory.quantities.get(7002710,0)) == 0 and int(inventory.quantities.get(7000800,0)) == previous_result+1 and inventory.credits == money, "city fabrication consumes purchased native inputs and creates one native catalyst")
-	_check(int(systems.services.snapshot().operations) == 1, "successful fabrication advances persistent operation ledger once")
+	# Sell an actual unequipped starter reserve; never grant items or SPI to
+	# make a purchase possible, and never sell the final equipped weapon.
+	var spare := 0
+	var zero_price_spare := 0
+	for identifier: Variant in inventory.quantities:
+		var item: Dictionary = inventory.catalog.get(int(identifier),{})
+		if int(item.get("Kind",-1)) not in [0,1,2,3,8,9,10] or inventory.equipped.values().has(int(identifier)):
+			continue
+		if systems.services._trade_error(int(identifier),1,"sell").is_empty():
+			spare = int(identifier)
+			break
+		if int(item.get("Price",-1)) == 0: zero_price_spare = int(identifier)
+	_check(spare > 0 or zero_price_spare > 0, "real starter reserve contains an actually owned unequipped native weapon")
+	if spare > 0:
+		var old_count := int(inventory.quantities.get(spare,0))
+		money = inventory.credits
+		var resale := int(systems.services._native_sell_price(int(inventory.catalog[spare].Price)))
+		_action("shop_sell:%d:1" % spare)
+		_check(inventory.credits == money + resale and int(inventory.quantities.get(spare,0)) == old_count - 1, "sale consumes one actually owned spare and pays original float32 resale price")
+		transaction_evidence.append({"operation":"owned_spare_sale","item_num":spare,"income":resale})
+	elif zero_price_spare > 0:
+		var unchanged: Dictionary = inventory.export_state()
+		_action("shop_sell:%d:1" % zero_price_spare)
+		_check(inventory.export_state() == unchanged and systems.services._trade_error(zero_price_spare,1,"sell") == "invalid_price", "zero-price starter reserve cannot mint invented sale income")
+		transaction_evidence.append({"operation":"owned_zero_price_spare_rejected","item_num":zero_price_spare})
+	var equipped := int(inventory.equipped.primary)
+	var before: Dictionary = inventory.export_state()
+	_action("shop_sell:%d:%d" % [equipped,int(inventory.quantities.get(equipped,0))])
+	_check(inventory.export_state() == before, "attempted sale preserves the actual equipped primary weapon and wallet")
+	# Buy only a real current-shop bundle already affordable from earned SPI
+	# and the legitimate sale; otherwise verify an atomic affordability denial.
+	var purchase: Dictionary = {}
+	var first_unaffordable: Dictionary = {}
+	var stock_total := int(systems.services.shop_catalog("",0,8,true,"buy").total)
+	for offset in range(0,stock_total,8):
+		for row: Dictionary in systems.services.shop_catalog("",offset,8,true,"buy").rows:
+			if bool(row.available) and purchase.is_empty(): purchase = row
+			elif row.get("reason_code","") == "insufficient_credits" and first_unaffordable.is_empty(): first_unaffordable = row
+	if not purchase.is_empty():
+		money = inventory.credits
+		var count := int(purchase.bundle_size)
+		var old_count := int(inventory.quantities.get(int(purchase.item_num),0))
+		_action("shop_buy:%d:%d" % [int(purchase.item_num),count])
+		_check(inventory.credits == money - int(purchase.buy_price) and int(inventory.quantities.get(int(purchase.item_num),0)) == old_count + count, "earned funds buy exactly one real native shop bundle at its original price")
+		transaction_evidence.append({"operation":"native_shop_purchase","item_num":purchase.item_num,"count":count,"cost":purchase.buy_price})
+	else:
+		_check(not first_unaffordable.is_empty(), "native stock reports its real unaffordable price without a currency grant")
+		if not first_unaffordable.is_empty():
+			before = inventory.export_state()
+			_action("shop_buy:%d:%d" % [int(first_unaffordable.item_num),int(first_unaffordable.bundle_size)])
+			_check(inventory.export_state() == before, "insufficient earned SPI cannot buy or partially debit a real native bundle")
+			transaction_evidence.append({"operation":"native_shop_insufficient_spi","item_num":first_unaffordable.item_num,"price":first_unaffordable.buy_price,"wallet":inventory.credits})
 	before = inventory.export_state()
+	var operations := int(systems.services.snapshot().operations)
 	_action("craft_recipe:0")
-	_check(inventory.export_state() == before and int(systems.services.snapshot().operations) == 1, "second fabrication without inputs creates nothing and preserves ledger")
+	_check(inventory.export_state() == before and int(systems.services.snapshot().operations) == operations, "recipe without genuinely acquired ingredients changes neither inventory nor operation ledger")
 	_check(int(scene.world_runtime.get_state().wallet.credits) == inventory.credits and int(scene.combat_runtime.model.player.credits) == inventory.credits, "post-transaction wallet synchronizes world/combat/inventory")
-	_check(int(scene.world_runtime.get_state().wallet.experience) == 232 and inventory.experience == 232, "all economy actions preserve native earned XP")
+	_check(int(scene.world_runtime.get_state().wallet.experience) == int(earned_checkpoint.experience) and inventory.experience == int(earned_checkpoint.experience), "economy actions preserve native mission and PvE earned XP")
 
 func _test_skill_pipeline() -> void:
 	_close_input_modals()
@@ -252,7 +309,7 @@ func _test_progress_roundtrip() -> void:
 	legacy.combat.inventory.erase("grandfathered_equipment")
 	result = scene._restore_local_progress(legacy)
 	_check(bool(result.get("ok",false)), "0.6-shaped checkpoint migrates with optional systems/stat/fuel fields absent")
-	_check(scene.combat_runtime.inventory.credits == int(checkpoint.combat.inventory.credits) and int(scene.combat_runtime.inventory.quantities.get(7000800,0)) > 0, "legacy migration preserves earned SPI and owned crafted item")
+	_check(scene.combat_runtime.inventory.credits == int(checkpoint.combat.inventory.credits) and scene.combat_runtime.inventory.export_state().items == checkpoint.combat.inventory.items, "legacy migration preserves earned SPI and genuinely owned items")
 	_check(int(systems.services.snapshot().operations) == 0 and systems.skills.snapshot(false).active_count == 0, "legacy migration supplies fresh local systems without invented active skill or historical crafts")
 	_check(bool(scene._restore_local_progress(checkpoint).get("ok",false)), "latest checkpoint remains restorable after legacy-shaped migration")
 	# Exact checkpoint from the normal exported0.6 executable, not reconstructed0.7 data.
@@ -296,12 +353,12 @@ func _finish() -> void:
 	for path: String in [saved_path,legacy_path]:
 		for suffix: String in ["", ".bak", ".tmp"]:
 			if FileAccess.file_exists(path+suffix): DirAccess.remove_absolute(path+suffix)
-	var report := {"checks":checks,"failures":failures,"positive_kills":kill_evidence.size(),"weapons":[7000040,7901000],"native_missions":[102,103],"native_earned_spi":770,"native_earned_xp":232,"map_transfers":transfers,"transactions":transaction_evidence,"scope":"production_scene_native_weapons_and_rewards; poses/damage/AI scheduling fixtures only; no positive quest/ITEM/wallet grants"}
+	var report := {"checks":checks,"failures":failures,"positive_kills":kill_evidence.size(),"weapons":[7000040,7901000],"native_missions":[102,103],"native_mission_spi":770,"native_mission_xp":232,"native_pve_spi":_pve_total("credits"),"native_pve_xp":_pve_total("experience"),"earned_checkpoint":earned_checkpoint,"map_transfers":transfers,"transactions":transaction_evidence,"scope":"production_scene_native_weapons_and_rewards; poses/damage/AI scheduling fixtures only; no positive quest/ITEM/wallet grants"}
 	print("SYSTEMS_E2E="+JSON.stringify(report))
 	if is_instance_valid(scene): scene.queue_free()
 	await process_frame
 	if failures.is_empty():
-		print("PASS: systems integration — %d checks; two real native combat missions→earned SPI→city buy/sell/refinery/crafting, skill damage/SP and legacy/new persistence" % checks)
+		print("PASS: systems integration — %d checks; real native combat missions/PvE ledgers, original shop stock and owned sales, maintenance, denied unaffordable/unowned crafting, skills and persistence" % checks)
 		quit(0)
 	else:
 		for message: String in failures: push_error(message)

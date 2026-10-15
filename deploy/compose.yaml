@@ -1,7 +1,7 @@
 name: ace-online
 services:
   game:
-    image: ace-modern-server:0.8.0
+    image: ace-modern-server:0.9.0
     platform: linux/amd64
     build:
       context: .

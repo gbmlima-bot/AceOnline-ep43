@@ -1,0 +1,35 @@
+{
+  "capture_written": true,
+  "checks": 40,
+  "display": "X11",
+  "failures": [],
+  "initial_draw_seconds": 14.287,
+  "input_hz": 3.61990950226244,
+  "menu_clock": {
+    "elapsed_after": 21.0666666666661,
+    "elapsed_before": 20.5333333333328,
+    "native_npc_speeds": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "peer_tick_after": 2544,
+    "peer_tick_before": 2472,
+    "targets_changed": false,
+    "tick_after": 2528,
+    "tick_before": 2464
+  },
+  "online_state_not_injected": true,
+  "production_main": true,
+  "real_server": true,
+  "tokens_logged": false,
+  "exported_pack_executed_on_linux": false,
+  "native_macos_windows_execution": false,
+  "private_fixture_deleted_before_connection": true,
+  "capture": {
+    "file": "online-preview-v09.png",
+    "sha256": "c7fddc7cb3c5de58c3d297f5fef4b574e468ff97800d112711b8553c0d629c61",
+    "bytes": 1173581
+  },
+  "passed": true
+}

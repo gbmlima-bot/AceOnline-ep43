@@ -16,10 +16,23 @@ func _run() -> void:
 	var services := Services.new()
 	_check(services.configure(inventory), "service catalog configure")
 	var info: Dictionary = services.snapshot()
-	_check(int(info.stock_count) == 2596 and int(info.recipe_count) == 39230 and int(info.supported_recipes) == 304, "frozen native/local coverage")
-	var shop: Dictionary = services.shop_catalog("", 0, 100)
+	_check(int(info.stock_count) == int(services._data.summary.stock) and int(info.recipe_count) == 39230 and int(info.supported_recipes) == 304, "frozen native/local coverage")
+	if bool(info.native_shop_mode):
+		_check(int(info.native_shop_count) > 0 and services.shop_catalog().total == 0, "recovered shops require a contact")
+		var first: Dictionary = services._native_shops.values()[0]
+		var native_map := int(first.map_id) if int(first.map_id) != 0 else 2001
+		_check(bool(services.bind_shop_contact({"source_building_index":first.building_index,"building_kind":first.building_kind,"source_npc_index":first.npc_index,"map_id":native_map},native_map).ok), "real recovered shop binds")
+		_check(services.shop_catalog("",0,8,false).total == first.entries.size(), "real recovered shop does not expose union of other shops")
+		# Price/refinery/crafting regressions below use an explicit local-stock
+		# fixture, independently of which legacy items pass version matching.
+		var local_fixture: Dictionary = services._data.duplicate(true)
+		local_fixture.erase("native_shops")
+		for number: int in [7000060,7000020,7000500,7004000]:
+			if not local_fixture.stock_item_nums.has(number): local_fixture.stock_item_nums.append(number)
+		_check(services.configure(inventory,local_fixture), "local transaction fixture setup")
+	var shop: Dictionary = services.shop_catalog("", 0, 100, false)
 	_check(shop.rows.size() == 8 and shop.total > 0, "shop page cap")
-	var next: Dictionary = services.shop_catalog("", 8, 8)
+	var next: Dictionary = services.shop_catalog("", 8, 8, false)
 	_check(shop.rows[0].item_num != next.rows[0].item_num, "shop pagination")
 	_check(services.recipe_catalog("", 0, 999, false, false).rows.size() == 8, "recipe page cap")
 	var buy_id := 7000060
@@ -75,6 +88,7 @@ func _run() -> void:
 	inventory.credits = 1000000
 	_test_crafting(inventory, services)
 	_test_state(inventory, services)
+	_test_native_shop_binding()
 	if failures.is_empty():
 		print("PASS: services — %s checks; native prices/bundles20percent sale,304 conservative mixing recipes, original refinery costs, atomic mutations and RNG save" % checks)
 		quit(0)
@@ -82,6 +96,38 @@ func _run() -> void:
 		for message: String in failures:
 			push_error(message)
 		quit(1)
+
+func _test_native_shop_binding() -> void:
+	var inventory := Inventory.new()
+	_check(inventory.configure(), "native shop fixture inventory")
+	inventory.credits = 1000000
+	var fixture := {"schema_version":1,"stock_item_nums":[7000060,7004000],"native_countable_kinds":[23],
+		"native_shops":{"shops":[
+			{"building_index":9001,"building_kind":0,"map_id":2001,"npc_index":101,"entries":[{"item_num":7000060}]},
+			{"building_index":9002,"building_kind":2,"map_id":2001,"npc_index":102,"entries":[{"item_num":7004000}]}]}}
+	var service := Services.new()
+	_check(service.configure(inventory,fixture), "native shop fixture configure")
+	var before: Dictionary = inventory.export_state()
+	_check(service.buy(7000060).error == "native_shop_contact_required", "native buy requires contact")
+	_check(inventory.export_state() == before, "missing native contact leaves inventory unchanged")
+	var contact := {"source_building_index":9001,"building_kind":0,"source_npc_index":101,"map_id":2001}
+	var unknown := {"source_building_index":9999,"building_kind":100,"source_npc_index":0,"map_id":2001}
+	var options: Array[Dictionary] = service.shop_options([contact,unknown,contact.duplicate(true)],2001)
+	_check(options.size() == 1 and options[0].building_index == 9001 and options[0].native_stock_count == 1, "shop options exclude unknown stock and duplicate contacts")
+	_check(int(service.snapshot().active_shop) == 0 and inventory.export_state() == before, "listing shop options does not bind or mutate")
+	_check(service.shop_options([contact],2002).is_empty(), "shop options reject contacts from another map")
+	_check(bool(service.bind_shop_contact(contact,2001).ok), "matching native building binds")
+	_check(service.shop_catalog().total == 1 and service.shop_catalog().rows[0].item_num == 7000060, "native stock isolated by building")
+	_check(service.buy(7004000,100).error == "not_in_native_shop" and inventory.export_state() == before, "another shop's item cannot be purchased")
+	_check(bool(service.buy(7000060).ok), "native member purchase succeeds")
+	before = inventory.export_state()
+	_check(not bool(service.bind_shop_contact(contact,2002).ok), "native map identity checked")
+	_check(service.buy(7000060).error == "native_shop_contact_required" and inventory.export_state() == before, "failed contact clears stale shop permission")
+	contact.source_npc_index = 999
+	_check(not bool(service.bind_shop_contact(contact,2001).ok), "native NPC identity checked")
+	contact = {"source_building_index":9002,"building_kind":2,"source_npc_index":102,"map_id":2001}
+	_check(bool(service.bind_shop_contact(contact,2001).ok) and service.shop_catalog().rows[0].item_num == 7004000, "switching native shop invalidates catalog cache")
+	_check(bool(service.buy(7004000,100).ok), "native shop bundles retain original price")
 func _test_crafting(inventory: RefCounted, services: RefCounted) -> void:
 	var row: Dictionary = services._recipes["10"]
 	var ingredient := int(row.ingredients[0].item_num)

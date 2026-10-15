@@ -1,0 +1,295 @@
+{
+  "release": "0.9.0",
+  "passed": true,
+  "complete": true,
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "native_macos_windows_execution": false,
+  "full_original_game_equivalence": false,
+  "public_hosting_configured": false,
+  "results": [
+    {
+      "name": "world",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 2.054,
+      "log": "verification/completion-models-remaining-v09-logs/world.log"
+    },
+    {
+      "name": "world_expansion",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 9.569,
+      "log": "verification/completion-models-remaining-v09-logs/world_expansion.log"
+    },
+    {
+      "name": "world_mission_inventory",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 1.475,
+      "log": "verification/completion-models-remaining-v09-logs/world_mission_inventory.log"
+    },
+    {
+      "name": "headless_world",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.258,
+      "log": "verification/completion-models-remaining-v09-logs/headless_world.log"
+    },
+    {
+      "name": "local_save",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.167,
+      "log": "verification/completion-models-remaining-v09-logs/local_save.log"
+    },
+    {
+      "name": "native_spawn_data",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.639,
+      "log": "verification/completion-models-integration-final-v09-logs/native_spawn_data.log"
+    },
+    {
+      "name": "item_use",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 3.842,
+      "log": "verification/completion-models-remaining-v09-logs/item_use.log"
+    },
+    {
+      "name": "flight",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 2.072,
+      "log": "verification/completion-models-core-final-v09-logs/flight.log"
+    },
+    {
+      "name": "combat",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 3.825,
+      "log": "verification/completion-models-core-final-v09-logs/combat.log"
+    },
+    {
+      "name": "inventory",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 13.192,
+      "log": "verification/completion-models-core-final-v09-logs/inventory.log"
+    },
+    {
+      "name": "inventory_equipment",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 21.352,
+      "log": "verification/completion-models-core-final-v09-logs/inventory_equipment.log"
+    },
+    {
+      "name": "native_server_data",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 4.505,
+      "log": "verification/completion-models-integration-final-v09-logs/native_server_data.log"
+    },
+    {
+      "name": "combat_ledger",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 11.458,
+      "log": "verification/completion-models-core-final-v09-logs/combat_ledger.log"
+    },
+    {
+      "name": "skills",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.354,
+      "log": "verification/completion-models-integration-final-v09-logs/skills.log"
+    },
+    {
+      "name": "services",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 7.93,
+      "log": "verification/completion-models-integration-final-v09-logs/services.log"
+    },
+    {
+      "name": "online_arena",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 24.129,
+      "log": "verification/completion-models-integration-final-v09-logs/online_arena.log"
+    },
+    {
+      "name": "online_classes",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 12.856,
+      "log": "verification/completion-models-integration-final-v09-logs/online_classes.log"
+    },
+    {
+      "name": "online_progression",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 31.64,
+      "log": "verification/completion-models-integration-final-v09-logs/online_progression.log"
+    },
+    {
+      "name": "scene_controls",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 10.765,
+      "log": "verification/completion-scenes-v09-logs/scene_controls.log"
+    },
+    {
+      "name": "combat_runtime",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 10.654,
+      "log": "verification/completion-scenes-v09-logs/combat_runtime.log"
+    },
+    {
+      "name": "legacy_ui",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 7.679,
+      "log": "verification/completion-scenes-v09-logs/legacy_ui.log"
+    },
+    {
+      "name": "library_ui",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 3.744,
+      "log": "verification/completion-scenes-v09-logs/library_ui.log"
+    },
+    {
+      "name": "systems_ui",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.542,
+      "log": "verification/completion-scenes-v09-logs/systems_ui.log"
+    },
+    {
+      "name": "online_ui",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 3.733,
+      "log": "verification/completion-scenes-v09-logs/online_ui.log"
+    },
+    {
+      "name": "online_view",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 7.08,
+      "log": "verification/completion-scenes-v09-logs/online_view.log"
+    },
+    {
+      "name": "gameplay",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 11.686,
+      "log": "verification/completion-scenes-v09-logs/gameplay.log"
+    },
+    {
+      "name": "systems_integration",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 24.86,
+      "log": "verification/completion-scenes-v09-logs/systems_integration.log"
+    },
+    {
+      "name": "expanded_game",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 12.391,
+      "log": "verification/completion-scenes-v09-logs/expanded_game.log"
+    },
+    {
+      "name": "completion_scene",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 15.522,
+      "log": "verification/completion-scenes-v09-logs/completion_scene.log"
+    },
+    {
+      "name": "native_spawn_runtime",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 11.753,
+      "log": "verification/completion-scenes-v09-logs/native_spawn_runtime.log"
+    },
+    {
+      "name": "item_use_integration",
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 17.965,
+      "log": "verification/completion-scenes-v09-logs/item_use_integration.log"
+    },
+    {
+      "name": "online-scene-e2e-v09",
+      "passed": true,
+      "evidence": "verification/online-scene-e2e-v09.json"
+    },
+    {
+      "name": "server-e2e-v09",
+      "passed": true,
+      "evidence": "verification/server-e2e-v09.json"
+    },
+    {
+      "name": "real-v08-migration-v09",
+      "passed": true,
+      "evidence": "verification/real-v08-migration-v09.json"
+    },
+    {
+      "name": "python_release_data_and_installer_tools",
+      "passed": true,
+      "tests": 132,
+      "log": "verification/completion-python-tests-v09.log"
+    },
+    {
+      "name": "macos-pack-runtime-v09",
+      "passed": true,
+      "evidence": "verification/macos-pack-runtime-v09.json"
+    },
+    {
+      "name": "macos-packed-data-v09",
+      "passed": true,
+      "evidence": "verification/macos-packed-data-v09.json"
+    },
+    {
+      "name": "macos-pack-online-v09",
+      "passed": true,
+      "evidence": "verification/macos-pack-online-v09.json"
+    },
+    {
+      "name": "macos_installer_offline_v09",
+      "passed": true,
+      "tests": 9,
+      "log": "verification/macos-installer-v09-tests.log"
+    },
+    {
+      "name": "completion_evidence_packaging",
+      "passed": true,
+      "tests": 14,
+      "log": "verification/completion-evidence-packaging-tests-v09.log"
+    },
+    {
+      "name": "windows-pack-runtime-v09",
+      "passed": true,
+      "evidence": "verification/windows-pack-runtime-v09.json"
+    },
+    {
+      "name": "windows-packed-data-v09",
+      "passed": true,
+      "evidence": "verification/windows-packed-data-v09.json"
+    },
+    {
+      "name": "windows-pack-online-v09",
+      "passed": true,
+      "evidence": "verification/windows-pack-online-v09.json"
+    }
+  ],
+  "source_engine_e2e_groups": 34,
+  "python_tests": 132,
+  "desktop_exports_verified": true,
+  "exported_packs_runtime_on_linux_verified": true
+}

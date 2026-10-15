@@ -1,6 +1,6 @@
 class_name FlightModel
 extends RefCounted
-## Airborne normal-flight branches ported from EP35 CShuttleChild/AtumSJ.
+## Flight, A-GEAR ground and surface-transition branches from EP35 CShuttleChild/AtumSJ.
 ## Engine values come from the pinned original ITEM data, never from mesh size.
 ## Keyboard axes and a fixed 120 Hz clock adapt the original cursor/frame input.
 
@@ -20,6 +20,13 @@ const EP_CONSUMPTION_DISTANCE := 30000.0
 const EP_CONSUMPTION_SECONDS := 60.0
 const EP_HEAVY_WEIGHT := 0.7 # AtumParam.h:497, strict > in FieldIOCPSocket.
 const LOCAL_FALL_GRAVITY := 98.0 # New ballistic bridge; source uses a cinema pattern.
+const LANDING_DESCENT := 15.0 # ShuttleChild.cpp:7644-7651.
+const AGEAR_LANDING_DESCENT := 45.0
+const TAKEOFF_SPEED := 30.0 # ShuttleChild.cpp:7956-7970, GetRasingCheckTime:16703.
+const AGEAR_TAKEOFF_SPEED := 60.0
+const TAKEOFF_SECONDS := 1.0
+const AGEAR_TAKEOFF_SECONDS := 0.4
+const LANDING_MAX_HEIGHT := 180.0 # TryLandingState:13923, strict less-than.
 
 var position: Vector3 = START_POSITION
 var orientation := Quaternion.IDENTITY
@@ -48,6 +55,11 @@ var ground_speed := 0.0
 var airborne := true
 var siege := false
 var ground_normal := Vector3.UP
+var landing := false
+var taking_off := false
+var _takeoff_remaining := 0.0
+var _landing_contact := Vector3.ZERO
+var _landing_normal := Vector3.UP
 var fuel_capacity := 0.0 # Must be supplied from native character stats.
 var fuel_falling := false
 var fuel_stranded := false
@@ -173,7 +185,14 @@ func set_skill_modifiers(modifiers: Dictionary) -> bool:
 		if not _resource_number(value) or absf(float(value)) > 10000.0:
 			return false
 		clean[key] = float(value)
+	var hyper: Variant = modifiers.get("hyper_booster", 0.0)
+	if not _resource_number(hyper) or (float(hyper) != 0.0 and float(hyper) != 1.0):
+		return false
+	clean["hyper_booster"] = float(hyper)
 	_skill_modifiers = clean
+	# AtumGlobal.cpp:274-275/849-850 toggles DES166; SkillModel validates the
+	# original rank, SP and timer. The parameter's magnitude grants no speed.
+	hyper_booster = float(hyper) == 1.0
 	_apply_skill_modifiers()
 	return true
 
@@ -272,6 +291,7 @@ func reset() -> void:
 	airborne = true
 	siege = false
 	ground_normal = Vector3.UP
+	_clear_surface_transition()
 	fuel_falling = false
 	fuel_stranded = false
 	_fall_velocity = Vector3.ZERO
@@ -293,6 +313,7 @@ func snapshot() -> Dictionary:
 		"bank_angle": bank_angle, "boundary_hit": boundary_hit, "profile_ready": profile_ready,
 		"min_speed": min_speed, "cruise_speed": cruise_speed, "booster_speed": booster_speed,
 		"airborne": airborne, "ground_speed": ground_speed,
+		"landing": landing, "taking_off": taking_off, "takeoff_remaining": _takeoff_remaining,
 		"hyper_booster": hyper_booster,
 		"flight_skill_modifiers": _skill_modifiers.duplicate(),
 		"fuel": {"current": fuel_fraction * fuel_capacity, "max": fuel_capacity,
@@ -301,7 +322,7 @@ func snapshot() -> Dictionary:
 			"falling": fuel_falling, "stranded": fuel_stranded, "used": _fuel_total_used,
 			"fall_velocity": [_fall_velocity.x, _fall_velocity.y, _fall_velocity.z],
 			"fall_motion": "local_ballistic_bridge", "consumption": "EP35 distance/time formula"},
-		"mode": "fuel_falling" if fuel_falling else ("fuel_stranded" if fuel_stranded else ("airborne" if airborne else ("siege" if siege else ("ground" if gear_id == "12002100" else "landed"))))}
+		"mode": "fuel_falling" if fuel_falling else ("fuel_stranded" if fuel_stranded else ("landing" if landing else ("taking_off" if taking_off else ("airborne" if airborne else ("siege" if siege else ("ground" if gear_id == "12002100" else "landed"))))))}
 
 
 func advance(controls: Dictionary, delta: float) -> void:
@@ -329,7 +350,14 @@ func _integrate(controls: Dictionary, step: float) -> void:
 		_integrate_ground(controls, step)
 		return
 	if fuel_fraction <= 0.0:
+		_clear_surface_transition()
 		_integrate_fuel_fall(step)
+		return
+	if taking_off:
+		_integrate_takeoff(step)
+		return
+	if landing:
+		_integrate_landing(controls, step)
 		return
 	var brake := bool(controls.get("brake", false))
 	var stopped := bool(controls.get("unit_stop", false))
@@ -454,6 +482,11 @@ func _update_direction(controls: Dictionary, step: float) -> void:
 
 func resolve_collision(safe_position: Vector3, normal: Vector3, kind: String = "terrain") -> Dictionary:
 	var impact := absf(travel_speed)
+	if landing and normal.is_finite() and normal.length_squared() > 0.000001 and normal.normalized().dot(Vector3.UP) > 0.5 and kind != "blocked_tile":
+		if land(safe_position, normal):
+			return {"impact_speed": impact, "damage_scale": 0.0, "kind": kind, "landed": true}
+	if taking_off:
+		_clear_surface_transition()
 	if safe_position.is_finite():
 		position = safe_position
 	boundary_hit = true
@@ -497,6 +530,7 @@ func land(contact_position: Vector3, normal: Vector3 = Vector3.UP) -> bool:
 	if not contact_position.is_finite() or not normal.is_finite() or normal.length_squared() < 0.000001:
 		return false
 	airborne = false
+	_clear_surface_transition()
 	siege = false
 	fuel_falling = false
 	fuel_stranded = fuel_fraction <= 0.0
@@ -507,20 +541,218 @@ func land(contact_position: Vector3, normal: Vector3 = Vector3.UP) -> bool:
 	bank_angle = 0.0
 	_lateral_rate = 0.0
 	boosting = false
+	angular_velocity = Vector3.ZERO
 	set_ground_contact(contact_position, normal)
 	return true
 
 
 func take_off() -> bool:
-	if airborne or not profile_ready or fuel_fraction <= 0.0:
+	if (airborne and not landing) or not profile_ready or fuel_fraction <= 0.0:
 		return false
-	# Local state bridge; the original cinematic/server-authorized pattern is absent.
+	# Motion is recovered; the local caller replaces the original server approval.
+	# No instantaneous height/position change: _TAKINGOFF moves at a fixed speed.
 	airborne = true
 	siege = false
-	position += ground_normal * 5.0
-	speed = min_speed
+	landing = false
+	taking_off = true
+	_takeoff_remaining = AGEAR_TAKEOFF_SECONDS if gear_id == "12002100" else TAKEOFF_SECONDS
+	speed = 0.0
+	travel_speed = 0.0
 	gravity_speed = 0.0
+	boosting = false
+	angular_velocity = Vector3.ZERO
 	return true
+
+
+func begin_landing(contact_position: Vector3, normal: Vector3 = Vector3.UP) -> bool:
+	if not airborne or landing or taking_off or not profile_ready or fuel_fraction <= 0.0 or boosting or siege:
+		return false
+	if not _valid_landing_contact(contact_position, normal):
+		return false
+	_landing_contact = contact_position
+	_landing_normal = normal.normalized()
+	landing = true
+	boosting = false
+	gravity_speed = 0.0
+	_lateral_rate = 0.0
+	angular_velocity = Vector3.ZERO
+	return true
+
+
+func update_landing_contact(contact_position: Vector3, normal: Vector3 = Vector3.UP) -> bool:
+	# The world query refreshes the support under the moving aircraft; the model
+	# owns no terrain data. Only its height/plane is used, never a horizontal snap.
+	if not landing or not _valid_landing_contact(contact_position, normal):
+		return false
+	_landing_contact = contact_position
+	_landing_normal = normal.normalized()
+	return true
+
+
+func _valid_landing_contact(contact_position: Vector3, normal: Vector3) -> bool:
+	if not contact_position.is_finite() or not normal.is_finite() or normal.length_squared() < 0.000001:
+		return false
+	var height := position.y - contact_position.y
+	return normal.normalized().dot(Vector3.UP) > 0.5 and height >= -0.01 and height < LANDING_MAX_HEIGHT
+
+
+func _clear_surface_transition() -> void:
+	landing = false
+	taking_off = false
+	_takeoff_remaining = 0.0
+	_landing_contact = Vector3.ZERO
+	_landing_normal = Vector3.UP
+
+
+func clear_surface_transition() -> void:
+	# Legacy saves have no transition data; callers must clear the previous pose's
+	# timer before applying one of those saves or moving to another map.
+	_clear_surface_transition()
+
+
+func transition_progress() -> Dictionary:
+	return {"landing": landing, "taking_off": taking_off, "remaining": _takeoff_remaining,
+		"contact": [_landing_contact.x, _landing_contact.y, _landing_contact.z],
+		"normal": [_landing_normal.x, _landing_normal.y, _landing_normal.z],
+		"ground_normal": [ground_normal.x, ground_normal.y, ground_normal.z]}
+
+
+static func validate_transition_progress(progress: Variant, is_airborne: bool, source_gear_id: String) -> bool:
+	if not progress is Dictionary or not progress.get("landing") is bool or not progress.get("taking_off") is bool:
+		return false
+	var is_landing: bool = progress.landing
+	var is_taking_off: bool = progress.taking_off
+	if (is_landing and is_taking_off) or ((is_landing or is_taking_off) and not is_airborne):
+		return false
+	var remaining: Variant = progress.get("remaining")
+	if not _resource_number(remaining):
+		return false
+	var duration := AGEAR_TAKEOFF_SECONDS if source_gear_id == "12002100" else TAKEOFF_SECONDS
+	if (is_taking_off and (float(remaining) <= 0.0 or float(remaining) > duration)) or (not is_taking_off and float(remaining) != 0.0):
+		return false
+	for key: String in ["contact", "normal", "ground_normal"]:
+		var values: Variant = progress.get(key)
+		if not values is Array or values.size() != 3:
+			return false
+		for component: Variant in values:
+			if not _resource_number(component) or absf(float(component)) > 1000000.0:
+				return false
+		if key != "contact":
+			var normal := Vector3(float(values[0]), float(values[1]), float(values[2]))
+			if absf(normal.length_squared() - 1.0) > 0.001 or (key == "normal" and is_landing and normal.y <= 0.5):
+				return false
+	return true
+
+
+func restore_transition_progress(progress: Dictionary) -> bool:
+	if not validate_transition_progress(progress, airborne, gear_id):
+		return false
+	landing = bool(progress.landing)
+	taking_off = bool(progress.taking_off)
+	_takeoff_remaining = float(progress.remaining)
+	var contact: Array = progress.contact
+	var normal: Array = progress.normal
+	var ground: Array = progress.ground_normal
+	_landing_contact = Vector3(float(contact[0]), float(contact[1]), float(contact[2]))
+	_landing_normal = Vector3(float(normal[0]), float(normal[1]), float(normal[2]))
+	ground_normal = Vector3(float(ground[0]), float(ground[1]), float(ground[2]))
+	return true
+
+
+func _integrate_takeoff(step: float) -> void:
+	# _TAKINGOFF: vertical + forward displacement, with per-GEAR speed/time.
+	# These are world-up units, not rigid-body impulse or the ground normal.
+	var elapsed := minf(step, _takeoff_remaining)
+	var rise_speed := AGEAR_TAKEOFF_SPEED if gear_id == "12002100" else TAKEOFF_SPEED
+	position += (Vector3.UP + forward()) * rise_speed * elapsed
+	_takeoff_remaining = maxf(0.0, _takeoff_remaining - elapsed)
+	boosting = false
+	boost_energy = minf(1.0, boost_energy + step / OVERHEAT_REPAIR_SECONDS)
+	if boost_energy >= 0.9:
+		overheated = false
+	travel_speed = rise_speed
+	_bound_position()
+	if _takeoff_remaining <= 0.000000001:
+		taking_off = false
+		_takeoff_remaining = 0.0
+		speed = min_speed
+		travel_speed = min_speed
+		gravity_speed = 0.0
+		_current_pitch = 0.0
+		_current_yaw = 0.0
+		_lateral_rate = 0.0
+
+
+func _integrate_landing(controls: Dictionary, step: float) -> void:
+	if bool(controls.get("boost", false)):
+		take_off() # Original landing cancellation enters _TAKINGOFF.
+		_integrate_takeoff(step)
+		return
+	boosting = false
+	boost_energy = minf(1.0, boost_energy + step / OVERHEAT_REPAIR_SECONDS)
+	if boost_energy >= 0.9:
+		overheated = false
+	_level_landing_orientation(step)
+	# CheckMoveRate _LANDING: constant30 forward deceleration,5 in reverse.
+	if speed > 1.0:
+		speed = maxf(0.0, speed - 30.0 * step)
+	elif speed < -1.0:
+		speed = minf(0.0, speed + 5.0 * step)
+	else:
+		speed = 0.0
+	gravity_speed = 0.0
+	travel_speed = speed
+	var descent := AGEAR_LANDING_DESCENT if gear_id == "12002100" else LANDING_DESCENT
+	position += (forward() * speed - Vector3.UP * descent) * step
+	var distance := _landing_normal.dot(position - _landing_contact)
+	if distance <= 0.0:
+		land(position - _landing_normal * distance, _landing_normal)
+	_bound_position()
+
+
+func _level_landing_orientation(step: float) -> void:
+	# Move_Air _LANDING calls SetShuttleFlightInit(step), with bType=true:
+	# ShuttleChild.cpp:7636,11197-11288; ShuttleChild.h:164. Preserve the
+	# original two pitch transforms when upright and one when inverted.
+	var direction := forward().normalized()
+	var up := Basis(orientation).y.normalized()
+	var side := up.cross(direction).normalized() # Native m_vSideVel, opposite Godot right.
+	var horizontal := Vector3(direction.x, 0.0, direction.z)
+	if horizontal.length_squared() < 0.000000001:
+		horizontal = Vector3.RIGHT
+	horizontal = horizontal.normalized()
+	var pitch_angle := acos(clampf(horizontal.dot(direction), -1.0, 1.0))
+	var was_ascending := direction.y > 0.0
+	var upright := up.y > 0.0
+	var pitch_step := pitch_angle * step * (1.0 if was_ascending else -1.0) * (1.0 if upright else -1.0)
+	if upright:
+		direction = direction.rotated(side, pitch_step)
+		up = up.rotated(side, pitch_step)
+		if (was_ascending and direction.y < 0.0) or (not was_ascending and direction.y > 0.0):
+			direction.y = 0.0
+	direction = direction.rotated(side, pitch_step)
+	up = up.rotated(side, pitch_step)
+	if absf(direction.y) < 0.0001:
+		direction.y = 0.0
+	direction = direction.normalized()
+	# Native bank relaxation uses the angle to world up, not an invented roll
+	# spring. Clamp at the horizon if that rotation crosses the target side.
+	side = up.cross(direction)
+	var roll_angle := acos(clampf(Vector3.UP.dot(up), -1.0, 1.0))
+	var was_positive_side := side.y > 0.0
+	up = up.rotated(direction, roll_angle * step * (-1.0 if was_positive_side else 1.0))
+	side = up.cross(direction)
+	if (was_positive_side and side.y < 0.0) or (not was_positive_side and side.y > 0.0):
+		up = Vector3.UP
+	orientation = Basis.looking_at(direction, up).get_rotation_quaternion().normalized()
+	var level_up := Vector3.UP.slide(direction).normalized()
+	bank_angle = level_up.signed_angle_to(Basis(orientation).y, direction)
+
+
+func _bound_position() -> void:
+	var bounded := position.clamp(bounds_min, bounds_max)
+	boundary_hit = boundary_hit or not bounded.is_equal_approx(position)
+	position = bounded
 
 
 func set_ground_contact(contact_position: Vector3, normal: Vector3 = Vector3.UP) -> void:
@@ -551,7 +783,7 @@ func _integrate_ground(controls: Dictionary, step: float) -> void:
 	boost_energy = minf(1.0, boost_energy + step / OVERHEAT_REPAIR_SECONDS)
 	if boost_energy >= 0.9:
 		overheated = false
-	if gear_id != "12002100" or siege or bool(controls.get("brake", false)) or fuel_fraction <= 0.0:
+	if gear_id != "12002100" or siege or bool(controls.get("brake", false)) or bool(controls.get("unit_stop", false)) or fuel_fraction <= 0.0:
 		speed = 0.0
 		travel_speed = 0.0
 		return
