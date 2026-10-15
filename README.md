@@ -8,6 +8,22 @@ Modernização de AirRivals/Ace Online para **macOS (Apple Silicon e Intel)** e 
 
 A captura acima mostra o conteúdo do pacote Mac executado pelo Godot em Linux, conectado a um servidor real. A execução nativa dos aplicativos em macOS e Windows ainda está pendente. Não há servidor público provisionado.
 
+## Instalação automática no macOS
+
+No Terminal do Mac, cole o bloco abaixo. O instalador usa as ferramentas incluídas no macOS; não precisa de Python, Homebrew ou senha de administrador. Requer macOS 13+ em Apple Silicon ou macOS 11+ em Intel. Reserve cerca de **12 GB livres** para as partes, o ZIP e a extração; o download total é de **3,36 GB**.
+
+```sh
+ace_setup=$(mktemp /tmp/ace-modern.XXXXXX) &&
+curl --fail --location 'https://raw.githubusercontent.com/gbmlima-bot/AceOnline-ep43/e133d8fc9720a6e7307d753c4c37233197d95363/tools/install_macos.sh' -o "$ace_setup" &&
+bash "$ace_setup"
+```
+
+O [instalador fixado nesta revisão](https://github.com/gbmlima-bot/AceOnline-ep43/blob/e133d8fc9720a6e7307d753c4c37233197d95363/tools/install_macos.sh) baixa as três partes, verifica tamanho e SHA256 de cada parte, do ZIP e dos arquivos do app, extrai as licenças e instala em `~/Applications/ACE Modern 0.8/ACE Modern.app`. Ele reaproveita downloads válidos, pode retomar partes incompletas e solicita a abertura do jogo. Uma instalação existente com conteúdo diferente é preservada.
+
+O script passou por 10 testes offline em Linux, com pequenos arquivos de teste. **A execução nativa no Mac ainda precisa ser confirmada.** A assinatura ad-hoc e as verificações do macOS são mantidas. Se a abertura for bloqueada, confira o aviso em **Ajustes do Sistema → Privacidade e Segurança**.
+
+Esta instalação prepara o cliente para teste local. O multiplayer depende de configurar e hospedar o servidor; ainda não há servidor público.
+
 ## Downloads e fontes completos
 
 Os aplicativos macOS/Windows, o kit do servidor e os fontes completos com assets estão disponíveis na [Release ACE Modern 0.8.0](https://github.com/gbmlima-bot/AceOnline-ep43/releases/tag/ace-modern-v0.8.0). O código está na branch `ace-modern`; a branch `main` do código legado foi preservada.
