@@ -1,0 +1,23 @@
+test_appended_part_data_is_rejected (test_release_parts.ReleasePartsTests.test_appended_part_data_is_rejected) ... ok
+test_cli_split_verify_and_restore (test_release_parts.ReleasePartsTests.test_cli_split_verify_and_restore) ... ok
+test_concurrent_destination_is_not_overwritten (test_release_parts.ReleasePartsTests.test_concurrent_destination_is_not_overwritten) ... ok
+test_duplicate_json_keys_are_rejected (test_release_parts.ReleasePartsTests.test_duplicate_json_keys_are_rejected) ... ok
+test_empty_input_is_one_empty_part (test_release_parts.ReleasePartsTests.test_empty_input_is_one_empty_part) ... ok
+test_exact_multiple_does_not_add_empty_part (test_release_parts.ReleasePartsTests.test_exact_multiple_does_not_add_empty_part) ... ok
+test_existing_destination_and_input_aliases_are_preserved (test_release_parts.ReleasePartsTests.test_existing_destination_and_input_aliases_are_preserved) ... ok
+test_existing_split_directory_is_untouched (test_release_parts.ReleasePartsTests.test_existing_split_directory_is_untouched) ... ok
+test_final_hash_is_checked_after_valid_part_hashes (test_release_parts.ReleasePartsTests.test_final_hash_is_checked_after_valid_part_hashes) ... ok
+test_hard_part_limit_enforced_without_creating_large_files (test_release_parts.ReleasePartsTests.test_hard_part_limit_enforced_without_creating_large_files) ... ok
+test_invalid_manifest_shapes_names_hashes_and_sizes_fail (test_release_parts.ReleasePartsTests.test_invalid_manifest_shapes_names_hashes_and_sizes_fail) ... ok
+test_missing_part_is_rejected (test_release_parts.ReleasePartsTests.test_missing_part_is_rejected) ... ok
+test_modified_middle_part_is_rejected_without_partial_output (test_release_parts.ReleasePartsTests.test_modified_middle_part_is_rejected_without_partial_output) ... ok
+test_reordered_parts_fail (test_release_parts.ReleasePartsTests.test_reordered_parts_fail) ... ok
+test_split_refuses_to_publish_manifest_larger_than_loader_limit (test_release_parts.ReleasePartsTests.test_split_refuses_to_publish_manifest_larger_than_loader_limit) ... ok
+test_truncated_part_is_rejected (test_release_parts.ReleasePartsTests.test_truncated_part_is_rejected) ... ok
+test_verify_reads_without_creating_archive (test_release_parts.ReleasePartsTests.test_verify_reads_without_creating_archive) ... ok
+test_zip_round_trip_and_original_preservation (test_release_parts.ReleasePartsTests.test_zip_round_trip_and_original_preservation) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.021s
+
+OK

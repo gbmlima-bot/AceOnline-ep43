@@ -1,0 +1,17 @@
+2026-10-15T13:34:47.602174+00:00 Starting independent full-base proof; no hardlinks or imports
+2026-10-15T13:34:50.986545+00:00 PASS published_archive_checksums {"base_sha256": "bc5d9a6755e14f44a59bb307d7b75a1b881a60be5334a425314f7c48667705e8", "kit_sha256": "edeac3bf07e8a924a2c5ba497796a3fbc80be20406f88b256fc2978b8dcccd65"}
+2026-10-15T13:35:07.362849+00:00 PASS independent_archives_extracted {"base_files": 45993, "kit_files": 357}
+2026-10-15T13:35:12.051034+00:00 PASS complete_v07_base_verified {"files": 45788}
+2026-10-15T13:35:23.343275+00:00 published_updater_dry_run stdout: {"ok": true, "release": "0.8.0", "base_files_verified": 45788, "changed_files": 81, "dry_run": true, "already_applied": false}
+2026-10-15T13:35:23.343422+00:00 PASS published_updater_dry_run {"elapsed_seconds": 9.167, "result": {"ok": true, "release": "0.8.0", "base_files_verified": 45788, "changed_files": 81, "dry_run": true, "already_applied": false}}
+2026-10-15T13:35:25.350906+00:00 PASS dry_run_preserves_all_base_files
+2026-10-15T13:35:34.484470+00:00 published_updater_applied stdout: {"ok": true, "release": "0.8.0", "base_files_verified": 45788, "changed_files": 81, "dry_run": false, "already_applied": false, "source_backup": "/tmp/ace-online-real-proof-tci7zh8z/base/ace-modern/.online-update-backups/v0.8-p0llqjcg"}
+2026-10-15T13:35:34.484675+00:00 PASS published_updater_applied {"elapsed_seconds": 9.134, "result": {"ok": true, "release": "0.8.0", "base_files_verified": 45788, "changed_files": 81, "dry_run": false, "already_applied": false, "source_backup": "/tmp/ace-online-real-proof-tci7zh8z/base/ace-modern/.online-update-backups/v0.8-p0llqjcg"}}
+2026-10-15T13:35:44.026042+00:00 published_updater_reapplied stdout: {"ok": true, "release": "0.8.0", "base_files_verified": 45788, "changed_files": 0, "dry_run": false, "already_applied": true}
+2026-10-15T13:35:44.026232+00:00 PASS published_updater_reapplied {"elapsed_seconds": 9.541, "result": {"ok": true, "release": "0.8.0", "base_files_verified": 45788, "changed_files": 0, "dry_run": false, "already_applied": true}}
+2026-10-15T13:35:44.156557+00:00 PASS overlay_matches_published_hashes_and_frozen_source {"files": 256}
+2026-10-15T13:35:54.288769+00:00 PASS native_assets_and_untouched_base_preserved {"untouched_files": 45603, "asset_files": 45579, "userdata_sentinel": true}
+2026-10-15T13:35:54.472131+00:00 real_server_application_rebuild stdout: {"ok": true, "files": 47, "application_bytes": 69284637, "output": "/tmp/ace-online-real-proof-tci7zh8z/rebuilt"}
+2026-10-15T13:35:54.472234+00:00 PASS real_server_application_rebuild {"elapsed_seconds": 0.183, "result": {"ok": true, "files": 47, "application_bytes": 69284637, "output": "/tmp/ace-online-real-proof-tci7zh8z/rebuilt"}}
+2026-10-15T13:35:54.646476+00:00 PASS rebuilt_app_matches_approved_standalone {"files": 47, "bytes": 69284637, "reference": "bundle-manifest.json plus application_files(src)"}
+2026-10-15T13:35:55.204497+00:00 Disposable marked extractions cleaned
